@@ -20,13 +20,14 @@ It writes [REPORT.md](REPORT.md) here; the work folders (references, project, me
 
 | Group | Value | Passes when |
 |---|---|---|
-| palette | ground, ink, accent roles | CIEDE2000 ≤ 6 from the film's colour |
+| palette | ground, ink, accent roles | CIEDE2000 ≤ 6 from the film's colour (or the nearest of several, for a ramp); no accent: the role holds a tone of the ground's or ink's hue |
 | surface | grain | both under 2.5 levels, or within ±50 % |
-| | vignette | within 0.04 |
+| | vignette | within 0.04, or inside a range |
 | | halftone period and angle (design px) | within 10 % and 3°; none when the film has none |
+| | scanline period (design px) | within 10 % |
 | type | title size (font size as a share of the height) | within ±25 % |
 | | title weight | within 100 of the film's weight |
-| motion | cuts, dissolves and dips | the same number |
+| motion | cuts, dissolves and dips | each found at its time (as the motion bench matches them), and no other |
 | | drawings held on | the same (ones, twos) |
 | kit eases | entrance, exit, move class | the kit's class is the film's; *unknown* when the kit leaves the curve unread (safe: the director picks it), *fail* only when it names a wrong one |
 
@@ -36,6 +37,16 @@ template tracker, `mvp`); `clip`, `stretch` and `wipe` (the extent reader, added
 still marked `v1` in the truth); `draw-on` and a camera on a flat ground (not measured yet). A stretch and a wipe
 match each other, since a solid shape can't tell them apart. Each move is *missed*, *claimed right* or *wrong* (the
 ease family or class was claimed), or *guessed right* or *wrong* (timed, but the curve was left unread).
+
+Then the kit's motion is replayed: `moodreel sketch` draws three neutral shapes per shot that enter and leave with
+the kit's eases, durations, holds and staggers, and `motion-check` compares that film's grammar with the
+references', claim by claim (the sketch's density, and its curve claims where the kit left the curve unread, are
+unknown: they say nothing about the kit). §8 of the design asks four in five to pass.
+
+Last, the five STYLE.md sections the measurements speak for are judged from all of the above: §2 materials (the
+surface), §3 colour (the palette), §4 type, §5 motion (the kit's eases, and the sketch's claims), §6 camera and
+editing (transitions, the drawing rate, camera moves). The other six sections are the director's judgement; a
+fair test of them needs a director distilling real references without having read the style.
 
 ## Adding a film
 

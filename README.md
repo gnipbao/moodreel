@@ -9,7 +9,7 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 
 > **Status: pre-alpha.** The whole path works end to end: references in, measurements, a kit, a packed style, a
 > film made in it, checked and delivered. Motion measurement passes its acceptance bench, and two example films
-> survive the round trip (below). A camera on a plain ground, rotation and line draw-on are next.
+> survive the round trip (below). Rotation, line draw-on and per-letter text are next.
 
 ## Why measure motion?
 
@@ -40,19 +40,24 @@ Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md
 
 ### The round trip
 
-Two example films ([examples/](examples/README.md)), each made in code from a library style, distilled back as if
+Five example films ([examples/](examples/README.md)), each made in code from a library style, distilled back as if
 they were a user's references and compared with the values in their own code
-([bench/roundtrip](bench/roundtrip/REPORT.md)):
+([bench/roundtrip](bench/roundtrip/REPORT.md)). Then the kit's motion is replayed with neutral shapes
+(`moodreel sketch`) and checked against the references, claim by claim:
 
-| film (style) | palette roles | surface | title | cuts, drawing rate | the kit's curves | moves found | eases named / named wrong |
-|---|---|---|---|---|---|---|---|
-| swiss-programme (Swiss motion) | ΔE 0.2 | no grain, vignette or screen | size −14 %, weight 700 | ✓ | entrances `bezier(0.73,−0.03,0.18,1.04)` (film: `0.7,0,0.2,1`) | 22 / 40 | 0 / 0 |
-| first-light (risograph) | ΔE ≤ 4.4 | grain; halftone 7.0 px at 14.8° (film: 7 px at 15°) | size +25 %, weight | ✓ | left to the director | 4 / 11 | 3 / 0 |
+| film (style) | static values | moves found | eases named / wrong | sketch motion claims | sections held |
+|---|---|---|---|---|---|
+| swiss-programme (Swiss motion) | 11/13, nothing fails | 23 / 40 | 0 / 0 | 8 / 9 | 5 / 5 |
+| first-light (risograph) | 11/14, nothing fails | 4 / 11 | 3 / 0 | 6 / 6 | 5 / 5 |
+| shipped (dark keynote) | 10/13, nothing fails | 6 / 11 | 0 / 0 | 6 / 6 | 5 / 5 |
+| boot (ASCII CRT) | 10/14, the clear-screen cut missed | 3 / 11 | 1 / 0 | 6 / 7 | 4 / 5 |
+| morning (pictogram motion) | 9/13, the black capitals read as bold | 12 / 24 | 0 / 0 | 4 / 4 | 4 / 5 |
 
-Colour, surface, type and rhythm come back, and so does the Swiss film's house curve, which has no GSAP name. The
-risograph sun is read rising behind its horizon with the film's exact `power2.out`. What is still missed is said
-plainly in the report: type rising in a slot of its own size reads as a stretch, a camera on a plain ground as
-elements moving together, and reflections nested in a sea that is being wiped on aren't seen apart from it.
+Values that aren't "nothing fails" are left to the director (a curve the kit didn't read), never named wrong.
+Colours, surfaces, type and rhythm come back; so does the Swiss film's house curve, which has no GSAP name
+(`bezier(0.73,−0.03,0.18,1.04)` against `0.7,0,0.2,1`), and its page turn on a plain ground, read as a camera pan.
+"Sections held" counts the five STYLE.md sections the measurements speak for (materials, colour, type, motion,
+camera); the other six are the director's judgement.
 
 ## How it will work
 
@@ -142,6 +147,12 @@ uv run moodreel bench make && uv run moodreel bench render && uv run moodreel be
 uv run moodreel bench roundtrip
 ```
 
+Replay a style's measured motion with neutral shapes, to check the kit before drawing a demo film:
+
+```bash
+uv run moodreel sketch out/projects/my-style
+```
+
 ## Use it with an agent
 
 Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
@@ -173,7 +184,7 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
-| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `cli.py` |
+| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, sketch, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `cli.py` |
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |

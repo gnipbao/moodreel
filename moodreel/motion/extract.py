@@ -90,6 +90,15 @@ def measure(path, out: Path, width=640) -> dict:
         for k, run_ in enumerate(runs):
             nxt = runs[k + 1][0] if k + 1 < len(runs) else None
             prev = runs[k - 1][1] if k > 0 else None
+            # on a flat ground, the whole layout moving as one is the camera, not its elements
+            pan = camera.layout_pan(clip, *run_) if sh.get("camera") != "moving" else None
+            if pan:
+                for prop in ("panx", "pany"):
+                    v = pan[prop]
+                    if np.ptp(v) > camera.MOVES["pan"] * clip.src_w and (f := fit.fit_move(pan["t"], v, clip.fps)):
+                        cam_events.append({"shot": sh["id"], "prop": prop, "layout": True, **f})
+                sh["camera"] = "pans"
+                continue
             tracks = track.track_run(clip, sh, run_, nxt, prev)
             run_events = []
             for tr in tracks:

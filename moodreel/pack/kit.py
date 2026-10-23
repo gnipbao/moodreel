@@ -44,16 +44,18 @@ def _ease_for(role: dict | None) -> dict | None:
     curve = role.get("curve")
     dur = (role.get("duration_s") or {}).get("median")
     from ..motion.fit import bezier_for
-    # a family read with confidence at least twice; else the style's own curve, when the class was read at least
-    # twice and one bezier draws those tweens; else the timing only, and the director picks the curve
-    if named >= min(2, count) and names:
+    # a family read with confidence at least twice, for at least a third of the role's moves; else the style's own
+    # curve, when the class was read as often and one bezier draws those tweens; else the timing only, and the
+    # director picks the curve
+    if named >= min(2, count) and 3 * named >= count and names:
         name = max(names, key=names.get)
         over = role.get("overshoot") or {}
         if role.get("overshoot_share", 0) >= 0.4 and over.get("median"):
             name = _back_for(over["median"])
         bezier, source = bezier_for(name), "named"
-    elif classed >= min(2, count) and curve and curve["class"] == dominant:
+    elif classed >= min(2, count) and 3 * classed >= count and curve and curve["class"] == dominant:
         name, bezier = "bezier({},{},{},{})".format(*curve["bezier"]), curve["bezier"]
+        dur = curve.get("duration") or dur
         source = f"one curve through {curve['tweens']} tweens whose class was read"
     else:
         return {"ease": None, "duration": dur, "count": count,
@@ -114,8 +116,8 @@ def style_tokens(project: Path, intake: dict) -> dict:
         "palette": {**{k: v for k, v in pal["roles"].items() if not k.endswith("contrast")},
                     "colors": [{"hex": c["hex"], "area": c["area"]} for c in pal["colors"] if c["area"] >= 0.003]},
         "type": {"title": _em(typ.get("title_height")), "body": _em(typ.get("body_height")),
-                 "titleWeight": WEIGHT.get(typ.get("weight_title") or "", 700),
-                 "bodyWeight": WEIGHT.get(typ.get("weight_overall") or "", 400),
+                 "titleWeight": typ.get("weight_title_value") or WEIGHT.get(typ.get("weight_title") or "", 700),
+                 "bodyWeight": typ.get("weight_overall_value") or WEIGHT.get(typ.get("weight_overall") or "", 400),
                  "display": "Helvetica Neue, Helvetica, Arial, sans-serif",
                  "text": "Helvetica Neue, Helvetica, Arial, sans-serif"},
         "layout": {"margin": lay.get("min_margin"), "align": lay.get("dominant_alignment"), "density": lay.get("density")},

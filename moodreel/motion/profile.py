@@ -234,7 +234,7 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
         if not evs:
             return None
         durs, eases_, classes, guesses, labels, over, named = [], {}, {}, {}, {}, [], 0
-        travel, by_class = [], {}
+        travel, by_class, onsets, named_at = [], {}, {}, []
         for ev in evs:
             m = ev["props"][main_prop(ev)]
             durs.append(max(p["dur"] for p in ev["props"].values()))
@@ -244,11 +244,15 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
                     travel.append(abs(ev["props"][ax]["delta"]) / size)
             if m["ease"] != "unknown":
                 eases_[m["ease"]] = eases_.get(m["ease"], 0) + 1
-                named += 1
+                if not any(abs(m["checkpoints"]["t50"] - t) <= 1 / clip.fps for t in named_at):
+                    named_at.append(m["checkpoints"]["t50"])   # pieces of one move name it once
+                    named += 1
             else:                                       # the fit's best guess is kept apart: it never becomes a token
                 guesses[m["best"]] = guesses.get(m["best"], 0) + 1
             c = m.get("class") or (eases.shape_class(m["ease"]) if m["ease"] != "unknown" else None)
-            if c:
+            # two pieces of one move (the halves of a title split by the tracker) are one reading
+            if c and not any(abs(m["checkpoints"]["t50"] - t) <= 1 / clip.fps for t in onsets.get(c, ())):
+                onsets.setdefault(c, []).append(m["checkpoints"]["t50"])
                 classes[c] = classes.get(c, 0) + 1
                 over.append(m["overshoot"])
                 if m.get("_samples") is not None:

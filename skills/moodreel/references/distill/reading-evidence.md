@@ -36,8 +36,10 @@ pixels.
 - `layout.json`: margins, content density, centroid, symmetry, dominant alignment, left-aligned columns. Margins and
   alignment become rules in §4 and §6; density and symmetry describe the composition's temperament.
 - `type.json`: line heights (ink, ascender to descender) as a share of the frame height, size tiers, title-to-body
-  ratio, stroke weight (light, regular, bold, black). The kit turns a line's ink into a font size at 0.9 em, right
-  for a mixed-case line; a line without ascenders or descenders reads up to a quarter small, so check the crops. **Read the words, case and typeface class yourself** in `evidence/type-lines.jpg`: geometric
+  ratio, stroke weight (light, regular, bold, black, and `weight_title_value` in CSS units). The kit turns a line's
+  ink into a font size at 0.9 em, right for a mixed-case line; a line without ascenders or descenders reads up to a
+  quarter small, so check the crops. Weight is approximate: a line of capitals in a black weight reads a step light,
+  a lowercase line without ascenders a step heavy. Scanlines are filled in before type and colour are read. **Read the words, case and typeface class yourself** in `evidence/type-lines.jpg`: geometric
   or grotesque sans, serif, slab, mono, script, display. Pick licensed faces that match (OFL from Google Fonts or
   Fontsource); record the choice in DECISIONS.md.
 
@@ -69,8 +71,9 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
   evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and
   describe them yourself, marked `inferred`.
-- **Camera unknown or locked on a flat ground** can't tell a pan from the whole picture moving: a page turn on a plain
-  ground reads as elements moving together.
+- **A camera on a flat ground** is read only when the whole layout (three or more elements across at least 40 % of
+  the width) moves as one translation and nothing stays: a page turn becomes a camera pan (`layout: true`). One
+  element moving alone, or a zoom on a single title, is the element's own move.
 
 ## Rhythm (`measure/rhythm.json`, videos with sound)
 

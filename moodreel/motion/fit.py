@@ -211,4 +211,6 @@ def shared_bezier(samples: list[dict]) -> dict | None:
 
     r = least_squares(resid, x0, bounds=(lo, hi))
     rms = float(np.sqrt(np.mean(r.fun ** 2)))
-    return {"bezier": [round(float(v), 3) for v in r.x[:4]], "tweens": n, "resid": round(rms, 4)}
+    # the tweens' own lengths under this curve (a family fitted to a curve it can't draw stretches them)
+    dur = float(np.median([r.x[5 + 2 * i] - r.x[4 + 2 * i] for i in range(n)]))
+    return {"bezier": [round(float(v), 3) for v in r.x[:4]], "tweens": n, "resid": round(rms, 4), "duration": round(dur, 3)}

@@ -119,6 +119,9 @@ def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
     ca, _ = line_amp(cols)
     out["scanlines"] = ({"amplitude": round(ra, 2), "period_px": round(rp, 2)}
                         if ra >= SCANLINE_LEVELS and ca < 0.3 * ra else None)
+    # rows of scanlines are a periodic screen too, along one axis: the same period is the scanlines, not dots
+    if out["scanlines"] and out["halftone"] and abs(out["halftone"]["period_px"] / rp - 1) < 0.15:
+        out["halftone"] = None
 
     # edges: how much of an edge's contrast is crossed in one pixel (1 = a vector edge, lower = soft or brushy)
     edges = cv2.Canny(cv2.GaussianBlur(gray, (3, 3), 0).astype(np.uint8), 40, 100) > 0

@@ -99,3 +99,23 @@ def test_bars_standing_on_an_axis_are_separate_elements():
     m[100:102, 10:190] = True                                 # the axis they stand on
     parts = track._unjoin(m, area_min=20)
     assert len(parts) == 4 and sum(p.sum() for p in parts) <= m.sum()
+
+
+def test_a_whole_layout_panning_on_a_flat_ground_is_the_camera():
+    from moodreel.motion import camera
+
+    def film(blocks):
+        frames = []
+        for f in range(N):
+            img = np.empty((H, W, 3), np.uint8)
+            img[:] = GROUND
+            dx = -int(round(120 * eases.get("power2.inOut")(np.clip((f - 10) / 12, 0, 1))))
+            for x, y, moves in blocks:
+                img[y:y + 30, x + (dx if moves else 0):x + (dx if moves else 0) + 30] = (20, 20, 20)
+            frames.append(img)
+        return Clip("", FPS, W, H, np.stack(frames), 1.0)
+    spread = [(40, 40, True), (120, 100, True), (200, 60, True), (260, 120, True)]
+    pan = camera.layout_pan(film(spread), 10, 22)
+    assert pan and abs(pan["panx"][-1] + 120) < 3
+    alone = [(40, 40, True), (120, 100, False), (200, 60, False), (260, 120, False)]
+    assert camera.layout_pan(film(alone), 10, 22) is None    # one element moving among still ones is its own move

@@ -9,6 +9,9 @@ test material: `moodreel bench roundtrip` distils each one back and compares the
 |---|---|---|---|
 | [swiss-programme](swiss-programme/TREATMENT.md) | Swiss Motion Graphics (`swiss-motion`) | 15 s, 1920×1080, 24 fps | a grid, two rules on two spreads, snaps landing on a 120 BPM beat grid, clip reveals, a page turn, one red exception moving linearly off the grid, a knife cut |
 | [first-light](first-light/TREATMENT.md) | Risograph Print (`risograph`) | 12 s, 1920×1080, 24 fps | two spot inks multiplied on warm paper, their overprint, stepped halftone tints, misregistration, grain, drawings on twos, a roller wipe, a plate lifting away |
+| [shipped](shipped/TREATMENT.md) | Dark Keynote (`dark-keynote`) | 10 s, 1920×1080, 24 fps | a near-black stage with a hairline grid, raised dark surfaces, a checklist ticking on the beat with back.out(1.3), a CRT-off squash, one lime accent |
+| [boot](boot/TREATMENT.md) | ASCII CRT (`ascii-crt`) | 10 s, 1920×1080, 24 fps | amber phosphor glyphs on a cell grid with glow and scanlines, power on and off, machine typing, a clear-screen cut, a push-in by grid scale |
+| [morning](morning/TREATMENT.md) | Pictogram Motion (`pictogram-motion`) | 12 s, 1920×1080, 24 fps | a disc pattern in five tones of one hue, a sun disc, a figure sliding into register band by band, 900-weight titles rising out of a slot, cuts on the downbeat |
 
 Render one (needs the setup in the main README):
 

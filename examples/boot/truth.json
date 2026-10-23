@@ -1,0 +1,250 @@
+{
+ "name": "boot",
+ "W": 1920,
+ "H": 1080,
+ "fps": 24,
+ "dur": 10.0,
+ "events": [
+  {
+   "element": "power-on line",
+   "shot": "A",
+   "prop": "sx",
+   "t0": 0.3,
+   "t1": 0.55,
+   "dur": 0.25,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    960,
+    540
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "line0",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 0.9,
+   "t1": 1.07,
+   "dur": 0.17,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    252,
+    72
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "line1",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 1.17,
+   "t1": 1.44,
+   "dur": 0.27,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    372,
+    120
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "line2",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 1.54,
+   "t1": 1.78,
+   "dur": 0.24,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    336,
+    168
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "line3",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 1.88,
+   "t1": 2.11,
+   "dur": 0.23,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    324,
+    216
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "line4",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 2.21,
+   "t1": 2.44,
+   "dur": 0.23,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    324,
+    264
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "line5",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 2.54,
+   "t1": 2.77,
+   "dur": 0.23,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    324,
+    312
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "line6",
+   "shot": "A",
+   "prop": "wipe",
+   "t0": 2.87,
+   "t1": 2.93,
+   "dur": 0.06,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    120,
+    360
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "title",
+   "shot": "B",
+   "prop": "wipe",
+   "t0": 4.0,
+   "t1": 4.4,
+   "dur": 0.4,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    960,
+    480
+   ],
+   "scope": "v1",
+   "reader": "wipe (typing)"
+  },
+  {
+   "element": "title",
+   "shot": "B",
+   "prop": "scale",
+   "t0": 4.6,
+   "t1": 6.2,
+   "dur": 1.6,
+   "ease": "power2.inOut",
+   "from": 1,
+   "to": 5,
+   "end_xy": [
+    960,
+    480
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "picture",
+   "shot": "B",
+   "prop": "sy",
+   "t0": 8.5,
+   "t1": 8.65,
+   "dur": 0.15,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0.01,
+   "end_xy": [
+    960,
+    540
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "cut",
+   "t": 4.0
+  }
+ ],
+ "stepping": [
+  {
+   "t0": 0.0,
+   "t1": 10.0,
+   "on": 1
+  }
+ ],
+ "omitted": [
+  "the raster flash after power-on (an afterglow, not a tween)",
+  "the LOG strip's words (typed in two steps)",
+  "the cursor's blink"
+ ],
+ "stills": [
+  2.6,
+  3.5,
+  5.6,
+  7.0
+ ],
+ "palette": {
+  "ground": "#140C05",
+  "ink": [
+   "#FFB000",
+   "#FFE3A0"
+  ],
+  "accent": null
+ },
+ "surface": {
+  "grain": 0,
+  "vignette": 0,
+  "halftone": null,
+  "scanlines": {
+   "period_px": 6
+  }
+ },
+ "type": {
+  "title": 0.1852,
+  "weight": [
+   700
+  ]
+ },
+ "motion": {
+  "entrance": "linear",
+  "exit": "in",
+  "move": null
+ },
+ "notes": [
+  "the push-in: the style calls the grid scale its camera, but the LOG strip stays still, so the picture shows the title growing; it is scored as the title's scale"
+ ]
+}

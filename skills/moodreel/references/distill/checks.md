@@ -33,8 +33,8 @@ Each claim passes, fails or is unknown (unknown never passes; the film or the re
 
 | Claim | Tolerance | When it fails |
 |---|---|---|
-| `<role>.duration` | median within ±25 % | entrances or exits too quick or too slow: use `MOTION.enter.duration` |
-| `<role>.ease_class` | share of the dominant class within ±20 pts | the wrong family of curve: use `MOTION.enter.ease` |
+| `<role>.duration` | median within ±25 % (at least 0.05 s) | entrances or exits too quick or too slow: use `MOTION.enter.duration` |
+| `<role>.ease_class` | share of the dominant class within ±20 pts; unknown when the film reads no class | the wrong family of curve: use `MOTION.enter.ease` |
 | `<role>.overshoot_share`, `.overshoot` | ±25 pts; median within the references' range | bounce where the references settle, or the reverse |
 | `exit_shorter` | exits shorter than entrances when the references are | |
 | `stagger` | a group staggered within ±30 % of the interval | groups enter together, or with the wrong spacing |
@@ -46,3 +46,18 @@ Each claim passes, fails or is unknown (unknown never passes; the film or the re
 
 Fix what fails and re-render; two rounds at most. A demo must show enough events for the claims to be known: a few
 entrances, an exit, a group, a cut if the references cut.
+
+## The sketch (the kit's motion, before the demo)
+
+```bash
+moodreel sketch <project> && moodreel render video <project>/sketch --fps 24 --size 1280x720 --out <project>/sketch.mp4
+```
+
+```bash
+moodreel motion-check <project> <project>/sketch.mp4
+```
+
+Three neutral shapes per shot enter the commonest way the references' elements do, one after another with the
+measured hold (or stagger), with the kit's eases and durations, and leave the same way; shots change by cuts or
+dissolves as the references' do. A failure here is the kit's, not the demo's. Ignore its density (three shapes move
+less than a real film) and its curve claims where `motion.js` says `unread` (the sketch eases with a placeholder).

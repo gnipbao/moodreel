@@ -53,7 +53,9 @@ intake ─► measure ─► read ─► write STYLE.md · LEDGER.md · DECISION
    picture with the kit (`references/primitives.md`); render a still; `moodreel frame-check` it
    (`references/distill/checks.md`). Fix once, twice at most; then **gate 2**: show the frame beside the references.
    Save the approved frame as `<project>/styleframe.jpg`.
-6. **Demo film**: 15–30 s in `<project>/demo/` (index.html, main.js, kit/, build.sh, CREDITS), every rule of STYLE.md
+6. **Demo film**: first, `moodreel sketch <project>` replays the kit's motion with neutral shapes; render it and
+   `motion-check` it: if the sketch fails, fix the kit (or mark the curve `inferred`) before drawing the demo.
+   Then 15–30 s in `<project>/demo/` (index.html, main.js, kit/, build.sh, CREDITS), every rule of STYLE.md
    on screen at least once, the signature move once. Render to `<project>/demo.mp4`; `moodreel motion-check` it; fix
    what fails (two rounds at most). **Gate 3**: show the film and the claims.
 7. **Pack**: `moodreel pack <project> --slug … --name … --name-zh … --build`. Tell the user the style's name and how

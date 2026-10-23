@@ -10,6 +10,10 @@ own motion would be taken for the camera's, so the camera is reported as unknown
 When the camera moves, the shot's frames are warped back onto the first frame (stabilised). Pixels the moved
 frame no longer covers are filled from the first frame, so the borders don't look like motion.
 
+On a flat ground a camera move can still be read when the whole layout moves as one: `layout_pan` takes a motion
+run in which one translation carries every element, frame to frame, and nothing stays in place (a page turn
+across a spread). A single element moving alone is the element's own move, however large.
+
 Camera model, matching the fixtures and a page's 2D transform about the frame centre C:
   screen = C + pan + (world - C) * zoom
 """
@@ -146,3 +150,51 @@ def stabilise(clip: Clip, shot: dict, cam: dict) -> None:
         warped = cv2.warpAffine(clip.frames[f], Minv, (w, h), flags=cv2.INTER_LINEAR)
         valid = cv2.erode(cv2.warpAffine(ones, Minv, (w, h), flags=cv2.INTER_NEAREST), np.ones((5, 5), np.uint8)) > 0
         clip.frames[f] = np.where(valid[..., None], warped, ref)
+
+
+LAYOUT_SPREAD = 0.4      # the layout that pans together spans at least this share of the frame width...
+LAYOUT_PARTS = 3         # ...in at least this many separate elements
+EXPLAINED = 0.85         # share of the content a step's translation must carry
+
+
+def layout_pan(clip: Clip, a: int, b: int) -> dict | None:
+    """Frames a..b of a run on a flat ground: the cumulative pan (source px) when one translation carries the whole
+    layout at every step, else None."""
+    a, b = max(1, a - 1), min(len(clip.frames) - 1, b + 1)
+    first = clip.frames[a - 1]
+    q = (first // 16).reshape(-1, 3).astype(np.int32)
+    keys = q[:, 0] * 256 + q[:, 1] * 16 + q[:, 2]
+    ground = np.median(first.reshape(-1, 3)[keys == np.bincount(keys).argmax()], axis=0)
+    content = lambda img: np.abs(img.astype(np.float32) - ground).max(axis=2) > 28  # noqa: E731
+    c0 = content(first).astype(np.uint8)
+    k = max(3, int(0.012 * clip.w) | 1)
+    n, _, stats, _ = cv2.connectedComponentsWithStats(cv2.morphologyEx(c0, cv2.MORPH_CLOSE, np.ones((k, k), np.uint8)))
+    parts = stats[1:][stats[1:, 4] >= 0.0004 * clip.w * clip.h]
+    if len(parts) < LAYOUT_PARTS or (parts[:, 0] + parts[:, 2]).max() - parts[:, 0].min() < LAYOUT_SPREAD * clip.w:
+        return None
+    t, px, py = [(a - 1) / clip.fps], [0.0], [0.0]
+    for f in range(a, b + 1):
+        prev, cur = clip.frames[f - 1], clip.frames[f]
+        (dx, dy), _ = cv2.phaseCorrelate(_gray(prev).astype(np.float64), _gray(cur).astype(np.float64))
+        if np.hypot(dx, dy) >= 1.0:
+            # the step must carry the content: shifted, the previous frame lands on this one where it had content
+            shifted = cv2.warpAffine(prev, np.float32([[1, 0, dx], [0, 1, dy]]), prev.shape[1::-1],
+                                     flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+            moved = cv2.warpAffine(content(prev).astype(np.uint8), np.float32([[1, 0, dx], [0, 1, dy]]),
+                                   prev.shape[1::-1], flags=cv2.INTER_NEAREST) > 0
+            if not moved.any():
+                return None
+            diff = np.abs(shifted.astype(np.float32) - cur).max(axis=2)[moved]
+            still = np.abs(prev.astype(np.float32) - cur).max(axis=2)[content(prev)]
+            # and it must carry it far better than standing still (large flat shapes overlap themselves)
+            if float((diff < 28).mean()) < EXPLAINED or diff.mean() > 0.5 * still.mean():
+                return None
+        else:
+            dx = dy = 0.0
+        t.append(f / clip.fps)
+        px.append(px[-1] + dx)
+        py.append(py[-1] + dy)
+    px, py = np.array(px) * clip.scale, np.array(py) * clip.scale
+    if max(np.ptp(px), np.ptp(py)) < MOVES["pan"] * clip.src_w:
+        return None
+    return {"t": np.array(t), "panx": px, "pany": py}

@@ -1,0 +1,467 @@
+{
+ "name": "morning",
+ "W": 1920,
+ "H": 1080,
+ "fps": 24,
+ "dur": 12.0,
+ "events": [
+  {
+   "element": "sun0",
+   "shot": "A",
+   "prop": "scale",
+   "t0": 0.1,
+   "t1": 0.5,
+   "dur": 0.4,
+   "ease": "expo.out",
+   "from": 0.6,
+   "to": 1,
+   "end_xy": [
+    1400,
+    600
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "head0",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.25,
+   "t1": 0.75,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1140,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    350
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "torso0",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.375,
+   "t1": 0.875,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1660,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    525
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "legs0",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.5,
+   "t1": 1.0,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1140,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    745
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "title0",
+   "shot": "A",
+   "prop": "y",
+   "t0": 1.0,
+   "t1": 1.5,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 764,
+   "to": 477,
+   "end_xy": [
+    470,
+    477
+   ],
+   "scope": "v1",
+   "reader": "clip"
+  },
+  {
+   "element": "zh0",
+   "shot": "A",
+   "prop": "y",
+   "t0": 1.08,
+   "t1": 1.58,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 740,
+   "to": 650,
+   "end_xy": [
+    218,
+    650
+   ],
+   "scope": "v1",
+   "reader": "clip"
+  },
+  {
+   "element": "figure0",
+   "shot": "A",
+   "prop": "y",
+   "t0": 2.5,
+   "t1": 3.0,
+   "dur": 0.5,
+   "ease": "sine.inOut",
+   "from": 548,
+   "to": 528,
+   "end_xy": [
+    1400,
+    528
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "figure0",
+   "shot": "A",
+   "prop": "y",
+   "t0": 3.0,
+   "t1": 3.5,
+   "dur": 0.5,
+   "ease": "sine.inOut",
+   "from": 528,
+   "to": 548,
+   "end_xy": [
+    1400,
+    548
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "sun1",
+   "shot": "B",
+   "prop": "scale",
+   "t0": 4.1,
+   "t1": 4.5,
+   "dur": 0.4,
+   "ease": "expo.out",
+   "from": 0.6,
+   "to": 1,
+   "end_xy": [
+    1400,
+    600
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "head1",
+   "shot": "B",
+   "prop": "x",
+   "t0": 4.25,
+   "t1": 4.75,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1140,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    350
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "torso1",
+   "shot": "B",
+   "prop": "x",
+   "t0": 4.375,
+   "t1": 4.875,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1660,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    525
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "legs1",
+   "shot": "B",
+   "prop": "x",
+   "t0": 4.5,
+   "t1": 5.0,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1140,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    745
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "title1",
+   "shot": "B",
+   "prop": "y",
+   "t0": 5.0,
+   "t1": 5.5,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 764,
+   "to": 477,
+   "end_xy": [
+    470,
+    477
+   ],
+   "scope": "v1",
+   "reader": "clip"
+  },
+  {
+   "element": "zh1",
+   "shot": "B",
+   "prop": "y",
+   "t0": 5.08,
+   "t1": 5.58,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 740,
+   "to": 650,
+   "end_xy": [
+    254,
+    650
+   ],
+   "scope": "v1",
+   "reader": "clip"
+  },
+  {
+   "element": "figure1",
+   "shot": "B",
+   "prop": "y",
+   "t0": 6.5,
+   "t1": 7.0,
+   "dur": 0.5,
+   "ease": "sine.inOut",
+   "from": 548,
+   "to": 528,
+   "end_xy": [
+    1400,
+    528
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "figure1",
+   "shot": "B",
+   "prop": "y",
+   "t0": 7.0,
+   "t1": 7.5,
+   "dur": 0.5,
+   "ease": "sine.inOut",
+   "from": 528,
+   "to": 548,
+   "end_xy": [
+    1400,
+    548
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "sun2",
+   "shot": "C",
+   "prop": "scale",
+   "t0": 8.1,
+   "t1": 8.5,
+   "dur": 0.4,
+   "ease": "expo.out",
+   "from": 0.6,
+   "to": 1,
+   "end_xy": [
+    1400,
+    600
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "head2",
+   "shot": "C",
+   "prop": "x",
+   "t0": 8.25,
+   "t1": 8.75,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1140,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    350
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "torso2",
+   "shot": "C",
+   "prop": "x",
+   "t0": 8.375,
+   "t1": 8.875,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1660,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    525
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "legs2",
+   "shot": "C",
+   "prop": "x",
+   "t0": 8.5,
+   "t1": 9.0,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 1140,
+   "to": 1400,
+   "end_xy": [
+    1400,
+    745
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "title2",
+   "shot": "C",
+   "prop": "y",
+   "t0": 9.0,
+   "t1": 9.5,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 764,
+   "to": 477,
+   "end_xy": [
+    470,
+    477
+   ],
+   "scope": "v1",
+   "reader": "clip"
+  },
+  {
+   "element": "zh2",
+   "shot": "C",
+   "prop": "y",
+   "t0": 9.08,
+   "t1": 9.58,
+   "dur": 0.5,
+   "ease": "expo.out",
+   "from": 740,
+   "to": 650,
+   "end_xy": [
+    218,
+    650
+   ],
+   "scope": "v1",
+   "reader": "clip"
+  },
+  {
+   "element": "figure2",
+   "shot": "C",
+   "prop": "y",
+   "t0": 10.5,
+   "t1": 11.0,
+   "dur": 0.5,
+   "ease": "sine.inOut",
+   "from": 548,
+   "to": 528,
+   "end_xy": [
+    1400,
+    528
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "figure2",
+   "shot": "C",
+   "prop": "y",
+   "t0": 11.0,
+   "t1": 11.5,
+   "dur": 0.5,
+   "ease": "sine.inOut",
+   "from": 528,
+   "to": 548,
+   "end_xy": [
+    1400,
+    548
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "cut",
+   "t": 4.0
+  },
+  {
+   "type": "cut",
+   "t": 8.0
+  }
+ ],
+ "stepping": [
+  {
+   "t0": 0.0,
+   "t1": 12.0,
+   "on": 1
+  }
+ ],
+ "omitted": [
+  "the HUD: mono corners and progress ticks appear with each cut"
+ ],
+ "stills": [
+  1.8,
+  5.8,
+  9.8
+ ],
+ "palette": {
+  "ground": [
+   "#0E3B43",
+   "#17606B",
+   "#1F8A96"
+  ],
+  "ink": "#F4EBDD",
+  "accent": null
+ },
+ "surface": {
+  "grain": 0,
+  "vignette": 0,
+  "halftone": null
+ },
+ "type": {
+  "title": 0.213,
+  "weight": [
+   900
+  ]
+ },
+ "motion": {
+  "entrance": "out",
+  "exit": null,
+  "move": "inOut"
+ }
+}
