@@ -1,0 +1,121 @@
+{
+ "bpm": 120,
+ "meter": 4,
+ "offset": 0.0,
+ "seed": 11,
+ "key": "C",
+ "sections": [
+  {
+   "name": "round1",
+   "bars": 3,
+   "chords": [
+    "C",
+    "Am",
+    "F"
+   ],
+   "groove": "backbeat",
+   "parts": [
+    "kick",
+    "snare",
+    "hat",
+    "bass",
+    "stab",
+    "lead"
+   ]
+  },
+  {
+   "name": "round2",
+   "bars": 3,
+   "chords": [
+    "F",
+    "G7",
+    "C"
+   ],
+   "groove": "four",
+   "parts": [
+    "kick",
+    "clap",
+    "hat",
+    "bass",
+    "pad",
+    "pluck"
+   ]
+  }
+ ],
+ "cues": [
+  {
+   "name": "drop1",
+   "bar": 1,
+   "beat": 2,
+   "sound": "pop"
+  },
+  {
+   "name": "drop2",
+   "bar": 1,
+   "beat": 3,
+   "sound": "pop"
+  },
+  {
+   "name": "drop3",
+   "bar": 1,
+   "beat": 4,
+   "sound": "pop"
+  },
+  {
+   "name": "card",
+   "bar": 2,
+   "beat": 1,
+   "sound": "stab"
+  },
+  {
+   "name": "think",
+   "bar": 2,
+   "beat": 3,
+   "sound": "stop",
+   "beats": 1
+  },
+  {
+   "name": "answer",
+   "bar": 2,
+   "beat": 4,
+   "sound": "ding"
+  },
+  {
+   "name": "correct",
+   "bar": 3,
+   "beat": 1,
+   "sound": "hit"
+  },
+  {
+   "name": "round2",
+   "bar": 4,
+   "beat": 1,
+   "sound": "whoosh"
+  },
+  {
+   "name": "board",
+   "bar": 4,
+   "beat": 3,
+   "sound": "stab"
+  },
+  {
+   "name": "point",
+   "bar": 5,
+   "beat": 1,
+   "sound": "boing"
+  },
+  {
+   "name": "build",
+   "bar": 6,
+   "beat": 1,
+   "sound": "riser",
+   "beats": 4
+  },
+  {
+   "name": "winner",
+   "bar": 6,
+   "beat": 1,
+   "sound": "hit"
+  }
+ ]
+}

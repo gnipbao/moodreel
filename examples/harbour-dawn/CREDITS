@@ -1,0 +1,7 @@
+harbour-dawn
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- Typeface: a system handwriting face (Bradley Hand on macOS), not shipped with the film; a published film sets an
+  OFL hand (the style names one) instead.
+- Palette after the style's own harbour-at-dawn example. No images, music or samples.

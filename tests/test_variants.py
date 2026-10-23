@@ -39,3 +39,7 @@ def test_every_variant_renders_with_its_own_parameters(tmp_path):
         assert abs(dur - seconds) < 0.1 and np.abs(rgb.astype(int) - want).max() < 12 and (d / f"poster-{name}.jpg").exists()
     with pytest.raises(SystemExit):
         film.deliver(d, variant="green")
+
+
+def test_still_names_follow_the_renderers_number_format():
+    assert film._still(6.0) == "t_6.jpg" and film._still(7.25) == "t_7.25.jpg" and film._still(0.5) == "t_0.5.jpg"

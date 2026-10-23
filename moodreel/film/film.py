@@ -200,6 +200,21 @@ def readtime(samples: list[dict], width: int, height: int, step: float) -> list[
     return out
 
 
+def _vendored(d: Path) -> None:
+    """A film that uses kit/three.js gets three.js back in kit/vendor/ if it's missing (vendored copies aren't kept
+    in git: `npm install` in the repository brings them)."""
+    if (d / "kit" / "three.js").exists() and not (d / "kit" / "vendor" / "three" / "three.module.js").exists() \
+            and "three.js" in (d / "main.js").read_text():
+        from ..pack.kit import vendor_three
+        vendor_three(d / "kit")
+
+
+def _still(t: float) -> str:
+    """The name render.mjs gives a still at t: JavaScript's number format (6.0 is t_6.jpg, 7.25 is t_7.25.jpg)."""
+    t = float(t)
+    return f"t_{int(t) if t.is_integer() else repr(t)}.jpg"
+
+
 def _film(d: Path) -> dict:
     return json.loads((Path(d) / "film.json").read_text())
 
@@ -233,6 +248,7 @@ def black_frames(video: Path, duration: float) -> list[list[float]]:
 def check(d: Path, variant: str | None = None) -> dict:
     d = Path(d)
     f, vargs, suffix = _variant(d, variant)
+    _vendored(d)
     w, h = (int(x) for x in f["size"].split("x"))
     out = {"film": f["name"]}
     if (d / "score.json").exists():                    # the picture reads its cue times from score.js
@@ -259,7 +275,7 @@ def check(d: Path, variant: str | None = None) -> dict:
         subprocess.run(["node", str(RENDER), "still", str(d), *map(str, times), "--size", f["size"], *vargs,
                         "--out", str(d / "out" / "stills")],
                        check=True, capture_output=True)
-        out["frames"] = frame_check(sdir, [d / "out" / "stills" / f"t_{t}.jpg" for t in times], out=d / "out")
+        out["frames"] = frame_check(sdir, [d / "out" / "stills" / _still(t) for t in times], out=d / "out")
         if video.exists():
             from ..check.motion import check as motion_check
             out["motion"] = motion_check(sdir, video, out=d / "out")
@@ -326,6 +342,7 @@ def _loudnorm(music: Path, dst: Path, duration: float) -> dict:
 def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers: int = 3, variant: str | None = None) -> dict:
     d = Path(d)
     f, vargs, suffix = _variant(d, variant)
+    _vendored(d)
     out = Path(out or d)
     out.mkdir(parents=True, exist_ok=True)
     work = d / "out"
@@ -366,6 +383,6 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
         shutil.copyfile(video, final)
     subprocess.run(["node", str(RENDER), "still", str(d), str(f["poster"]), "--size", f["size"], *vargs,
                     "--out", str(work / f"poster{suffix}")], check=True, capture_output=True)
-    shutil.copyfile(work / f"poster{suffix}" / f"t_{f['poster']}.jpg", out / f"poster{suffix}.jpg")
+    shutil.copyfile(work / f"poster{suffix}" / _still(f["poster"]), out / f"poster{suffix}.jpg")
     info["poster"] = str(out / f"poster{suffix}.jpg")
     return info

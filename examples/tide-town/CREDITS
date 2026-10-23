@@ -1,0 +1,7 @@
+tide-town
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- three.js 0.186.1 (MIT, Copyright 2010-2026 three.js authors): kit/vendor/three/
+- Typeface: a system face (Helvetica on macOS), not shipped with the film; a published film sets an OFL face.
+- No images, music or samples.

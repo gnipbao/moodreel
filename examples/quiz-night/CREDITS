@@ -1,0 +1,8 @@
+quiz-night
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- Typefaces: system faces (Arial Rounded MT Bold, Arial Black on macOS), not shipped with the film; a published film
+  sets the OFL faces its style names (Fredoka, Noto Sans SC) instead.
+- Music: the film's own score (score.json), synthesised by Moodreel; no samples.
+- No images.
