@@ -42,6 +42,9 @@
 - `uv run moodreel kit <项目>`：由测量结果生成风格的 kit（`tokens.js`、`motion.js` 和共用原语，见 [kit/README.md](kit/README.md)）；
 - `uv run moodreel scaffold <项目>`：只用测出的数值画出第一版风格帧，作为导演修改的起点；
 - `uv run moodreel motion-check <项目> <影片>`：用同一套测量逐条比对影片的运动语法和参考是否一致；
+- `uv run moodreel pack <项目> --slug <名> --name <名>`：校验蒸馏出的风格（11 节齐全、数值可追溯、名称不冲突）并存入 `~/.moodreel/styles`；
+- `uv run moodreel styles`：列出你的风格和内置风格；
+- `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
 - `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法。
 
 运动评测见 [bench/motion/README.md](bench/motion/README.md)。

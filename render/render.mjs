@@ -9,6 +9,7 @@
 // Usage:
 //   node render/render.mjs video <dir> [--fps 30] [--size 1920x1080] [--workers 2] [--out <dir>/out/video.mp4]
 //   node render/render.mjs still <dir> <t> [<t> ...] [--size 1920x1080] [--out <dir>/stills]
+//   node render/render.mjs texts <dir> [--step 0.1] [--size 1920x1080] [--out texts.json]   what window.TEXTS(t) reports
 //
 // Each worker opens its own page and encodes one contiguous range of frames; the ranges are joined without
 // re-encoding. Any page error stops the render.
@@ -27,18 +28,23 @@ const TYPES = {
 
 function parse(argv) {
   const [cmd, dir, ...rest] = argv;
-  const opts = { fps: 30, size: '1920x1080', workers: 1, out: null, times: [] };
+  const opts = { fps: 30, size: '1920x1080', workers: 1, out: null, times: [], step: 0.1 };
   for (let i = 0; i < rest.length; i++) {
     const a = rest[i];
     if (a === '--fps') opts.fps = Number(rest[++i]);
     else if (a === '--size') opts.size = rest[++i];
     else if (a === '--workers') opts.workers = Number(rest[++i]);
     else if (a === '--out') opts.out = rest[++i];
+    else if (a === '--step') opts.step = Number(rest[++i]);
     else opts.times.push(Number(a));
   }
   const [w, h] = opts.size.split('x').map(Number);
-  if (!['video', 'still'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)) {
-    console.error('usage: render.mjs video|still <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--out path]');
+  if (!['video', 'still', 'texts'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)) {
+    console.error('usage: render.mjs video|still|texts <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--step s] [--out path]');
+    process.exit(2);
+  }
+  if (cmd === 'video' && (w % 2 || h % 2)) {
+    console.error(`--size ${w}x${h}: H.264 needs even width and height`);
     process.exit(2);
   }
   return { cmd, dir: path.resolve(dir), w, h, ...opts };
@@ -138,13 +144,28 @@ async function stills(browser, url, o) {
   }
 }
 
+// every on-screen text over time, from the page's optional window.TEXTS(t): [{id, text, x0, y0, x1, y1}]
+async function texts(browser, url, o) {
+  const ctx = await openPage(browser, url, o.w, o.h);
+  const dur = await ctx.page.evaluate(() => window.DUR);
+  const samples = [];
+  for (let t = 0; t <= dur + 1e-9; t += o.step) {
+    const list = await ctx.page.evaluate(t => (typeof window.TEXTS === 'function' ? window.TEXTS(t) : null), t);
+    if (list === null) throw new Error('the page has no window.TEXTS(t)');
+    samples.push({ t: Math.round(t * 1000) / 1000, texts: list });
+  }
+  const json = JSON.stringify({ dur, step: o.step, width: o.w, height: o.h, samples });
+  if (o.out) fs.writeFileSync(o.out, json);
+  else console.log(json);
+}
+
 const o = parse(process.argv.slice(2));
 if (!fs.existsSync(path.join(o.dir, 'index.html'))) { console.error(`no index.html in ${o.dir}`); process.exit(2); }
 const server = await serve(o.dir);
 const browser = await puppeteer.launch({ headless: true, args: ['--hide-scrollbars', '--force-color-profile=srgb'] });
 try {
   const url = `http://127.0.0.1:${server.address().port}/index.html`;
-  await (o.cmd === 'video' ? video(browser, url, o) : stills(browser, url, o));
+  await ({ video, still: stills, texts })[o.cmd](browser, url, o);
 } catch (e) {
   console.error(e.message);
   process.exitCode = 1;

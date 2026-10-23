@@ -46,14 +46,27 @@ def _surface(t, ref):
     return out
 
 
-def check(project: Path, stills: list[Path]) -> dict:
+def measure_dir(root: Path) -> Path:
+    """A project keeps its measurements in measure/, a packed style in evidence/measure/."""
+    root = Path(root)
+    return root / "measure" if (root / "measure").is_dir() else root / "evidence" / "measure"
+
+
+def check(project: Path, stills: list[Path], out: Path | None = None) -> dict:
+    """project: a project or a packed style. out: where results and sheets go (default: the project's own)."""
     project = Path(project)
-    pal = json.loads((project / "measure" / "palette.json").read_text())
-    tex = json.loads((project / "measure" / "texture.json").read_text())
-    intake = json.loads((project / "intake.json").read_text())
+    mdir = measure_dir(project)
+    pal = json.loads((mdir / "palette.json").read_text())
+    tex = json.loads((mdir / "texture.json").read_text())
     ref_cols = [c for c in pal["colors"] if c["area"] >= 0.005]
     ref_lab = np.array([c["lab"] for c in ref_cols])
-    refs = [samples(it, project, 1)[0] for it in intake["refs"]][:3]
+    if (project / "refs").is_dir():
+        intake = json.loads((project / "intake.json").read_text())
+        refs = [samples(it, project, 1)[0] for it in intake["refs"]][:3]
+    else:                                              # a packed style keeps no references: show its style frame
+        refs = [np.asarray(Image.open(project / "styleframe.jpg").convert("RGB"))] if (project / "styleframe.jpg").exists() else []
+    sheets, results_dir = (Path(out), Path(out)) if out else (project / "evidence", mdir)
+    sheets.mkdir(parents=True, exist_ok=True)
     results = []
     for i, path in enumerate(stills):
         rgb = np.asarray(Image.open(path).convert("RGB"))
@@ -73,11 +86,11 @@ def check(project: Path, stills: list[Path]) -> dict:
         extra = [c["hex"] for c, d in zip(cols, d_ours) if d > 12 and c["area"] >= 0.01]
         ok = (coverage >= LIMITS["coverage"] and off <= LIMITS["off_palette"] and emd <= LIMITS["lightness_emd"]
               and all(v["ok"] is not False for v in surf.values()))
-        sheet_path = project / "evidence" / f"frame-check-{i + 1:02d}-{Path(path).stem}.jpg"
-        sheet.side_by_side(rgb, refs, sheet_path)
+        sheet_path = sheets / f"frame-check-{i + 1:02d}-{Path(path).stem}.jpg"
+        sheet.side_by_side(rgb, refs or [rgb], sheet_path)
         results.append({"still": str(path), "pass": ok, "coverage": round(coverage, 3), "missing_colours": missing,
                         "off_palette": round(off, 3), "extra_colours": extra, "lightness_emd": round(emd, 3),
-                        "surface": surf, "sheet": str(sheet_path.relative_to(project))})
-    out = {"limits": LIMITS, "stills": results}
-    (project / "measure" / "frame-check.json").write_text(json.dumps(out, indent=1))
-    return out
+                        "surface": surf, "sheet": str(sheet_path)})
+    res = {"limits": LIMITS, "stills": results}
+    (results_dir / "frame-check.json").write_text(json.dumps(res, indent=1))
+    return res

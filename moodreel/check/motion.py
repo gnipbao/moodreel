@@ -77,17 +77,21 @@ def claims(ref: dict, got: dict) -> list[dict]:
     return out
 
 
-def check(project: Path, video: Path, reference: str | None = None) -> dict:
+def check(project: Path, video: Path, reference: str | None = None, out: Path | None = None) -> dict:
+    """project: a project or a packed style. out: where the film's measurement and the result go."""
+    from .frame import measure_dir
     project = Path(project)
-    m = json.loads((project / "measure" / "motion.json").read_text())
+    mdir = measure_dir(project)
+    m = json.loads((mdir / "motion.json").read_text())
     ref = m["grammar"]
     if "videos" in ref:                             # several references: compare with the one named, or the first
         vid = reference or ref["videos"][0]
         ref = m["per_video"][vid]["grammar"]
-    film = measure(str(video), project / "evidence" / f"motion-check-{Path(video).stem}")
+    film = measure(str(video), (Path(out) if out else project / "evidence") / f"motion-check-{Path(video).stem}")
     cs = claims(ref, film["grammar"])
     res = {"video": str(video), "claims": cs, "pass": sum(c["result"] == "pass" for c in cs),
            "fail": sum(c["result"] == "fail" for c in cs), "unknown": sum(c["result"] == "unknown" for c in cs)}
     res["ok"] = res["fail"] == 0 and res["unknown"] <= len(cs) // 4
-    (project / "measure" / f"motion-check-{Path(video).stem}.json").write_text(json.dumps(res, indent=1, default=float))
+    (Path(out) if out else mdir).mkdir(parents=True, exist_ok=True)
+    ((Path(out) if out else mdir) / f"motion-check-{Path(video).stem}.json").write_text(json.dumps(res, indent=1, default=float))
     return res
