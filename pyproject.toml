@@ -12,5 +12,21 @@ dependencies = [
     "pillow>=10.0",
 ]
 
-[tool.uv]
-package = false
+[project.scripts]
+moodreel = "moodreel.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["moodreel"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 130

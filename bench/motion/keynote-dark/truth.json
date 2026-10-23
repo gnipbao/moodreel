@@ -1,0 +1,228 @@
+{
+ "name": "keynote-dark",
+ "W": 1280,
+ "H": 720,
+ "fps": 30,
+ "dur": 6.0,
+ "events": [
+  {
+   "element": "headline",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.3,
+   "t1": 1.0,
+   "dur": 0.7,
+   "ease": "power4.out",
+   "from": -300,
+   "to": 420,
+   "end_xy": [
+    420.0,
+    250.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "sub",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.45,
+   "t1": 0.95,
+   "dur": 0.5,
+   "ease": "power2.out",
+   "from": 350,
+   "to": 320,
+   "end_xy": [
+    420.0,
+    320.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "sub",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.45,
+   "t1": 0.95,
+   "dur": 0.5,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    420.0,
+    320.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "panel0",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.9,
+   "t1": 1.5,
+   "dur": 0.6,
+   "ease": "expo.out",
+   "from": 1450,
+   "to": 1000,
+   "end_xy": [
+    1000.0,
+    180.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "panel1",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.98,
+   "t1": 1.58,
+   "dur": 0.6,
+   "ease": "expo.out",
+   "from": 1450,
+   "to": 1000,
+   "end_xy": [
+    1000.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "panel2",
+   "shot": "A",
+   "prop": "x",
+   "t0": 1.06,
+   "t1": 1.66,
+   "dur": 0.6,
+   "ease": "expo.out",
+   "from": 1450,
+   "to": 1000,
+   "end_xy": [
+    1000.0,
+    540.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "big",
+   "shot": "B",
+   "prop": "scale",
+   "t0": 2.7,
+   "t1": 3.2,
+   "dur": 0.5,
+   "ease": "back.out(2.5)",
+   "from": 0.5,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "big",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 2.7,
+   "t1": 2.9,
+   "dur": 0.2,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "big",
+   "shot": "B",
+   "prop": "x",
+   "t0": 4.4,
+   "t1": 4.75,
+   "dur": 0.35,
+   "ease": "power2.in",
+   "from": 640,
+   "to": 1700,
+   "end_xy": [
+    1700.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "uptime",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 3.1,
+   "t1": 3.7,
+   "dur": 0.6,
+   "ease": "sine.inOut",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    470.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "uptime",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 4.4,
+   "t1": 4.7,
+   "dur": 0.3,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    640.0,
+    470.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "logo",
+   "shot": "C",
+   "prop": "opacity",
+   "t0": 5.15,
+   "t1": 5.75,
+   "dur": 0.6,
+   "ease": "sine.inOut",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "logo",
+   "shot": "C",
+   "prop": "scale",
+   "t0": 5.15,
+   "t1": 5.75,
+   "dur": 0.6,
+   "ease": "sine.inOut",
+   "from": 0.9,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "cut",
+   "t": 2.4
+  },
+  {
+   "type": "cut",
+   "t": 5.0
+  }
+ ],
+ "stepping": []
+}

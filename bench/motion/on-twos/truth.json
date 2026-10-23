@@ -1,0 +1,125 @@
+{
+ "name": "on-twos",
+ "W": 1280,
+ "H": 720,
+ "fps": 24,
+ "dur": 5.0,
+ "events": [
+  {
+   "element": "ball",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.3,
+   "t1": 1.8,
+   "dur": 1.5,
+   "ease": "power1.inOut",
+   "from": 200,
+   "to": 1080,
+   "end_xy": [
+    1080.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "box",
+   "shot": "A",
+   "prop": "scale",
+   "t0": 0.5,
+   "t1": 1.1,
+   "dur": 0.6,
+   "ease": "back.out(1.7)",
+   "from": 0.3,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    180.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "caption",
+   "shot": "A",
+   "prop": "y",
+   "t0": 1.0,
+   "t1": 1.6,
+   "dur": 0.6,
+   "ease": "power2.out",
+   "from": 600,
+   "to": 560,
+   "end_xy": [
+    640.0,
+    560.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "caption",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 1.0,
+   "t1": 1.6,
+   "dur": 0.6,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    560.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "sun",
+   "shot": "B",
+   "prop": "scale",
+   "t0": 2.9,
+   "t1": 3.6,
+   "dur": 0.7,
+   "ease": "power3.out",
+   "from": 0.2,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "sun",
+   "shot": "B",
+   "prop": "y",
+   "t0": 3.8,
+   "t1": 4.6,
+   "dur": 0.8,
+   "ease": "sine.inOut",
+   "from": 360,
+   "to": 300,
+   "end_xy": [
+    640.0,
+    300.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "cut",
+   "t": 2.6
+  }
+ ],
+ "stepping": [
+  {
+   "shot": "A",
+   "t0": 0.0,
+   "t1": 2.6,
+   "on": 2
+  },
+  {
+   "shot": "B",
+   "t0": 2.6,
+   "t1": 5.0,
+   "on": 2
+  }
+ ]
+}

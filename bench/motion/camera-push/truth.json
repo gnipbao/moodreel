@@ -1,0 +1,107 @@
+{
+ "name": "camera-push",
+ "W": 1280,
+ "H": 720,
+ "fps": 30,
+ "dur": 6.0,
+ "events": [
+  {
+   "element": "label0",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.8,
+   "t1": 1.3,
+   "dur": 0.5,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    295.0,
+    198.2
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "label1",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 1.05,
+   "t1": 1.55,
+   "dur": 0.5,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    635.8,
+    197.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "label2",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 1.3,
+   "t1": 1.8,
+   "dur": 0.5,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    980.9,
+    195.5
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "card",
+   "shot": "A",
+   "prop": "x",
+   "t0": 2.5,
+   "t1": 3.7,
+   "dur": 1.2,
+   "ease": "power2.inOut",
+   "from": 300,
+   "to": 980,
+   "end_xy": [
+    936.9,
+    495.4
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "camera",
+   "shot": "A",
+   "prop": "zoom",
+   "t0": 0.5,
+   "t1": 5.5,
+   "dur": 5.0,
+   "ease": "sine.inOut",
+   "from": 1,
+   "to": 1.18,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "camera",
+   "shot": "A",
+   "prop": "panx",
+   "t0": 1.0,
+   "t1": 5.0,
+   "dur": 4.0,
+   "ease": "power1.inOut",
+   "from": 0,
+   "to": -110,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [],
+ "stepping": []
+}

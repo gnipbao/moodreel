@@ -16,7 +16,8 @@ from scipy.optimize import least_squares
 from . import eases
 
 EASE_GAP = 10.0
-MIN_SHAPED = 6           # readings between the fitted curve's 10% and 90% marks needed to name its family
+MIN_SHAPED = 8           # readings in transition needed to name a family: fewer, and neighbours fit as well
+EQUIVALENT = 0.03        # two families draw the same curve when their fits differ by at most this much of the travel
 
 
 def _pairs(t0_lo, t0_hi, t1_hi, fps):
@@ -55,12 +56,23 @@ def _solve(E, v, w, start, end):
     return vm - B * Em[:, 0], B, np.where(good, (w * vc * vc).sum() - cov ** 2 / np.where(good, var, 1), np.inf)
 
 
+# When the data can't tell families apart, motion design practice can: entrances settle (ease-out), exits leave
+# (ease-in), moves between two rests ease both ways. Among families that draw the same curve through the samples,
+# the one whose class comes first for the element's role is reported.
+PREFER = {
+    "entrance": ["out", "out+overshoot", "inOut", "linear", "out+oscillate", "in"],
+    "exit": ["in", "inOut", "linear", "out"],
+    "move": ["inOut", "out", "in", "linear", "out+overshoot"],
+}
+
+
 def fit_move(t, v, fps, t0_range=None, t1_max=None, w=None, start=None, end=None, monotone=False,
-             gap_needed=EASE_GAP) -> dict | None:
+             gap_needed=EASE_GAP, prefer: list[str] | None = None) -> dict | None:
     """monotone: skip eases that overshoot or oscillate (opacity can't go past fully opaque).
     gap_needed: the BIC margin to name the family; measured opacity bends under compression, so it asks more."""
     t, v = np.asarray(t, float), np.asarray(v, float)
     w = np.ones_like(v) if w is None else np.asarray(w, float)
+    pinned_any = start is not None or end is not None
     ok = ~np.isnan(v) & (w > 0)
     t, v, w = t[ok], v[ok], w[ok]
     n = len(t)
@@ -73,23 +85,44 @@ def fit_move(t, v, fps, t0_range=None, t1_max=None, w=None, start=None, end=None
         return None
     U = np.clip((t[None, :] - t0s[:, None]) / (t1s - t0s)[:, None], 0, 1)
     pinned = start is not None or end is not None
+    span = max(float(np.ptp(v)), abs((start if start is not None else end) - float(np.median(v))) if pinned else 0.0)
     fits = {}
     for name, extra in eases.candidates():
         if monotone and "+" in eases.shape_class(name):
             continue
+        if pinned_any and eases.shape_class(name).endswith("oscillate"):
+            continue                        # ringing from a start nobody saw is a guess on a guess
         A, B, rss = _solve(eases.get(name)(U), v, w, start, end)
+        # a hidden start lets the travel exceed what was seen, but not by far: a fit that needs a huge jump
+        # from an unseen place is explaining noise
+        rss = np.where(np.abs(B) > 3 * span, np.inf, rss)
         j = int(np.argmin(rss))
         if not np.isfinite(rss[j]):
             continue
         k = (3 if pinned else 4) + extra
         fits[name] = {"bic": float(n * np.log(max(rss[j], 1e-12) / n) + k * np.log(n)),
-                      "t0": float(t0s[j]), "t1": float(t1s[j]), "A": float(A[j]), "B": float(B[j])}
+                      "t0": float(t0s[j]), "t1": float(t1s[j]), "A": float(A[j]), "B": float(B[j]),
+                      "pred": A[j] + B[j] * eases.get(name)(U[j])}
     if not fits:
         return None
     ranked = sorted(fits, key=lambda k: fits[k]["bic"])
     best = ranked[0]
-    other = next((r for r in ranked[1:] if eases.family(r) != eases.family(best)), None)
+    # families whose best fit draws (nearly) the same curve through these samples can't be told apart here,
+    # whatever their BIC: they are named together, and the claim is measured against the nearest family that
+    # draws a different curve
+    scale_ = max(abs(fits[best]["B"]), 1e-9)
+    same = {eases.family(r) for r in ranked[1:]
+            if np.abs(fits[r]["pred"] - fits[best]["pred"]).max() / scale_ <= EQUIVALENT}
+    same.discard(eases.family(best))
+    other = next((r for r in ranked[1:] if eases.family(r) != eases.family(best) and eases.family(r) not in same), None)
     gap = fits[other]["bic"] - fits[best]["bic"] if other else float("inf")
+    if prefer and same:
+        rank = lambda r: prefer.index(eases.shape_class(r)) if eases.shape_class(r) in prefer else len(prefer)  # noqa: E731
+        pool = [best] + [r for r in ranked[1:] if eases.family(r) in same]
+        pick = min(pool, key=lambda r: (rank(r), fits[r]["bic"]))   # first by class, then by fit
+        if rank(pick) < rank(best):
+            same = (same | {eases.family(best)}) - {eases.family(pick)}
+            best = pick
     f = fits[best]
     A, B, t0, t1 = f["A"], f["B"], f["t0"], f["t1"]
     cp = _checkpoints(best, t0, t1)
@@ -101,9 +134,17 @@ def fit_move(t, v, fps, t0_range=None, t1_max=None, w=None, start=None, end=None
     model = A + B * eases.get(best)(np.clip((t - t0) / (t1 - t0), 0, 1))
     after = t > cp["t50"]                                  # an elastic's overshoot comes long before mid-tween
     over = float(max(0.0, np.max((v[after] - (A + B)) * np.sign(B)) / abs(B))) if after.any() and B else 0.0
-    return {"ease": best if gap >= gap_needed and shaped >= MIN_SHAPED else "unknown", "best": best, "next": other,
+    # BIC counts every reading as independent evidence. Tracking errors come in runs (codec, frame-rate
+    # conversion, a template slightly off), so the evidence is worth fewer readings: shrink the gap by the
+    # effective sample size from the residuals' lag-1 autocorrelation
+    r = (v - model) * np.sqrt(w)
+    rho = float(np.clip(np.corrcoef(r[:-1], r[1:])[0, 1], 0, 0.95)) if len(r) > 3 and r.std() > 0 else 0.0
+    gap_eff = gap * (1 - rho) / (1 + rho) if np.isfinite(gap) else gap
+    claim = gap_eff >= gap_needed and shaped >= MIN_SHAPED and not pinned     # a pinned level is an assumption
+    return {"ease": best if claim else "unknown", "best": best, "next": other, "equivalent": sorted(same),
             "shaped_samples": shaped,
             "bic_gap": round(gap, 1) if np.isfinite(gap) else None,
+            "evidence": round(gap_eff, 1) if np.isfinite(gap_eff) else None, "rho": round(rho, 2),
             "t0": round(t0, 4), "t1": round(t1, 4), "dur": round(t1 - t0, 4),
             "from": round(A, 3), "to": round(A + B, 3), "delta": round(B, 3), "overshoot": round(over, 3),
             "pinned": "start" if start is not None else "end" if end is not None else None, "bic": round(f["bic"], 1),

@@ -1,0 +1,188 @@
+{
+ "name": "print-rhythm",
+ "W": 1280,
+ "H": 720,
+ "fps": 24,
+ "dur": 5.0,
+ "events": [
+  {
+   "element": "shape0",
+   "shot": "S0",
+   "prop": "y",
+   "t0": 0.15,
+   "t1": 0.45,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 420,
+   "to": 360,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape0",
+   "shot": "S0",
+   "prop": "opacity",
+   "t0": 0.15,
+   "t1": 0.45,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape1",
+   "shot": "S1",
+   "prop": "scale",
+   "t0": 1.15,
+   "t1": 1.5,
+   "dur": 0.35,
+   "ease": "power2.out",
+   "from": 0.85,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape1",
+   "shot": "S1",
+   "prop": "opacity",
+   "t0": 1.15,
+   "t1": 1.5,
+   "dur": 0.35,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape2",
+   "shot": "S2",
+   "prop": "y",
+   "t0": 2.15,
+   "t1": 2.45,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 420,
+   "to": 360,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape2",
+   "shot": "S2",
+   "prop": "opacity",
+   "t0": 2.15,
+   "t1": 2.45,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape3",
+   "shot": "S3",
+   "prop": "scale",
+   "t0": 3.15,
+   "t1": 3.5,
+   "dur": 0.35,
+   "ease": "power2.out",
+   "from": 0.85,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape3",
+   "shot": "S3",
+   "prop": "opacity",
+   "t0": 3.15,
+   "t1": 3.5,
+   "dur": 0.35,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape4",
+   "shot": "S4",
+   "prop": "y",
+   "t0": 4.15,
+   "t1": 4.45,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 420,
+   "to": 360,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "shape4",
+   "shot": "S4",
+   "prop": "opacity",
+   "t0": 4.15,
+   "t1": 4.45,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "cut",
+   "t": 1.0
+  },
+  {
+   "type": "cut",
+   "t": 2.0
+  },
+  {
+   "type": "cut",
+   "t": 3.0
+  },
+  {
+   "type": "cut",
+   "t": 4.0
+  }
+ ],
+ "stepping": []
+}

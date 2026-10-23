@@ -1,23 +1,19 @@
-"""Measure the motion grammar of a reference video.
-
-  .venv/bin/python research/motion-spike/extract.py <video> --out <dir> [--width 640]
+"""Measure the motion grammar of a video: `moodreel motion <video> --out <dir>`.
 
 Writes <dir>/motion.json (shots, transitions, per-element events, grammar) and <dir>/evidence/*.jpg
 (each motion run with its tracked elements boxed, for the director to look at).
 """
 from __future__ import annotations
 
-import argparse
 import json
-import sys
 import time
 from pathlib import Path
 
 import cv2
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from motionx import fit, profile, shots, track, video  # noqa: E402
+from .. import video
+from . import camera, fit, profile, shots, track
 
 
 def evidence(clip, run_tracks, path, cols=6):
@@ -50,7 +46,7 @@ def clean(o):
     return o
 
 
-def run(path, out: Path, width=640):
+def measure(path, out: Path, width=640) -> dict:
     t_start = time.time()
     out.mkdir(parents=True, exist_ok=True)
     (out / "evidence").mkdir(exist_ok=True)
@@ -58,15 +54,38 @@ def run(path, out: Path, width=640):
     shots_, transitions, e, _th = shots.shots(clip)
     for tr in transitions:
         if tr["type"] == "dissolve":
-            t = np.arange(tr["a"], tr["b"] + 1) / clip.fps
-            f = fit.fit_move(t, np.array(tr["alpha"]), clip.fps)
-            tr["ease"] = f and (f["ease"] if f["ease"] != "unknown" else f["best"])
-            tr["fit"] = f
-            tr.pop("alpha")
+            tr["fit"] = fit.fit_move(np.arange(tr["a"], tr["b"] + 1) / clip.fps, np.array(tr.pop("alpha")), clip.fps)
+            tr["ease"] = tr["fit"] and (tr["fit"]["ease"] if tr["fit"]["ease"] != "unknown" else tr["fit"]["best"])
+        elif tr["type"] == "dip":
+            for half in ("fade_out", "fade_in"):
+                k0 = tr["a"] if half == "fade_out" else tr["b"] - len(tr[half]) + 1
+                ys = np.array(tr.pop(half))
+                f = fit.fit_move(np.arange(k0, k0 + len(ys)) / clip.fps, ys if half == "fade_out" else 1 - ys,
+                                 clip.fps, monotone=True)
+                tr[f"{half}_ease"] = f and (f["ease"] if f["ease"] != "unknown" else f["best"])
+    cam_events, moved = [], False
+    for sh in shots_:
+        cam = camera.estimate(clip, sh)
+        sh["camera"] = cam["status"]
+        if cam["status"] != "moving":
+            continue
+        t = np.array(cam["t"])
+        for prop, thr in (("zoom", camera.MOVES["zoom"]), ("panx", camera.MOVES["pan"] * clip.src_w),
+                          ("pany", camera.MOVES["pan"] * clip.src_w)):
+            v = np.array(cam[prop])
+            if np.ptp(v) > thr and (f := fit.fit_move(t, v, clip.fps)):
+                cam_events.append({"shot": sh["id"], "prop": prop, **f})
+        camera.stabilise(clip, sh, cam)
+        moved = True
+    ranges = [(s["start"], s["end"]) for s in shots_]
+    if moved:                                   # measure elements in the world, not on the moving screen
+        e = shots.energy(shots.thumbs(clip), ranges, lag=2)
+    e1 = shots.energy(shots.thumbs(clip), ranges, lag=1)   # frame to frame: what held drawings show
     events, runs_by_shot, n_el = [], {}, 0
     for sh in shots_:
         runs, thr = shots.motion_runs(e, sh, clip.fps)
         runs_by_shot[sh["id"]] = runs
+        sh["stepping"] = shots.stepping(e1, runs)
         sh["runs_t"] = [[round(a / clip.fps, 3), round(b / clip.fps, 3)] for a, b in runs]
         for k, run_ in enumerate(runs):
             nxt = runs[k + 1][0] if k + 1 < len(runs) else None
@@ -76,7 +95,7 @@ def run(path, out: Path, width=640):
             for tr in tracks:
                 tr["id"] = f"e{n_el}"
                 n_el += 1
-                ev = profile.element_events(clip, tr)
+                ev = profile.element_events(clip, tr, (sh.get("stepping") or {}).get("on", 1))
                 ev["id"] = tr["id"]
                 run_events.append(ev)
             for ev in profile.merge_groups(run_events, clip.fps):
@@ -86,26 +105,9 @@ def run(path, out: Path, width=640):
                 evidence(clip, tracks, out / "evidence" / f"shot{sh['id']}_run{k}.jpg")
     result = {"source": {"path": str(path), "fps": clip.fps, "w": clip.src_w, "h": clip.src_h,
                          "frames": clip.n, "analysis_width": clip.w},
-              "shots": shots_, "transitions": transitions, "events": events,
-              "grammar": profile.grammar(clip, shots_, transitions, runs_by_shot, events),
+              "shots": shots_, "transitions": transitions, "camera": cam_events, "events": events,
+              "grammar": profile.grammar(clip, shots_, transitions, runs_by_shot, events, cam_events),
               "seconds": round(time.time() - t_start, 1)}
     (out / "motion.json").write_text(json.dumps(clean(result), indent=1, ensure_ascii=False))
     return result
 
-
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("video")
-    ap.add_argument("--out", required=True)
-    ap.add_argument("--width", type=int, default=640)
-    a = ap.parse_args()
-    r = run(a.video, Path(a.out), a.width)
-    print(f"{len(r['shots'])} shots, {len(r['events'])} element events, {r['seconds']}s -> {a.out}/motion.json")
-    for ev in r["events"]:
-        props = ", ".join(f"{k} {v['best']} {v['t0']:.2f}-{v['t1']:.2f}s gap={v['bic_gap']}"
-                          for k, v in ev["props"].items())
-        print(f"  {ev['id']} shot{ev['shot']} {ev['kind']:9s} {ev['label']:18s} {props}")
-
-
-if __name__ == "__main__":
-    main()

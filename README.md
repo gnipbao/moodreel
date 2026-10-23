@@ -7,8 +7,8 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 
 [中文说明](README.zh-CN.md)
 
-> **Status: pre-alpha research.** The motion-measurement prototype works on synthetic test films with known
-> ground truth. The style pack format, the director workflow and the CLI are designed, not built yet.
+> **Status: pre-alpha.** Motion measurement (`moodreel motion`) passes its acceptance bench on code-rendered test
+> films. The style pack, the director workflow and the rest of the CLI are designed and being built.
 
 ## Why measure motion?
 
@@ -17,14 +17,20 @@ models reach 0.82–0.84 appearance similarity while temporal similarity stays a
 So Moodreel measures timing, easing, overshoot, stagger and rhythm with deterministic code, and leaves the
 model to understand and use those numbers.
 
-The prototype finds every element a motion run changes, tracks its position, scale and opacity in one template
-match, fits each change against the GSAP ease families, and only names an ease when the evidence is clear.
+`moodreel motion` finds every element a motion run changes, tracks its position, scale and opacity in one template
+match, fits each change against the GSAP ease families, and only names an ease when the evidence is clear. It also
+finds cuts, dissolves and fades through a colour, camera pushes and pans (and measures the elements in the world,
+not on the moving screen), drawings held on twos, and staggers.
 
-| Test film (18 animated properties, a cut, a dissolve) | found / false | t50 within 1 frame | ease direction right | eases named / named wrong |
-|---|---|---|---|---|
-| clean · 1280×720 · 30 fps | 18/18 · 0 | 94% | 94% | 10 / 0 |
-| stress · 960×540 · 25 fps · grain · crf 30 | 18/18 · 0 | 89% | 78% | 4 / 0 |
+Scored on 10 code-rendered test films with known motion ([bench/motion](bench/motion/README.md)), each also as a
+degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 
+| | found | t50 within 1 frame | ease direction right | eases named / named wrong | transitions |
+|---|---|---|---|---|---|
+| clean | 94% | 86% | 97% | 29 / 0 | 13/14 |
+| degraded | 92% | 88% | 86% | 9 / 0 | 13/14 |
+
+Rotation, one-axis stretch (a bar growing), line draw-on and per-letter text are not measured yet.
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
 
 ## How it will work
@@ -42,7 +48,7 @@ references ─► measure ─► interpret ─► style frame ─► demo film �
 
 See [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) (Chinese) for the full design.
 
-## Try the prototype
+## Try it
 
 Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+.
 
@@ -50,20 +56,16 @@ Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+.
 uv sync && npm install
 ```
 
-```bash
-uv run research/motion-spike/fixtures/make_fixture.py research/motion-spike/fixtures/mg-basic
-```
+Measure the motion grammar of any video (writes `motion.json` and evidence strips):
 
 ```bash
-node render/render.mjs video research/motion-spike/fixtures/mg-basic --fps 30 --size 1280x720 --out research/motion-spike/fixtures/mg-basic/clean.mp4
+uv run moodreel motion path/to/video.mp4 --out out/my-video
 ```
 
-```bash
-uv run research/motion-spike/extract.py research/motion-spike/fixtures/mg-basic/clean.mp4 --out research/motion-spike/out/clean
-```
+Build, render and score the test films:
 
 ```bash
-uv run research/motion-spike/evaluate.py research/motion-spike/fixtures/mg-basic/truth.json research/motion-spike/out/clean/motion.json
+uv run moodreel bench make && uv run moodreel bench render && uv run moodreel bench motion
 ```
 
 ## Style library
@@ -79,8 +81,10 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
+| `moodreel/` | The Python package: `motion/` (shots, camera, tracking, ease fitting, grammar), `bench/` (test films and scorer), `cli.py` |
 | `styles/` | The style library |
-| `research/motion-spike/` | Motion measurement prototype (`motionx`), ground-truth fixtures and the scorer |
+| `bench/motion/` | The motion test films (pages and truth) and the latest report |
+| `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |
 | `scripts/import_lemo_styles.py` | Re-imports the style documents from a lemo-opuscar checkout |
 | `docs/` | Design and research notes |
 

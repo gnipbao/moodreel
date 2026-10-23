@@ -6,17 +6,22 @@
 
 [English](README.md)
 
-> **状态：早期研究阶段。** 运动测量原型已在带真值的测试片上验证；风格包格式、导演流程和命令行已经设计，尚未实现。
+> **状态：早期开发。** 运动测量（`moodreel motion`）已在代码渲染的测试片上通过验收；风格包、导演流程和其余命令行已设计，正在实现。
 
 ## 为什么要"测"运动
 
 视觉模型能模仿画面长什么样，却还原不了画面怎么动。Animation2Code 基准（2026）上，最好的模型外观相似度有 0.82–0.84，
 时间相似度却全部 ≤ 0.31。所以 Moodreel 用确定性代码测时长、缓动、过冲、错峰和节奏，让模型去理解和使用这些数字。
 
-| 测试片（18 个动画属性、1 个硬切、1 个溶解） | 找到 / 误报 | t50 在 1 帧内 | 缓动方向正确 | 认定缓动族 / 认错 |
-|---|---|---|---|---|
-| 干净版 · 1280×720 · 30fps | 18/18 · 0 | 94% | 94% | 10 / 0 |
-| 压力版 · 960×540 · 25fps · 颗粒 · crf 30 | 18/18 · 0 | 89% | 78% | 4 / 0 |
+在 10 条代码渲染、真值已知的测试片上评测（[bench/motion](bench/motion/README.md)），每条另有一份降质版
+（3/4 尺寸、25fps、逐帧颗粒、crf 30）：
+
+| | 召回 | t50 在 1 帧内 | 缓动方向正确 | 认定缓动族 / 认错 | 转场 |
+|---|---|---|---|---|---|
+| 干净版 | 94% | 86% | 97% | 29 / 0 | 13/14 |
+| 降质版 | 92% | 88% | 86% | 9 / 0 | 13/14 |
+
+旋转、单轴拉伸（柱子生长）、描线和逐字动画还没有覆盖。
 
 详见 [docs/research/motion-extraction.md](docs/research/motion-extraction.md)，完整设计见 [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md)。
 
@@ -27,9 +32,9 @@
 画出来的扁平 2D 风格（瑞士动态排版、孔版印刷、浮世绘、蓝图、间谍片头……）；36 套需要后期能力：绘画笔触、3D、像素、
 配乐驱动、真实素材。只导入了文档，技法由 Moodreel 自己重新实现。
 
-## 试用原型
+## 试用
 
-需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上。命令见 [research/motion-spike/README.md](research/motion-spike/README.md)。
+需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上。`uv sync && npm install` 之后，`uv run moodreel motion <视频> --out <目录>` 测任意视频的运动语法；评测命令见 [bench/motion/README.md](bench/motion/README.md)。
 
 ## 致谢
 

@@ -1,0 +1,156 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas><script>
+// A test film drawn from a spec (moodreel/bench/fixtures.py writes {"name": "camera-push", "W": 1280, "H": 720, "fps": 30, "dur": 6.0, "shots": [{"id": "A", "t0": 0.0, "t1": 6.0, "bg": {"kind": "gridpaper", "c": "#efe9dc", "line": "#c9bfa9", "step": 48}, "camera": [{"prop": "zoom", "from": 1, "to": 1.18, "t": 0.5, "d": 5.0, "ease": "sine.inOut"}, {"prop": "panx", "from": 0, "to": -110, "t": 1.0, "d": 4.0, "ease": "power1.inOut"}], "elements": [{"id": "label0", "kind": "text", "text": "north", "font": "bold 40px Helvetica, Arial, sans-serif", "color": "#2a2a2a", "x": 300, "y": 200, "anims": [{"prop": "opacity", "from": 0, "to": 1, "t": 0.8, "d": 0.5, "ease": "power2.out"}]}, {"id": "label1", "kind": "text", "text": "centre", "font": "bold 40px Helvetica, Arial, sans-serif", "color": "#2a2a2a", "x": 640, "y": 200, "anims": [{"prop": "opacity", "from": 0, "to": 1, "t": 1.05, "d": 0.5, "ease": "power2.out"}]}, {"id": "label2", "kind": "text", "text": "south", "font": "bold 40px Helvetica, Arial, sans-serif", "color": "#2a2a2a", "x": 980, "y": 200, "anims": [{"prop": "opacity", "from": 0, "to": 1, "t": 1.3, "d": 0.5, "ease": "power2.out"}]}, {"id": "card", "kind": "rect", "w": 220, "h": 140, "r": 10, "color": "#e4572e", "x": 300, "y": 480, "anims": [{"prop": "x", "from": 300, "to": 980, "t": 2.5, "d": 1.2, "ease": "power2.inOut"}]}]}], "transitions": []}). The ease formulas mirror
+// moodreel/motion/eases.py: keep the two in step.
+const SPEC = {"name": "camera-push", "W": 1280, "H": 720, "fps": 30, "dur": 6.0, "shots": [{"id": "A", "t0": 0.0, "t1": 6.0, "bg": {"kind": "gridpaper", "c": "#efe9dc", "line": "#c9bfa9", "step": 48}, "camera": [{"prop": "zoom", "from": 1, "to": 1.18, "t": 0.5, "d": 5.0, "ease": "sine.inOut"}, {"prop": "panx", "from": 0, "to": -110, "t": 1.0, "d": 4.0, "ease": "power1.inOut"}], "elements": [{"id": "label0", "kind": "text", "text": "north", "font": "bold 40px Helvetica, Arial, sans-serif", "color": "#2a2a2a", "x": 300, "y": 200, "anims": [{"prop": "opacity", "from": 0, "to": 1, "t": 0.8, "d": 0.5, "ease": "power2.out"}]}, {"id": "label1", "kind": "text", "text": "centre", "font": "bold 40px Helvetica, Arial, sans-serif", "color": "#2a2a2a", "x": 640, "y": 200, "anims": [{"prop": "opacity", "from": 0, "to": 1, "t": 1.05, "d": 0.5, "ease": "power2.out"}]}, {"id": "label2", "kind": "text", "text": "south", "font": "bold 40px Helvetica, Arial, sans-serif", "color": "#2a2a2a", "x": 980, "y": 200, "anims": [{"prop": "opacity", "from": 0, "to": 1, "t": 1.3, "d": 0.5, "ease": "power2.out"}]}, {"id": "card", "kind": "rect", "w": 220, "h": 140, "r": 10, "color": "#e4572e", "x": 300, "y": 480, "anims": [{"prop": "x", "from": 300, "to": 980, "t": 2.5, "d": 1.2, "ease": "power2.inOut"}]}]}], "transitions": []};
+const W = innerWidth, H = innerHeight, cv = document.getElementById('c');
+cv.width = W; cv.height = H;
+const g = cv.getContext('2d'), sx = W / SPEC.W;
+
+const directions = ein => ({ in: ein, out: u => 1 - ein(1 - u), inOut: u => u < .5 ? ein(2 * u) / 2 : 1 - ein(2 - 2 * u) / 2 });
+const BASE = { none: u => u };
+for (let n = 1; n <= 4; n++) for (const [d, f] of Object.entries(directions(u => u ** (n + 1)))) BASE[`power${n}.${d}`] = f;
+Object.assign(BASE, {
+  'sine.in': u => 1 - Math.cos(u * Math.PI / 2), 'sine.out': u => Math.sin(u * Math.PI / 2),
+  'sine.inOut': u => -(Math.cos(Math.PI * u) - 1) / 2,
+  'expo.in': u => u <= 0 ? 0 : 2 ** (10 * u - 10), 'expo.out': u => u >= 1 ? 1 : 1 - 2 ** (-10 * u),
+  'expo.inOut': u => u <= 0 ? 0 : u >= 1 ? 1 : u < .5 ? 2 ** (20 * u - 10) / 2 : (2 - 2 ** (-20 * u + 10)) / 2,
+  'circ.in': u => 1 - Math.sqrt(Math.max(0, 1 - u * u)), 'circ.out': u => Math.sqrt(Math.max(0, 1 - (u - 1) ** 2)),
+  'circ.inOut': u => u < .5 ? (1 - Math.sqrt(Math.max(0, 1 - (2 * u) ** 2))) / 2 : (Math.sqrt(Math.max(0, 1 - (-2 * u + 2) ** 2)) + 1) / 2,
+  'bounce.out': u => { const n = 7.5625, d = 2.75;
+    return u < 1 / d ? n * u * u : u < 2 / d ? n * (u -= 1.5 / d) * u + .75 : u < 2.5 / d ? n * (u -= 2.25 / d) * u + .9375 : n * (u -= 2.625 / d) * u + .984375; },
+});
+function ease(name) {
+  const m = name.match(/^([a-zA-Z0-9.]+)(?:\(([^)]*)\))?$/), base = m[1], a = m[2] ? m[2].split(',').map(Number) : [];
+  if (BASE[base]) return BASE[base];
+  const s = a[0] ?? 1.7;
+  if (base === 'back.out') return u => 1 + (s + 1) * (u - 1) ** 3 + s * (u - 1) ** 2;
+  if (base === 'back.in') return u => (s + 1) * u ** 3 - s * u ** 2;
+  if (base === 'elastic.out') {
+    const amp = Math.max(a[0] ?? 1, 1), per = a[1] ?? 0.3, p3 = per / (2 * Math.PI) * Math.asin(1 / amp);
+    return u => u >= 1 ? 1 : amp * 2 ** (-10 * u) * Math.sin((u - p3) * 2 * Math.PI / per) + 1;
+  }
+  throw new Error('ease ' + name);
+}
+const ONE = new Set(['scale', 'opacity', 'sx', 'sy', 'draw', 'zoom']), ZERO = new Set(['rot', 'panx', 'pany']);
+function val(el, prop, t, i = 0) {
+  let v = ONE.has(prop) ? 1 : ZERO.has(prop) ? 0 : el[prop];
+  el.anims.filter(a => a.prop === prop).sort((p, q) => p.t - q.t).forEach((a, k) => {
+    const start = a.t + i * (el.stagger || 0);
+    if (t >= start) v = a.from + (a.to - a.from) * ease(a.ease)(Math.min(1, (t - start) / a.d));
+    else if (k === 0) v = a.from;
+  });
+  return v;
+}
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// Backgrounds are drawn oversized (1.5x) so a camera push or pan never shows the edge.
+const BW = Math.round(W * 1.5), BH = Math.round(H * 1.5), bgs = {};
+function background(shot) {
+  if (bgs[shot.id]) return bgs[shot.id];
+  const o = document.createElement('canvas'); o.width = BW; o.height = BH;
+  const q = o.getContext('2d'), b = shot.bg;
+  if (b.kind === 'vignette') {
+    const gr = q.createRadialGradient(BW / 2, BH / 2, 0, BW / 2, BH / 2, Math.hypot(W, H) / 2);
+    gr.addColorStop(0, b.c0); gr.addColorStop(1, b.c1); q.fillStyle = gr; q.fillRect(0, 0, BW, BH);
+  } else { q.fillStyle = b.c; q.fillRect(0, 0, BW, BH); }
+  if (b.kind === 'paper' || b.kind === 'gridpaper') {
+    const img = q.getImageData(0, 0, BW, BH), d = img.data, r = mulberry(7);
+    for (let i = 0; i < d.length; i += 4) { const n = (r() - .5) * 14; d[i] += n; d[i + 1] += n; d[i + 2] += n * .8; }
+    q.putImageData(img, 0, 0);
+    q.globalAlpha = .06; q.strokeStyle = '#7a6a4a';
+    for (let k = 0; k < 900; k++) { const x = r() * BW, y = r() * BH, a = r() * Math.PI;
+      q.beginPath(); q.moveTo(x, y); q.lineTo(x + Math.cos(a) * 30, y + Math.sin(a) * 30); q.stroke(); }
+    q.globalAlpha = 1;
+  }
+  if (b.kind === 'grid' || b.kind === 'gridpaper') {
+    const st = b.step * sx; q.strokeStyle = b.line; q.lineWidth = 1;
+    for (let x = (BW / 2) % st; x < BW; x += st) { q.beginPath(); q.moveTo(x, 0); q.lineTo(x, BH); q.stroke(); }
+    for (let y = (BH / 2) % st; y < BH; y += st) { q.beginPath(); q.moveTo(0, y); q.lineTo(BW, y); q.stroke(); }
+  }
+  return (bgs[shot.id] = o);
+}
+const grains = [];
+function grain(amount, frame) {        // four precomputed noise plates, picked by frame: deterministic
+  if (!grains.length) for (let k = 0; k < 4; k++) {
+    const o = document.createElement('canvas'); o.width = W; o.height = H;
+    const q = o.getContext('2d'), img = q.createImageData(W, H), d = img.data, r = mulberry(100 + k);
+    for (let i = 0; i < d.length; i += 4) { const n = r() * 255; d[i] = d[i + 1] = d[i + 2] = n; d[i + 3] = 255; }
+    q.putImageData(img, 0, 0); grains.push(o);
+  }
+  g.save(); g.globalAlpha = amount / 255; g.globalCompositeOperation = 'overlay';
+  g.drawImage(grains[frame % 4], 0, 0); g.restore();
+}
+const widths = {};
+function drawShape(el, alpha, t, i) {
+  const x = val(el, 'x', t, i) * sx, y = val(el, 'y', t, i) * sx, s = val(el, 'scale', t, i), op = val(el, 'opacity', t, i);
+  if (op <= 0 || s <= 0) return;
+  g.save(); g.globalAlpha = Math.min(1, op) * alpha; g.translate(x, y); g.rotate(val(el, 'rot', t, i) * Math.PI / 180);
+  g.scale(s * sx * val(el, 'sx', t, i), s * sx);
+  const fill = (color, dx = 0, dy = 0) => {
+    g.fillStyle = color; g.beginPath();
+    if (el.kind === 'rect') g.roundRect(-el.w / 2 + dx, -el.h / 2 + dy, el.w, el.h, el.r || 0);
+    else g.arc(dx, dy, el.r, 0, Math.PI * 2);
+    g.fill();
+  };
+  if (el.misreg) { g.globalCompositeOperation = 'multiply'; fill(el.misreg.color, el.misreg.dx, el.misreg.dy); g.globalCompositeOperation = 'source-over'; }
+  if (el.kind === 'rect' || el.kind === 'circle') fill(el.color);
+  if (el.kind === 'rect' && el.text) { g.fillStyle = el.textColor; g.font = el.font; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(el.text, 0, 2); }
+  if (el.kind === 'text') { g.fillStyle = el.color; g.font = el.font; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(el.text, 0, 0); }
+  g.restore();
+}
+function drawEl(el, t, alpha) {
+  if (el.kind === 'bar') {
+    const sy = val(el, 'sy', t); if (sy <= 0) return;
+    g.save(); g.globalAlpha = alpha; g.fillStyle = el.color;
+    g.fillRect((el.x - el.w / 2) * sx, (el.y - el.h * sy) * sx, el.w * sx, el.h * sy * sx); g.restore(); return;
+  }
+  if (el.kind === 'path') {
+    const d = val(el, 'draw', t); if (d <= 0) return;
+    const p = el.points, len = p.slice(1).reduce((L, q, k) => L + Math.hypot(q[0] - p[k][0], q[1] - p[k][1]), 0);
+    g.save(); g.globalAlpha = alpha; g.strokeStyle = el.color; g.lineWidth = el.width * sx; g.setLineDash([len * d * sx, len * sx]);
+    g.beginPath(); p.forEach(([x, y], k) => k ? g.lineTo(x * sx, y * sx) : g.moveTo(x * sx, y * sx)); g.stroke(); g.restore(); return;
+  }
+  if (el.kind === 'chars') {            // one glyph at a time, each on its own staggered clock
+    g.font = el.font;
+    const glyphs = [...el.text], ws = widths[el.id] ??= glyphs.map(c => g.measureText(c).width / sx);
+    let cx = el.x - ws.reduce((a, b) => a + b, 0) / 2, n = 0;
+    glyphs.forEach((c, k) => {
+      if (c !== ' ') drawShape({ ...el, kind: 'text', text: c, x: cx + ws[k] / 2 }, alpha, t, n++);
+      cx += ws[k];
+    });
+    return;
+  }
+  drawShape(el, alpha, t, 0);
+}
+function shotAlpha(shot, t) {
+  for (const tr of SPEC.transitions)
+    if (tr.type === 'dissolve' && Math.abs(shot.t0 - tr.t0) < 1e-6 && t < tr.t1) return ease(tr.ease)(Math.max(0, (t - tr.t0) / (tr.t1 - tr.t0)));
+  return 1;
+}
+function drawShot(shot, t, alpha) {
+  const cam = { anims: shot.camera || [] }, z = val(cam, 'zoom', t), px = val(cam, 'panx', t) * sx, py = val(cam, 'pany', t) * sx;
+  const te = shot.step ? Math.floor(t * shot.step + 1e-6) / shot.step : t;      // drawings step, the camera stays smooth
+  g.save(); g.translate(W / 2 + px, H / 2 + py); g.scale(z, z); g.translate(-W / 2, -H / 2);
+  g.globalAlpha = alpha; g.drawImage(background(shot), -(BW - W) / 2, -(BH - H) / 2); g.globalAlpha = 1;
+  for (const el of shot.elements) drawEl(el, te, alpha);
+  g.restore();
+}
+window.DUR = SPEC.dur;
+window.render = t => {
+  g.globalAlpha = 1; g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+  for (const shot of SPEC.shots) {
+    if (t < shot.t0 || t >= shot.t1) continue;
+    const a = shotAlpha(shot, t);
+    if (a > 0) drawShot(shot, t, a);
+    if (shot.grain) grain(shot.grain, Math.round(t * SPEC.fps));
+  }
+  for (const tr of SPEC.transitions) if (tr.type === 'dip' && t >= tr.t0 && t < tr.t1) {
+    const mid = (tr.t0 + tr.t1) / 2, u = t < mid ? (t - tr.t0) / (mid - tr.t0) : (tr.t1 - t) / (tr.t1 - mid);
+    g.save(); g.globalAlpha = ease(tr.ease)(Math.max(0, Math.min(1, u))); g.fillStyle = tr.color; g.fillRect(0, 0, W, H); g.restore();
+  }
+};
+document.fonts.ready.then(() => { SPEC.shots.forEach(background); window.render(0); window.READY = true; });
+</script></body></html>
