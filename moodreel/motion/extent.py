@@ -11,7 +11,8 @@ by the element's own box) and compares its edges with where they rest:
            (also a solid shape, which can't tell a stretch from a wipe: the plain reading)
   wipe     one edge holds at rest and the part that shows is the element's own, in place (a roller, a mask)
 A stretch or a wipe is read as the share shown (sy, sx, wipe: 0 to 1); a clip as the element's position, from the
-edge that moves with it, and fitted like any move.
+edge that moves with it, and fitted like any move. A thin stroke drawn along its path, straight or curved, is read
+as the share of its own path that shows (draw); a flat elongated shape's turn, from its silhouette's long axis.
 """
 from __future__ import annotations
 
@@ -35,6 +36,8 @@ UNIFORM = 0.06       # both sizes within this of each other, partly shown: a uni
 FULL_COLOUR = 0.7    # share of the changed pixels in the element's own colours, partly shown: less is a fade
 LEADS = 0.5          # NCC of what shows of a clip reveal with the element's own leading part
 ELONGATED = 1.5      # long over short axis of a silhouette whose turn can be read from its shape
+STROKE = 5.0         # px (analysis): a stroke no wider than this, running at least eight times its width, is a line
+OFF_PATH = 0.05      # share of what shows that may lie off the stroke's own path while it is drawn
 LEVEL = 24           # colour quantisation for telling the element's own colours
 
 
@@ -194,6 +197,64 @@ def turn(clip: Clip, track: dict) -> np.ndarray | None:
             continue
         out.append((sil[0][0] - a0 + 90) % 180 - 90)
     return np.array(out)
+
+
+def drawn(clip: Clip, track: dict) -> np.ndarray | None:
+    """Per frame, the share of a thin stroke's own path that shows (0 to 1), for a line drawn on (or off) along
+    any path; None when the element isn't a thin stroke, or what shows strays off its path (a stroke that moves,
+    or grows thicker, is not being drawn)."""
+    if track["kind"] not in ("appear", "disappear"):
+        return None
+    p, q = track["p"], track["q"]
+    rest_img = _rest(clip, p - 2, p) if track["kind"] == "disappear" else _rest(clip, q, q + 2)
+    x, y, w, h = (int(round(v / clip.scale)) for v in track["box"])
+    m = 1                                                # tight: a line's neighbours (bars standing on it) stay out
+    X0, Y0, X1, Y1 = max(0, x - m), max(0, y - m), min(clip.w, x + w + m), min(clip.h, y + h + m)
+    at_rest = rest_img[Y0:Y1, X0:X1]
+    rim = np.concatenate([at_rest[0], at_rest[-1], at_rest[:, 0], at_rest[:, -1]])
+    ground = np.median(rim, axis=0)
+    stroke = np.abs(at_rest - ground).max(axis=2) > DIFF_THR
+    if stroke.sum() < 20:
+        return None
+    mine = _colours(at_rest, stroke)
+    # thin: twice the median distance to the edge is a few pixels, and the stroke runs far longer than that
+    dist = cv2.distanceTransform(np.pad(stroke, 1).astype(np.uint8), cv2.DIST_L2, 3)[1:-1, 1:-1]
+    ridge = stroke & (dist >= cv2.dilate(dist, np.ones((3, 3), np.uint8)) - 1e-6)
+    width = 2 * float(np.median(dist[ridge]))
+    ys, xs = np.nonzero(stroke)
+    if width > STROKE or max(np.ptp(ys), np.ptp(xs)) + 1 < 20 * width:
+        return None                                      # a line runs far longer than it is wide; a label doesn't
+    # one path (a rule, a curve, a joined hand), not a word's many glyphs
+    n, _, stats, _ = cv2.connectedComponentsWithStats(stroke.astype(np.uint8), 8)
+    if n < 2 or np.sort(stats[1:, 4])[::-1][:2].sum() < 0.9 * stroke.sum():
+        return None
+    path = cv2.dilate(stroke.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
+    ys, xs = np.nonzero(stroke)
+    full = float((np.ptp(ys) + 1) * (np.ptp(xs) + 1))
+    out, spread = [], []
+    for f in range(p, q + 1):
+        img = clip.frames[f][Y0:Y1, X0:X1].astype(np.float32)
+        changed = np.abs(img - ground).max(axis=2) > DIFF_THR
+        fg = changed & np.isin(_keys(img), mine)
+        on, off = (fg & path).sum(), (fg & ~path).sum()
+        if off > OFF_PATH * max(on, 1) + 4:
+            return None                                  # it shows somewhere its path doesn't run: it moved
+        if (changed & path).sum() > 20 and on < FULL_COLOUR * (changed & path).sum():
+            return None                                  # what shows is mixed with the ground: a fade
+        share = min(1.0, on / stroke.sum())
+        out.append(share)
+        if 0.2 <= share <= 0.8:                          # how far over the stroke the part that shows spreads
+            ys, xs = np.nonzero(fg & path)
+            spread.append((np.ptp(ys) + 1) * (np.ptp(xs) + 1) / full - share)
+    out = np.array(out)
+    # drawn, the part that shows covers about its share of the stroke; faded in, all of it from the start
+    if np.ptp(out) < ONE_AXIS or (spread and np.median(spread) > 0.35):
+        return None
+    # and it grows from nothing: its first glimpse (its last, drawn off) is a small part, not half at once
+    seen = out[out > 0.02]
+    if not len(seen) or (seen[-1] if track["kind"] == "disappear" else seen[0]) > 0.25:
+        return None
+    return out
 
 
 def _content(clip, ext, f, axis) -> str:
