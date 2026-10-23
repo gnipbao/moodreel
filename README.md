@@ -205,7 +205,8 @@ as one frame per film frame, stills and data, each with its source, licence and 
 `kit/media.js` gives the picture the frame of its own time; `film check` fails material with no source or licence),
 which makes the last 15 ready: every style in the library can now be made. Films can also be narrated
 (`narration.json` → `moodreel voice`: lines placed at times or on cues, voiced, subtitled from `voice.js`, the music
-ducked under them at delivery) and carry sound effects without music (a score of cues alone). Only the documents are imported; Moodreel re-implements the techniques.
+ducked under them at delivery) and carry sound effects without music (a score of cues alone), and be delivered
+as several variants of one picture code (`film.json` variants, read with `pick()`, `film deliver --all-variants`). Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 
