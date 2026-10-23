@@ -9,6 +9,7 @@
   moodreel pack <project> --slug S --name N               check a distilled style and add it to your library
   moodreel styles [query]                                 your styles and the built-in ones
   moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f]
+  moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
 """
@@ -79,7 +80,7 @@ def cmd_kit(a):
 def cmd_scaffold(a):
     from .pack.scaffold import scaffold
     look = scaffold(Path(a.project))
-    print(f"style frame page -> {look}; render a still with:\n  node {RENDER} still {look} 2.5 --size "
+    print(f"style frame page -> {look}; render a still with:\n  moodreel render still {look} 2.5 --size "
           f"{json.loads((Path(a.project) / 'intake.json').read_text())['default_size']} --out {look}/stills")
 
 
@@ -166,6 +167,9 @@ def cmd_bench_motion(a):
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    if argv and argv[0] == "render":                   # straight through to the renderer, flags and all
+        return subprocess.run(["node", str(RENDER), *argv[1:]]).returncode
     ap = argparse.ArgumentParser(prog="moodreel")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("intake", help="copy references into a project and check they share a style")
@@ -214,6 +218,7 @@ def main(argv=None):
     p.add_argument("--music", help="deliver: a music track, normalised to -14 LUFS")
     p.add_argument("--out", help="deliver: where the finished film and poster go")
     p.set_defaults(fn=cmd_film)
+    sub.add_parser("render", help="the renderer: video|still|texts <dir> [--fps] [--size] [--workers] [--out]")
     p = sub.add_parser("motion", help="measure a video's motion grammar")
     p.add_argument("video")
     p.add_argument("--out", required=True)
