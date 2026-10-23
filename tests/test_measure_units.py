@@ -92,3 +92,36 @@ def test_tempo_and_on_beat():
     beats = rhythm.beats(env, found)
     res = rhythm.on_beat([0.5, 1.0, 2.5, 3.0], beats, 0.04)
     assert res["share"] == 1.0 and res["chance"] < 0.2
+
+
+def test_ground_from_an_empty_opening_frame():
+    paper, teal = (244, 238, 226), (0, 131, 138)
+    img = np.full((720, 1280, 3), paper, np.uint8)
+    img[300:] = teal                                          # the sea takes more of the frame and all its border
+    img[100:160, 900:1000] = (255, 116, 119)
+    assert palette.opening_ground(np.full((720, 1280, 3), paper, np.uint8)) is not None
+    assert palette.opening_ground(img) is None
+    p = palette.image_palette(img)
+    hint = palette.opening_ground(np.full((720, 1280, 3), paper, np.uint8))
+    roles = palette.pooled([p], hint)["roles"]
+    near = lambda h, rgb: color.delta_e(color.rgb_to_lab(np.array([int(h[i:i + 2], 16) for i in (1, 3, 5)], float)),  # noqa: E731
+                                        color.rgb_to_lab(np.array(rgb, float))) < 3
+    assert near(roles["ground"], paper) and near(roles["ink"], teal)
+    assert near(palette.pooled([p])["roles"]["ground"], teal)  # without the opening, the border decides
+
+
+def test_a_band_of_tint_along_one_edge_is_no_vignette():
+    img = np.full((720, 1280, 3), 236, np.uint8)
+    img[:160] = 214                                           # a pale band at the top, close to the ground
+    img = np.clip(img + np.random.default_rng(1).normal(0, 3, (720, 1280, 1)), 0, 255).astype(np.uint8)
+    t = texture.texture(img, "#ececec")
+    assert t["vignette"] == 0.0 and t["grain"] < 4
+
+
+def test_a_halftone_band_is_not_a_line_of_text():
+    img = np.full((720, 1280, 3), 240, np.uint8)
+    yy, xx = np.mgrid[:120, :1280]
+    img[60:180][((np.cos(2 * np.pi * (xx + yy) / 4.67 / np.sqrt(2)) + np.cos(2 * np.pi * (xx - yy) / 4.67 / np.sqrt(2))) > 0.6)] = 40
+    cv2.putText(img, "first light", (100, 400), cv2.FONT_HERSHEY_DUPLEX, 3.0, (20, 20, 20), 8, cv2.LINE_AA)
+    lines = typeset.text_lines(img, screen_px=4.67)
+    assert lines and all(ln["box"][1] > 0.4 for ln in lines)  # only the words, not the band at the top

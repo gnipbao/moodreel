@@ -2,7 +2,8 @@
 
 Names follow GSAP so a measured ease drops straight into GSAP, HyperFrames or any render(t) page:
   none, power1..4.{in,out,inOut}, sine.*, expo.*, circ.*, back.{in,out,inOut}(s), elastic.out(amp,period), bounce.out
-The page in fixtures/ carries a JS copy of the same formulas; keep the two in step.
+and, for curves a style names exactly, bezier(x1,y1,x2,y2) as CSS cubic-bezier() (truth only: the fitter keeps to
+the named families). The page in fixtures/ carries a JS copy of the same formulas; keep the two in step.
 """
 from __future__ import annotations
 
@@ -71,6 +72,14 @@ def bounce_out(u):
            np.where(u < 2.5 / d1, n1 * (u - 2.25 / d1) ** 2 + 0.9375, n1 * (u - 2.625 / d1) ** 2 + 0.984375)))
 
 
+def bezier(x1, y1, x2, y2):
+    """CSS cubic-bezier(x1, y1, x2, y2): y as a function of x, inverting x(s) on a fine grid (x1, x2 in [0, 1])."""
+    s = np.linspace(0, 1, 4001)
+    bx = 3 * (1 - s) ** 2 * s * x1 + 3 * (1 - s) * s ** 2 * x2 + s ** 3
+    by = 3 * (1 - s) ** 2 * s * y1 + 3 * (1 - s) * s ** 2 * y2 + s ** 3
+    return lambda u: np.interp(u, bx, by)
+
+
 _NAME = re.compile(r"^([a-z0-9]+(?:\.(?:in|out|inOut))?)(?:\(([^)]*)\))?$")
 
 
@@ -92,6 +101,8 @@ def get(name: str):
         return elastic_out(*(args or [1.0, 0.3]))
     if base == "bounce.out":
         return bounce_out
+    if base == "bezier" and len(args) == 4:
+        return bezier(*args)
     raise ValueError(f"unknown ease {name!r}")
 
 
@@ -105,6 +116,11 @@ def shape_class(name: str) -> str:
     fam = family(name)
     if fam == "none":
         return "linear"
+    if fam == "bezier":                         # slow where the control point lies on the flat side of the diagonal
+        x1, y1, x2, y2 = (float(v) for v in name.split("(")[1].rstrip(")").split(","))
+        slow_in, slow_out = y1 < x1, y2 > x2
+        c = "inOut" if slow_in and slow_out else "in" if slow_in else "out" if slow_out else "linear"
+        return c + ("+overshoot" if not (0 <= y1 <= 1 and 0 <= y2 <= 1) else "")
     direction = fam.split(".")[1]
     if fam.startswith("back."):
         return f"{direction}+overshoot"

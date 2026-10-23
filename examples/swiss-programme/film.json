@@ -1,0 +1,9 @@
+{
+ "name": "swiss-programme",
+ "style": "swiss-motion",
+ "style_origin": "builtin",
+ "size": "1920x1080",
+ "fps": 24,
+ "duration": 15,
+ "poster": 11.0
+}

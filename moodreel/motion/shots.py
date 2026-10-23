@@ -15,6 +15,7 @@ TW, TH = 64, 36            # thumbnail used for every whole-frame signal
 CELL = (6, 8)              # cell size in thumbnail px -> a 6 x 8 grid
 TOP_FRACTION = 0.10
 CUT_FRAC, CUT_HIST = 0.5, 0.3
+KEPT = 0.5                # share of the old content still in place above which a one-frame change is no cut
 GAP_S, MIN_RUN_FRAMES = 0.15, 2
 
 
@@ -25,6 +26,15 @@ def thumbs(clip: Clip) -> np.ndarray:
 def _hist(img):
     h = cv2.calcHist([img.astype(np.uint8)], [0, 1, 2], None, [8, 8, 8], [0, 256] * 3)
     return cv2.normalize(h, h).flatten()
+
+
+def _kept(before: np.ndarray, changed: np.ndarray) -> float:
+    """Share of the content in `before` (what differs from its commonest colour, the ground) left unchanged."""
+    q = (before // 16).reshape(-1, 3).astype(np.int32)
+    keys = q[:, 0] * 256 + q[:, 1] * 16 + q[:, 2]
+    ground = np.median(before.reshape(-1, 3)[keys == np.bincount(keys).argmax()], axis=0)
+    content = np.abs(before - ground).max(axis=2) > 12
+    return float((content & ~changed).sum() / content.sum()) if content.any() else 0.0
 
 
 def cuts(th: np.ndarray, skip=()) -> list[int]:
@@ -41,8 +51,11 @@ def cuts(th: np.ndarray, skip=()) -> list[int]:
         hist = cv2.compareHist(hs[i - 1], hs[i], cv2.HISTCMP_BHATTACHARYYA)
         whole = (diff > 30).mean() > CUT_FRAC and hist > CUT_HIST and iso > 2.5
         # a content swap over a ground that stays: part of the frame takes new colours in one frame alone (a
-        # drawing held on twos also changes in one frame, but only where a small element moved, in its own colours)
-        swap = (diff > 12).mean() > 0.06 and hist > 0.2 and iso > 8
+        # drawing held on twos also changes in one frame, but only where a small element moved, in its own colours).
+        # The old content has to go: when most of what stood on the ground is still there, a shape printed onto an
+        # empty stretch of it in one frame is an entrance, not a new shot
+        changed = diff > 12
+        swap = changed.mean() > 0.06 and hist > 0.2 and iso > 8 and _kept(th[i - 1], changed) < KEPT
         if whole or swap:
             out.append(i)
     return out

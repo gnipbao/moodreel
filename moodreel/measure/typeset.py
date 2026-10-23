@@ -12,11 +12,21 @@ import numpy as np
 WORK = 1280
 
 
-def text_lines(rgb: np.ndarray) -> list[dict]:
+def _runs(ink: np.ndarray) -> int:
+    """Strokes crossed by the busiest of three horizontal scans through a line: letters give many, an edge none."""
+    h = ink.shape[0]
+    return max(int(np.count_nonzero(np.diff((ink[int(f * h)] > 0).astype(np.int8)) == 1)) for f in (0.3, 0.5, 0.7))
+
+
+def text_lines(rgb: np.ndarray, screen_px: float | None = None) -> list[dict]:
+    """`screen_px`: a halftone's period at this scale (texture.json), blurred away first so its dots don't read
+    as the dense strokes of a text line."""
     h0, w0 = rgb.shape[:2]
     k = min(1.0, WORK / max(h0, w0))
     img = cv2.resize(rgb, (round(w0 * k), round(h0 * k)), interpolation=cv2.INTER_AREA) if k < 1 else rgb
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    if screen_px:
+        gray = cv2.GaussianBlur(gray, (0, 0), 0.6 * screen_px)
     h, w = gray.shape
     grad = cv2.morphologyEx(gray, cv2.MORPH_GRADIENT, np.ones((3, 3), np.uint8))
     _, bw = cv2.threshold(grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -30,7 +40,7 @@ def text_lines(rgb: np.ndarray) -> list[dict]:
         _, ink = cv2.threshold(crop, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         if (ink > 0).mean() > 0.5:                       # make the strokes the foreground
             ink = 255 - ink
-        if not 0.08 <= (ink > 0).mean() <= 0.6:
+        if not 0.08 <= (ink > 0).mean() <= 0.6 or _runs(ink) < max(2, 0.6 * bw_ / bh):
             continue
         dist = cv2.distanceTransform((ink > 0).astype(np.uint8), cv2.DIST_L2, 3)
         ridge = dist[(dist > 0) & (dist >= cv2.dilate(dist, np.ones((3, 3))) - 1e-6)]
@@ -42,7 +52,9 @@ def text_lines(rgb: np.ndarray) -> list[dict]:
 
 
 def weight(stroke_ratio: float) -> str:
-    return "light" if stroke_ratio < 0.07 else "regular" if stroke_ratio < 0.11 else "bold" if stroke_ratio < 0.16 else "black"
+    """Stroke over line height to a weight class, calibrated on Helvetica Neue and Avenir Next set at 300-900:
+    regular and medium read 0.11-0.12, bold and demi 0.17-0.22, heavy and black 0.26."""
+    return "light" if stroke_ratio < 0.075 else "regular" if stroke_ratio < 0.14 else "bold" if stroke_ratio < 0.24 else "black"
 
 
 def pooled(per_image: list[list[dict]]) -> dict:

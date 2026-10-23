@@ -36,13 +36,16 @@ def measure(project: Path) -> dict:
 
     # palette: one per reference (a video's frames as one picture), pooled with equal weight
     pals = [palette.image_palette(sheet.stack(pictures[it["id"]])) for it in items]
-    pal = {**palette.pooled(pals), "per_ref": {it["id"]: p for it, p in zip(items, pals)},
-           "unity": intake.get("unity")}
+    openings = {it["id"]: palette.opening_ground(f[0]) for it in items if it["kind"] == "video"
+                for f in [sheet.video_frames(str(project / it["file"]), [0.05])] if f}
+    hint = next(((vid, h) for vid, h in openings.items() if h), None)
+    pal = {**palette.pooled(pals, hint and hint[1]), "per_ref": {it["id"]: p for it, p in zip(items, pals)},
+           "unity": intake.get("unity"), "ground_from": f"opening frame of {hint[0]}" if hint else "border"}
     ground = pal["roles"]["ground"]
 
     tex = [texture.texture(p, ground) for _, p in flat]
     lay = [layout.layout(p, ground) for _, p in flat]
-    lines = [typeset.text_lines(p) for _, p in flat]
+    lines = [typeset.text_lines(p, (t.get("halftone") or {}).get("period_px")) for (_, p), t in zip(flat, tex)]
     typeset.crops_sheet([p for _, p in flat], lines, project / "evidence" / "type-lines.jpg")
     out = {"palette": pal, "texture": {**texture.pooled(tex), "per_picture": tex},
            "layout": {**layout.pooled(lay), "per_picture": lay},
@@ -147,9 +150,12 @@ def _motion_lines(g: dict) -> list[str]:
         if not r:
             continue
         d = r["duration_s"] or {}
+        eased = (f"eases read with confidence in {r.get('claimed', 0)}: classes {r['classes']}; "
+                 f"overshoot in {r['overshoot_share']:.0%}" + (f" (median {r['overshoot']['median']:.0%})" if r.get("overshoot") else "")
+                 if r.get("claimed") else "no ease read with confidence")
         out.append(f"{role.capitalize()}s ({r['count']}): {_fmt(d.get('p25'))}–{_fmt(d.get('p75'))} s (median {_fmt(d.get('median'))}); "
-                   f"classes {r['classes']}; vocabulary {r['vocabulary']}; overshoot in {r['overshoot_share']:.0%}"
-                   + (f" (median {r['overshoot']['median']:.0%})" if r.get("overshoot") else "") + ".")
+                   f"vocabulary {r['vocabulary']}; {eased}"
+                   + (f"; unconfirmed guesses {r['guesses']}" if r.get("guesses") else "") + ".")
     for s in g.get("stagger", []):
         out.append(f"Stagger: {s['count']} × {s['interval_s']} s, {s['order']} ({s['vocabulary']}).")
     if g.get("stepping") and g["stepping"]["on"] > 1:

@@ -1,0 +1,8 @@
+first-light
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- Typeface: the system's Avenir Next (macOS), Helvetica Neue or Arial as fallbacks. Not shipped with the film; a
+  published film should set an OFL heavy grotesque (Bricolage Grotesque) instead, as the style asks.
+- Ink colours are colour references only (STYLE.md §3); no brand, logo or machine trade dress.
+- No images, music or samples.

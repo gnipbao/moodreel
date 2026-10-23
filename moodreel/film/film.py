@@ -138,10 +138,19 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
     (d / "index.html").write_text('<!doctype html><html><head><meta charset="utf-8"><title>' + name +
                                   '</title></head><body><script type="module" src="main.js"></script></body></html>\n')
     (d / "main.js").write_text(MAIN.replace("__DUR__", str(duration)).replace("__NAME__", name))
-    (d / "TREATMENT.md").write_text(TREATMENT.format(name=name, style=f"{s.get('name')} ({s['slug']}, {sdir})"))
+    (d / "TREATMENT.md").write_text(TREATMENT.format(name=name, style=f"{s.get('name')} ({s['slug']}, {_shown(sdir)})"))
     (d / "CREDITS").write_text(f"{name}\n\nThird-party assets (fonts, images, music, samples) and their licences:\n\n")
     (d / "build.sh").write_text(BUILD.format(music=""))
     return d
+
+
+def _shown(p: Path) -> str:
+    """A path as the treatment shows it: relative to the repo or the home folder, never the user's full path."""
+    p = p.resolve()
+    for base, prefix in ((REPO, ""), (Path.home(), "~/")):
+        if p.is_relative_to(base):
+            return prefix + str(p.relative_to(base))
+    return p.name
 
 
 def reading_time(text: str) -> float:

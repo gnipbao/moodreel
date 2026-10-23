@@ -1,0 +1,7 @@
+swiss-programme
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- Typeface: the system's Helvetica Neue (macOS), Helvetica or Arial as fallbacks. Not shipped with the film; a
+  published film should set an OFL neo-grotesque (Archivo, Inter) instead, as the style asks.
+- No images, music or samples.

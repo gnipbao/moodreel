@@ -6,7 +6,7 @@
 
 [English](README.md)
 
-> **状态：早期开发。** 运动测量（`moodreel motion`）已在代码渲染的测试片上通过验收；风格包、导演流程和其余命令行已设计，正在实现。
+> **状态：早期开发。** 整条链路已经跑通：参考进来，测量，生成 kit，打包风格，用它出片、检查、交付。运动测量已在测试片上通过验收，两部示例片通过了往返测试（见下）。下一步是遮罩/裁切揭示、单轴拉伸和擦除的读取器。
 
 ## 为什么要"测"运动
 
@@ -24,6 +24,17 @@
 旋转、单轴拉伸（柱子生长）、描线和逐字动画还没有覆盖。
 
 详见 [docs/research/motion-extraction.md](docs/research/motion-extraction.md)，完整设计见 [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md)。
+
+### 往返测试
+
+两部示例片（[examples/](examples/README.md)）都按风格库里的风格用代码做成，再当作用户的参考蒸馏回来，和片子代码里的数值逐项对比（[bench/roundtrip](bench/roundtrip/REPORT.md)）：
+
+| 影片（风格） | 颜色角色 | 材质 | 标题 | 剪辑、一拍几 | 找到的运动 | 认定缓动 / 认错 |
+|---|---|---|---|---|---|---|
+| swiss-programme（瑞士动态排版） | ΔE 0.2 | 无颗粒、暗角、网点 | 字号 −14%，字重 700 | ✓ | 10 / 40 | 0 / 0 |
+| first-light（孔版印刷） | ΔE ≤ 4.4 | 颗粒；网点 7.0 px、14.8°（原片 7 px、15°） | 字号 +25%，字重 | ✓ | 1 / 11 | 1 / 0 |
+
+颜色、材质、字体和节奏都能还原。这两种风格的大部分运动是裁切揭示、柱子单轴生长和擦除，目前的读取器还不覆盖：它们能测出时间，曲线留给导演（kit 里标为 `unread`），不会被认错。
 
 ## 风格库
 
@@ -47,7 +58,7 @@
 - `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
 - `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法。
 
-运动评测见 [bench/motion/README.md](bench/motion/README.md)。
+运动评测见 [bench/motion/README.md](bench/motion/README.md)；`uv run moodreel bench roundtrip` 把示例片蒸馏回来做往返对比，见 [bench/roundtrip/README.md](bench/roundtrip/README.md)。
 
 ## 交给 AI 导演使用
 

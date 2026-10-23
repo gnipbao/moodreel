@@ -57,3 +57,12 @@ def test_motion_tokens_from_a_grammar():
     mt = kit.motion_tokens(_grammar(overshoot=0.6))
     assert mt["enter"]["ease"].startswith("back.out(") and mt["stagger"]["interval"] == 0.1
     assert mt["enter"]["duration"] == 0.5 and mt["on"] == 1
+
+
+def test_an_ease_read_once_or_never_is_left_to_the_director():
+    g = _grammar()
+    g["entrance"] = {**g["entrance"], "claimed": 1, "classes": {"in": 1}, "eases": {"expo.in": 1}}
+    mt = kit.motion_tokens(g)
+    assert mt["enter"]["ease"] is None and mt["enter"]["duration"] == 0.5 and "unread" in mt["enter"]
+    g["entrance"]["claimed"] = 5
+    assert kit.motion_tokens(g)["enter"]["ease"] == "expo.in"

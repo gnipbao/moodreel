@@ -12,6 +12,7 @@
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
+  moodreel bench roundtrip [--only name]                  distil the example films back and compare with their code
 """
 from __future__ import annotations
 
@@ -166,6 +167,16 @@ def cmd_bench_motion(a):
     print(f"\n-> {root / 'REPORT.md'}")
 
 
+def cmd_bench_roundtrip(a):
+    from .bench.roundtrip import films, report
+    md = report(films(Path(a.root), set(a.only.split(",")) if a.only else None), Path(a.out), a.workers)
+    dst = REPO / "bench" / "roundtrip" / "REPORT.md"
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    dst.write_text(md, encoding="utf-8")
+    print(md.split("\n## ")[0])
+    print(f"-> {dst}")
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     if argv and argv[0] == "render":                   # straight through to the renderer, flags and all
@@ -224,7 +235,7 @@ def main(argv=None):
     p.add_argument("--out", required=True)
     p.add_argument("--width", type=int, default=640)
     p.set_defaults(fn=cmd_motion)
-    b = sub.add_parser("bench", help="motion test films").add_subparsers(dest="bench", required=True)
+    b = sub.add_parser("bench", help="motion test films and the round trip").add_subparsers(dest="bench", required=True)
     for name, fn, hlp in (("make", cmd_bench_make, "write the test pages and their truth"),
                           ("render", cmd_bench_render, "render clean and stress videos"),
                           ("motion", cmd_bench_motion, "measure every test film and score it")):
@@ -235,6 +246,12 @@ def main(argv=None):
             q.add_argument("--variant", choices=["clean", "stress", "both"], default="both")
             q.add_argument("--out", default=str(REPO / "out" / "bench"))
         q.set_defaults(fn=fn)
+    q = b.add_parser("roundtrip", help="distil the example films back and compare with their code")
+    q.add_argument("--root", default=str(REPO / "examples"))
+    q.add_argument("--only", help="comma-separated film names")
+    q.add_argument("--out", default=str(REPO / "out" / "roundtrip"))
+    q.add_argument("--workers", type=int, default=3)
+    q.set_defaults(fn=cmd_bench_roundtrip)
     a = ap.parse_args(argv)
     a.fn(a)
 

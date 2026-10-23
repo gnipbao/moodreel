@@ -57,29 +57,41 @@ def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
     flat_share = float(flat.mean())
     out = {"work_size": [w, h], "flat_share": round(flat_share, 3)}
 
-    # grain: fine noise in flat areas; mottle: slow variation of the ground once a vignette is taken out
-    out["grain"] = round(float(hp[flat].std()), 2) if flat_share > 0.03 else None
-
-    # ground and vignette
-    ground = flat
+    # the ground, loosely (a vignette darkens it towards the corners) and tightly (a pale tint or screen next to
+    # it is not ground)
+    ground = tight = flat
     if ground_hex:
         g = rgb_to_lab(np.array([int(ground_hex[i:i + 2], 16) for i in (1, 3, 5)], np.float64))
-        lab = rgb_to_lab(cv2.resize(img, (w // 4, h // 4), interpolation=cv2.INTER_AREA).astype(np.float64))
-        near = delta_e(lab, g) < 12
-        ground = cv2.resize(near.astype(np.uint8), (w, h), interpolation=cv2.INTER_NEAREST).astype(bool) & flat
+        de = delta_e(rgb_to_lab(cv2.resize(img, (w // 4, h // 4), interpolation=cv2.INTER_AREA).astype(np.float64)), g)
+        up = lambda m: cv2.resize(m.astype(np.uint8), (w, h), interpolation=cv2.INTER_NEAREST).astype(bool) & flat  # noqa: E731
+        ground, tight = up(de < 12), up(de < 6)
+
+    # grain: fine noise read on the ground, where the kit's grain() is calibrated (overlay grain is stronger on
+    # mid-tones than on a light or dark ground), else on any flat area
+    where = tight if tight.mean() > 0.03 else flat
+    out["grain"] = round(float(hp[where].std()), 2) if where.mean() > 0.03 else None
     yy, xx = np.mgrid[:h, :w]
     r2 = ((xx - w / 2) / (w / 2)) ** 2 + ((yy - h / 2) / (h / 2)) ** 2      # 0 at the centre, 2 in the corners
     if ground.mean() > 0.05:
-        L = cv2.GaussianBlur(gray, (0, 0), 8)[ground]
-        A = np.stack([np.ones(ground.sum()), r2[ground]], 1)
-        a, b = np.linalg.lstsq(A, L, rcond=None)[0]
-        lost = float(-2 * b)                                            # grey levels lost at a corner
+        blur = cv2.GaussianBlur(gray, (0, 0), 8)
+
+        def fit(m):
+            A = np.stack([np.ones(m.sum()), r2[m]], 1)
+            return A, np.linalg.lstsq(A, blur[m], rcond=None)[0]
+
+        A, (a, b) = fit(ground)
+        # a vignette darkens every corner: read the loss in each quadrant that shows enough ground and keep the
+        # smallest, so a band of tint along one edge isn't one. Grey levels lost at a corner
+        top, left = yy < h / 2, xx < w / 2
+        quads = [m for m in (top & left, top & ~left, ~top & left, ~top & ~left) if (ground & m).mean() > 0.01]
+        lost = min(float(-2 * fit(ground & m)[1][1]) for m in quads) if len(quads) >= 2 else None
         # on a dark ground a level or two of unevenness is a large share of very little light: under 3 levels
         # there is no vignette to reproduce
-        out["vignette"] = round(lost / max(a, 1e-6), 3) if lost >= 3 else 0.0
-        out["vignette_levels"] = round(lost, 1)
-        resid = L - A @ np.array([a, b])
-        out["mottle"] = round(float(resid.std()), 2)
+        out["vignette"] = None if lost is None else round(lost / max(a, 1e-6), 3) if lost >= 3 else 0.0
+        out["vignette_levels"] = None if lost is None else round(lost, 1)
+        # mottle: slow variation of the ground once a vignette is taken out, on the ground proper
+        resid = blur - (a + b * r2)
+        out["mottle"] = round(float(resid[tight if (tight & ground).mean() > 0.03 else ground].std()), 2)
     else:
         out["vignette"], out["mottle"] = None, None
 
