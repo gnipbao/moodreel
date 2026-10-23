@@ -1,0 +1,14 @@
+{"sections": {"1": "partly", "2": "same", "3": "partly", "4": "partly", "5": "partly", "6": "partly", "7": "partly", "8": "same", "9": "same", "10": "partly", "11": "partly"},
+ "notes": {
+  "1": "The card, pictogram on a disc, bilingual type and tonal mosaic are right. But beat lock (every cut and key pose on a beat) becomes only 'equal-length cards', row shifts are absent, and 'one family, nothing warm' rules out the chapter-per-hue structure.",
+  "2": "Close. The small motif cells and the light sweep on the disc are missing, and light mux grain is ruled out.",
+  "3": "Five tones of one hue, cream for type and depth by value are right, but 'never add a second hue' contradicts the original's set of five hues with one hue per chapter.",
+  "4": "Title, CJK line, mono HUD and progress ticks match. But subtitles become the CJK title line with 'never a running caption', which contradicts narration captions as a mono line on a chapter-hue band; the second language is hard-wired, not a switch.",
+  "5": "Mask slide-up type, the figure arriving in parts and fast-out pops are right. But timings are in seconds with no beat grid, 'the mosaic never moves within a card' contradicts the drifting and beat-jumping rows, and there are no grid transitions.",
+  "6": "Locked frame and the text/stage split match, but 'hard cuts only' and 'the camera never moves' contradict the grid-snapped transitions (sliding rows, dropping columns, iris, tile flip) and the grid-aligned camera moves.",
+  "7": "Picture-locked cuts and per-element foley fit, but the percussion spine is missing (mallets and pizzicato only), and a voice line per card exceeds 'one line per chapter at most'.",
+  "8": "Step card, counter and bilingual pair match. Chapter = colour is excluded by §3; the pace ladder and long take are unshown.",
+  "9": "Consistent. The light-hue contrast and horizontal-pose pitfalls are unshown.",
+  "10": "Mosaic, figure, card and progress cover the parts, but timing is seconds per card with no beat-based edit list, and the mosaic is fixed per card, with no row shifts or grid transitions.",
+  "11": "'One hue only' removes the palette and chapter choices; the structures and endings otherwise fit the style."
+ }}

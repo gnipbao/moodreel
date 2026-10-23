@@ -1,0 +1,13 @@
+{"sections": {"1": "partly", "2": "partly", "3": "partly", "4": "same", "5": "partly", "6": "same", "7": "same", "8": "same", "9": "same", "10": "same", "11": "partly"},
+ "notes": {
+  "1": "Reduces the style to a text terminal. It drops the rule that every image is glyphs chosen by ink density on a grid whose scale is the only camera. Its 'one hue, light only means the phosphor is lit, no green' rule bans the original's green/white phosphors and its one warm surprise.",
+  "2": "Warm near-black glass, bloom and scanlines are right, but it forbids the original's glass (slight barrel curvature, rounded mask, fine noise) and prescribes smooth vector mono where the original uses a bitmap-style terminal face (VT323). No afterglow, flicker or phosphor luminance ramp.",
+  "3": "One phosphor with a dim/normal/bold ramp and inverse video is right, but 'never introduce a second hue' contradicts the original's one soft second colour reserved for the emotional object. Amber is fixed where the original allows green or white.",
+  "4": "LOG-strip subtitles under a rule, typed titles and the hold rule match. The inverse-video tag only appears in §8.",
+  "5": "Constant-rate grid typing and the eased grid push are right. But status words 'stamp in' with an off-grid scale and fade, where the original keeps glyphs on the grid outside declared transformations. Typing as performance (even machine vs uneven human) is reduced to one constant rate.",
+  "6": "Locked screen, push to the title, and clear/power as on-screen transitions match. Pull-out, scroll, push into a glyph and text-becomes-image are absent but unshown.",
+  "8": "Log file, promote-to-title, power-off and cursor moves match. Picture-made-of-words is absent (unshown); the single colour change is excluded by §3.",
+  "9": "No overlap with the original's pitfalls, which are about glyph pictures and engine traps (unshown), but nothing here contradicts the style.",
+  "10": "Covers typing on a grid, grid zoom, power on/off, bloom and scanlines. No density ramp or curved-glass phosphor post.",
+  "11": "Structures, openings and endings fit the style, but '§3 fixes the palette' closes choices the original leaves open (the phosphor colour, and whether the second colour appears at all)."
+ }}

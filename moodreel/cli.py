@@ -183,6 +183,8 @@ def cmd_bench_blind(a):
         print(f"{len(key)} packets -> {out}/<code>/packet (BRIEF.md for the director); JUDGE.md and KEY.json for the judge")
     md = blind.score(out, REPO / "bench" / "roundtrip" / "REPORT.md")
     (REPO / "bench" / "roundtrip" / "BLIND.md").write_text(md, encoding="utf-8")
+    if a.step == "score":
+        blind.keep(out, REPO / "bench" / "roundtrip" / "blind")
     print(md)
 
 

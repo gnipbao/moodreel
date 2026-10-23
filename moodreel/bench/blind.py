@@ -11,7 +11,9 @@ films has, so the distillation goes to someone else:
                                 path or file name that could name the film or the style is left out
   (a director who reads only the packet writes <packet>/STYLE.md)
   (a judge reads JUDGE.md and writes out/blind/<code>/verdict.json)
-  moodreel bench blind score    the verdicts, beside the round trip's own five, into bench/roundtrip/BLIND.md
+  moodreel bench blind score    the verdicts and the judge's notes, beside the round trip's own five, into
+                                bench/roundtrip/BLIND.md; the distilled STYLE.md files and verdicts are kept beside it
+                                (bench/roundtrip/blind/<code>/)
 """
 from __future__ import annotations
 
@@ -104,6 +106,19 @@ def make(rt_root: Path, out_root: Path, only: set[str] | None = None) -> dict:
     return key
 
 
+def keep(out_root: Path, dest: Path) -> None:
+    """The distilled STYLE.md files, the verdicts and the key, kept in the repository (the packets are not: they
+    hold the references and the measurements, which the round trip rebuilds)."""
+    if dest.exists():
+        shutil.rmtree(dest)
+    for code in json.loads((out_root / "KEY.json").read_text()):
+        (dest / code).mkdir(parents=True)
+        for src, name in ((out_root / code / "packet" / "STYLE.md", "STYLE.md"), (out_root / code / "verdict.json", "verdict.json")):
+            if src.exists():
+                shutil.copyfile(src, dest / code / name)
+    shutil.copyfile(out_root / "KEY.json", dest / "KEY.json")
+
+
 def score(out_root: Path, roundtrip_report: Path | None = None) -> str:
     """The judges' verdicts as a table, beside the round trip's own verdicts on the five measurable sections."""
     key = json.loads((out_root / "KEY.json").read_text())
@@ -116,7 +131,7 @@ def score(out_root: Path, roundtrip_report: Path | None = None) -> str:
             elif line.startswith("Sections the measurements speak for") and film:
                 auto[film] = {part.split(".")[0].strip(" §"): part.strip().endswith("✓")
                               for part in line.split(":", 1)[1].rstrip(".").split(",")}
-    rows, done = [], 0
+    rows, done, notes = [], 0, []
     for code, k in key.items():
         v = out_root / code / "verdict.json"
         a = auto.get(k["film"], {})
@@ -129,6 +144,10 @@ def score(out_root: Path, roundtrip_report: Path | None = None) -> str:
             rows.append(f"| {code} | {k['film']} ({k['style']}) | " + " | ".join(marks) + f" | {same}/11 | "
                         f"{'pass' if same >= 8 else 'fail'} |")
             done += 1
+            judged = json.loads(v.read_text()).get("notes") or {}
+            if judged:
+                notes += [f"### {code} · {k['film']} ({k['style']})", ""]
+                notes += [f"- §{n} {SECTIONS[int(n) - 1]} ({verdict[n]}): {judged[n]}" for n in sorted(judged, key=int)] + [""]
         else:
             rows.append(f"| {code} | {k['film']} ({k['style']}) | " + " | ".join(
                 ("✓" if a[str(i)] else "✗") + "*" if str(i) in a else "·" for i in range(1, 12)) + " | not judged yet | |")
@@ -141,4 +160,4 @@ def score(out_root: Path, roundtrip_report: Path | None = None) -> str:
             "section the measurements speak for, · not judged yet.", "",
             "| code | film (style) | " + " | ".join(f"§{i}" for i in range(1, 12)) + " | same | §8 |",
             "|---|---|" + "---|" * 11 + "---|---|"]
-    return "\n".join(head + rows) + "\n"
+    return "\n".join(head + rows + ([""] + ["## The judge's notes", ""] + notes if notes else [])) + "\n"
