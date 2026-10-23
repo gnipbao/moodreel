@@ -85,7 +85,15 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   `counters` role gives their durations, eases and printed forms, and the kit's `MOTION.count` and `count(t, at, from,
   to)`. Read only when tesseract is installed (`source.counters_read` in motion.json): without it a counter shows up
   as a scatter of small moves inside one box. A number that slides or scales in whole is not one.
-- **What isn't measured yet**: particles and loops, and elements nested
+- **Loops** (`loops` in motion.json, the grammar's `loops`): an element that keeps moving all shot long, read over
+  the whole shot. Each has its period (`period_s`) and what loops: a bob (`y`) or sway (`x`) in px, a pulse (`scale`,
+  the share it swells by), a breathing fade (`opacity`, its low point as a share of its peak) or a spin (`rot`, a
+  steady rate in deg/s, no period). Loops need to repeat at least twice in the shot and to be slower than 0.3 s; the
+  kit's `MOTION.loop` and `loop(t)` carry them. Their pieces are not counted as the elements' moves.
+- **Particles** (`particles`): a field of small dots drifting together (snow, dust, bubbles): about how many are in
+  frame, their radius, speed range (px/s) and direction (screen degrees, 0 = right, 90 = down). Specks going every
+  way are grain, not particles. The kit's `MOTION.particles` carries the field.
+- **What isn't measured yet**: elements nested
   inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
   evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and
   describe them yourself, marked `inferred`.

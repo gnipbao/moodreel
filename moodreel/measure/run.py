@@ -19,7 +19,7 @@ def _pool_motion(per_video: dict) -> dict:
     """With several reference videos, each keeps its own grammar; the pooled view lists the numbers side by side."""
     if len(per_video) == 1:
         return next(iter(per_video.values()))["grammar"]
-    keys = ("entrance", "exit", "move", "counters")
+    keys = ("entrance", "exit", "move", "counters", "loops", "particles")
     out = {"videos": list(per_video)}
     for k in keys:
         out[k] = {vid: m["grammar"].get(k) for vid, m in per_video.items()}
@@ -176,6 +176,17 @@ def _motion_lines(g: dict) -> list[str]:
     if g.get("counters"):
         c = g["counters"]
         out.append(f"Counters print as {c['formats']} and count " + ", ".join(f"{a:g}→{b:g}" for a, b in c["ranges"]) + ".")
+    if g.get("loops"):
+        L = g["loops"]
+        amp = {"x": "sway {} px", "y": "bob {} px", "scale": "pulse ±{}", "opacity": "breathe to {} of full",
+               "rot": "spin {} deg/s"}
+        out.append(f"Loops ({L['count']}): periods {_fmt((L['period_s'] or {}).get('min'))}–{_fmt((L['period_s'] or {}).get('max'))} s "
+                   f"(median {_fmt((L['period_s'] or {}).get('median'))}); "
+                   + ", ".join(amp[k].format(_fmt(v["median"])) + f" ×{v['n']}" for k, v in L["props"].items()) + ".")
+    for f in g.get("particles") or []:
+        out.append(f"Particles: about {f['count']} in frame, radius {_fmt(f['radius_px'])} px, drifting "
+                   f"{_fmt(f['speed']['p10'])}–{_fmt(f['speed']['p90'])} px/s toward {_fmt(f['direction_deg'])}° "
+                   f"(0 = right, 90 = down; spread {_fmt(f['spread_deg'])}°).")
     for s in g.get("stagger", []):
         out.append(f"Stagger: {s['count']} × {s['interval_s']} s, {s['order']} ({s['vocabulary']}).")
     if g.get("stepping") and g["stepping"]["on"] > 1:

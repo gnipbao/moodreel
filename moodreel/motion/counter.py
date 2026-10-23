@@ -7,7 +7,8 @@ the longest monotone run of readings (a misread digit breaks it and is dropped),
 the counter's duration and ease, its start and end values and how it is printed. A count's slow tail (the last few
 units of an expo.out) can outlast the motion run, so the box is read on until it has held still for a while; a
 misread that still fits the monotone run (a 5 read as a 9) lies off the fitted curve and is dropped before a second
-fit. The tracks inside a counter's box are its digits and are folded into it, in that run and in later ones.
+fit. The tracks inside a counter's box are its digits and are folded into it, in that run and in later ones. A
+number being typed (each reading the one before with a character added) is not a count.
 
 tesseract is optional: without it counters are not read, and the tracker's pieces stay as they were.
 """
@@ -144,6 +145,11 @@ def find(clip: Clip, shot: dict, run: tuple[int, int], known: list[dict] = ()) -
             texts = list(pool.map(lambda g: _tesseract(g, "--psm", "7", "-c", f"tessedit_char_whitelist={DIGITS}").strip(),
                                   big))
         reads = {f: parse(s) for f, s in zip(frames, texts)}
+        # typing: each new reading is the last one with a character added ('6', '64', '640'), not a count
+        shown = [s for s, r in zip(texts, reads.values()) if r]
+        changes = [(a_, b_) for a_, b_ in zip(shown, shown[1:]) if a_ != b_]
+        if changes and sum(b_.startswith(a_) and len(b_) > len(a_) for a_, b_ in changes) >= 0.5 * len(changes):
+            continue
         last, v = None, []
         for f in range(lo, hi + 1):                       # a frame not redrawn shows what the one before showed
             last = reads[f] if f in reads else last

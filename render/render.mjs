@@ -18,7 +18,10 @@
 // 42 ms on every frame whatever its size or format. With that pacing off a screenshot takes 8-18 ms (1280x720 JPEG),
 // and each one still shows the frame just drawn (checked against the canvas's own pixels, frame by frame, on every
 // example). One Chrome per worker: tabs of one site share a renderer process, and the workers would take turns on its
-// main thread. Runs on puppeteer-core, with the Chrome puppeteer installs or MOODREEL_CHROME.
+// main thread. 2D canvas is drawn in software: on the GPU, shadows and blurs came out a level or two different from
+// one render to the next (invisible, but enough to flip a measurement on the edge); in software every render of a
+// film is the same, bit for bit. WebGL stays on the GPU. Runs on puppeteer-core, with the Chrome puppeteer installs
+// or MOODREEL_CHROME.
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
@@ -177,7 +180,7 @@ const executablePath = process.env.MOODREEL_CHROME || await (await import('puppe
 const browsers = [];
 async function launch() {
   const b = await puppeteer.launch({ executablePath, headless: true, args: ['--hide-scrollbars', '--force-color-profile=srgb',
-    '--disable-gpu-vsync', '--disable-frame-rate-limit'] });
+    '--disable-gpu-vsync', '--disable-frame-rate-limit', '--disable-accelerated-2d-canvas'] });
   browsers.push(b);
   return b;
 }

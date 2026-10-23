@@ -7,10 +7,10 @@ Each example film rendered, taken in as references, measured and written into a 
 | film | static values | failed | moves found | eases claimed right | eases claimed wrong | sketch motion claims passed | sections held |
 |---|---|---|---|---|---|---|---|
 | boot | 10/14 | cuts and transitions | 3/11 | 1 | 0 | 5/6 (9 unknown) | 4/5 |
-| first-light | 11/14 | — | 4/11 | 3 | 0 | 5/5 (9 unknown) | 5/5 |
+| first-light | 11/14 | — | 2/11 | 1 | 0 | 5/6 (5 unknown) | 5/5 |
 | morning | 9/13 | title weight | 12/24 | 0 | 0 | 4/4 (4 unknown) | 4/5 |
-| shipped | 10/13 | — | 6/11 | 0 | 0 | 5/5 (11 unknown) | 5/5 |
-| swiss-programme | 11/13 | — | 23/40 | 0 | 0 | 7/8 (6 unknown) | 5/5 |
+| shipped | 10/13 | — | 6/11 | 0 | 0 | 5/5 (10 unknown) | 5/5 |
+| swiss-programme | 12/13 | — | 24/40 | 0 | 0 | 10/10 (4 unknown) | 5/5 |
 
 Sections held: of the five STYLE.md sections the measurements speak for (§2 materials, §3 colour, §4 type, §5 motion, §6 camera and editing). §1 and §7-§11 (essence, sound, native moves, pitfalls, engine, variation) are the director's judgement and need a blind distillation of real references.
 
@@ -21,9 +21,9 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 | group | value | film | distilled | result |
 |---|---|---|---|---|
 | palette | ground | #140C05 | #150d06 (ΔE 0.3) | ✓ |
-| palette | ink | ['#FFB000', '#FFE3A0'] | #fae0a3 (ΔE 1.4) | ✓ |
-| palette | accent | none (tones of the hue) | #e6a31f | ✓ |
-| surface | grain (levels) | 0 | 2.11 | ✓ |
+| palette | ink | ['#FFB000', '#FFE3A0'] | #f8dea1 (ΔE 1.6) | ✓ |
+| palette | accent | none (tones of the hue) | #dd9c1e | ✓ |
+| surface | grain (levels) | 0 | 2.44 | ✓ |
 | surface | vignette | 0 | 0.0 | ✓ |
 | surface | halftone | none | — | ✓ |
 | surface | scanline period (design px) | 6 | 6.0 | ✓ |
@@ -40,7 +40,7 @@ Motion by the reader each move needs:
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
 | stretch | v1 | 2 | 0 | 0 | 0 | 0 | 0 |
-| wipe (typing) | v1 | 8 | 2 | 0 | 0 | 0 | 2 |
+| wipe (typing) | v1 | 8 | 2 | 0 | 0 | 1 | 1 |
 | scale | mvp | 1 | 1 | 1 | 0 | 0 | 0 |
 
 | element | prop | reader | film | measured | verdict | t50 err (f) |
@@ -53,7 +53,7 @@ Motion by the reader each move needs:
 | line4 | wipe | wipe (typing) | none 2.21-2.44s (linear) | — | missed | — |
 | line5 | wipe | wipe (typing) | none 2.54-2.77s (linear) | — | missed | — |
 | line6 | wipe | wipe (typing) | none 2.87-2.93s (linear) | — | missed | — |
-| title | wipe | wipe (typing) | none 4.00-4.40s (linear) | sine.out 4.04-4.54s | guess wrong | 0.2 |
+| title | wipe | wipe (typing) | none 4.00-4.40s (linear) | none 4.02-4.42s | guess right | 0.5 |
 | title | scale | scale | power2.inOut 4.60-6.20s (inOut) | power2.inOut 4.62-6.19s | claimed right | 0.1 |
 | picture | sy | stretch | power2.in 8.50-8.65s (in) | — | missed | — |
 
@@ -61,23 +61,23 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| entrance.duration | median within ±25% (at least a frame) | 1.354 | 1.562 | ✓ |
+| entrance.duration | median within ±25% (at least a frame) | 1.562 | 1.542 | ✓ |
 | entrance.ease_class | share of 'inOut' within ±20% | 1.0 | 0.0 | ? |
 | entrance.overshoot_share | within ±25% | 0.0 | 0.0 | ? |
-| exit.duration | median within ±25% (at least a frame) | 0.125 | 0.146 | ? |
+| exit.duration | median within ±25% (at least a frame) | 0.125 | 0.104 | ? |
 | exit.ease_class | share of 'None' within ±20% | None | None | ? |
 | exit.overshoot_share | within ±25% | None | None | ? |
-| move.duration | median within ±25% (at least a frame) | 0.104 | None | ? |
+| move.duration | median within ±25% (at least a frame) | 0.104 | 0.573 | ? |
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
-| exit_shorter | exits shorter than entrances | [0.125, 1.354] | [0.146, 1.562] | ✓ |
-| hold | median hold at least 80% of the reference's | 0.167 | 0.333 | ✓ |
-| shot_length | median within ±35% | 4.812 | 5.938 | ✓ |
-| transition_types | no transition the references don't use | ['dip'] | ['cut'] | ✗ |
-| density | within ±0.15 | 0.511 | 0.67 | ? |
+| exit_shorter | exits shorter than entrances | [0.125, 1.562] | [0.104, 1.542] | ✓ |
+| hold | median hold at least 80% of the reference's | 0.167 | 0.417 | ✓ |
+| shot_length | median within ±35% | 4.812 | 9.625 | ✗ |
+| transition_types | no transition the references don't use | ['dip'] | [] | ✓ |
+| density | within ±0.15 | 0.511 | 0.675 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e4.scale, e5.opacity, e14.scale, e16.x, e16.scale, e17.x, e18.x, e18.y, e18.scale, e19.x, e19.y, e19.scale, e20.x, e20.y, e20.scale, e20.rot, e21.x, e21.y, e21.scale, e22.y.
+Measured but not in the film: e5.opacity, e5.scale, e14.scale, e16.x, e16.scale, e17.x, e18.x, e18.y, e18.scale, e19.sy, e20.x, e20.y, e20.scale, e21.x, e21.y, e21.scale, e22.y.
 Left out of the truth: the raster flash after power-on (an afterglow, not a tween); the LOG strip's words (typed in two steps); the cursor's blink.
 
 ## first-light
@@ -88,63 +88,60 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 |---|---|---|---|---|
 | palette | ground | #F4EEE2 | #f4eee2 (ΔE 0.0) | ✓ |
 | palette | ink | #00838A | #087a7a (ΔE 4.4) | ✓ |
-| palette | accent | #FF7477 | #f16c69 (ΔE 3.7) | ✓ |
-| surface | grain (levels) | 4 | 3.23 | ✓ |
+| palette | accent | #FF7477 | #f06c69 (ΔE 3.8) | ✓ |
+| surface | grain (levels) | 4 | 3.265 | ✓ |
 | surface | vignette | 0 | 0.0 | ✓ |
 | surface | halftone period (design px) | 7 | 7.0 | ✓ |
-| surface | halftone angle (°) | 15 | 14.8 | ✓ |
-| type | title size (of the height) | 0.1398 | 0.1744 | ✓ |
+| surface | halftone angle (°) | 15 | 104.8 | ✓ |
+| type | title size (of the height) | 0.1398 | 0.1739 | ✓ |
 | type | title weight | [800] | 800 | ✓ |
 | motion | cuts and transitions | none | none | ✓ |
 | motion | drawings held on | 2 | 2 | ✓ |
 | kit eases | entrance class | out | unread | ? |
 | kit eases | exit class | linear | unread | ? |
-| kit eases | move class | None | unread | ? |
+| kit eases | move class | None | — | ? |
 
 Motion by the reader each move needs:
 
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
 | wipe (roller wipe) | v1 | 2 | 1 | 1 | 0 | 0 | 0 |
-| clip (the horizon) | v1 | 1 | 1 | 1 | 0 | 0 | 0 |
+| clip (the horizon) | v1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | stretch | v1 | 6 | 0 | 0 | 0 | 0 | 0 |
-| move | mvp | 1 | 1 | 1 | 0 | 0 | 0 |
+| move | mvp | 1 | 0 | 0 | 0 | 0 | 0 |
 | wipe (plate lift) | v1 | 1 | 1 | 0 | 0 | 0 | 1 |
 
 | element | prop | reader | film | measured | verdict | t50 err (f) |
 |---|---|---|---|---|---|---|
 | sea | wipe | wipe (roller wipe) | none 0.60-1.40s (linear) | none 0.60-1.40s | claimed right | 0.0 |
-| sun | y | clip (the horizon) | power2.out 1.50-3.50s (out) | power2.out 1.29-3.52s | claimed right | -3.9 |
+| sun | y | clip (the horizon) | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection0 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection1 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection2 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection3 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection4 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection5 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
-| swimmer | x | move | none 4.00-8.00s (linear) | none 4.12-8.02s | claimed right | 1.7 |
+| swimmer | x | move | none 4.00-8.00s (linear) | — | missed | — |
 | title | wipe | wipe (roller wipe) | none 8.50-9.00s (linear) | — | missed | — |
-| orange plate | wipe | wipe (plate lift) | none 10.50-11.00s (linear) | power4.in 10.77-10.85s | guess wrong | 2.2 |
+| orange plate | wipe | wipe (plate lift) | none 10.50-11.00s (linear) | power4.in 10.71-10.88s | guess wrong | 2.5 |
 
 The kit's motion replayed (`moodreel sketch`) and checked against the references (`motion-check`):
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| entrance.duration | median within ±25% (at least a frame) | 1.51 | 1.5 | ✓ |
+| entrance.duration | median within ±25% (at least a frame) | 1.615 | 1.583 | ✓ |
 | entrance.ease_class | share of 'linear' within ±20% | 0.5 | 0.0 | ? |
-| entrance.overshoot_share | within ±25% | 0.0 | 0.33 | ? |
-| exit.duration | median within ±25% (at least a frame) | 0.146 | 0.104 | ? |
-| exit.ease_class | share of 'linear' within ±20% | 1.0 | None | ? |
-| exit.overshoot_share | within ±25% | 0.0 | None | ? |
-| move.duration | median within ±25% (at least a frame) | 0.292 | None | ? |
-| move.ease_class | share of 'None' within ±20% | None | None | ? |
-| move.overshoot_share | within ±25% | None | None | ? |
-| exit_shorter | exits shorter than entrances | [0.146, 1.51] | [0.104, 1.5] | ✓ |
-| hold | median hold at least 80% of the reference's | 0.667 | 0.625 | ✓ |
+| entrance.overshoot_share | within ±25% | 0.0 | 0.0 | ? |
+| exit.duration | median within ±25% (at least a frame) | 0.333 | 0.625 | ✗ |
+| exit.ease_class | share of 'linear' within ±20% | 1.0 | 0.0 | ? |
+| exit.overshoot_share | within ±25% | 0.0 | 0.0 | ? |
+| exit_shorter | exits shorter than entrances | [0.333, 1.615] | [0.625, 1.583] | ✓ |
+| hold | median hold at least 80% of the reference's | 0.667 | 0.708 | ✓ |
 | transition_types | no transition the references don't use | [] | [] | ✓ |
-| density | within ±0.15 | 0.583 | 0.45 | ? |
+| density | within ±0.15 | 0.583 | 0.451 | ? |
 | stepping | drawings held on the same number of frames | 2 | 2 | ✓ |
 
-Measured but not in the film: e0.sx, e14.scale, e18.draw, e19.x.
+Measured but not in the film: e0.sx, e1.y, e4.x, e18.draw, e21.scale.
 Left out of the truth: the sky tints printed in one frame at 3.5 s (no tween to read); the registration kick at 9.5 s (a print artefact, not a tween).
 
 ## morning
@@ -155,12 +152,12 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 |---|---|---|---|---|
 | palette | ground | ['#0E3B43', '#17606B', '#1F8A96'] | #175f6b (ΔE 0.6) | ✓ |
 | palette | ink | #F4EBDD | #f2eadb (ΔE 0.8) | ✓ |
-| palette | accent | none (tones of the hue) | #6ebdc3 | ✓ |
-| surface | grain (levels) | 0 | 0.08 | ✓ |
+| palette | accent | none (tones of the hue) | #6dbcc3 | ✓ |
+| surface | grain (levels) | 0 | 0.09 | ✓ |
 | surface | vignette | 0 | 0.0 | ✓ |
 | surface | halftone | none | — | ✓ |
-| type | title size (of the height) | 0.213 | 0.21 | ✓ |
-| type | title weight | [900] | 700 | ✗ |
+| type | title size (of the height) | 0.213 | 0.2256 | ✓ |
+| type | title weight | [900] | 600 | ✗ |
 | motion | cuts and transitions | cut 4.00s, cut 8.00s | cut 4.00s, cut 8.00s | ✓ |
 | motion | drawings held on | 1 | 1 | ✓ |
 | kit eases | entrance class | out | — | ? |
@@ -171,8 +168,8 @@ Motion by the reader each move needs:
 
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
-| scale | mvp | 3 | 3 | 0 | 0 | 0 | 3 |
-| move | mvp | 15 | 6 | 0 | 0 | 5 | 1 |
+| scale | mvp | 3 | 3 | 0 | 0 | 2 | 1 |
+| move | mvp | 15 | 6 | 0 | 0 | 6 | 0 |
 | clip | v1 | 6 | 3 | 0 | 0 | 1 | 2 |
 
 | element | prop | reader | film | measured | verdict | t50 err (f) |
@@ -184,38 +181,38 @@ Motion by the reader each move needs:
 | title0 | y | clip | expo.out 1.00-1.50s (out) | — | missed | — |
 | zh0 | y | clip | expo.out 1.08-1.58s (out) | — | missed | — |
 | figure0 | y | move | sine.inOut 2.50-3.00s (inOut) | sine.inOut 2.50-2.98s | guess right | -0.2 |
-| figure0 | y | move | sine.inOut 3.00-3.50s (inOut) | sine.inOut 2.98-3.52s | guess right | 0.0 |
-| sun1 | scale | scale | expo.out 4.10-4.50s (out) | circ.inOut 4.00-4.31s | guess wrong | 0.4 |
+| figure0 | y | move | sine.inOut 3.00-3.50s (inOut) | expo.inOut 3.00-3.25s | guess right | -3.0 |
+| sun1 | scale | scale | expo.out 4.10-4.50s (out) | power4.out 4.12-4.42s | guess right | 0.5 |
 | head1 | x | move | expo.out 4.25-4.75s (out) | — | missed | — |
 | torso1 | x | move | expo.out 4.38-4.88s (out) | — | missed | — |
 | legs1 | x | move | expo.out 4.50-5.00s (out) | — | missed | — |
 | title1 | y | clip | expo.out 5.00-5.50s (out) | power1.inOut 4.96-5.27s | guess wrong | 1.6 |
 | zh1 | y | clip | expo.out 5.08-5.58s (out) | — | missed | — |
-| figure1 | y | move | sine.inOut 6.50-7.00s (inOut) | sine.inOut 6.52-6.96s | guess right | -0.2 |
-| figure1 | y | move | sine.inOut 7.00-7.50s (inOut) | sine.inOut 7.00-7.50s | guess right | 0.0 |
-| sun2 | scale | scale | expo.out 8.10-8.50s (out) | circ.inOut 8.00-8.31s | guess wrong | 0.4 |
+| figure1 | y | move | sine.inOut 6.50-7.00s (inOut) | sine.inOut 6.50-6.98s | guess right | -0.2 |
+| figure1 | y | move | sine.inOut 7.00-7.50s (inOut) | expo.inOut 7.00-7.25s | guess right | -3.0 |
+| sun2 | scale | scale | expo.out 8.10-8.50s (out) | power4.out 8.10-8.42s | guess right | 0.1 |
 | head2 | x | move | expo.out 8.25-8.75s (out) | — | missed | — |
 | torso2 | x | move | expo.out 8.38-8.88s (out) | — | missed | — |
 | legs2 | x | move | expo.out 8.50-9.00s (out) | — | missed | — |
-| title2 | y | clip | expo.out 9.00-9.50s (out) | expo.out 9.02-9.54s | guess right | 0.5 |
-| zh2 | y | clip | expo.out 9.08-9.58s (out) | back.out(4) 9.04-9.27s | guess wrong | -1.7 |
+| title2 | y | clip | expo.out 9.00-9.50s (out) | expo.out 9.04-9.56s | guess right | 1.1 |
+| zh2 | y | clip | expo.out 9.08-9.58s (out) | back.out(3) 9.04-9.25s | guess wrong | -1.6 |
 | figure2 | y | move | sine.inOut 10.50-11.00s (inOut) | sine.inOut 10.52-10.98s | guess right | 0.0 |
-| figure2 | y | move | sine.inOut 11.00-11.50s (inOut) | none 11.10-11.42s | guess wrong | 0.2 |
+| figure2 | y | move | sine.inOut 11.00-11.50s (inOut) | sine.inOut 11.00-11.50s | guess right | 0.0 |
 
 The kit's motion replayed (`moodreel sketch`) and checked against the references (`motion-check`):
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| move.duration | median within ±25% (at least a frame) | 0.438 | None | ? |
+| move.duration | median within ±25% (at least a frame) | 0.417 | None | ? |
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
-| hold | median hold at least 80% of the reference's | 0.292 | 0.354 | ✓ |
+| hold | median hold at least 80% of the reference's | 0.292 | 0.333 | ✓ |
 | shot_length | median within ±35% | 4.0 | 4.0 | ✓ |
 | transition_types | no transition the references don't use | ['cut'] | ['cut'] | ✓ |
-| density | within ±0.15 | 0.42 | 0.33 | ? |
+| density | within ±0.15 | 0.441 | 0.337 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e1.x, e1.y, e2.y, e2.scale, e3.y, e3.scale, e6.y, e9.x, e9.y, e10.y, e12.y, e18.y, e21.y.
+Measured but not in the film: e1.x, e1.y, e2.scale, e4.y, e5.y, e8.x, e8.y, e9.scale, e11.y, e12.y, e16.y, e16.scale, e19.y.
 Left out of the truth: the HUD: mono corners and progress ticks appear with each cut.
 
 ## shipped
@@ -225,10 +222,10 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 | group | value | film | distilled | result |
 |---|---|---|---|---|
 | palette | ground | #0B0D12 | #0e1017 (ΔE 1.8) | ✓ |
-| palette | ink | #E9EDF5 | #e4e8f1 (ΔE 1.2) | ✓ |
+| palette | ink | #E9EDF5 | #e5e9f2 (ΔE 1.0) | ✓ |
 | palette | accent | #B7F34A | #b3ed4a (ΔE 1.3) | ✓ |
-| surface | grain (levels) | 0 | 1.13 | ✓ |
-| surface | vignette | [0.5, 0.8] | 0.726 | ✓ |
+| surface | grain (levels) | 0 | 1.165 | ✓ |
+| surface | vignette | [0.5, 0.8] | 0.728 | ✓ |
 | surface | halftone | none | — | ✓ |
 | type | title size (of the height) | 0.2593 | 0.2139 | ✓ |
 | type | title weight | [600] | 500 | ✓ |
@@ -250,10 +247,10 @@ Motion by the reader each move needs:
 | element | prop | reader | film | measured | verdict | t50 err (f) |
 |---|---|---|---|---|---|---|
 | window | scale | scale | back.out(1.3) 0.70-1.00s (out+overshoot) | — | missed | — |
-| row0 | x | move | back.out(1.3) 0.75-1.00s (out+overshoot) | back.out(1.2) 0.69-1.00s | guess right | -1.3 |
-| row1 | x | move | back.out(1.3) 1.25-1.50s (out+overshoot) | power1.out 1.17-1.38s | guess wrong | -1.4 |
-| row2 | x | move | back.out(1.3) 1.75-2.00s (out+overshoot) | power1.out 1.71-1.88s | guess wrong | -0.7 |
-| row3 | x | move | back.out(1.3) 2.25-2.50s (out+overshoot) | power1.out 2.17-2.38s | guess wrong | -1.4 |
+| row0 | x | move | back.out(1.3) 0.75-1.00s (out+overshoot) | back.out(1.2) 0.71-0.98s | guess right | -0.9 |
+| row1 | x | move | back.out(1.3) 1.25-1.50s (out+overshoot) | power1.out 1.19-1.38s | guess wrong | -1.0 |
+| row2 | x | move | back.out(1.3) 1.75-2.00s (out+overshoot) | power1.out 1.75-1.88s | guess wrong | 0.0 |
+| row3 | x | move | back.out(1.3) 2.25-2.50s (out+overshoot) | power1.out 2.21-2.38s | guess wrong | -0.7 |
 | window | sy | stretch | power2.in 3.50-3.65s (in) | — | missed | — |
 | number | scale | scale | back.out(1.3) 4.20-4.50s (out+overshoot) | back.out(1.2) 4.19-4.50s | guess right | -0.2 |
 | number | sy | stretch | power2.in 6.50-6.65s (in) | — | missed | — |
@@ -265,24 +262,23 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| entrance.duration | median within ±25% (at least a frame) | 0.312 | 0.375 | ✓ |
+| entrance.duration | median within ±25% (at least a frame) | 0.312 | 0.312 | ✓ |
 | entrance.ease_class | share of 'out+overshoot' within ±20% | 1.0 | None | ? |
 | entrance.overshoot_share | within ±25% | 1.0 | None | ? |
-| entrance.overshoot | median within reference p25/1.5 .. p75*1.5 | [0.032, 0.072] | None | ? |
-| exit.duration | median within ±25% (at least a frame) | 0.167 | 0.146 | ? |
-| exit.ease_class | share of 'None' within ±20% | None | None | ? |
-| exit.overshoot_share | within ±25% | None | None | ? |
+| entrance.overshoot | median within reference p25/1.5 .. p75*1.5 | [0.033, 0.075] | None | ? |
+| exit.duration | median within ±25% (at least a frame) | 0.167 | 0.156 | ? |
+| exit.ease_class | share of 'None' within ±20% | None | 0.0 | ? |
+| exit.overshoot_share | within ±25% | None | 0.0 | ? |
 | move.duration | median within ±25% (at least a frame) | 0.208 | None | ? |
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
-| exit_shorter | exits shorter than entrances | [0.167, 0.312] | [0.146, 0.375] | ✓ |
-| stagger | a stagger within ±30% of the interval | 0.078 | None | ? |
-| hold | median hold at least 80% of the reference's | 0.5 | 0.417 | ✓ |
+| exit_shorter | exits shorter than entrances | [0.167, 0.312] | [0.156, 0.312] | ✓ |
+| hold | median hold at least 80% of the reference's | 0.583 | 0.542 | ✓ |
 | transition_types | no transition the references don't use | [] | [] | ✓ |
-| density | within ±0.15 | 0.233 | 0.4 | ? |
+| density | within ±0.15 | 0.225 | 0.317 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e0.y, e0.scale, e1.x, e1.y, e1.scale, e2.x, e2.y, e2.scale, e7.rot, e8.y, e9.x, e9.y, e9.scale, e10.x, e10.y, e10.scale, e11.opacity, e11.x, e11.y, e11.scale, e12.x, e12.scale, e13.x, e13.y, e13.scale, e14.y, e15.opacity, e15.x, e15.y, e15.scale, e16.y, e16.scale, e17.x, e17.y, e17.scale, e18.y, e20.y, e20.scale.
+Measured but not in the film: e0.x, e0.y, e0.scale, e1.y, e2.x, e2.y, e2.scale, e7.rot, e8.x, e8.y, e8.scale, e9.y, e10.x, e10.y, e10.scale, e11.opacity, e11.x, e11.y, e11.scale, e12.x, e12.scale, e13.x, e13.y, e13.scale, e14.y, e15.x, e15.y, e15.scale, e16.y, e16.scale, e17.x, e17.y, e17.scale, e18.y, e20.y, e20.scale.
 Left out of the truth: the checks (28 px): below the readers' size floor; the window's last squash to a dot (0.1 s, a line).
 
 ## swiss-programme
@@ -294,7 +290,7 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 | palette | ground | #EAE9E5 | #e9e8e4 (ΔE 0.2) | ✓ |
 | palette | ink | #111111 | #121212 (ΔE 0.2) | ✓ |
 | palette | accent | #E30613 | #e20713 (ΔE 0.2) | ✓ |
-| surface | grain (levels) | 0 | 1.6 | ✓ |
+| surface | grain (levels) | 0 | 1.805 | ✓ |
 | surface | vignette | 0 | 0.0 | ✓ |
 | surface | halftone | none | — | ✓ |
 | type | title size (of the height) | 0.0889 | 0.0761 | ✓ |
@@ -302,7 +298,7 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 | motion | cuts and transitions | none | none | ✓ |
 | motion | drawings held on | 1 | 1 | ✓ |
 | kit eases | entrance class | inOut | inOut | ✓ |
-| kit eases | exit class | inOut | unread | ? |
+| kit eases | exit class | inOut | inOut | ✓ |
 | kit eases | move class | inOut | unread | ? |
 
 Motion by the reader each move needs:
@@ -310,7 +306,7 @@ Motion by the reader each move needs:
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
 | clip | v1 | 14 | 4 | 0 | 0 | 1 | 3 |
-| stretch | v1 | 23 | 17 | 0 | 0 | 16 | 1 |
+| stretch | v1 | 23 | 18 | 0 | 0 | 18 | 0 |
 | camera on a flat ground | v1 | 1 | 1 | 0 | 0 | 1 | 0 |
 | move | mvp | 1 | 1 | 0 | 0 | 1 | 0 |
 | draw-on | v1 | 1 | 0 | 0 | 0 | 0 | 0 |
@@ -321,7 +317,7 @@ Motion by the reader each move needs:
 | caption1 | y | clip | bezier(0.7,0,0.2,1) 2.12-2.50s (inOut) | — | missed | — |
 | bar0 | sy | stretch | bezier(0.7,0,0.2,1) 2.62-3.00s (inOut) | expo.inOut 2.50-3.10s | guess right | 0.1 |
 | bar1 | sy | stretch | bezier(0.7,0,0.2,1) 2.88-3.25s (inOut) | expo.inOut 2.75-3.35s | guess right | 0.1 |
-| bar2 | sy | stretch | bezier(0.7,0,0.2,1) 3.12-3.50s (inOut) | expo.inOut 2.98-3.60s | guess right | -0.2 |
+| bar2 | sy | stretch | bezier(0.7,0,0.2,1) 3.12-3.50s (inOut) | power3.inOut 3.08-3.52s | guess right | 0.1 |
 | bar3 | sy | stretch | bezier(0.7,0,0.2,1) 3.38-3.75s (inOut) | expo.inOut 3.25-3.85s | guess right | 0.1 |
 | bar4 | sy | stretch | bezier(0.7,0,0.2,1) 3.62-4.00s (inOut) | power4.inOut 3.54-4.06s | guess right | 0.1 |
 | bar5 | sy | stretch | bezier(0.7,0,0.2,1) 3.88-4.25s (inOut) | expo.inOut 3.75-4.35s | guess right | 0.1 |
@@ -337,19 +333,19 @@ Motion by the reader each move needs:
 | square6 | y | clip | bezier(0.7,0,0.2,1) 7.38-7.75s (inOut) | — | missed | — |
 | square7 | y | clip | bezier(0.7,0,0.2,1) 7.50-7.88s (inOut) | — | missed | — |
 | caption2 | y | clip | bezier(0.7,0,0.2,1) 7.12-7.50s (inOut) | — | missed | — |
-| signal | x | move | none 8.50-10.00s (linear) | none 8.90-10.00s | guess right | 4.7 |
+| signal | x | move | none 8.50-10.00s (linear) | none 8.88-10.02s | guess right | 4.7 |
 | knife | draw | draw-on | none 10.50-10.75s (linear) | — | missed | — |
 | two | sy | stretch | bezier(0.7,0,0.2,1) 10.88-11.25s (inOut) | — | missed | — |
-| square0 | sy | stretch | bezier(0.7,0,0.2,1) 11.50-11.75s (inOut) | expo.inOut 11.38-11.85s | guess right | -0.0 |
-| square1 | sy | stretch | bezier(0.7,0,0.2,1) 11.53-11.78s (inOut) | circ.inOut 11.52-11.83s | guess right | 0.7 |
-| square2 | sy | stretch | bezier(0.7,0,0.2,1) 11.56-11.81s (inOut) | power4.inOut 11.58-11.96s | guess right | 2.2 |
-| square3 | sy | stretch | bezier(0.7,0,0.2,1) 11.59-11.84s (inOut) | power4.inOut 11.58-11.96s | guess right | 1.5 |
-| square4 | sy | stretch | bezier(0.7,0,0.2,1) 11.62-11.88s (inOut) | power1.in 11.71-11.85s | guess wrong | 1.7 |
-| square5 | sy | stretch | bezier(0.7,0,0.2,1) 11.66-11.91s (inOut) | circ.inOut 11.71-11.96s | guess right | 1.5 |
-| square6 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | — | missed | — |
-| square7 | sy | stretch | bezier(0.7,0,0.2,1) 11.72-11.97s (inOut) | — | missed | — |
+| square0 | sy | stretch | bezier(0.7,0,0.2,1) 11.50-11.75s (inOut) | expo.inOut 11.33-11.90s | guess right | -0.0 |
+| square1 | sy | stretch | bezier(0.7,0,0.2,1) 11.53-11.78s (inOut) | power4.inOut 11.52-11.96s | guess right | 2.2 |
+| square2 | sy | stretch | bezier(0.7,0,0.2,1) 11.56-11.81s (inOut) | power4.inOut 11.52-11.96s | guess right | 1.5 |
+| square3 | sy | stretch | bezier(0.7,0,0.2,1) 11.59-11.84s (inOut) | power4.inOut 11.52-11.96s | guess right | 0.7 |
+| square4 | sy | stretch | bezier(0.7,0,0.2,1) 11.62-11.88s (inOut) | power4.inOut 11.52-11.96s | guess right | -0.0 |
+| square5 | sy | stretch | bezier(0.7,0,0.2,1) 11.66-11.91s (inOut) | expo.inOut 11.60-12.00s | guess right | 0.7 |
+| square6 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | expo.inOut 11.60-12.00s | guess right | -0.0 |
+| square7 | sy | stretch | bezier(0.7,0,0.2,1) 11.72-11.97s (inOut) | expo.inOut 11.60-12.00s | guess right | -0.8 |
 | caption2 | sy | stretch | bezier(0.7,0,0.2,1) 11.56-11.81s (inOut) | — | missed | — |
-| bar0 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | expo.inOut 11.67-12.06s | guess right | 1.5 |
+| bar0 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | — | missed | — |
 | bar1 | sy | stretch | bezier(0.7,0,0.2,1) 11.75-12.00s (inOut) | circ.inOut 11.79-12.06s | guess right | 1.5 |
 | bar2 | sy | stretch | bezier(0.7,0,0.2,1) 11.81-12.06s (inOut) | expo.inOut 11.79-12.19s | guess right | 1.5 |
 | bar3 | sy | stretch | bezier(0.7,0,0.2,1) 11.88-12.12s (inOut) | expo.inOut 11.79-12.19s | guess right | -0.0 |
@@ -362,20 +358,20 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| entrance.duration | median within ±25% (at least a frame) | 0.5 | 0.583 | ✓ |
+| entrance.duration | median within ±25% (at least a frame) | 0.521 | 0.625 | ✓ |
 | entrance.ease_class | share of 'inOut' within ±20% | 1.0 | 1.0 | ✓ |
 | entrance.overshoot_share | within ±25% | 0.0 | 0.0 | ✓ |
-| exit.duration | median within ±25% (at least a frame) | 0.312 | 0.396 | ✗ |
-| exit.ease_class | share of 'inOut' within ±20% | 1.0 | None | ? |
-| exit.overshoot_share | within ±25% | 0.0 | None | ? |
+| exit.duration | median within ±25% (at least a frame) | 0.396 | 0.417 | ✓ |
+| exit.ease_class | share of 'inOut' within ±20% | 1.0 | 1.0 | ✓ |
+| exit.overshoot_share | within ±25% | 0.0 | 0.0 | ✓ |
 | move.duration | median within ±25% (at least a frame) | 0.312 | None | ? |
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
-| exit_shorter | exits shorter than entrances | [0.312, 0.5] | [0.396, 0.583] | ✓ |
-| hold | median hold at least 80% of the reference's | 0.833 | 0.833 | ✓ |
+| exit_shorter | exits shorter than entrances | [0.396, 0.521] | [0.417, 0.625] | ✓ |
+| hold | median hold at least 80% of the reference's | 0.833 | 0.875 | ✓ |
 | transition_types | no transition the references don't use | [] | [] | ✓ |
-| density | within ±0.15 | 0.447 | 0.261 | ? |
+| density | within ±0.15 | 0.447 | 0.236 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e1.sy, e10.rot, e11.sy, e12.sy, e13.sy, e14.wipe, e15.sy, e16.sy, e18.scale, e20.scale, e21.scale, e30.x, e30.y, e30.scale, e36.x, e36.scale.
+Measured but not in the film: e0.sy, e10.rot, e11.sy, e12.sy, e13.sy, e14.sy, e15.sy, e16.sy, e20.scale, e21.scale.
 Left out of the truth: the first dot (20 px) and the 1 px grid lines: below the readers' size floor.

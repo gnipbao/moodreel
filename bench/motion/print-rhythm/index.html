@@ -41,6 +41,11 @@ function val(el, prop, t, i = 0) {
     if (t >= start) v = a.from + (a.to - a.from) * ease(a.ease)(Math.min(1, (t - start) / a.d));
     else if (k === 0) v = a.from;
   });
+  for (const L of el.loops || []) {     // ambient: a sine about the value (or about `mid`), or a steady turn
+    if (L.prop !== prop) continue;
+    if (L.rate) v += L.rate * t;
+    else v = (L.mid ?? v) + L.amp * Math.sin(2 * Math.PI * (t / L.period + (L.phase || 0)));
+  }
   return v;
 }
 function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
@@ -112,6 +117,16 @@ function drawEl(el, t, alpha) {
     const p = el.points, len = p.slice(1).reduce((L, q, k) => L + Math.hypot(q[0] - p[k][0], q[1] - p[k][1]), 0);
     g.save(); g.globalAlpha = alpha; g.strokeStyle = el.color; g.lineWidth = el.width * sx; g.setLineDash([len * d * sx, len * sx]);
     g.beginPath(); p.forEach(([x, y], k) => k ? g.lineTo(x * sx, y * sx) : g.moveTo(x * sx, y * sx)); g.stroke(); g.restore(); return;
+  }
+  if (el.kind === 'particles') {        // seeded dots drifting at their own speeds, wrapping round their box
+    const [x0, y0, x1, y1] = el.box, w = x1 - x0, h = y1 - y0, mod = (a, n) => ((a % n) + n) % n;
+    el.ps ??= (r => Array.from({ length: el.count }, () => [r() * w, r() * h, el.vx[0] + r() * (el.vx[1] - el.vx[0]),
+      el.vy[0] + r() * (el.vy[1] - el.vy[0])]))(mulberry(el.seed));
+    g.save(); g.globalAlpha = alpha; g.fillStyle = el.color;
+    for (const [px, py, vx, vy] of el.ps) {
+      g.beginPath(); g.arc((x0 + mod(px + vx * t, w)) * sx, (y0 + mod(py + vy * t, h)) * sx, el.r * sx, 0, Math.PI * 2); g.fill();
+    }
+    g.restore(); return;
   }
   if (el.kind === 'counter') {          // its value printed as text, a tween of the number
     const [whole, frac] = val(el, 'value', t).toFixed(el.decimals).split('.');

@@ -26,18 +26,20 @@ through all the tweens whose class was read, so a style's own curve comes back a
 finds cuts, dissolves and fades through a colour, camera pushes and pans (and measures the elements in the world,
 not on the moving screen), drawings held on twos, and staggers.
 
-Scored on 11 code-rendered test films with known motion ([bench/motion](bench/motion/README.md)), each also as a
+Scored on 12 code-rendered test films with known motion ([bench/motion](bench/motion/README.md)), each also as a
 degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 
 | | found | t50 within 1 frame | ease direction right | eases named / named wrong | transitions |
 |---|---|---|---|---|---|
-| clean | 94% | 86% | 97% | 30 / 0 | 13/14 |
-| degraded | 92% | 88% | 86% | 9 / 0 | 13/14 |
+| clean | 96% | 85% | 96% | 30 / 0 | 13/14 |
+| degraded | 92% | 87% | 82% | 10 / 0 | 13/14 |
 
 Of the 15 moves the bench marks as beyond those readers, 13 are now found on the clean films: bars growing, an
 underline and an axis drawn on, a card turning as it grows (its `power3.out` named exactly), a line of type
 arriving letter by letter (11 letters, 0.04 s apart, each `power3.out`), and numbers counting (0 to 4,200 in
 `power3.out`, $0.0M to $12.5M in `sine.inOut`, timed to the frame; read by OCR when tesseract is installed).
+Ambient motion is read over whole shots: loops (a pulse, a bob, a spin, a breathing fade, each with its period and
+swing) and particle fields (count, size, speed, direction), all five right on both versions.
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
 
 ### The round trip
@@ -49,13 +51,16 @@ they were a user's references and compared with the values in their own code
 
 | film (style) | static values | moves found | eases named / wrong | sketch motion claims | sections held |
 |---|---|---|---|---|---|
-| swiss-programme (Swiss motion) | 11/13, nothing fails | 23 / 40 | 0 / 0 | 8 / 9 | 5 / 5 |
-| first-light (risograph) | 11/14, nothing fails | 4 / 11 | 3 / 0 | 6 / 6 | 5 / 5 |
-| shipped (dark keynote) | 10/13, nothing fails | 6 / 11 | 0 / 0 | 6 / 6 | 5 / 5 |
-| boot (ASCII CRT) | 10/14, the clear-screen cut missed | 3 / 11 | 1 / 0 | 6 / 7 | 4 / 5 |
+| swiss-programme (Swiss motion) | 12/13, nothing fails | 24 / 40 | 0 / 0 | 10 / 10 | 5 / 5 |
+| first-light (risograph) | 11/14, nothing fails | 2 / 11 | 1 / 0 | 5 / 6 | 5 / 5 |
+| shipped (dark keynote) | 10/13, nothing fails | 6 / 11 | 0 / 0 | 5 / 5 | 5 / 5 |
+| boot (ASCII CRT) | 10/14, the clear-screen cut missed | 3 / 11 | 1 / 0 | 5 / 6 | 4 / 5 |
 | morning (pictogram motion) | 9/13, the black capitals read as bold | 12 / 24 | 0 / 0 | 4 / 4 | 4 / 5 |
 
 Values that aren't "nothing fails" are left to the director (a curve the kit didn't read), never named wrong.
+Every render of a film is now the same bit for bit, so these numbers repeat from run to run; first-light's rising
+sun and swimmer start hidden (behind the horizon, off the edge), and whether their extrapolated start lands within
+a quarter second of the truth turns on a grey level, so they are counted as missed.
 Colours, surfaces, type and rhythm come back; so does the Swiss film's house curve, which has no GSAP name
 (`bezier(0.73,−0.03,0.18,1.04)` against `0.7,0,0.2,1`), and its page turn on a plain ground, read as a camera pan.
 "Sections held" counts the five STYLE.md sections the measurements speak for (materials, colour, type, motion,

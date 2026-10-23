@@ -1,0 +1,111 @@
+{
+ "name": "ambient",
+ "W": 1280,
+ "H": 720,
+ "fps": 30,
+ "dur": 6.0,
+ "events": [
+  {
+   "element": "title",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.4,
+   "t1": 1.0,
+   "dur": 0.6,
+   "ease": "power3.out",
+   "from": 180,
+   "to": 140,
+   "end_xy": [
+    640.0,
+    140.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "title",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.4,
+   "t1": 1.0,
+   "dur": 0.6,
+   "ease": "power3.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    140.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [],
+ "stepping": [],
+ "loops": [
+  {
+   "element": "pulse",
+   "shot": "A",
+   "prop": "scale",
+   "xy": [
+    300,
+    420
+   ],
+   "period": 1.2,
+   "amp": 0.12
+  },
+  {
+   "element": "bob",
+   "shot": "A",
+   "prop": "y",
+   "xy": [
+    640,
+    420
+   ],
+   "period": 2.0,
+   "amp": 18
+  },
+  {
+   "element": "spinner",
+   "shot": "A",
+   "prop": "rot",
+   "xy": [
+    980,
+    420
+   ],
+   "rate": 90
+  },
+  {
+   "element": "live",
+   "shot": "A",
+   "prop": "opacity",
+   "xy": [
+    300,
+    600
+   ],
+   "period": 1.6,
+   "amp": 0.35,
+   "mid": 0.65
+  }
+ ],
+ "particles": [
+  {
+   "element": "dust",
+   "shot": "A",
+   "count": 36,
+   "r": 5,
+   "box": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "vx": [
+    -12,
+    12
+   ],
+   "vy": [
+    -70,
+    -35
+   ]
+  }
+ ]
+}

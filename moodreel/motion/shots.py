@@ -221,6 +221,9 @@ def motion_runs(e: np.ndarray, shot: dict, fps: float) -> tuple[list[tuple[int, 
             j = i
             while j < s1 and m[j]:
                 j += 1
+            if j - i < MIN_RUN_FRAMES and e[i:j].max() < 2 * thr:
+                i = j                                     # a blip of noise just over the line: no motion
+                continue
             if runs and i - runs[-1][1] < gap:
                 runs[-1] = (runs[-1][0], j)
             else:

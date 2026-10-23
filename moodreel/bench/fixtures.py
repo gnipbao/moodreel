@@ -41,6 +41,17 @@ def counter(id_, size, color, x, y, anims, start=0, decimals=0, prefix="", suffi
             "sep": sep, "font": f"bold {size}px {FONT}", "color": color, "x": x, "y": y, "anims": anims}
 
 
+def loop(prop, period, amp, mid=None, phase=0.0):
+    """An ambient sine on `prop`: about its value, or about `mid` (opacity breathing between two levels)."""
+    return {"prop": prop, "period": period, "amp": amp, "phase": phase, **({"mid": mid} if mid is not None else {})}
+
+
+def particles(id_, count, color, box, vx, vy, r, seed):
+    """`count` dots of radius `r` drifting at speeds drawn from `vx`, `vy` (px/s ranges), wrapping round `box`."""
+    return {"id": id_, "kind": "particles", "count": count, "color": color, "box": list(box), "vx": list(vx),
+            "vy": list(vy), "r": r, "seed": seed, "x": 0, "y": 0, "anims": []}
+
+
 def fade_rise(t, d, ease, y, dy=40):
     return [A("y", y + dy, y, t, d, ease), A("opacity", 0, 1, t, d, ease)]
 
@@ -184,6 +195,18 @@ def counters():
         "transitions": []}
 
 
+def ambient():
+    return {"name": "ambient", "W": 1280, "H": 720, "fps": 30, "dur": 6.0, "shots": [
+        {"id": "A", "t0": 0.0, "t1": 6.0, "bg": {"kind": "flat", "c": "#14161c"}, "elements": [
+            particles("dust", 36, "#8fa6bf", (0, 0, 1280, 720), (-12, 12), (-70, -35), 5, 5),
+            text("title", "AMBIENT", 64, "#f2efe6", 640, 140, fade_rise(0.4, 0.6, "power3.out", 140, 40)),
+            {**circle("pulse", 44, "#ff6b6b", 300, 420, []), "loops": [loop("scale", 1.2, 0.12)]},
+            {**rect("bob", 180, 110, "#4dd4ff", 640, 420, [], r=16), "loops": [loop("y", 2.0, 18)]},
+            {**rect("spinner", 160, 20, "#ffc94d", 980, 420, [], r=10), "loops": [{"prop": "rot", "rate": 90}]},
+            {**text("live", "LIVE", 40, "#f2efe6", 300, 600, []), "loops": [loop("opacity", 1.6, 0.35, mid=0.65)]}]}],
+        "transitions": []}
+
+
 def busy():
     chips = [rect(f"chip{i}", 200, 60, c, 250 + i * 260, 620, [A("y", 790, 620, 0.3 + i * 0.07, 0.5, "circ.out")], r=30)
              for i, c in enumerate(["#ff6b6b", "#feca57", "#48dbfb", "#1dd1a1"])]
@@ -221,7 +244,7 @@ def print_rhythm():
 
 
 FIXTURES = [mg_basic, keynote_dark, vertical_social, camera_push, on_twos, dips_and_drifts, dataviz_bars, letters,
-            busy, print_rhythm, counters]
+            busy, print_rhythm, counters, ambient]
 
 PAGE = (Path(__file__).with_name("fixture_page.html")).read_text(encoding="utf-8")
 
@@ -274,8 +297,16 @@ def truth(spec) -> dict:
                            "to": a["to"], "end_xy": [spec["W"] / 2, spec["H"] / 2], "scope": "mvp"})
     stepping = [{"shot": s["id"], "t0": s["t0"], "t1": s["t1"], "on": round(spec["fps"] / s["step"])}
                 for s in spec["shots"] if s.get("step")]
+    # ambient motion, scored apart from the tweens: loops by element and prop, particles by their field
+    loops = [{"element": el["id"], "shot": shot["id"], "prop": L["prop"], "xy": [el["x"], el["y"]],
+              **({"rate": L["rate"]} if L.get("rate") else {k: L[k] for k in ("period", "amp", "mid") if k in L})}
+             for shot in spec["shots"] for el in shot["elements"] for L in el.get("loops", [])]
+    fields = [{"element": el["id"], "shot": shot["id"], "count": el["count"], "r": el["r"], "box": el["box"],
+               "vx": el["vx"], "vy": el["vy"]}
+              for shot in spec["shots"] for el in shot["elements"] if el["kind"] == "particles"]
     return {"name": spec["name"], "W": spec["W"], "H": spec["H"], "fps": spec["fps"], "dur": spec["dur"],
-            "events": events, "transitions": spec["transitions"], "stepping": stepping}
+            "events": events, "transitions": spec["transitions"], "stepping": stepping,
+            **({"loops": loops} if loops else {}), **({"particles": fields} if fields else {})}
 
 
 def write(root: Path, names=None) -> list[Path]:
