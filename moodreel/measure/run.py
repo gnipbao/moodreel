@@ -120,7 +120,11 @@ def report(intake: dict, m: dict) -> str:
           f"Grain {sm['grain']} ({_fmt(tex['grain'])} levels), mottle {sm['mottle']} ({_fmt(tex['mottle'])}), "
           f"vignette {sm['vignette']} ({_fmt(tex['vignette'])}), edges {sm['edges']} (sharpness {_fmt(tex['edge_sharpness'], 3)}), "
           f"halftone {'yes ' + json.dumps(tex['halftone']) if tex['halftone'] else 'no'}, "
-          f"scanlines {'yes ' + json.dumps(tex['scanlines']) if tex['scanlines'] else 'no'}.", ""]
+          f"scanlines {'yes ' + json.dumps(tex['scanlines']) if tex['scanlines'] else 'no'}"
+          + (f"; pixel art in {tex['pixel']['share']:.0%} of the pictures: {tex['pixel']['native_width']} px wide natively "
+             f"(one pixel = {tex['pixel']['scale_of_width']:.2%} of the width), {tex['pixel']['palette_size']} colours, "
+             f"{'ordered dither' if tex['pixel']['dither'] else 'no dither'} ({tex['pixel']['dither_share']:.0%} checkerboard)"
+             if tex.get("pixel") else "") + ".", ""]
     if lay:
         mg = lay["margins"]
         L += ["## Layout (observed, medians)", "",

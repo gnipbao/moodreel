@@ -192,7 +192,9 @@ each style's `STYLE.md` (the invariants a director follows), `DEMO.md` (how its 
 spy titles…); 36 need capabilities that come later: painterly brush engines, 3D, pixel art, a score that drives
 the picture, or real footage and data. The score is now here (`moodreel score`: a film's tempo grid, sections and
 cues, drawn as music by deterministic synthesised instruments, with the cue times for the picture to land on), which
-makes three more styles ready: game show, microgame and 1930s rubber hose. Only the documents are imported; Moodreel re-implements the techniques.
+makes three more styles ready: game show, microgame and 1930s rubber hose. So is pixel art (`kit/pixel.js`: an
+indexed framebuffer shown through a palette, scaled by whole pixels, with Bayer dither and palette tables; the
+measurement reads a reference's pixel scale, native size, palette and dither), which makes the 16-bit pixel RPG ready. Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 
