@@ -58,9 +58,15 @@ def _ease_for(role: dict | None) -> dict | None:
         dur = curve.get("duration") or dur
         source = f"one curve through {curve['tweens']} tweens whose class was read"
     else:
-        return {"ease": None, "duration": dur, "count": count,
-                "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
-                "vocabulary": role.get("vocabulary")}
+        out = {"ease": None, "duration": dur, "count": count,
+               "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
+               "vocabulary": role.get("vocabulary")}
+        # what was read, too seldom to stand for the role: a lead for the director, never used by the helpers
+        if classes or curve:
+            out["seen"] = {"classes": classes, "of": count,
+                           **({"curve": "bezier({},{},{},{})".format(*curve["bezier"]), "curve_class": curve["class"]}
+                              if curve else {})}
+        return out
     out = {"ease": name, "class": eases.shape_class(name), "duration": dur, "bezier": bezier, "source": source,
            "overshoot_share": role.get("overshoot_share"), "count": count}
     if role.get("scale_from"):

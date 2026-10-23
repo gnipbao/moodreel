@@ -60,7 +60,8 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   them (`curve`, with the number of tweens and the residual). A house curve with no GSAP name (a snap that starts
   late and lands hard, say) comes back this way. The kit takes a family read at least twice; else this curve when
   the class was read at least twice; else it keeps the timing, says `unread`, and the curve is yours to take from
-  the evidence, marked `inferred`.
+  the evidence, marked `inferred`. An unread role still lists what was `seen` (the classes read, out of how many
+  moves, and a curve if one was fitted): a lead to check against the strips, not a measurement of the role.
 - **One-axis changes** have a `reading`: `stretch` (a bar growing from its base, a word collapsing to its midline:
   `sy` / `sx`, the share shown, with its `anchor`), `clip` (type rising out of a slot, a disc rising behind a
   line: the element's position from the edge that moves with it, labelled `clip-rise`) and `wipe` (a mask or a
