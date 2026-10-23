@@ -49,6 +49,22 @@
 
 运动评测见 [bench/motion/README.md](bench/motion/README.md)。
 
+## 交给 AI 导演使用
+
+Moodreel 设计为由 agent 担任导演来驱动（Claude Code、Codex 等能读 `SKILL.md` 的 agent）。以可编辑模式安装命令行
+（这样它始终能找到本仓库的渲染器、kit 和风格库），再链接 skill：
+
+```bash
+uv tool install --editable .
+```
+
+```bash
+ln -s "$PWD/skills/moodreel" ~/.claude/skills/moodreel
+```
+
+然后直接说："把这些参考蒸馏成一个风格包"、"用我的〈风格〉做一个 20 秒的发布片，讲 X"、"有哪些风格？"。
+导演的流程、确认节点和规则见 [skills/moodreel/SKILL.md](skills/moodreel/SKILL.md)。
+
 ## 致谢
 
 Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)、

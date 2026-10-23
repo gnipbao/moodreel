@@ -1,0 +1,52 @@
+# Primitives and recipes
+
+The kit (`kit/`, copied into every project and film) and how the common materials and moves of flat 2D styles are
+built with it. Write a style's own modules next to these when it needs more (a woodcut carver, a riso print pass);
+§10 of its STYLE.md points to them.
+
+## Modules
+
+| Module | Exports |
+|---|---|
+| `stage.js` | `stage({...})`, `texts(fn)` |
+| `eases.js` | `ease(name)` (GSAP names), `bezier(x1, y1, x2, y2)` |
+| `core.js` | `clamp`, `lerp`, `tween(t, at, dur, ease)`, `value(t, at, dur, from, to, ease)`, `keys([[t, v, ease]…])`, `stagger(at, interval, i)`, `step(t, rate)`, `rng(seed)`, `hash(n)`, `noise1(x)` |
+| `texture.js` | `paper(w, h, {color, mottle, fibres, seed})`, `grain(g, amount, frame, {ground})`, `vignette(g, w, h, strength)`, `screen(g, {period, angle, color, dot})`, `scanlines(g, period, strength)`, `misregister(g, draw, layers)` |
+| `text.js` | `fit(g, text, font, width)`, `wrap(g, text, width)`, `glyphs(g, text, x)` |
+| `tokens.js`, `motion.js` | the style's measured values, `enter`, `exit`, `move` |
+
+## Recipes
+
+**Flat ground with paper.** `g.drawImage(paper(W, H, { color: PALETTE.ground, mottle: TEXTURE.mottle }), 0, 0)` once per
+frame (cached); fibres only when the references show them.
+
+**Halftone fill.** `g.fillStyle = screen(g, { period: TEXTURE.halftone.period_px, angle: 45, color: PALETTE.ink })`,
+then fill any path. Two screens at different angles overprinted with `misregister` give a two-colour print.
+
+**Riso / screen-print misregistration.** `misregister(g, (g, ink) => { g.fillStyle = ink; g.fill(shape) },
+[{ color: '#ff48b0', dx: 0, dy: 0 }, { color: '#ffe800', dx: 5, dy: 4 }])`; keep offsets fixed per shot (seeded), not
+per frame, unless the style shimmers.
+
+**Entrance (rise and fade).** `const p = enter(t, at, i); g.globalAlpha = p; y = y0 + (1 - p) * MOTION.enter.travel * H`.
+For a scale-pop, `s = lerp(MOTION.enter.scale_from, 1, p)` with the style's back.out.
+
+**Staggered group.** `items.forEach((it, i) => draw(it, enter(t, at, i)))`: `enter` applies `MOTION.stagger.interval`;
+order the items as `MOTION.stagger.order` says (left-to-right, top-to-bottom).
+
+**Exit.** `1 - exit(t, at)` as opacity, or a slide out through the frame edge; exits are usually shorter and ease-in.
+
+**Wipe or mask reveal.** `g.save(); g.beginPath(); g.rect(x, y, w * tween(t, at, d, ease), h); g.clip(); draw(); g.restore()`.
+
+**Line draw-on.** `g.setLineDash([len * p, len]); g.stroke(path)` with `p = tween(...)`, length from the path.
+
+**Per-letter text.** `glyphs(g, text, x)` gives each glyph's centre; animate glyph `k` with `enter(t, at + k * 0.03)`.
+
+**Counter.** `Math.round(value(t, at, d, 0, 4200, 'power3.out')).toLocaleString()`; report the final text in TEXTS.
+
+**Camera push.** One transform for the world: `g.translate(W / 2 + panX, H / 2); g.scale(z, z); g.translate(-W / 2, -H / 2)`
+with `z = value(t, at, d, 1, 1.12, 'sine.inOut')`; draw the ground oversized so the edges never show.
+
+**Dissolve / dip.** Draw the outgoing shot, then the incoming one with `globalAlpha = tween(...)`; for a dip, a full-frame
+rectangle of the dip colour whose alpha rises then falls around the cut.
+
+**On twos.** `const tt = step(t, 12)` for drawings at 24 fps; the camera keeps `t`.

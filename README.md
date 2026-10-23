@@ -117,6 +117,24 @@ Build, render and score the test films:
 uv run moodreel bench make && uv run moodreel bench render && uv run moodreel bench motion
 ```
 
+## Use it with an agent
+
+Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
+`SKILL.md`). Install the command line in editable mode, so it keeps finding the renderer, kit and styles in this
+checkout, and link the skill:
+
+```bash
+uv tool install --editable .
+```
+
+```bash
+ln -s "$PWD/skills/moodreel" ~/.claude/skills/moodreel
+```
+
+Then ask in plain words: "distill the style of these references into a style pack", "make a 20-second launch film
+about X in my <style> style", "which styles are there?". [skills/moodreel/SKILL.md](skills/moodreel/SKILL.md) holds
+the director's flows, gates and rules.
+
 ## Style library
 
 [`styles/`](styles/README.md) holds 59 styles imported from [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar):
@@ -131,6 +149,7 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
 | `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, pack), `film/`, `library.py`, `bench/` (test films and scorer), `cli.py` |
+| `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |
