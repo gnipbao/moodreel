@@ -17,11 +17,11 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from .video import Clip
+from ..video import Clip
 
 DIFF_THR = 28.0          # colour distance (0-255, max channel) that marks a changed or foreground pixel
-MIN_AREA = 0.0012        # of the frame
-GROUP_PX = 0.022         # closing kernel as a fraction of width: letters of one word join, cards 20 px apart don't
+MIN_AREA = 0.0004        # of the frame: a dot 16 px across in 1280
+GROUP_PX = 0.012         # closing kernel as a fraction of width: letters of a word join, a label 20 px above a bar doesn't
 SCALES = np.exp(np.linspace(np.log(0.55), np.log(1.15), 21))
 MIN_NCC, MIN_ALPHA = 0.55, 0.08
 
@@ -55,7 +55,32 @@ def _masks(P, Q, w):
             out.append(("change", q_fg))
         else:                                   # moved: follow where it arrived back to where it left, on raw pixels
             out += [("move", m) for m in _split(q_fg & ~p_fg, area_min)]
-    return out
+    return _pair_moves(out, P, Q)
+
+
+def _pair_moves(regions, P, Q):
+    """An element that travels further than its own size leaves two separate regions: where it was (P only) and
+    where it is (Q only). A pair of the same size, shape and colour is one element moving, tracked on raw pixels."""
+    def desc(kind, m):
+        src = Q if kind == "appear" else P
+        x, y, bw, bh = _box(m)
+        return m.sum(), bw, bh, src[m].mean(axis=0)
+    appear = [i for i, (k, _) in enumerate(regions) if k == "appear"]
+    gone = [i for i, (k, _) in enumerate(regions) if k == "disappear"]
+    pairs = []
+    for i in appear:
+        ai, wi, hi, ci = desc(*regions[i])
+        for j in gone:
+            aj, wj, hj, cj = desc(*regions[j])
+            if (0.6 < ai / aj < 1.6 and 0.7 < wi / wj < 1.4 and 0.7 < hi / hj < 1.4
+                    and np.abs(ci - cj).max() < 30):
+                pairs.append((float(np.abs(ci - cj).max()), i, j))
+    taken, out = set(), []
+    for _, i, j in sorted(pairs):
+        if i not in taken and j not in taken:
+            taken |= {i, j}
+            out.append(("move", regions[i][1]))
+    return out + [r for k, r in enumerate(regions) if k not in taken]
 
 
 def _split(mask, area_min):
@@ -102,9 +127,12 @@ def _follow(clip: Clip, bg, T, tbox, frames):
                                cv2.BORDER_REPLICATE if raw else cv2.BORDER_CONSTANT, value=0)
         vel = np.subtract(pos[-1], pos[-2]) if len(pos) > 1 else np.zeros(2)
         pcx, pcy = np.add(pos[-1], vel)
-        reach = (0.06 * clip.w if len(pos) < 3 else 0.015 * clip.w) + 1.6 * float(np.hypot(*vel))
+        reach = (0.06 * clip.w if len(pos) < 3 else 0.015 * clip.w) + 2.5 * float(np.hypot(*vel))
+        # cut by the frame edge, a smaller copy of the template fits the visible part better than the true size
+        # does: hold the scale until the element is whole again
+        clipped = (pcx - tw * s / 2 < 0 or pcy - th * s / 2 < 0 or pcx + tw * s / 2 > clip.w or pcy + th * s / 2 > clip.h)
         per_scale = []
-        for k in s * SCALES:
+        for k in s * (SCALES if not clipped else np.array([1.0])):
             sw, sh = int(round(tw * k)), int(round(th * k))
             if min(sw, sh) < 6 or k > 3:
                 per_scale.append(None)
@@ -125,7 +153,7 @@ def _follow(clip: Clip, bg, T, tbox, frames):
             break
         _, i = max(scored)
         mx, k, res, lx, ly, X0, Y0, Ts, sw, sh = per_scale[i]
-        if 0 < i < len(SCALES) - 1 and per_scale[i - 1] and per_scale[i + 1]:
+        if not clipped and 0 < i < len(SCALES) - 1 and per_scale[i - 1] and per_scale[i + 1]:
             d = _para(per_scale[i - 1][0], mx, per_scale[i + 1][0])
             k = float(np.exp(np.log(k) + d * (np.log(SCALES[1]) - np.log(SCALES[0]))))
         px = lx + _para(res[ly, lx - 1], res[ly, lx], res[ly, lx + 1]) if 0 < lx < res.shape[1] - 1 else lx
@@ -154,11 +182,23 @@ def track_run(clip: Clip, shot: dict, run: tuple[int, int], next_start: int | No
     of an ease-out, and a fit needs to see the levels it starts from and settles on."""
     m0, m1 = run
     pre, settle = int(round(0.2 * clip.fps)), int(round(0.3 * clip.fps))
-    p = max(shot["start"], prev_end if prev_end is not None else 0, m0 - 1 - pre)
-    q = min(m1 - 1 + settle, (next_start - 1) if next_start else shot["end"] - 1, shot["end"] - 1)
-    P, Q = clip.frames[p].astype(np.float32), clip.frames[q].astype(np.float32)
+    limit = min((next_start - 1) if next_start else shot["end"] - 1, shot["end"] - 1)
+    first = max(shot["start"], prev_end if prev_end is not None else 0)
+    p = max(first, m0 - 1 - pre)
+    q = min(m1 - 1 + settle, limit)
+    # each rest is the median of up to three frames inside it: grain and codec noise differ frame to frame and
+    # would otherwise speckle the difference between the rests and bridge separate elements
+    rest = lambda a, b: np.median(clip.frames[a:b + 1].astype(np.float32), axis=0)  # noqa: E731
+    P, Q = rest(max(first, p - 2), p), rest(q, min(limit, q + 2))
+    regions = _masks(P, Q, clip.w)
+    # a slow fade or a long ease-out keeps changing after the energy has dropped: settle where the changed
+    # regions stop changing, so the template is the element at rest
+    q2 = _settled(clip, regions, m1 - 1, limit)
+    if q2 > q:
+        q, Q = q2, rest(q2, min(limit, q2 + 2))
+        regions = _masks(P, Q, clip.w)
     tracks = []
-    for kind, mask in _masks(P, Q, clip.w):
+    for kind, mask in regions:
         box = _box(mask)
         if kind == "disappear":
             T, tbox = _template(P, Q, mask, box)
@@ -173,7 +213,94 @@ def track_run(clip: Clip, shot: dict, run: tuple[int, int], next_start: int | No
         tracks.append({"kind": kind, "shot": shot["id"], "run": [m0, m1], "p": p, "q": q,
                        "box": [x * clip.scale, y * clip.scale, bw * clip.scale, bh * clip.scale],
                        "tbox": [v * clip.scale for v in tbox], "readings": readings})
-    return _dedupe(tracks)
+    return group_rigid(_dedupe(tracks), clip.scale)
+
+
+def _settled(clip: Clip, regions, start: int, limit: int, still=0.6, hold=3) -> int:
+    """First frame from `start` after which the changed regions hold still for `hold` frames (mean change in grey
+    levels below `still`), or `limit`."""
+    if not regions or start >= limit:
+        return min(start, limit)
+    union = np.zeros(regions[0][1].shape, np.uint8)
+    for _, m in regions:
+        union |= m.astype(np.uint8)
+    union = cv2.dilate(union, np.ones((9, 9), np.uint8)) > 0
+    gray = lambda f: cv2.cvtColor(clip.frames[f], cv2.COLOR_RGB2GRAY).astype(np.float32)[union]  # noqa: E731
+    quiet, prev = 0, gray(start)
+    for f in range(start + 1, limit + 1):
+        cur = gray(f)
+        quiet = quiet + 1 if np.abs(cur - prev).mean() < still else 0
+        if quiet >= hold:
+            return f - hold
+        prev = cur
+    return limit
+
+
+def _rigid(a, b) -> bool:
+    """Do two tracks move as one body? Same scale and opacity over time, and their offset scales with them
+    (glyphs of a word that pops, words of a title that slides)."""
+    if a["kind"] != b["kind"]:
+        return False
+    common = [f for f in a["readings"] if f in b["readings"] and a["readings"][f]["ok"] and b["readings"][f]["ok"]]
+    if len(common) < 5:
+        return False
+    rest = a["q"] if a["kind"] != "disappear" else a["p"]
+    rest = rest if rest in common else (max(common) if a["kind"] != "disappear" else min(common))
+    ra, rb = a["readings"][rest], b["readings"][rest]
+    off0 = np.array([ra["cx"] - rb["cx"], ra["cy"] - rb["cy"]])
+    tol = max(3.0, 0.03 * float(np.hypot(*off0)))
+
+    def moving(r, r0):
+        return abs(r["s"] - r0["s"]) > 0.02 or abs(r["a"] - r0["a"]) > 0.05 or \
+            float(np.hypot(r["cx"] - r0["cx"], r["cy"] - r0["cy"])) > 2
+    # judged where something moves: two cards at rest agree trivially, whenever each one popped
+    active = [f for f in common if moving(a["readings"][f], ra) or moving(b["readings"][f], rb)]
+    if len(active) < 4:
+        return False
+    good = 0
+    for f in active:
+        x, y = a["readings"][f], b["readings"][f]
+        s = (x["s"] + y["s"]) / 2
+        off = np.array([x["cx"] - y["cx"], x["cy"] - y["cy"]])
+        good += (abs(x["s"] - y["s"]) <= 0.06 and abs(x["a"] - y["a"]) <= 0.15
+                 and float(np.hypot(*(off - s * off0))) <= tol)
+    return good >= 0.8 * len(active)
+
+
+def group_rigid(tracks, scale: float):
+    """Merge tracks that move as one body into a single element (union box, mean centre, median scale)."""
+    parent = list(range(len(tracks)))
+    find = lambda i: i if parent[i] == i else find(parent[i])  # noqa: E731
+    for i in range(len(tracks)):
+        for j in range(i + 1, len(tracks)):
+            if find(i) != find(j) and _rigid(tracks[i], tracks[j]):
+                parent[find(j)] = find(i)
+    groups = {}
+    for i, t in enumerate(tracks):
+        groups.setdefault(find(i), []).append(t)
+    out = []
+    for g in groups.values():
+        if len(g) == 1:
+            out.append(g[0])
+            continue
+        x0 = min(t["box"][0] for t in g)
+        y0 = min(t["box"][1] for t in g)
+        x1 = max(t["box"][0] + t["box"][2] for t in g)
+        y1 = max(t["box"][1] + t["box"][3] for t in g)
+        frames = sorted(set().union(*(t["readings"] for t in g)))
+        readings = {}
+        for f in frames:
+            rs = [t["readings"][f] for t in g if f in t["readings"]]
+            ok = [r for r in rs if r["ok"]]
+            if len(ok) * 2 < len(g):
+                readings[f] = {**rs[0], "ok": False}
+                continue
+            readings[f] = {"cx": float(np.mean([r["cx"] for r in ok])), "cy": float(np.mean([r["cy"] for r in ok])),
+                           "s": float(np.median([r["s"] for r in ok])), "a": float(np.median([r["a"] for r in ok])),
+                           "ncc": float(min(r["ncc"] for r in ok)), "ok": True, "edge": any(r.get("edge") for r in ok)}
+        out.append({**g[0], "box": [x0, y0, x1 - x0, y1 - y0], "tbox": [x0, y0, x1 - x0, y1 - y0],
+                    "readings": readings, "parts": len(g)})
+    return out
 
 
 def _dedupe(tracks):
@@ -210,8 +337,8 @@ def series(clip: Clip, track: dict) -> dict:
         a = np.where(np.isnan(a), 0.0, a)
     vis = ok & (a > 0.15)
     get = lambda k: np.array([rd[f][k] if vis[i] else np.nan for i, f in enumerate(frames)])  # noqa: E731
-    s = get("s")
     edge = np.array([bool(rd[f].get("edge")) if ok[i] else False for i, f in enumerate(frames)])
+    s = np.where(edge, np.nan, get("s"))                      # a scale read off a clipped element isn't one
     w = np.where(vis, np.clip(a, 0.05, 1) ** 2, 0.0)
     # trustworthy opacity: big enough, well matched, fully inside the frame, actually in between
     good_a = vis & (np.nan_to_num(s) >= 0.3) & ~edge & np.array([rd[f]["ncc"] >= 0.75 if ok[i] else False

@@ -147,6 +147,7 @@ STYLE.md 只写对每部片都成立的规则；故事、镜头表、配乐结�
 | **layout** | 内容掩膜 → 边距、密度、居中程度；元素左边缘聚类 → 栅格列数；文字块位置分布 | §4、§6 |
 | **type** | 导演读字（OCR）并判断字体类型、字重、大小写、字距；代码测文字块高度占画面高度的比例；用候选 OFL 字体渲染同样的文字，与参考裁切比对，选最接近的字体 | §4、kit/tokens.js |
 | **motion** | motionx：镜头、硬切、溶解、运动段、元素跟踪、缓动拟合、语法汇总。MVP 新增：一拍二检测（运动段内与上一帧完全相同的帧占比和周期）；镜头运动（背景有纹理时 ORB 配准，扁平背景时由所有元素的共同运动反推） | §5、§6、§8、kit/motion.js |
+| **motion（白盒）** | 参考本身是网页、HyperFrames 或 Remotion 工程，能拿到 URL 或源码时：在渲染器里逐帧读取 DOM 的计算样式和动画时间线（GSAP / Web Animations），直接得到精确的 tween 参数，不需要从像素反推。产出格式和像素测量一致，两条路可以互相校验 | 同上 |
 | **rhythm** | 有音轨时测节拍和起音，统计剪辑点和元素 t50 落在节拍 ±1 帧内的比例（判断是否卡点） | §5、§7 |
 
 每个数都标明观测 / 推导 / 推断；测不出来的写 `unknown`，`unknown` 不能写成规则。
@@ -244,7 +245,7 @@ moodreel/
 ├── moodreel/                    Python 包
 │   ├── intake.py  sheet.py
 │   ├── measure/   palette.py texture.py layout.py type.py rhythm.py
-│   │              motion/ ← research/motion-spike/motionx 加固后迁入
+│   │              motion/          已实现：镜头、转场、镜头运动、元素跟踪、缓动拟合、语法汇总
 │   ├── check/     frame.py motion.py readtime.py
 │   ├── pack/      kit.py library.py
 │   └── cli.py
@@ -253,8 +254,7 @@ moodreel/
 ├── styles/                      内置风格库（已导入 59 套）
 ├── scripts/import_lemo_styles.py 已实现
 ├── skills/moodreel/             见 §9
-├── bench/                       运动测试片 + 往返测试
-├── research/motion-spike/       原型（冻结）
+├── bench/motion/                已实现：10 条运动测试片 + REPORT.md
 └── docs/
 ```
 
@@ -273,12 +273,14 @@ moodreel/
 
 | 周 | 交付 | 验收 |
 |---|---|---|
-| W1 | motionx 迁入 Python 包；一拍二检测和镜头运动；测试片扩到 10 条 | 运动测量达到 §8 验收线 |
+| W1 ✅ | motionx 迁入 Python 包；一拍二检测和镜头运动；测试片扩到 10 条 | 运动测量达到 §8 验收线：干净版和压力版均已达到（2026-10-24） |
 | W2 | Intake、联系表、palette、texture、layout、type；frame-check | 2 套真实参考出完整测量结果 |
 | W3 | 原语库 v0：先统计 23 套 MVP 风格 §2、§8 里反复出现的技法（平涂与纸纹、半调与网点、套色错位、颗粒、暗角、硬阴影、剪切边、描线生长、逐字入场、遮罩擦除），按出现频率实现；kit 生成；skill 的蒸馏流程（Interpret、Gate 1–2） | 1 套真实参考走到 Gate 2 |
 | W4 | demo 片、motion-check 闭环、pack 和风格库 | 1 套风格完整入库 |
 | W5 | 出片流程（brief、treatment、draw、check、deliver）、文字停留检查、音乐与响度 | 用蒸馏出的风格和 2 套内置 MVP 风格各按一个主题出片 |
 | W6 | 往返测试（5 套内置 MVP 风格）；README 示例片；准备转公开 | 达到 §8 验收线 |
+
+运动测量的扩展顺序（每一项都是一个新的"属性读取器"，拟合、认定和语法汇总共用）：旋转 → 单轴拉伸（柱子生长、下划线展开）→ 遮罩擦除和裁切揭示 → 描线生长 → 逐字和打字机 → 数字跳动（OCR 读值）→ 循环、粒子和环境动效（测周期和速度分布）→ 3D 和着色器（只测镜头和节奏）。
 
 V1：基于 puppeteer-core 的加速渲染器；后期五类能力，按顺序逐类解锁对应的内置风格：配乐驱动（原创配乐、节拍网格）→ 像素 → 绘画笔触 → 3D → 真实素材；逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌入；旁白和音效；HyperFrames 或 Remotion 导出适配器；批量变体。
 

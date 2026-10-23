@@ -1,0 +1,97 @@
+{
+ "name": "letters",
+ "W": 1280,
+ "H": 720,
+ "fps": 30,
+ "dur": 4.0,
+ "events": [
+  {
+   "element": "kinetic",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.3,
+   "t1": 0.8,
+   "dur": 0.5,
+   "ease": "power3.out",
+   "from": 380,
+   "to": 320,
+   "end_xy": [
+    640.0,
+    320.0
+   ],
+   "scope": "v1",
+   "stagger": 0.04,
+   "count": 11
+  },
+  {
+   "element": "kinetic",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.3,
+   "t1": 0.8,
+   "dur": 0.5,
+   "ease": "power3.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    320.0
+   ],
+   "scope": "v1",
+   "stagger": 0.04,
+   "count": 11
+  },
+  {
+   "element": "kinetic",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 3.2,
+   "t1": 3.6,
+   "dur": 0.4,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    640.0,
+    320.0
+   ],
+   "scope": "v1",
+   "stagger": 0.04,
+   "count": 11
+  },
+  {
+   "element": "words",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 1.2,
+   "t1": 1.7,
+   "dur": 0.5,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    420.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "underline",
+   "shot": "A",
+   "prop": "sx",
+   "t0": 1.5,
+   "t1": 2.1,
+   "dur": 0.6,
+   "ease": "power3.inOut",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    470.0
+   ],
+   "scope": "v1"
+  }
+ ],
+ "transitions": [],
+ "stepping": []
+}

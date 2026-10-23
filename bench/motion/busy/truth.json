@@ -1,0 +1,240 @@
+{
+ "name": "busy",
+ "W": 1280,
+ "H": 720,
+ "fps": 30,
+ "dur": 6.0,
+ "events": [
+  {
+   "element": "chip0",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.3,
+   "t1": 0.8,
+   "dur": 0.5,
+   "ease": "circ.out",
+   "from": 790,
+   "to": 620,
+   "end_xy": [
+    250.0,
+    620.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "chip1",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.37,
+   "t1": 0.87,
+   "dur": 0.5,
+   "ease": "circ.out",
+   "from": 790,
+   "to": 620,
+   "end_xy": [
+    510.0,
+    620.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "chip2",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.44,
+   "t1": 0.94,
+   "dur": 0.5,
+   "ease": "circ.out",
+   "from": 790,
+   "to": 620,
+   "end_xy": [
+    770.0,
+    620.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "chip3",
+   "shot": "A",
+   "prop": "y",
+   "t0": 0.51,
+   "t1": 1.01,
+   "dur": 0.5,
+   "ease": "circ.out",
+   "from": 790,
+   "to": 620,
+   "end_xy": [
+    1030.0,
+    620.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "chip3",
+   "shot": "A",
+   "prop": "x",
+   "t0": 2.4,
+   "t1": 2.9,
+   "dur": 0.5,
+   "ease": "expo.in",
+   "from": 1030,
+   "to": 1500,
+   "end_xy": [
+    1500.0,
+    620.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "cardL",
+   "shot": "A",
+   "prop": "x",
+   "t0": 1.3,
+   "t1": 2.1,
+   "dur": 0.8,
+   "ease": "power2.inOut",
+   "from": 300,
+   "to": 900,
+   "end_xy": [
+    900.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "cardL",
+   "shot": "A",
+   "prop": "scale",
+   "t0": 2.8,
+   "t1": 3.2,
+   "dur": 0.4,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0.2,
+   "end_xy": [
+    900.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "cardL",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 2.8,
+   "t1": 3.2,
+   "dur": 0.4,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    900.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "cardR",
+   "shot": "A",
+   "prop": "x",
+   "t0": 1.3,
+   "t1": 2.1,
+   "dur": 0.8,
+   "ease": "power2.inOut",
+   "from": 980,
+   "to": 380,
+   "end_xy": [
+    380.0,
+    130.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "done",
+   "shot": "B",
+   "prop": "scale",
+   "t0": 3.8,
+   "t1": 4.3,
+   "dur": 0.5,
+   "ease": "back.out(1.4)",
+   "from": 0.6,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "done",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 3.8,
+   "t1": 4.05,
+   "dur": 0.25,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "dot0",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 4.4,
+   "t1": 4.65,
+   "dur": 0.25,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    560.0,
+    470.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "dot1",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 4.5200000000000005,
+   "t1": 4.77,
+   "dur": 0.25,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    470.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "dot2",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 4.640000000000001,
+   "t1": 4.89,
+   "dur": 0.25,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    720.0,
+    470.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "cut",
+   "t": 3.5
+  }
+ ],
+ "stepping": []
+}

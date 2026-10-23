@@ -62,7 +62,7 @@ def provenance(slug: str, sha: str, kind: str) -> str:
 def adapt(text: str, slug: str, sha: str, kind: str) -> str:
     text = LINK.sub(lambda m: f"]({REPO}/blob/{sha}/styles/{slug}/{m.group(1)})", text)
     lines = text.split("\n")
-    title = next((i for i, l in enumerate(lines) if l.startswith("# ")), -1)
+    title = next((i for i, line in enumerate(lines) if line.startswith("# ")), -1)
     return "\n".join(lines[: title + 1] + ["", provenance(slug, sha, kind).rstrip()] + lines[title + 1:])
 
 

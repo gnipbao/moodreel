@@ -1,0 +1,121 @@
+{
+ "name": "dips-and-drifts",
+ "W": 1280,
+ "H": 720,
+ "fps": 25,
+ "dur": 7.0,
+ "events": [
+  {
+   "element": "ch1",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.3,
+   "t1": 1.3,
+   "dur": 1.0,
+   "ease": "sine.inOut",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "drift",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.2,
+   "t1": 2.2,
+   "dur": 2.0,
+   "ease": "none",
+   "from": 340,
+   "to": 940,
+   "end_xy": [
+    940.0,
+    420.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "ch2",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 2.8,
+   "t1": 3.7,
+   "dur": 0.9,
+   "ease": "sine.inOut",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    330.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "slow",
+   "shot": "B",
+   "prop": "opacity",
+   "t0": 3.3,
+   "t1": 4.3,
+   "dur": 1.0,
+   "ease": "power1.inOut",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    400.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "moon",
+   "shot": "C",
+   "prop": "scale",
+   "t0": 5.9,
+   "t1": 6.7,
+   "dur": 0.8,
+   "ease": "sine.out",
+   "from": 0.8,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "moon",
+   "shot": "C",
+   "prop": "opacity",
+   "t0": 5.9,
+   "t1": 6.7,
+   "dur": 0.8,
+   "ease": "sine.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    360.0
+   ],
+   "scope": "mvp"
+  }
+ ],
+ "transitions": [
+  {
+   "type": "dip",
+   "t0": 2.0,
+   "t1": 2.6,
+   "color": "#000000",
+   "ease": "sine.inOut"
+  },
+  {
+   "type": "dissolve",
+   "t0": 4.6,
+   "t1": 5.6,
+   "ease": "power1.inOut"
+  }
+ ],
+ "stepping": []
+}

@@ -48,5 +48,5 @@ def load(path: str, width: int = 640) -> Clip:
     height = int(round(p["h"] * width / p["w"] / 2) * 2)
     raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-vf", f"scale={width}:{height}:flags=area",
                           "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], check=True, capture_output=True).stdout
-    frames = np.frombuffer(raw, np.uint8).reshape(-1, height, width, 3)
+    frames = np.frombuffer(bytearray(raw), np.uint8).reshape(-1, height, width, 3)   # writable: shots get stabilised in place
     return Clip(path, p["fps"], p["w"], p["h"], frames, p["w"] / width)
