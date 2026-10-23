@@ -20,6 +20,12 @@ built with it. Write a style's own modules next to these when it needs more (a w
 **Flat ground with paper.** `g.drawImage(paper(W, H, { color: PALETTE.ground, mottle: TEXTURE.mottle }), 0, 0)` once per
 frame (cached); fibres only when the references show them.
 
+**3D.** `const L = layer3d(W, H, { background, shadows: true })`; build meshes, lights and materials once into
+`L.scene`; in draw, set every position, rotation and the camera from t (`L.look(orbit(t * speed, r, h), target)`;
+no clocks, no AnimationMixer), then `L.draw(g)` and draw type on top. `L.toScreen([x, y, z])` gives the stage point
+for a label pinned in the world. Flat shading (`flatShading: true`) for low-poly, `PCFSoftShadowMap` shadows from one
+key light; everything renders the same every time on one machine.
+
 **Brushwork.** Paint a static plate flat (plain shapes, value first), then `g.drawImage(repaint(plate, { key, cell,
 fine, mark: 'dab' | 'stroke' }), 0, 0)`: coarse marks over the planes, fine ones along the edges, each along its edge
 (cached, so a static plate costs nothing per frame). Marks being painted on screen are drawn live: `stroke(g, points,

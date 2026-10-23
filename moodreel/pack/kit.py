@@ -19,7 +19,22 @@ from ..measure.texture import WORK
 from ..motion import eases
 
 REPO = Path(__file__).resolve().parents[2]
-SHARED = ["eases.js", "core.js", "stage.js", "texture.js", "text.js"]
+SHARED = ["eases.js", "core.js", "stage.js", "texture.js", "text.js", "pixel.js", "brush.js"]
+THREE_FILES = ["build/three.module.js", "build/three.core.js", "LICENSE"]
+
+
+def vendor_three(kit_dir: Path) -> str:
+    """three.js (MIT) into a film's kit, for kit/three.js; from the repository's node_modules (npm install)."""
+    src = REPO / "node_modules" / "three"
+    if not (src / "build" / "three.module.js").exists():
+        raise SystemExit("three.js is missing: run `npm install` in the Moodreel repository")
+    dst = Path(kit_dir) / "vendor" / "three"
+    dst.mkdir(parents=True, exist_ok=True)
+    for f in THREE_FILES:
+        shutil.copyfile(src / f, dst / Path(f).name)
+    shutil.copyfile(REPO / "kit" / "three.js", Path(kit_dir) / "three.js")
+    version = json.loads((src / "package.json").read_text())["version"]
+    return f"three.js {version} (MIT, Copyright 2010-2026 three.js authors): kit/vendor/three/"
 WEIGHT = {"light": 300, "regular": 400, "bold": 700, "black": 900}
 INK_PER_EM = 0.9
 
