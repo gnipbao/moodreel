@@ -11,6 +11,9 @@
 //   node render/render.mjs still <dir> <t> [<t> ...] [--size 1920x1080] [--out <dir>/stills]
 //   node render/render.mjs texts <dir> [--step 0.1] [--size 1920x1080] [--out texts.json]   what window.TEXTS(t) reports
 //
+// --variant '<json>' (any command): the page finds the object as window.VARIANT before its scripts run (kit/variant.js
+// reads it), so one film renders as several: another palette, seed, line of text or length.
+//
 // Each worker drives a Chrome of its own and encodes one contiguous range of frames; the ranges are joined without
 // re-encoding. Any page error stops the render.
 //
@@ -45,11 +48,13 @@ function parse(argv) {
     else if (a === '--workers') opts.workers = Number(rest[++i]);
     else if (a === '--out') opts.out = rest[++i];
     else if (a === '--step') opts.step = Number(rest[++i]);
+    else if (a === '--variant') opts.variant = JSON.parse(rest[++i]);
     else opts.times.push(Number(a));
   }
   const [w, h] = opts.size.split('x').map(Number);
   if (!['video', 'still', 'texts'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)) {
-    console.error('usage: render.mjs video|still|texts <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--step s] [--out path]');
+    console.error('usage: render.mjs video|still|texts <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--step s] '
+      + "[--variant '{...}'] [--out path]");
     process.exit(2);
   }
   if (cmd === 'video' && (w % 2 || h % 2)) {
@@ -76,8 +81,11 @@ function serve(root) {
   });
 }
 
+let VARIANT = null;                                       // --variant, for every page of the render
+
 async function openPage(browser, url, w, h) {
   const page = await browser.newPage();
+  if (VARIANT) await page.evaluateOnNewDocument(v => { window.VARIANT = v; }, VARIANT);
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   page.on('requestfailed', r => errors.push(`failed to load ${r.url()} (${r.failure()?.errorText})`));
@@ -181,6 +189,7 @@ async function texts(launch, url, o) {
 }
 
 const o = parse(process.argv.slice(2));
+VARIANT = o.variant ?? null;
 if (!fs.existsSync(path.join(o.dir, 'index.html'))) { console.error(`no index.html in ${o.dir}`); process.exit(2); }
 const server = await serve(o.dir);
 const executablePath = process.env.MOODREEL_CHROME || await (await import('puppeteer')).default.executablePath();

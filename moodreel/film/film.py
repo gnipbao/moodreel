@@ -204,6 +204,25 @@ def _film(d: Path) -> dict:
     return json.loads((Path(d) / "film.json").read_text())
 
 
+def variants(d: Path) -> dict:
+    """film.json's `variants`: name -> the parameters the page reads as window.VARIANT (kit/variant.js)."""
+    return _film(d).get("variants") or {}
+
+
+def _variant(d: Path, name: str | None) -> tuple[dict, list[str], str]:
+    """The film as a variant renders it (its own duration and poster time, if it sets them), the renderer's flag for
+    it, and the suffix its files get."""
+    f = _film(d)
+    if not name:
+        return f, [], ""
+    vs = variants(d)
+    if name not in vs:
+        raise SystemExit(f"no variant {name!r} in film.json (variants: {', '.join(vs) or 'none'})")
+    p = vs[name]
+    return ({**f, "duration": p.get("duration", f["duration"]), "poster": p.get("poster", f["poster"])},
+            ["--variant", json.dumps(p)], f"-{name}")
+
+
 def black_frames(video: Path, duration: float) -> list[list[float]]:
     r = subprocess.run(["ffmpeg", "-v", "info", "-i", str(video), "-vf", "blackdetect=d=0.04:pix_th=0.06", "-an", "-f", "null", "-"],
                        capture_output=True, text=True)
@@ -211,9 +230,9 @@ def black_frames(video: Path, duration: float) -> list[list[float]]:
     return [s for s in spans if s[0] > 0.2 and s[1] < duration - 0.5]
 
 
-def check(d: Path) -> dict:
+def check(d: Path, variant: str | None = None) -> dict:
     d = Path(d)
-    f = _film(d)
+    f, vargs, suffix = _variant(d, variant)
     w, h = (int(x) for x in f["size"].split("x"))
     out = {"film": f["name"]}
     if (d / "score.json").exists():                    # the picture reads its cue times from score.js
@@ -222,13 +241,14 @@ def check(d: Path) -> dict:
     if (d / "narration.json").exists():                # ...and its subtitles' times from voice.js
         from .. import voice
         voice.write(d)
-    r = subprocess.run(["node", str(RENDER), "texts", str(d), "--size", f["size"], "--step", "0.1"], capture_output=True, text=True)
+    r = subprocess.run(["node", str(RENDER), "texts", str(d), "--size", f["size"], "--step", "0.1", *vargs],
+                       capture_output=True, text=True)
     if r.returncode:
         out["reading"] = {"error": r.stderr.strip()[-300:]}
     else:
         data = json.loads(r.stdout)
         out["reading"] = {"too_short": readtime(data["samples"], w, h, data["step"])}
-    video = d / "out" / "video.mp4"
+    video = d / "out" / f"video{suffix}.mp4"
     if video.exists():
         out["black"] = black_frames(video, f["duration"])
     s = library.find(f["style"])
@@ -236,7 +256,8 @@ def check(d: Path) -> dict:
     if sdir and (sdir / "evidence" / "measure").exists():
         from ..check.frame import check as frame_check
         times = [round(f["duration"] * k, 2) for k in (0.25, 0.5, 0.75)]
-        subprocess.run(["node", str(RENDER), "still", str(d), *map(str, times), "--size", f["size"], "--out", str(d / "out" / "stills")],
+        subprocess.run(["node", str(RENDER), "still", str(d), *map(str, times), "--size", f["size"], *vargs,
+                        "--out", str(d / "out" / "stills")],
                        check=True, capture_output=True)
         out["frames"] = frame_check(sdir, [d / "out" / "stills" / f"t_{t}.jpg" for t in times], out=d / "out")
         if video.exists():
@@ -255,7 +276,7 @@ def check(d: Path) -> dict:
         ok = ok and out["cues"]["ok"]
     out["ok"] = ok
     (d / "out").mkdir(exist_ok=True)
-    (d / "out" / "check.json").write_text(json.dumps(out, indent=1, default=float))
+    (d / "out" / f"check{suffix}.json").write_text(json.dumps(out, indent=1, default=float))
     return out
 
 
@@ -302,14 +323,14 @@ def _loudnorm(music: Path, dst: Path, duration: float) -> dict:
     return {"measured_input_lufs": float(m["input_i"])}
 
 
-def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers: int = 3) -> dict:
+def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers: int = 3, variant: str | None = None) -> dict:
     d = Path(d)
-    f = _film(d)
+    f, vargs, suffix = _variant(d, variant)
     out = Path(out or d)
     out.mkdir(parents=True, exist_ok=True)
     work = d / "out"
     work.mkdir(exist_ok=True)
-    video = work / "video.mp4"
+    video = work / f"video{suffix}.mp4"
     info = {}
     if (d / "score.json").exists():                    # the film's own score, before the picture that lands on it
         from ..score.score import write as write_score
@@ -320,8 +341,8 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
         info["voice"] = voice.write(d)
     spoken = work / "voice.wav" if (work / "voice.wav").exists() and (d / "narration.json").exists() else None
     subprocess.run(["node", str(RENDER), "video", str(d), "--fps", str(f["fps"]), "--size", f["size"], "--workers", str(workers),
-                    "--out", str(video)], check=True)
-    final = out / f"{f['name']}.mp4"
+                    *vargs, "--out", str(video)], check=True)
+    final = out / f"{f['name']}{suffix}.mp4"
     info["video"] = str(final)
     if spoken:                                         # music ducks under the voice, then the two are one track
         premix = work / "premix.wav"
@@ -337,14 +358,14 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
             shutil.copyfile(spoken, premix)
         music = premix
     if music:
-        mix = work / "mix.wav"
+        mix = work / f"mix{suffix}.wav"
         info["music"] = _loudnorm(Path(music), mix, f["duration"])
         subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(video), "-i", str(mix), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
                         "-shortest", "-movflags", "+faststart", str(final)], check=True)
     else:
         shutil.copyfile(video, final)
-    subprocess.run(["node", str(RENDER), "still", str(d), str(f["poster"]), "--size", f["size"], "--out", str(work / "poster")],
-                   check=True, capture_output=True)
-    shutil.copyfile(work / "poster" / f"t_{f['poster']}.jpg", out / "poster.jpg")
-    info["poster"] = str(out / "poster.jpg")
+    subprocess.run(["node", str(RENDER), "still", str(d), str(f["poster"]), "--size", f["size"], *vargs,
+                    "--out", str(work / f"poster{suffix}")], check=True, capture_output=True)
+    shutil.copyfile(work / f"poster{suffix}" / f"t_{f['poster']}.jpg", out / f"poster{suffix}.jpg")
+    info["poster"] = str(out / f"poster{suffix}.jpg")
     return info

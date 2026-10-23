@@ -19,6 +19,12 @@ moodreel film deliver films/<name> --music track.wav
 
 Fix everything it finds in one round, then check once more. What is still off after that, tell the user in one line.
 
+**Variants.** Several versions of one film (another palette, seed, line of text, length; a cut-down for social)
+go in `film.json` as `"variants": {"name": {"ground": "#c83228", "duration": 6}, ...}`; the page reads them with
+`pick(key, default)` from `kit/variant.js`, so the picture code stays one. `film deliver --variant NAME` (or
+`--all-variants`) writes `<name>-<variant>.mp4` and `poster-<variant>.jpg`; `film check --variant NAME` checks one.
+A variant's `duration` and `poster` replace the film's.
+
 With a `narration.json`, `film deliver` voices it first (the subtitles read `voice.js`), brings the speech to
 −16 dBFS, sets the music 6 dB lower and ducks it further under each line, and mixes the two before the loudness pass.
 `film deliver` renders the film, normalises the music to −14 LUFS (two-pass loudnorm, a 1 s fade at the end), muxes,
