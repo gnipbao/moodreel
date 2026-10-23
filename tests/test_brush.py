@@ -25,7 +25,8 @@ def _painted(angle_deg=30, seed=2):
         a = np.radians(angle_deg + rng.normal(0, 12))
         L, Wd = rng.uniform(14, 26), rng.uniform(6, 10)
         box = cv2.boxPoints(((x, y), (L, Wd), np.degrees(a))).astype(np.int32)
-        cv2.fillConvexPoly(img, box, tuple(int(v) for v in rng.choice([[176, 98, 60], [222, 190, 128], [94, 120, 70]]) + rng.integers(-12, 12, 3)))
+        colour = rng.choice([[176, 98, 60], [222, 190, 128], [94, 120, 70]]) + rng.integers(-12, 12, 3)
+        cv2.fillConvexPoly(img, box, tuple(int(v) for v in colour))
     return img
 
 
