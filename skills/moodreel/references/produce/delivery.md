@@ -19,6 +19,12 @@ moodreel film deliver films/<name> --music track.wav
 
 Fix everything it finds in one round, then check once more. What is still off after that, tell the user in one line.
 
+**Export to HyperFrames.** `moodreel export hyperframes <film> [--out d] [--variant v]` writes a standalone
+HyperFrames composition (the film's size and length on the root, its source in `film/`, its delivered audio as a
+timed clip): one paused timeline whose every seek calls the film's `render(t)`, so HyperFrames' Studio and renderer
+show exactly the film's frames. Check and render it with `npx hyperframes check` / `render` in that folder, for a
+user who edits or ships in HyperFrames.
+
 **Variants.** Several versions of one film (another palette, seed, line of text, length; a cut-down for social)
 go in `film.json` as `"variants": {"name": {"ground": "#c83228", "duration": 6}, ...}`; the page reads them with
 `pick(key, default)` from `kit/variant.js`, so the picture code stays one. `film deliver --variant NAME` (or
