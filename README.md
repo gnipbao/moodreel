@@ -84,6 +84,27 @@ uv run moodreel kit out/projects/my-style && uv run moodreel scaffold out/projec
 uv run moodreel motion-check out/projects/my-style film.mp4
 ```
 
+Pack a finished style into your library (`~/.moodreel/styles`), list styles, and make a film in one:
+
+```bash
+uv run moodreel pack out/projects/my-style --slug my-style --name "My Style"
+```
+
+```bash
+uv run moodreel styles
+```
+
+```bash
+uv run moodreel film new launch --style swiss-motion && uv run moodreel film check films/launch
+```
+
+```bash
+uv run moodreel film deliver films/launch --music track.wav
+```
+
+`film check` holds every line of text on screen long enough to read, finds black frames, and, for a distilled
+style, scores frames and motion against it; `film deliver` renders, normalises the music to −14 LUFS and muxes.
+
 Measure the motion grammar of a single video:
 
 ```bash
@@ -109,7 +130,7 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
-| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold), `bench/` (test films and scorer), `cli.py` |
+| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, pack), `film/`, `library.py`, `bench/` (test films and scorer), `cli.py` |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |

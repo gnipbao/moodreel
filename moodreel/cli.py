@@ -6,6 +6,9 @@
   moodreel kit <project>                                  the style's tokens.js and motion.js, with the shared kit
   moodreel scaffold <project>                             a first style frame drawn from the tokens (look/)
   moodreel motion-check <project> <video>                 does a rendered film move the way the references do?
+  moodreel pack <project> --slug S --name N               check a distilled style and add it to your library
+  moodreel styles [query]                                 your styles and the built-in ones
+  moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f]
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
 """
@@ -88,6 +91,50 @@ def cmd_motion_check(a):
     print(f"{'OK' if r['ok'] else 'NOT YET'}: {r['pass']} pass, {r['fail']} fail, {r['unknown']} unknown")
 
 
+def cmd_pack(a):
+    from .pack.pack import pack
+    r = pack(Path(a.project), a.slug, a.name, a.name_zh, a.strict, a.build)
+    for w in r["warnings"]:
+        print(f"warning: {w}")
+    for p in r["problems"]:
+        print(f"problem: {p}")
+    print(f"packed -> {r['path']}" if r["ok"] else "not packed")
+
+
+def cmd_styles(a):
+    from . import library
+    rows = library.all_styles()
+    if a.query:
+        q = a.query.lower()
+        rows = [s for s in rows if q in json.dumps(s, ensure_ascii=False).lower()]
+    for s in rows:
+        needs = ", ".join(s.get("needs") or []) or "-"
+        print(f"{s['origin']:7s} {s.get('phase', '?'):5s} {s['slug']:22s} {s.get('name', '')} · {s.get('name_zh', '')}  [{needs}]")
+    print(f"{len(rows)} styles")
+
+
+def cmd_film(a):
+    from .film import film
+    if a.action == "new":
+        print(f"film -> {film.new(a.target, a.style, Path(a.root), a.duration, a.size, a.fps)}")
+    elif a.action == "check":
+        r = film.check(Path(a.target))
+        rd = r.get("reading", {})
+        print("reading: " + (rd["error"] if "error" in rd else f"{len(rd['too_short'])} lines too short"))
+        for x in rd.get("too_short", []):
+            print(f"  '{x['text']}' from {x['from']} s: shown {x['shown']} s, needs {x['needs']} s")
+        if "black" in r:
+            print(f"black frames: {r['black'] or 'none'}")
+        if "frames" in r:
+            print("frames: " + ", ".join("pass" if x["pass"] else "fail" for x in r["frames"]["stills"]))
+        if "motion" in r:
+            print(f"motion: {r['motion']['pass']} pass, {r['motion']['fail']} fail, {r['motion']['unknown']} unknown")
+        print("OK" if r["ok"] else "NOT YET")
+    else:
+        r = film.deliver(Path(a.target), Path(a.music) if a.music else None, Path(a.out) if a.out else None)
+        print(json.dumps(r, indent=1))
+
+
 def _fixtures(a):
     root = Path(a.root)
     names = set(a.only.split(",")) if a.only else None
@@ -145,6 +192,28 @@ def main(argv=None):
     p.add_argument("video")
     p.add_argument("--reference", help="with several reference videos, the one to compare with (vid01...)")
     p.set_defaults(fn=cmd_motion_check)
+    p = sub.add_parser("pack", help="check a distilled style and add it to your library")
+    p.add_argument("project")
+    p.add_argument("--slug", required=True)
+    p.add_argument("--name", required=True)
+    p.add_argument("--name-zh")
+    p.add_argument("--strict", action="store_true", help="untraced numbers in STYLE.md are errors")
+    p.add_argument("--build", action="store_true", help="rebuild the demo from demo/build.sh to prove it builds")
+    p.set_defaults(fn=cmd_pack)
+    p = sub.add_parser("styles", help="list your styles and the built-in ones")
+    p.add_argument("query", nargs="?")
+    p.set_defaults(fn=cmd_styles)
+    p = sub.add_parser("film", help="make a film in a style: new, check, deliver")
+    p.add_argument("action", choices=["new", "check", "deliver"])
+    p.add_argument("target", help="the film's name (new) or folder (check, deliver)")
+    p.add_argument("--style", help="new: the style's slug or name")
+    p.add_argument("--root", default="films", help="new: where films live")
+    p.add_argument("--duration", type=float, default=15.0)
+    p.add_argument("--size")
+    p.add_argument("--fps", type=int, default=30)
+    p.add_argument("--music", help="deliver: a music track, normalised to -14 LUFS")
+    p.add_argument("--out", help="deliver: where the finished film and poster go")
+    p.set_defaults(fn=cmd_film)
     p = sub.add_parser("motion", help="measure a video's motion grammar")
     p.add_argument("video")
     p.add_argument("--out", required=True)
