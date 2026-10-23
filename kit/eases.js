@@ -48,7 +48,8 @@ export function ease(name) {
     } else if (base === 'elastic.out') {
       const amp = Math.max(a[0] ?? 1, 1), per = a[1] ?? 0.3, p3 = (per / (2 * Math.PI)) * Math.asin(1 / amp);
       f = u => (u >= 1 ? 1 : amp * 2 ** (-10 * u) * Math.sin(((u - p3) * 2 * Math.PI) / per) + 1);
-    } else throw new Error(`unknown ease ${name}`);
+    } else if (base === 'bezier' && a.length === 4) f = bezier(...a);
+    else throw new Error(`unknown ease ${name}`);
   }
   cache.set(name, f);
   return f;

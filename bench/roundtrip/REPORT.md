@@ -6,8 +6,8 @@ Each example film rendered, taken in as references, measured and written into a 
 
 | film | static values | failed | moves found | eases claimed right | eases claimed wrong |
 |---|---|---|---|---|---|
-| first-light | 11/14 | — | 1/11 | 1 | 0 |
-| swiss-programme | 10/13 | — | 10/40 | 0 | 0 |
+| first-light | 11/14 | — | 4/11 | 3 | 0 |
+| swiss-programme | 12/13 | — | 22/40 | 0 | 0 |
 
 ## first-light
 
@@ -32,16 +32,16 @@ Motion by the reader each move needs:
 
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
-| mask (roller wipe) | v1 | 2 | 0 | 0 | 0 | 0 | 0 |
-| mask (the horizon) | v1 | 1 | 0 | 0 | 0 | 0 | 0 |
+| wipe (roller wipe) | v1 | 2 | 1 | 1 | 0 | 0 | 0 |
+| clip (the horizon) | v1 | 1 | 1 | 1 | 0 | 0 | 0 |
 | stretch | v1 | 6 | 0 | 0 | 0 | 0 | 0 |
 | move | mvp | 1 | 1 | 1 | 0 | 0 | 0 |
-| mask (plate lift) | v1 | 1 | 0 | 0 | 0 | 0 | 0 |
+| wipe (plate lift) | v1 | 1 | 1 | 0 | 0 | 0 | 1 |
 
 | element | prop | reader | film | measured | verdict | t50 err (f) |
 |---|---|---|---|---|---|---|
-| sea | mask | mask (roller wipe) | none 0.60-1.40s (linear) | — | missed | — |
-| sun | y | mask (the horizon) | power2.out 1.50-3.50s (out) | — | missed | — |
+| sea | wipe | wipe (roller wipe) | none 0.60-1.40s (linear) | none 0.60-1.40s | claimed right | 0.0 |
+| sun | y | clip (the horizon) | power2.out 1.50-3.50s (out) | power2.out 1.29-3.52s | claimed right | -3.9 |
 | reflection0 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection1 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection2 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
@@ -49,10 +49,10 @@ Motion by the reader each move needs:
 | reflection4 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | reflection5 | sx | stretch | power2.out 1.50-3.50s (out) | — | missed | — |
 | swimmer | x | move | none 4.00-8.00s (linear) | none 4.12-8.02s | claimed right | 1.7 |
-| title | mask | mask (roller wipe) | none 8.50-9.00s (linear) | — | missed | — |
-| orange plate | mask | mask (plate lift) | none 10.50-11.00s (linear) | — | missed | — |
+| title | wipe | wipe (roller wipe) | none 8.50-9.00s (linear) | — | missed | — |
+| orange plate | wipe | wipe (plate lift) | none 10.50-11.00s (linear) | power4.in 10.69-10.88s | guess wrong | 2.4 |
 
-Measured but not in the film: e0.x, e1.y, e1.scale, e14.scale, e18.x, e18.scale, e19.x.
+Measured but not in the film: e0.sx, e14.scale, e19.x.
 Left out of the truth: the sky tints printed in one frame at 3.5 s (no tween to read); the registration kick at 9.5 s (a print artefact, not a tween).
 
 ## swiss-programme
@@ -69,62 +69,62 @@ Left out of the truth: the sky tints printed in one frame at 3.5 s (no tween to 
 | type | title weight | [700] | 700 | ✓ |
 | motion | cuts and transitions | 0 | 0 | ✓ |
 | motion | drawings held on | 1 | 1 | ✓ |
-| kit eases | entrance class | inOut | unread | ? |
-| kit eases | exit class | inOut | unread | ? |
+| kit eases | entrance class | inOut | inOut | ✓ |
+| kit eases | exit class | inOut | inOut | ✓ |
 | kit eases | move class | inOut | unread | ? |
 
 Motion by the reader each move needs:
 
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
-| mask | v1 | 14 | 9 | 0 | 0 | 4 | 5 |
-| stretch | v1 | 23 | 0 | 0 | 0 | 0 | 0 |
+| clip | v1 | 14 | 4 | 0 | 0 | 1 | 3 |
+| stretch | v1 | 23 | 17 | 0 | 0 | 16 | 1 |
 | camera on a flat ground | v1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | move | mvp | 1 | 1 | 0 | 0 | 1 | 0 |
 | draw-on | v1 | 1 | 0 | 0 | 0 | 0 | 0 |
 
 | element | prop | reader | film | measured | verdict | t50 err (f) |
 |---|---|---|---|---|---|---|
-| one | y | mask | bezier(0.7,0,0.2,1) 1.62-2.00s (inOut) | power4.out 1.75-2.04s | guess wrong | -0.3 |
-| caption1 | y | mask | bezier(0.7,0,0.2,1) 2.12-2.50s (inOut) | — | missed | — |
-| bar0 | sy | stretch | bezier(0.7,0,0.2,1) 2.62-3.00s (inOut) | — | missed | — |
-| bar1 | sy | stretch | bezier(0.7,0,0.2,1) 2.88-3.25s (inOut) | — | missed | — |
-| bar2 | sy | stretch | bezier(0.7,0,0.2,1) 3.12-3.50s (inOut) | — | missed | — |
-| bar3 | sy | stretch | bezier(0.7,0,0.2,1) 3.38-3.75s (inOut) | — | missed | — |
-| bar4 | sy | stretch | bezier(0.7,0,0.2,1) 3.62-4.00s (inOut) | — | missed | — |
-| bar5 | sy | stretch | bezier(0.7,0,0.2,1) 3.88-4.25s (inOut) | — | missed | — |
-| measure | y | mask | bezier(0.7,0,0.2,1) 4.12-4.50s (inOut) | expo.out 4.29-4.60s | guess wrong | 0.6 |
+| one | y | clip | bezier(0.7,0,0.2,1) 1.62-2.00s (inOut) | power4.out 1.75-2.04s | guess wrong | -0.3 |
+| caption1 | y | clip | bezier(0.7,0,0.2,1) 2.12-2.50s (inOut) | — | missed | — |
+| bar0 | sy | stretch | bezier(0.7,0,0.2,1) 2.62-3.00s (inOut) | expo.inOut 2.50-3.10s | guess right | 0.1 |
+| bar1 | sy | stretch | bezier(0.7,0,0.2,1) 2.88-3.25s (inOut) | expo.inOut 2.75-3.35s | guess right | 0.1 |
+| bar2 | sy | stretch | bezier(0.7,0,0.2,1) 3.12-3.50s (inOut) | expo.inOut 2.98-3.60s | guess right | -0.2 |
+| bar3 | sy | stretch | bezier(0.7,0,0.2,1) 3.38-3.75s (inOut) | expo.inOut 3.25-3.85s | guess right | 0.1 |
+| bar4 | sy | stretch | bezier(0.7,0,0.2,1) 3.62-4.00s (inOut) | power4.inOut 3.54-4.06s | guess right | 0.1 |
+| bar5 | sy | stretch | bezier(0.7,0,0.2,1) 3.88-4.25s (inOut) | expo.inOut 3.75-4.35s | guess right | 0.1 |
+| measure | y | clip | bezier(0.7,0,0.2,1) 4.12-4.50s (inOut) | power4.out 4.25-4.56s | guess wrong | -0.2 |
 | camera | panx | camera on a flat ground | bezier(0.7,0,0.2,1) 5.62-6.00s (inOut) | — | missed | — |
-| two | y | mask | bezier(0.7,0,0.2,1) 6.12-6.50s (inOut) | expo.out 6.25-6.60s | guess wrong | -0.3 |
-| square0 | y | mask | bezier(0.7,0,0.2,1) 6.62-7.00s (inOut) | sine.out 6.60-6.94s | guess wrong | -2.0 |
-| square1 | y | mask | bezier(0.7,0,0.2,1) 6.75-7.12s (inOut) | expo.inOut 6.71-7.38s | guess right | 2.8 |
-| square2 | y | mask | bezier(0.7,0,0.2,1) 6.88-7.25s (inOut) | — | missed | — |
-| square3 | y | mask | bezier(0.7,0,0.2,1) 7.00-7.38s (inOut) | expo.inOut 7.00-7.65s | guess right | 3.6 |
-| square4 | y | mask | bezier(0.7,0,0.2,1) 7.12-7.50s (inOut) | bounce.out 7.29-7.52s | guess wrong | 1.3 |
-| square5 | y | mask | bezier(0.7,0,0.2,1) 7.25-7.62s (inOut) | expo.inOut 7.25-7.85s | guess right | 3.1 |
-| square6 | y | mask | bezier(0.7,0,0.2,1) 7.38-7.75s (inOut) | — | missed | — |
-| square7 | y | mask | bezier(0.7,0,0.2,1) 7.50-7.88s (inOut) | — | missed | — |
-| caption2 | y | mask | bezier(0.7,0,0.2,1) 7.12-7.50s (inOut) | — | missed | — |
+| two | y | clip | bezier(0.7,0,0.2,1) 6.12-6.50s (inOut) | power4.out 6.25-6.54s | guess wrong | -0.3 |
+| square0 | y | clip | bezier(0.7,0,0.2,1) 6.62-7.00s (inOut) | — | missed | — |
+| square1 | y | clip | bezier(0.7,0,0.2,1) 6.75-7.12s (inOut) | — | missed | — |
+| square2 | y | clip | bezier(0.7,0,0.2,1) 6.88-7.25s (inOut) | — | missed | — |
+| square3 | y | clip | bezier(0.7,0,0.2,1) 7.00-7.38s (inOut) | — | missed | — |
+| square4 | y | clip | bezier(0.7,0,0.2,1) 7.12-7.50s (inOut) | — | missed | — |
+| square5 | y | clip | bezier(0.7,0,0.2,1) 7.25-7.62s (inOut) | — | missed | — |
+| square6 | y | clip | bezier(0.7,0,0.2,1) 7.38-7.75s (inOut) | — | missed | — |
+| square7 | y | clip | bezier(0.7,0,0.2,1) 7.50-7.88s (inOut) | — | missed | — |
+| caption2 | y | clip | bezier(0.7,0,0.2,1) 7.12-7.50s (inOut) | — | missed | — |
 | signal | x | move | none 8.50-10.00s (linear) | none 8.90-10.00s | guess right | 4.7 |
 | knife | draw | draw-on | none 10.50-10.75s (linear) | — | missed | — |
 | two | sy | stretch | bezier(0.7,0,0.2,1) 10.88-11.25s (inOut) | — | missed | — |
-| square0 | sy | stretch | bezier(0.7,0,0.2,1) 11.50-11.75s (inOut) | — | missed | — |
-| square1 | sy | stretch | bezier(0.7,0,0.2,1) 11.53-11.78s (inOut) | — | missed | — |
-| square2 | sy | stretch | bezier(0.7,0,0.2,1) 11.56-11.81s (inOut) | — | missed | — |
-| square3 | sy | stretch | bezier(0.7,0,0.2,1) 11.59-11.84s (inOut) | — | missed | — |
-| square4 | sy | stretch | bezier(0.7,0,0.2,1) 11.62-11.88s (inOut) | — | missed | — |
-| square5 | sy | stretch | bezier(0.7,0,0.2,1) 11.66-11.91s (inOut) | — | missed | — |
+| square0 | sy | stretch | bezier(0.7,0,0.2,1) 11.50-11.75s (inOut) | expo.inOut 11.38-11.85s | guess right | -0.0 |
+| square1 | sy | stretch | bezier(0.7,0,0.2,1) 11.53-11.78s (inOut) | circ.inOut 11.52-11.83s | guess right | 0.7 |
+| square2 | sy | stretch | bezier(0.7,0,0.2,1) 11.56-11.81s (inOut) | power4.inOut 11.58-11.96s | guess right | 2.2 |
+| square3 | sy | stretch | bezier(0.7,0,0.2,1) 11.59-11.84s (inOut) | power4.inOut 11.58-11.96s | guess right | 1.5 |
+| square4 | sy | stretch | bezier(0.7,0,0.2,1) 11.62-11.88s (inOut) | power1.in 11.71-11.85s | guess wrong | 1.7 |
+| square5 | sy | stretch | bezier(0.7,0,0.2,1) 11.66-11.91s (inOut) | circ.inOut 11.71-11.96s | guess right | 1.5 |
 | square6 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | — | missed | — |
 | square7 | sy | stretch | bezier(0.7,0,0.2,1) 11.72-11.97s (inOut) | — | missed | — |
 | caption2 | sy | stretch | bezier(0.7,0,0.2,1) 11.56-11.81s (inOut) | — | missed | — |
-| bar0 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | — | missed | — |
-| bar1 | sy | stretch | bezier(0.7,0,0.2,1) 11.75-12.00s (inOut) | — | missed | — |
-| bar2 | sy | stretch | bezier(0.7,0,0.2,1) 11.81-12.06s (inOut) | — | missed | — |
-| bar3 | sy | stretch | bezier(0.7,0,0.2,1) 11.88-12.12s (inOut) | — | missed | — |
-| bar4 | sy | stretch | bezier(0.7,0,0.2,1) 11.94-12.19s (inOut) | — | missed | — |
+| bar0 | sy | stretch | bezier(0.7,0,0.2,1) 11.69-11.94s (inOut) | expo.inOut 11.67-12.06s | guess right | 1.5 |
+| bar1 | sy | stretch | bezier(0.7,0,0.2,1) 11.75-12.00s (inOut) | circ.inOut 11.79-12.06s | guess right | 1.5 |
+| bar2 | sy | stretch | bezier(0.7,0,0.2,1) 11.81-12.06s (inOut) | expo.inOut 11.79-12.19s | guess right | 1.5 |
+| bar3 | sy | stretch | bezier(0.7,0,0.2,1) 11.88-12.12s (inOut) | expo.inOut 11.79-12.19s | guess right | -0.0 |
+| bar4 | sy | stretch | bezier(0.7,0,0.2,1) 11.94-12.19s (inOut) | expo.inOut 11.92-12.31s | guess right | 1.5 |
 | bar5 | sy | stretch | bezier(0.7,0,0.2,1) 12.00-12.25s (inOut) | — | missed | — |
 | measure | sy | stretch | bezier(0.7,0,0.2,1) 12.12-12.38s (inOut) | — | missed | — |
-| programme | y | mask | bezier(0.7,0,0.2,1) 12.38-12.75s (inOut) | circ.inOut 12.42-12.73s | guess right | 0.6 |
+| programme | y | clip | bezier(0.7,0,0.2,1) 12.38-12.75s (inOut) | circ.inOut 12.42-12.73s | guess right | 0.6 |
 
-Measured but not in the film: e1.y, e3.scale, e4.x, e4.scale, e5.y, e5.scale, e6.y, e6.scale, e7.x, e7.y, e7.scale, e8.y, e8.scale, e10.x, e11.scale, e12.x, e14.x, e14.scale, e15.x, e15.scale, e16.scale, e17.x, e17.scale, e18.x, e18.scale, e19.x, e19.scale, e21.scale, e23.scale, e24.scale, e27.y, e27.scale, e28.y, e28.scale, e29.x, e29.y, e29.scale, e30.x, e30.y, e30.scale, e31.scale, e32.x, e32.scale, e33.x, e33.y, e33.scale, e34.x, e34.scale, e35.x, e35.scale, e36.x, e36.scale, e37.x, e37.scale, e38.x, e38.scale, e39.x, e39.scale.
+Measured but not in the film: e1.sy, e10.x, e11.scale, e12.wipe, e14.sy, e15.sy, e16.sy, e17.wipe, e18.sy, e19.sy, e21.scale, e23.scale, e24.scale, e33.x, e33.y, e33.scale, e39.x, e39.scale.
 Left out of the truth: the first dot (20 px) and the 1 px grid lines: below the readers' size floor.

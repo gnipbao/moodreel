@@ -9,7 +9,7 @@ built with it. Write a style's own modules next to these when it needs more (a w
 | Module | Exports |
 |---|---|
 | `stage.js` | `stage({...})`, `texts(fn)` |
-| `eases.js` | `ease(name)` (GSAP names), `bezier(x1, y1, x2, y2)` |
+| `eases.js` | `ease(name)` (GSAP names, or `bezier(x1,y1,x2,y2)` as the kit writes a style's own curve), `bezier(x1, y1, x2, y2)` |
 | `core.js` | `clamp`, `lerp`, `tween(t, at, dur, ease)`, `value(t, at, dur, from, to, ease)`, `keys([[t, v, ease]…])`, `stagger(at, interval, i)`, `step(t, rate)`, `rng(seed)`, `hash(n)`, `noise1(x)` |
 | `texture.js` | `paper(w, h, {color, mottle, fibres, seed})`, `grain(g, amount, frame, {ground})`, `vignette(g, w, h, strength)`, `screen(g, {period, angle, color, dot})`, `scanlines(g, period, strength)`, `misregister(g, draw, layers)` |
 | `text.js` | `fit(g, text, font, width)`, `wrap(g, text, width)`, `glyphs(g, text, x)` |
