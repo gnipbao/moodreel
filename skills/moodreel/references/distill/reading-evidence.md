@@ -67,7 +67,12 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   roller sweeping a shape on in place: `wipe`, the share shown). A solid shape can't tell a stretch from a wipe or
   from rising inside a slot of its own size; it is read as a stretch. A slot hides a clip reveal's start, so its
   curve is rarely claimed: read its class from the evidence strip.
-- **What isn't measured yet**: rotation, line draw-on, per-letter text, particles and loops, and elements nested
+- **Turns** (`rot`, degrees, clockwise as CSS turns) are read by turning the template as the element's angular speed
+  predicts, or, for a flat elongated shape whose template can't tell a turn from a change of size, from the long
+  axis of its silhouette. Round shapes, small elements (under about 32 px at the 640 px analysis width), faint
+  ones and anything whose shape changes give no turn. Letters rising one after another can read as a slight turn of
+  the whole word.
+- **What isn't measured yet**: line draw-on, per-letter text, particles and loops, and elements nested
   inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
   evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and
   describe them yourself, marked `inferred`.

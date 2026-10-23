@@ -10,7 +10,8 @@ Rest-anchored tracking, made for motion graphics:
      background cancels), padded with a ring of zeros so a smaller copy can't sit inside a flat shape.
   4. Walk away from the rest, frame by frame: match T over a scale range with normalised correlation on
      (frame - P), in a window around a constant-velocity prediction; the peak gives the centre, a parabola over
-     neighbouring scales gives the scale, and the projection onto T gives the opacity.
+     neighbouring scales gives the scale, and the projection onto T gives the opacity. The template is turned as
+     its angular speed predicts and refined a step either side: the angle.
 """
 from __future__ import annotations
 
@@ -24,6 +25,10 @@ MIN_AREA = 0.0004        # of the frame: a dot 16 px across in 1280
 GROUP_PX = 0.012         # closing kernel as a fraction of width: letters of a word join, a label 20 px above a bar doesn't
 SCALES = np.exp(np.linspace(np.log(0.55), np.log(1.15), 21))
 MIN_NCC, MIN_ALPHA = 0.55, 0.08
+TURN_STEP, TURN_MIN = 2.0, 32   # degrees a frame's turn is refined over; px (analysis) a template needs to turn
+TURN_GAIN = 0.005               # NCC a turned template must gain over the unturned one
+TURN_ALPHA = 0.5                # opacity below which a turn isn't read
+TURN_NCC = 0.9                  # how well the turned template must fit
 
 
 def _masks(P, Q, w):
@@ -127,6 +132,15 @@ def _template(src, bg, mask, box):
     return T, (x - ring, y - ring, bw + 2 * ring, bh + 2 * ring)
 
 
+def _turned(T, deg):
+    """The template turned about its centre (counter-clockwise for positive degrees, as OpenCV turns)."""
+    if abs(deg) < 0.25:
+        return T
+    h, w = T.shape[:2]
+    return cv2.warpAffine(T, cv2.getRotationMatrix2D((w / 2, h / 2), deg, 1.0), (w, h), flags=cv2.INTER_LINEAR,
+                          borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+
+
 def _para(a, b, c):
     d = a - 2 * b + c
     return 0.0 if abs(d) < 1e-12 else float(np.clip(0.5 * (a - c) / d, -0.5, 0.5))
@@ -140,7 +154,8 @@ def _follow(clip: Clip, bg, T, tbox, frames):
     raw = bg is None
     method = cv2.TM_CCOEFF_NORMED if raw else cv2.TM_CCORR_NORMED
     inside = cv2.copyMakeBorder(np.ones((clip.h, clip.w), np.float32), pad, pad, pad, pad, cv2.BORDER_CONSTANT, value=0)
-    pos, s, misses, out = [(x + bw / 2, y + bh / 2)], 1.0, 0, {}
+    pos, s, misses, out, turn = [(x + bw / 2, y + bh / 2)], 1.0, 0, {}, [0.0, 0.0]
+    turns = not raw and min(th, tw) >= TURN_MIN
     for f in frames:
         F = clip.frames[f].astype(np.float32)
         D = cv2.copyMakeBorder(F if raw else F - bg, pad, pad, pad, pad,
@@ -151,13 +166,16 @@ def _follow(clip: Clip, bg, T, tbox, frames):
         # cut by the frame edge, a smaller copy of the template fits the visible part better than the true size
         # does: hold the scale until the element is whole again
         clipped = (pcx - tw * s / 2 < 0 or pcy - th * s / 2 < 0 or pcx + tw * s / 2 > clip.w or pcy + th * s / 2 > clip.h)
+        # turning, like moving, keeps its speed from frame to frame: match the template turned as predicted
+        a_pred = 2 * turn[-1] - turn[-2] if turns and not clipped else 0.0
+        Tr = _turned(T, a_pred) if abs(a_pred) >= 3 else T   # a small turn leaves position and scale as they were
         per_scale = []
         for k in s * (SCALES if not clipped else np.array([1.0])):
             sw, sh = int(round(tw * k)), int(round(th * k))
             if min(sw, sh) < 6 or k > 3:
                 per_scale.append(None)
                 continue
-            Ts = cv2.resize(T, (sw, sh), interpolation=cv2.INTER_AREA)
+            Ts = cv2.resize(Tr, (sw, sh), interpolation=cv2.INTER_AREA)
             X0, Y0 = int(max(0, pcx + pad - reach - sw / 2)), int(max(0, pcy + pad - reach - sh / 2))
             X1 = int(min(D.shape[1], pcx + pad + reach + sw / 2 + 1))
             Y1 = int(min(D.shape[0], pcy + pad + reach + sh / 2 + 1))
@@ -176,19 +194,40 @@ def _follow(clip: Clip, bg, T, tbox, frames):
         if not clipped and 0 < i < len(SCALES) - 1 and per_scale[i - 1] and per_scale[i + 1]:
             d = _para(per_scale[i - 1][0], mx, per_scale[i + 1][0])
             k = float(np.exp(np.log(k) + d * (np.log(SCALES[1]) - np.log(SCALES[0]))))
+        a = a_pred
+        if turns and not clipped:                       # a step either side and a parabola through the three
+            win = D[Y0:Y0 + res.shape[0] + sh - 1, X0:X0 + res.shape[1] + sw - 1]
+            at = lambda deg: float(cv2.matchTemplate(  # noqa: E731
+                win, cv2.resize(_turned(T, deg), (sw, sh), interpolation=cv2.INTER_AREA), method).max())
+            # the span from the last angle to the predicted one, two steps beyond each: a turn that stops (or
+            # starts) is caught up with however fast it was; a parabola about the best
+            lo, hi = min(turn[-1], a_pred) - 2 * TURN_STEP, max(turn[-1], a_pred) + 2 * TURN_STEP
+            degs = list(np.arange(lo, hi + 1e-6, TURN_STEP))
+            fit = [at(d) for d in degs]
+            j = int(np.clip(np.argmax(fit), 1, len(degs) - 2))
+            a = degs[j] + TURN_STEP * _para(fit[j - 1], fit[j], fit[j + 1])
+            # a turn is kept only where it matches clearly better than no turn: a round shape fits at any angle
+            if abs(a) < 1.5 or max(fit) < TURN_NCC or max(fit) - at(0.0) < TURN_GAIN:
+                a = 0.0                                 # ...and where the turned shape fits well (not a shape changing);
+                #                                         under 1.5 degrees is no turn, and must not tilt the next match
         px = lx + _para(res[ly, lx - 1], res[ly, lx], res[ly, lx + 1]) if 0 < lx < res.shape[1] - 1 else lx
         py = ly + _para(res[ly - 1, lx], res[ly, lx], res[ly + 1, lx]) if 0 < ly < res.shape[0] - 1 else ly
         patch = D[Y0 + ly: Y0 + ly + sh, X0 + lx: X0 + lx + sw]
         vis = inside[Y0 + ly: Y0 + ly + sh, X0 + lx: X0 + lx + sw][..., None]
         Tv = Ts * vis                                   # opacity from the part inside the frame only
         alpha = 1.0 if raw else float((patch * Tv).sum() / max((Tv * Tv).sum(), 1e-6))
+        if alpha < TURN_ALPHA:                          # a faint copy matches noise at any angle: no turn read
+            a = 0.0
         ncx, ncy = X0 + px + sw / 2 - pad, Y0 + py + sh / 2 - pad
         edge = bool(vis.min() < 1)
         ok = mx >= MIN_NCC and alpha >= MIN_ALPHA and (Tv * Tv).sum() > 0.15 * (Ts * Ts).sum()
-        out[f] = {"cx": ncx, "cy": ncy, "s": float(k), "a": alpha, "ncc": float(mx), "ok": bool(ok), "edge": edge}
+        # the angle as CSS and canvas measure it, clockwise: the turn that takes the element at rest to this frame
+        out[f] = {"cx": ncx, "cy": ncy, "s": float(k), "a": alpha, "ncc": float(mx), "ok": bool(ok), "edge": edge,
+                  "r": -float(a)}
         if ok:
             pos.append((ncx, ncy))
             s, misses = float(k), 0
+            turn.append(float(a))
         else:
             misses += 1
             if misses >= 3:
@@ -317,6 +356,7 @@ def group_rigid(tracks, scale: float):
                 continue
             readings[f] = {"cx": float(np.mean([r["cx"] for r in ok])), "cy": float(np.mean([r["cy"] for r in ok])),
                            "s": float(np.median([r["s"] for r in ok])), "a": float(np.median([r["a"] for r in ok])),
+                           "r": float(np.median([r.get("r", 0.0) for r in ok])),
                            "ncc": float(min(r["ncc"] for r in ok)), "ok": True, "edge": any(r.get("edge") for r in ok)}
         out.append({**g[0], "box": [x0, y0, x1 - x0, y1 - y0], "tbox": [x0, y0, x1 - x0, y1 - y0],
                     "readings": readings, "parts": len(g)})
@@ -371,5 +411,6 @@ def series(clip: Clip, track: dict) -> dict:
         gaps = {"left": r["cx"] - bw / 2, "right": clip.w - (r["cx"] + bw / 2),
                 "top": r["cy"] - bh / 2, "bottom": clip.h - (r["cy"] + bh / 2)}
         side = min(gaps, key=gaps.get)
-    return {"t": t, "cx": get("cx") * clip.scale, "cy": get("cy") * clip.scale, "s": s, "a": np.clip(a, 0, 1.2),
+    r = np.where(edge, np.nan, np.array([rd[f].get("r", 0.0) if vis[i] else np.nan for i, f in enumerate(frames)]))
+    return {"t": t, "cx": get("cx") * clip.scale, "cy": get("cy") * clip.scale, "s": s, "r": r, "a": np.clip(a, 0, 1.2),
             "w": w, "intermediate_a": int((good_a & (a > 0.15) & (a < 0.85)).sum()), "edge_side": side}

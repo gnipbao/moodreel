@@ -9,7 +9,7 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 
 > **Status: pre-alpha.** The whole path works end to end: references in, measurements, a kit, a packed style, a
 > film made in it, checked and delivered. Motion measurement passes its acceptance bench, and two example films
-> survive the round trip (below). Rotation, line draw-on and per-letter text are next.
+> survive the round trip (below). Line draw-on and per-letter text are next.
 
 ## Why measure motion?
 
@@ -34,8 +34,9 @@ degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 | clean | 94% | 86% | 97% | 29 / 0 | 13/14 |
 | degraded | 92% | 88% | 86% | 9 / 0 | 13/14 |
 
-Of the 11 moves the bench marks as beyond those readers, 6 are now found on the clean films (bars growing, an
-underline drawn out); rotation, line draw-on and per-letter text are not measured yet.
+Of the 11 moves the bench marks as beyond those readers, 7 are now found on the clean films (bars growing, an
+underline drawn out, a card turning as it grows, its `power3.out` named exactly); line draw-on and per-letter text
+are not measured yet.
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
 
 ### The round trip

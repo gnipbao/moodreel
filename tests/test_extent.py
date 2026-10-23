@@ -1,6 +1,7 @@
 """The one-axis reader (stretch, clip reveal, wipe), class claims and the style's shared curve, on synthetic clips."""
 from __future__ import annotations
 
+import cv2
 import numpy as np
 
 from moodreel.motion import eases, extent, fit, track
@@ -119,3 +120,54 @@ def test_a_whole_layout_panning_on_a_flat_ground_is_the_camera():
     assert pan and abs(pan["panx"][-1] + 120) < 3
     alone = [(40, 40, True), (120, 100, False), (200, 60, False), (260, 120, False)]
     assert camera.layout_pan(film(alone), 10, 22) is None    # one element moving among still ones is its own move
+
+
+def _turning(draw_block, total, scale_from=1.0, enters=False):
+    """Frames of a block turned (OpenCV degrees, counter-clockwise) and scaled about (160, 90), easing to rest;
+    entering at frame 10 when `enters`."""
+    frames, angles = [], []
+    for f in range(N):
+        p = float(eases.get("power3.out")(np.clip((f - 10) / 15, 0, 1)))
+        deg, k = total * (1 - p), scale_from + (1 - scale_from) * p
+        canvas = np.zeros((H, W, 3), np.uint8)
+        mask = np.zeros((H, W), np.uint8)
+        if not enters or f >= 10:
+            draw_block(canvas, mask)
+        M = cv2.getRotationMatrix2D((160, 90), deg, k)
+        c, m = cv2.warpAffine(canvas, M, (W, H)), cv2.warpAffine(mask, M, (W, H)) > 127
+        img = np.empty((H, W, 3), np.uint8)
+        img[:] = GROUND
+        img[m] = c[m]
+        frames.append(img)
+        angles.append(-deg)                                   # as CSS measures it: clockwise
+    return Clip("", FPS, W, H, np.stack(frames), 1.0), np.array(angles)
+
+
+def test_a_textured_card_turning_is_followed_by_the_template():
+    def textured(canvas, mask):
+        canvas[65:115, 100:220] = (30, 30, 30)
+        canvas[75:105, 110:160] = (200, 40, 40)
+        mask[65:115, 100:220] = 255
+    clip, truth = _turning(textured, 30)
+    Q = clip.frames[34].astype(np.float32)
+    T, tbox = track._template(Q, Q * 0 + 236, np.abs(Q - GROUND).max(axis=2) > 28, (100, 65, 120, 50))
+    rd = track._follow(clip, Q * 0 + GROUND.astype(np.float32), T, tbox, range(34, 4, -1))
+    assert max(abs(rd[f]["r"] - truth[f]) for f in rd) < 2.0
+
+
+def test_a_flat_card_turning_as_it_grows_is_read_from_its_silhouette():
+    def flat(canvas, mask):
+        canvas[65:115, 100:220] = (20, 20, 20)
+        mask[65:115, 100:220] = 255
+    clip, truth = _turning(flat, 12, scale_from=0.7, enters=True)
+    R = extent.turn(clip, _track((100, 65, 120, 50)))
+    ok = ~np.isnan(R)
+    assert ok.sum() > 20 and np.abs(R[ok] - truth[5:35][ok]).max() < 1.5
+
+
+def test_a_disc_has_no_turn_to_read():
+    def disc(canvas, mask):
+        cv2.circle(canvas, (160, 90), 40, (20, 20, 20), -1)
+        cv2.circle(mask, (160, 90), 40, 255, -1)
+    clip, _ = _turning(disc, 30)
+    assert extent.turn(clip, _track((120, 50, 80, 80))) is None

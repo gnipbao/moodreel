@@ -4,8 +4,8 @@
 
 | variant | props found | spurious | t50 ≤ 1 f | class | family | named / wrong | transitions | staggers | stepping | v1 found |
 |---|---|---|---|---|---|---|---|---|---|---|
-| clean | 90/96 | 26 | 0.856 | 0.967 | 0.556 | 29 / 0 | 13/14 (+0) | 5/6 | 2/2 | 6/11 |
-| stress | 88/96 | 20 | 0.875 | 0.864 | 0.341 | 9 / 0 | 13/14 (+0) | 3/6 | 1/2 | 2/11 |
+| clean | 90/96 | 29 | 0.856 | 0.967 | 0.556 | 29 / 0 | 13/14 (+0) | 5/6 | 2/2 | 7/11 |
+| stress | 88/96 | 22 | 0.875 | 0.864 | 0.341 | 9 / 0 | 13/14 (+0) | 3/6 | 1/2 | 3/11 |
 
 **clean**: ✓ recall 0.938 (target ≥ 0.9) · ✓ t50_within_1f 0.856 (target ≥ 0.85) · ✓ class_ok 0.967 (target ≥ 0.8) · ✓ claimed_wrong_rate 0.0 (target ≤ 0.05)
 
@@ -237,7 +237,7 @@ Spurious: e5.x, e6.x, e6.y, e9.x, e9.y, e10.x, e11.x, e11.y
 | words | opacity | mvp | power2.out 1.20-1.70s | power2.out 1.20-1.72s | yes (120.4) | 0.0 | 0.1 | ✓ | ✓ |
 | underline | sx | v1 | power3.inOut 1.50-2.10s | power3.inOut 1.50-2.10s | yes (58.8) | 0.0 | 0.0 | ✓ | ✓ |
 
-Spurious: e0.opacity, e0.y, e1.y, e4.sy
+Spurious: e0.opacity, e0.y, e1.opacity, e1.y, e1.rot, e4.sy
 
 ### letters · stress
 
@@ -249,7 +249,7 @@ Spurious: e0.opacity, e0.y, e1.y, e4.sy
 | words | opacity | mvp | power2.out 1.20-1.70s | power3.out 1.22-1.72s | no (5.7) | 0.6 | -0.1 | ✗ | ✓ |
 | underline | sx | v1 | power3.inOut 1.50-2.10s | sine.inOut 1.62-1.98s | no (22.5) | 3.6 | 0.0 | ✗ | ✓ |
 
-Spurious: e0.opacity, e0.y, e1.y, e4.wipe
+Spurious: e0.y, e1.opacity, e1.y, e1.rot, e4.wipe
 
 ### mg-basic · clean
 
@@ -404,7 +404,7 @@ Transition cut at 4.0s: found (cut)
 | sticker0 | scale | mvp | back.out(3) 0.60-1.05s | back.out(3) 0.60-1.05s | yes (189.4) | 0.0 | -0.0 | ✓ | ✓ |
 | sticker1 | scale | mvp | back.out(3) 0.70-1.15s | back.out(3) 0.70-1.15s | yes (209.8) | 0.0 | -0.0 | ✓ | ✓ |
 | sticker2 | scale | mvp | back.out(3) 0.80-1.25s | back.out(3) 0.80-1.25s | yes (191.0) | 0.0 | -0.0 | ✓ | ✓ |
-| tilted | rot | v1 | power3.out 1.10-1.60s | **missed** | | | | | |
+| tilted | rot | v1 | power3.out 1.10-1.60s | power3.out 1.10-1.60s | yes (139.7) | 0.0 | 0.0 | ✓ | ✓ |
 | tilted | scale | mvp | power3.out 1.10-1.60s | sine.out 1.08-1.37s (start) | no (0.8) | -0.5 | -0.1 | ✗ | ✓ |
 | trick | scale | mvp | expo.out 2.20-2.65s | expo.out 2.23-2.68s | no (48.6) | 1.0 | 1.0 | ✓ | ✓ |
 | trick | opacity | mvp | power1.out 2.20-2.35s | **missed** | | | | | |
@@ -417,7 +417,7 @@ Transition cut at 4.0s: found (cut)
 
 Stagger 3 × 0.1s: found 3 × 0.1s
 
-Spurious: e4.x, e5.x, e5.y, e5.scale, e6.x
+Spurious: e4.x, e5.x, e5.y, e5.scale, e5.rot, e6.x
 
 ### vertical-social · stress
 
@@ -428,7 +428,7 @@ Spurious: e4.x, e5.x, e5.y, e5.scale, e6.x
 | sticker0 | scale | mvp | back.out(3) 0.60-1.05s | back.out(4) 0.64-1.02s | no (3.7) | 1.2 | 0.8 | ✓ | ✓ |
 | sticker1 | scale | mvp | back.out(3) 0.70-1.15s | back.out(4) 0.72-1.18s | yes (24.9) | 0.6 | 0.4 | ✓ | ✓ |
 | sticker2 | scale | mvp | back.out(3) 0.80-1.25s | back.out(4) 0.84-1.22s | no (1.4) | 1.2 | 0.8 | ✓ | ✓ |
-| tilted | rot | v1 | power3.out 1.10-1.60s | **missed** | | | | | |
+| tilted | rot | v1 | power3.out 1.10-1.60s | power1.out 1.08-1.42s | no (33.9) | -0.6 | -0.0 | ✗ | ✓ |
 | tilted | scale | mvp | power3.out 1.10-1.60s | sine.out 1.12-1.40s | no (0.3) | 0.6 | 1.0 | ✗ | ✓ |
 | trick | scale | mvp | expo.out 2.20-2.65s | circ.out 2.28-2.52s | no (25.9) | 2.4 | 2.0 | ✗ | ✓ |
 | trick | opacity | mvp | power1.out 2.20-2.35s | **missed** | | | | | |
@@ -441,4 +441,4 @@ Transition cut at 4.0s: found (cut)
 
 Stagger 3 × 0.1s: found 3 × 0.1s
 
-Spurious: e4.x, e4.scale, e5.x, e6.x
+Spurious: e4.x, e4.scale, e5.x, e5.rot, e6.x
