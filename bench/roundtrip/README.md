@@ -65,8 +65,15 @@ agent started fresh, or a person) works only from the packet and writes `STYLE.m
 uv run moodreel bench blind score
 ```
 
-writes [BLIND.md](BLIND.md): the eleven verdicts per film beside the round trip's own five, and §8's line (at
-least 8 of 11 "same"). Whoever made the films can't be the director: they have read the styles.
+writes [BLIND.md](BLIND.md): the eleven verdicts per film beside the round trip's own five, the judge's notes, and
+§8's line (at least 8 of 11 "same"); the distilled STYLE.md files and the verdicts are kept in [blind/](blind/).
+Whoever made the films can't be the director: they have read the styles.
+
+First run (2026-10-23; the director and the judge were each a freshly started agent, the director reading only the
+packets and the skill): only swiss-motion passes (8 of 11 "same"); dark-keynote 7, ascii-crt 6, risograph 5,
+pictogram-motion 3. No section was judged "different" or "absent": every miss is "partly". The director gets each
+film's surface right and then turns what that one film didn't do into a rule (no second hue, no green phosphor,
+never rotate or zoom, the mosaic never moves), and puts the beat lock under sound instead of motion.
 
 ## Adding a film
 

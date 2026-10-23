@@ -1,0 +1,14 @@
+{"sections": {"1": "same", "2": "partly", "3": "same", "4": "partly", "5": "partly", "6": "same", "7": "same", "8": "partly", "9": "same", "10": "partly", "11": "partly"},
+ "notes": {
+  "1": "Close. Misregistration is framed around the type, and the inks are named as teal and coral rather than chosen per film.",
+  "2": "Multiply inks, stepped halftone, speckle fixed to the paper and the knockout trap are right. But misregistration is not a per-plate property of everything printed (only type is offset), plates get no separate screen angles, and the 'at most two plates per area, one of them a tint' rule is missing.",
+  "3": "Riso colour logic holds: spot inks, tints by halftone, overprint as the darkest value, cream paper, no black. But it fixes teal + coral and confines coral to a ~3 % accent that never fills a field.",
+  "4": "Double-hit title and roller entrance match, but subtitles lose the paper-white knockout strip; 'never a boxed caption' contradicts it.",
+  "5": "On twos, fixed per-shot registration and the constant-speed roller are right. But the registration kick on accents and the drift/snap are missing, though the film kicks at 9.5 s. 'step(t, 12) for everything' would also step camera moves, which the original keeps on ones.",
+  "6": "Locked composition, roller transitions and no dissolves match. The moving-camera vocabulary (tracking, push into halftone, match cuts) is absent but unshown.",
+  "7": "Consistent. The print machine's own sounds (drum ka-chunk, feed) are reduced to a roller swish.",
+  "8": "The moves are generic pulls and rises. The plate moves the film used are missed or misread: the third colour where two inks meet (the sun's reflection over the sea), a plate lifting away to leave one ink (read as a 're-ink'), and the registration kick.",
+  "9": "Jitter, moiré, gradients and pure black/white match the original's concerns. The 'three halftones = mud' rule is missing.",
+  "10": "Shapes are built as multiply layers rather than plates with their own offsets, so only text misregisters. No kicks/drift and no per-plate gate.",
+  "11": "Inks are fixed by §3 and subjects confined to bands and discs, while the original's first free choice is the inks and what each plate means. Plate-based structures (subtraction, one ink left) are missing."
+ }}

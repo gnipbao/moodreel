@@ -1,0 +1,22 @@
+{
+ "A": {
+  "film": "boot",
+  "style": "ascii-crt"
+ },
+ "B": {
+  "film": "first-light",
+  "style": "risograph"
+ },
+ "C": {
+  "film": "morning",
+  "style": "pictogram-motion"
+ },
+ "D": {
+  "film": "shipped",
+  "style": "dark-keynote"
+ },
+ "E": {
+  "film": "swiss-programme",
+  "style": "swiss-motion"
+ }
+}

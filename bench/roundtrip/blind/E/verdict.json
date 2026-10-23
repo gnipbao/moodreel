@@ -1,0 +1,12 @@
+{"sections": {"1": "same", "2": "same", "3": "same", "4": "same", "5": "partly", "6": "partly", "7": "same", "8": "same", "9": "same", "10": "partly", "11": "same"},
+ "notes": {
+  "1": "Close. Beat landing is not stated, the exception appears only in §3/§8, and 'data as solid shapes' leans toward the charts the original warns against.",
+  "2": "Close. No spread (programme page / artifact page), no baseline grid, and no 2D camera matrix with scale and rotation.",
+  "3": "Close. Red is fixed and the signal is confined to a square drawn above the type; the original lets it be red, orange, ultramarine or green, and allows black type on it.",
+  "4": "Close. Word-by-word clip reveal of subtitles and optically flush-left numerals are missing.",
+  "5": "House bezier, no overshoot, clip-rise, baseline growth, fold and the linear exception are right. But durations are not note values landing on the beat, slots get a third curve (power4.out) against 'two curves only', and ripples run left to right rather than by distance from their cause.",
+  "6": "Locked spread and page slide match, but 'never zoom, never rotate' and 'no wipes' contradict the original's rotate 90°, push/pull moves and wipe transitions.",
+  "8": "Close. The programme move and snap = beat are missing.",
+  "10": "Columns, guides, grow, slot, fold and caption cover the parts. But there is no snap that lands on a beat (timing is in seconds), no knife line or linear exception track, and slot bakes in a third curve.",
+  "11": "Close. Signal colour and 'the exception or none' are not listed as choices."
+ }}
