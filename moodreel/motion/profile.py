@@ -71,6 +71,14 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
            "via_edge": side, "props": {}}
     role = {"appear": "entrance", "disappear": "exit"}.get(track["kind"], "move")
     prefer = PREFER[role]
+    # a thin stroke drawn along its own path, straight or curved
+    D = extent.drawn(clip, track)
+    if D is not None:
+        f = _one_axis(t, fps, {"series": D, "anchor": None}, prefer)
+        if f:
+            out["reading"] = {"mode": "draw", "axis": None, "anchor": None}
+            out["props"]["draw"] = f
+            return out
     # one axis changing while an edge holds still: a stretch, a wipe or a clip reveal, which the template misreads
     X = extent.reading(clip, track)
     if X and X["mode"] != "clip":
@@ -195,6 +203,8 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
             parts.append(("grow-" if ev["kind"] != "disappear" else "collapse-") + k[1])
     if "wipe" in p:
         parts.append("wipe-" + ("out" if ev["kind"] == "disappear" else "in"))
+    if "draw" in p:
+        parts.append("draw-" + ("off" if ev["kind"] == "disappear" else "on"))
     if "scale" in p:
         parts.append("scale-pop" if p["scale"]["overshoot"] > 0.02 else "scale")
     for axis, size in (("x", frame[0]), ("y", frame[1])):
@@ -221,7 +231,7 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
 
 
 def main_prop(ev):
-    for k in ("scale", "sy", "sx", "wipe", "y", "x", "rot", "opacity"):
+    for k in ("scale", "sy", "sx", "wipe", "draw", "y", "x", "rot", "opacity"):
         if k in ev["props"]:
             return k
     return None

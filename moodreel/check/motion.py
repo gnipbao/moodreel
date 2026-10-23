@@ -12,6 +12,7 @@ from pathlib import Path
 from ..motion.extract import measure
 
 FRAME = 0.05             # s: about a frame at 24 fps, the least a duration can be measured to
+SHORT = 0.17             # s: about four frames at 24 fps, the shortest tween whose length can be compared
 TOL = {"duration": 0.25, "class_share": 0.20, "overshoot_share": 0.25, "stagger": 0.30, "hold": 0.8,
        "shot": 0.35, "density": 0.15}
 
@@ -37,8 +38,9 @@ def claims(ref: dict, got: dict) -> list[dict]:
         if not R:
             continue
         rd, gd = _med(R), _med(G)
+        # a tween of three or four frames can't be timed closer than its frames: no claim on it
         add(f"{role}.duration", f"median within ±{TOL['duration']:.0%} (at least a frame)", rd, gd,
-            None if rd is None or gd is None else abs(gd - rd) <= max(TOL["duration"] * rd, FRAME))
+            None if rd is None or gd is None or rd < SHORT else abs(gd - rd) <= max(TOL["duration"] * rd, FRAME))
         rc, rs = _dominant(R)
         gc = (G or {}).get("classes") or {}
         gs = gc.get(rc, 0) / sum(gc.values()) if gc else None      # nothing read in the film is no contradiction

@@ -171,3 +171,37 @@ def test_a_disc_has_no_turn_to_read():
         cv2.circle(mask, (160, 90), 40, 255, -1)
     clip, _ = _turning(disc, 30)
     assert extent.turn(clip, _track((120, 50, 80, 80))) is None
+
+
+def _stroke_film(points, appear_at=10, dur=12, fade=False):
+    """A 3 px polyline drawn on along its length (or faded in whole)."""
+    frames = []
+    seg = np.array(points, float)
+    lengths = np.hypot(*np.diff(seg, axis=0).T)
+    total = lengths.sum()
+    for f in range(N):
+        img = np.empty((H, W, 3), np.uint8)
+        img[:] = GROUND
+        p = float(np.clip((f - appear_at) / dur, 0, 1))
+        if fade:
+            if p > 0:
+                ink = (GROUND * (1 - p) + np.array([20, 20, 20]) * p).astype(np.uint8)
+                cv2.polylines(img, [seg.astype(np.int32)], False, tuple(int(c) for c in ink), 3)
+        else:
+            left = p * total
+            for (a, b), L in zip(zip(seg[:-1], seg[1:]), lengths):
+                if left <= 0:
+                    break
+                e = a + (b - a) * min(1, left / L)
+                cv2.line(img, tuple(a.astype(int)), tuple(e.astype(int)), (20, 20, 20), 3)
+                left -= L
+        frames.append(img)
+    return Clip("", FPS, W, H, np.stack(frames), 1.0)
+
+
+def test_a_line_drawn_along_its_path_reads_as_drawn_and_a_fade_does_not():
+    path = [(40, 150), (120, 40), (200, 140), (290, 50)]               # a zigzag, not a straight rule
+    box = (38, 38, 254, 114)
+    D = extent.drawn(_stroke_film(path), _track(box))
+    assert D is not None and D[0] == 0 and D[-1] > 0.95 and np.all(np.diff(D) >= -0.05)
+    assert extent.drawn(_stroke_film(path, fade=True), _track(box)) is None

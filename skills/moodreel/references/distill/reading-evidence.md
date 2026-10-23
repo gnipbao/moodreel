@@ -72,7 +72,10 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   axis of its silhouette. Round shapes, small elements (under about 32 px at the 640 px analysis width), faint
   ones and anything whose shape changes give no turn. Letters rising one after another can read as a slight turn of
   the whole word.
-- **What isn't measured yet**: line draw-on, per-letter text, particles and loops, and elements nested
+- **Lines drawn on** (`draw`, the share of the stroke's own path that shows, labelled `draw-on` / `draw-off`): a thin
+  stroke (a rule, a curve, a joined hand: one or two connected pieces, at least twenty times as long as it is wide)
+  that grows from nothing along its path. A line faded in, or a word, is not one; nor is a line that moves.
+- **What isn't measured yet**: per-letter text, particles and loops, and elements nested
   inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
   evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and
   describe them yourself, marked `inferred`.

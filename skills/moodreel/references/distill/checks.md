@@ -33,7 +33,7 @@ Each claim passes, fails or is unknown (unknown never passes; the film or the re
 
 | Claim | Tolerance | When it fails |
 |---|---|---|
-| `<role>.duration` | median within ±25 % (at least 0.05 s) | entrances or exits too quick or too slow: use `MOTION.enter.duration` |
+| `<role>.duration` | median within ±25 % (at least 0.05 s); unknown under 0.17 s, too short to time | entrances or exits too quick or too slow: use `MOTION.enter.duration` |
 | `<role>.ease_class` | share of the dominant class within ±20 pts; unknown when the film reads no class | the wrong family of curve: use `MOTION.enter.ease` |
 | `<role>.overshoot_share`, `.overshoot` | ±25 pts; median within the references' range | bounce where the references settle, or the reverse |
 | `exit_shorter` | exits shorter than entrances when the references are | |

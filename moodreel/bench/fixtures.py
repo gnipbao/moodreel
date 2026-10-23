@@ -238,7 +238,12 @@ def truth(spec) -> dict:
         for el in shot["elements"]:
             for a in el["anims"]:
                 end = a["t"] + a["d"]
-                ex, ey = _to_screen(spec, shot, _value(el, "x", end), _value(el, "y", end), end)
+                if el["kind"] == "path":                # a path is placed by its points: its middle
+                    pts = el["points"]
+                    x, y = sum(q[0] for q in pts) / len(pts), sum(q[1] for q in pts) / len(pts)
+                else:
+                    x, y = _value(el, "x", end), _value(el, "y", end)
+                ex, ey = _to_screen(spec, shot, x, y, end)
                 v1 = a["prop"] in V1_PROPS or el["kind"] in ("chars", "path", "bar")
                 events.append({"element": el["id"], "shot": shot["id"], "prop": a["prop"], "t0": a["t"],
                                "t1": round(end, 4), "dur": a["d"], "ease": a["ease"], "from": a["from"], "to": a["to"],
