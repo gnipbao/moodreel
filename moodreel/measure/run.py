@@ -6,6 +6,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import numpy as np
+
 
 from .. import sheet
 from ..intake import samples
@@ -26,6 +28,12 @@ def _pool_motion(per_video: dict) -> dict:
     return out
 
 
+def _scan_px(textures: list[dict], pictures: list) -> float | None:
+    """A reference's scanline period in its own pixels (texture reads it at texture.WORK), or None."""
+    ps = [t["scanlines"]["period_px"] * max(p.shape[:2]) / texture.WORK for t, p in zip(textures, pictures) if t.get("scanlines")]
+    return float(np.median(ps)) if len(ps) * 2 >= len(textures) else None
+
+
 def measure(project: Path) -> dict:
     project = Path(project)
     intake = json.loads((project / "intake.json").read_text())
@@ -35,7 +43,11 @@ def measure(project: Path) -> dict:
     flat = [(it["id"], p) for it in items for p in pictures[it["id"]]]
 
     # palette: one per reference (a video's frames as one picture), pooled with equal weight
-    pals = [palette.image_palette(sheet.stack(pictures[it["id"]])) for it in items]
+    # scanlines darken every other few rows: colours and strokes are read with the rows filled in
+    tex = {it["id"]: [texture.texture(p) for p in pictures[it["id"]]] for it in items}
+    scan = {rid: _scan_px(ts, pictures[rid]) for rid, ts in tex.items()}
+    pals = [palette.image_palette(sheet.stack([typeset.descan(p, scan[it["id"]]) if scan[it["id"]] else p
+                                               for p in pictures[it["id"]]])) for it in items]
     openings = {it["id"]: palette.opening_ground(f[0]) for it in items if it["kind"] == "video"
                 for f in [sheet.video_frames(str(project / it["file"]), [0.05])] if f}
     hint = next(((vid, h) for vid, h in openings.items() if h), None)
@@ -45,7 +57,8 @@ def measure(project: Path) -> dict:
 
     tex = [texture.texture(p, ground) for _, p in flat]
     lay = [layout.layout(p, ground) for _, p in flat]
-    lines = [typeset.text_lines(p, (t.get("halftone") or {}).get("period_px")) for (_, p), t in zip(flat, tex)]
+    lines = [typeset.text_lines(p, (t.get("halftone") or {}).get("period_px"), (t.get("scanlines") or {}).get("period_px"))
+             for (_, p), t in zip(flat, tex)]
     typeset.crops_sheet([p for _, p in flat], lines, project / "evidence" / "type-lines.jpg")
     out = {"palette": pal, "texture": {**texture.pooled(tex), "per_picture": tex},
            "layout": {**layout.pooled(lay), "per_picture": lay},

@@ -1,0 +1,241 @@
+{
+ "name": "shipped",
+ "W": 1920,
+ "H": 1080,
+ "fps": 24,
+ "dur": 10.0,
+ "events": [
+  {
+   "element": "window",
+   "shot": "A",
+   "prop": "scale",
+   "t0": 0.7,
+   "t1": 1.0,
+   "dur": 0.3,
+   "ease": "back.out(1.3)",
+   "from": 0.2,
+   "to": 1,
+   "end_xy": [
+    960,
+    500
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "row0",
+   "shot": "A",
+   "prop": "x",
+   "t0": 0.75,
+   "t1": 1.0,
+   "dur": 0.25,
+   "ease": "back.out(1.3)",
+   "from": 1020,
+   "to": 960,
+   "end_xy": [
+    960,
+    366
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "row1",
+   "shot": "A",
+   "prop": "x",
+   "t0": 1.25,
+   "t1": 1.5,
+   "dur": 0.25,
+   "ease": "back.out(1.3)",
+   "from": 1020,
+   "to": 960,
+   "end_xy": [
+    960,
+    466
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "row2",
+   "shot": "A",
+   "prop": "x",
+   "t0": 1.75,
+   "t1": 2.0,
+   "dur": 0.25,
+   "ease": "back.out(1.3)",
+   "from": 1020,
+   "to": 960,
+   "end_xy": [
+    960,
+    566
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "row3",
+   "shot": "A",
+   "prop": "x",
+   "t0": 2.25,
+   "t1": 2.5,
+   "dur": 0.25,
+   "ease": "back.out(1.3)",
+   "from": 1020,
+   "to": 960,
+   "end_xy": [
+    960,
+    666
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "window",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 3.5,
+   "t1": 3.65,
+   "dur": 0.15,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0.02,
+   "end_xy": [
+    960,
+    500
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "number",
+   "shot": "A",
+   "prop": "scale",
+   "t0": 4.2,
+   "t1": 4.5,
+   "dur": 0.3,
+   "ease": "back.out(1.3)",
+   "from": 0.6,
+   "to": 1,
+   "end_xy": [
+    960,
+    550
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "number",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 6.5,
+   "t1": 6.65,
+   "dur": 0.15,
+   "ease": "power2.in",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    960,
+    550
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "tile",
+   "shot": "A",
+   "prop": "scale",
+   "t0": 6.75,
+   "t1": 7.0,
+   "dur": 0.25,
+   "ease": "back.out(1.3)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    960,
+    500
+   ],
+   "scope": "mvp",
+   "reader": "scale"
+  },
+  {
+   "element": "toast",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.5,
+   "t1": 7.66,
+   "dur": 0.16,
+   "ease": "power2.out",
+   "from": 934,
+   "to": 918,
+   "end_xy": [
+    960,
+    918
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "toast",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 7.5,
+   "t1": 7.66,
+   "dur": 0.16,
+   "ease": "power2.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    960,
+    918
+   ],
+   "scope": "mvp",
+   "reader": "opacity"
+  }
+ ],
+ "transitions": [],
+ "stepping": [
+  {
+   "t0": 0.0,
+   "t1": 10.0,
+   "on": 1
+  }
+ ],
+ "omitted": [
+  "the checks (28 px): below the readers' size floor",
+  "the window's last squash to a dot (0.1 s, a line)"
+ ],
+ "stills": [
+  1.6,
+  2.9,
+  5.5,
+  8.5
+ ],
+ "palette": {
+  "ground": "#0B0D12",
+  "ink": "#E9EDF5",
+  "accent": "#B7F34A"
+ },
+ "surface": {
+  "grain": 0,
+  "vignette": [
+   0.5,
+   0.8
+  ],
+  "halftone": null
+ },
+ "type": {
+  "title": 0.2593,
+  "weight": [
+   600
+  ]
+ },
+ "motion": {
+  "entrance": "out+overshoot",
+  "exit": "in",
+  "move": null
+ },
+ "notes": [
+  "vignette: the film draws vignette(0.5) under a radial lift at the upper centre; the picture's corner falloff is the two together"
+ ]
+}

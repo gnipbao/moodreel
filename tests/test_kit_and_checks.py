@@ -67,3 +67,20 @@ def test_an_ease_read_once_or_never_is_left_to_the_director():
     assert mt["enter"]["ease"] is None and mt["enter"]["duration"] == 0.5 and "unread" in mt["enter"]
     g["entrance"]["claimed"] = 5
     assert kit.motion_tokens(g)["enter"]["ease"] == "expo.in"
+
+
+def test_a_curve_read_for_a_minority_of_moves_is_left_unread():
+    g = _grammar()
+    g["entrance"] = {**g["entrance"], "count": 7, "claimed": 0, "class_claimed": 2, "classes": {"inOut": 2},
+                     "curve": {"bezier": [0.7, 0, 0.2, 1], "tweens": 2, "resid": 0.01, "class": "inOut", "duration": 0.4}}
+    assert kit.motion_tokens(g)["enter"]["ease"] is None          # 2 of 7: not the style's habit
+    g["entrance"]["count"] = 5
+    mt = kit.motion_tokens(g)
+    assert mt["enter"]["ease"] == "bezier(0.7,0,0.2,1)" and mt["enter"]["duration"] == 0.4
+
+
+def test_the_sketch_replays_the_commonest_entrance(tmp_path):
+    from moodreel.pack import sketch
+    assert sketch._kind({"grow-y": 6, "clip-rise": 3, "rise": 1}) == "grow"
+    assert sketch._kind({"slide-in": 2, "scale-pop": 1}) == "slide"
+    assert sketch._kind({}) == "rise"

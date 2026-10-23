@@ -7,7 +7,10 @@ export const lerp = (a, b, u) => a + (b - a) * u;
 export const TAU = Math.PI * 2;
 
 // progress of a tween at time t: 0 before `at`, 1 after `at + dur`, eased in between
-export const tween = (t, at, dur, name = 'power2.out') => ease(name)(clamp((t - at) / dur));
+export const tween = (t, at, dur, name = 'power2.out') => {
+  const u = clamp((t - at) / dur);
+  return u <= 0 ? 0 : u >= 1 ? 1 : ease(name)(u);          // exactly 0 before and 1 after, as GSAP does
+};
 
 // a value tweened from `from` to `to`
 export const value = (t, at, dur, from, to, name) => lerp(from, to, tween(t, at, dur, name));

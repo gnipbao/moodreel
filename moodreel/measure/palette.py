@@ -21,6 +21,7 @@ from .color import chroma, contrast, delta_e, hex_, lab_to_rgb, rgb_to_lab
 JND_MERGE = 5.0          # CIEDE2000: closer than this is one colour within a picture
 POOL_MERGE = 7.0         # across pictures
 LONG_EDGE = 256
+VIVID, VIVID_AREA = 40.0, 0.0005   # chroma of a colour that can be an accent however small, and the least area it needs
 
 
 def _small(rgb):
@@ -69,6 +70,16 @@ def image_palette(rgb: np.ndarray, k: int = 10) -> dict:
         if sel.any():
             cols.append({"lab": lab[sel].mean(axis=0).astype(np.float64), "area": float(sel.mean()),
                          "border": float((sel & edge).sum() / edge.sum())})
+    # a vivid colour kept small on purpose (one accent tile, one signal) can lose its own cluster among ten: each
+    # vivid hue covering enough of the picture gets one, unless a cluster already holds it
+    c = chroma(lab.astype(np.float64))
+    hue = np.degrees(np.arctan2(lab[:, 2], lab[:, 1])) % 360
+    for b in range(12):
+        sel = (c >= VIVID) & (hue // 30 == b)
+        if sel.mean() >= VIVID_AREA:
+            m = np.median(lab[sel], axis=0).astype(np.float64)
+            if all(float(delta_e(m, np.asarray(x["lab"]))) >= 10 for x in cols):
+                cols.append({"lab": m, "area": float(sel.mean()), "border": float((sel & edge).sum() / edge.sum())})
     cols = sorted(_merge(cols, JND_MERGE), key=lambda c: -c["area"])
     return {"colors": [_describe(c) for c in cols], "luminance_hist": _lhist(lab)}
 
@@ -162,10 +173,12 @@ def roles(colors: list[dict], ground_hint: str | None = None) -> dict:
     if not colors:
         return {}
     ground = _ground(colors, ground_hint)
-    rest = [c for c in colors if c is not ground and c["area"] >= 0.01]
-    # a sliver of the darkest overprint is not the ink a whole sea is printed in
-    ink = max(rest, key=lambda c: abs(c["lightness"] - ground["lightness"]) * np.sqrt(c["area"]), default=None)
-    pool = [c for c in colors if c is not ground and c is not ink and 0.003 <= c["area"] < 0.15 and c["chroma"] >= 20]
+    rest = [c for c in colors if c is not ground and c["area"] >= 0.003]
+    # lightness weighs most (type is thin), area some: a sliver of the darkest overprint is not the ink a whole sea
+    # is printed in, and a large surface one step off the ground is not the ink either
+    ink = max(rest, key=lambda c: abs(c["lightness"] - ground["lightness"]) * c["area"] ** 0.25, default=None)
+    pool = [c for c in colors if c is not ground and c is not ink and c["area"] < 0.15
+            and (c["chroma"] >= 20 and c["area"] >= 0.003 or c["chroma"] >= VIVID and c["area"] >= 0.0003)]
     accent = max(pool, key=lambda c: c["chroma"], default=None)
     rgb = lambda c: [int(c["hex"][i:i + 2], 16) for i in (1, 3, 5)]  # noqa: E731
     out = {"ground": ground["hex"]}

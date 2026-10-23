@@ -125,3 +125,32 @@ def test_a_halftone_band_is_not_a_line_of_text():
     cv2.putText(img, "first light", (100, 400), cv2.FONT_HERSHEY_DUPLEX, 3.0, (20, 20, 20), 8, cv2.LINE_AA)
     lines = typeset.text_lines(img, screen_px=4.67)
     assert lines and all(ln["box"][1] > 0.4 for ln in lines)  # only the words, not the band at the top
+
+
+def test_a_small_vivid_accent_keeps_its_colour():
+    img = np.full((720, 1280, 3), (11, 13, 18), np.uint8)
+    img[200:420, 300:900] = (27, 32, 48)                       # a large surface one step off the ground
+    cv2.putText(img, "2.0", (500, 600), cv2.FONT_HERSHEY_DUPLEX, 5.0, (233, 237, 245), 14, cv2.LINE_AA)
+    img[60:100, 1100:1140] = (183, 243, 74)                    # one small lime tile, 0.17 % of the picture
+    roles = palette.pooled([palette.image_palette(img)])["roles"]
+    rgb = lambda h: np.array([int(h[i:i + 2], 16) for i in (1, 3, 5)], float)  # noqa: E731
+    assert color.delta_e(color.rgb_to_lab(rgb(roles["accent"])), color.rgb_to_lab(np.array([183, 243, 74.]))) < 6
+    assert color.delta_e(color.rgb_to_lab(rgb(roles["ink"])), color.rgb_to_lab(np.array([233, 237, 245.]))) < 8
+
+
+def test_big_type_with_wide_gaps_is_one_line_and_a_row_of_blocks_is_none():
+    img = np.full((720, 1280, 3), 240, np.uint8)
+    cv2.putText(img, "W A K E", (80, 300), cv2.FONT_HERSHEY_DUPLEX, 6.0, (20, 20, 20), 22, cv2.LINE_AA)
+    for k in range(8):
+        img[560:600, 80 + 90 * k:140 + 90 * k] = 20            # squares in a row, like a caption's height
+    lines = typeset.text_lines(img)
+    assert len(lines) == 1 and lines[0]["box"][2] > 0.45       # the spaced word, whole; not the squares
+
+
+def test_scanlines_are_not_a_halftone_and_fill_back_in():
+    img = np.full((720, 1280, 3), (20, 12, 5), np.uint8)
+    img[200:500, 200:1000] = (255, 176, 0)
+    img[::4] = (img[::4] * 0.4).astype(np.uint8)                # every fourth row darkened
+    t = texture.texture(img)
+    assert t["scanlines"] and t["halftone"] is None
+    assert typeset.descan(img, t["scanlines"]["period_px"])[300:400, 300:900].min(axis=(0, 1))[0] > 240

@@ -12,6 +12,7 @@
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
+  moodreel sketch <project>                               the measured motion replayed with neutral shapes
   moodreel bench roundtrip [--only name]                  distil the example films back and compare with their code
 """
 from __future__ import annotations
@@ -167,6 +168,12 @@ def cmd_bench_motion(a):
     print(f"\n-> {root / 'REPORT.md'}")
 
 
+def cmd_sketch(a):
+    from .pack.sketch import write_sketch
+    out = write_sketch(Path(a.project), a.fps)
+    print(f"sketch -> {out}  (render: moodreel render video {out} --fps {a.fps})")
+
+
 def cmd_bench_roundtrip(a):
     from .bench.roundtrip import films, report
     md = report(films(Path(a.root), set(a.only.split(",")) if a.only else None), Path(a.out), a.workers)
@@ -230,6 +237,10 @@ def main(argv=None):
     p.add_argument("--out", help="deliver: where the finished film and poster go")
     p.set_defaults(fn=cmd_film)
     sub.add_parser("render", help="the renderer: video|still|texts <dir> [--fps] [--size] [--workers] [--out]")
+    p = sub.add_parser("sketch", help="replay the measured motion grammar with neutral shapes, as a film")
+    p.add_argument("project")
+    p.add_argument("--fps", type=int, default=24)
+    p.set_defaults(fn=cmd_sketch)
     p = sub.add_parser("motion", help="measure a video's motion grammar")
     p.add_argument("video")
     p.add_argument("--out", required=True)

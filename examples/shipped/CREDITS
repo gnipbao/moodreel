@@ -1,0 +1,7 @@
+shipped
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- Typefaces: system faces (SF Pro, SF Mono, Menlo, PingFang SC on macOS), not shipped with the film; a published
+  film sets the OFL faces its style names instead.
+- No images, music or samples.
