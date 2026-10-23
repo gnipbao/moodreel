@@ -26,6 +26,7 @@ for anything that surprises you. State what a number shows separately from what 
 | `vignette` (share of the centre's light lost at a corner, the smallest over the quadrants that show ground; under 3 grey levels counts as none) | none < 0.04 < soft < 0.15 < strong | |
 | `edge_sharpness` (how much of an edge's contrast is crossed in a pixel) | crisp ≥ 0.32 > soft ≥ 0.2 > blurred | |
 | `halftone` / `scanlines` (amplitude in grey levels; codec blocks never reach the thresholds) | a printed screen or CRT rows | |
+| `pixel` (scale, native size, palette size, dither share; read at each picture's own size) | pixel art: a low-res picture scaled up by whole pixels; its grain, halftone and scanlines aren't read (the dither would pass for them) | |
 
 The kit's `grain()` and `vignette()` take these numbers as they are: they are calibrated against the measurement.
 Screen and scanline periods are measured at a long edge of 1280 px; `moodreel kit` converts them to the film's design

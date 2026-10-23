@@ -9,6 +9,8 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
+from . import pixel
+
 from .color import delta_e, rgb_to_lab
 
 WORK = 1280
@@ -48,6 +50,7 @@ def _ring_max(power, rad):
 
 
 def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
+    art = pixel.read(rgb)                                 # at the picture's own size: resizing smears the cells
     img = _work(rgb)
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY).astype(np.float32)
     h, w = gray.shape
@@ -134,6 +137,12 @@ def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
         out["edge_density"] = round(float(edges.mean()), 4)
     else:
         out["edge_sharpness"], out["edge_density"] = None, 0.0
+    if art:
+        out["pixel"] = {**art, "picture_width": int(rgb.shape[1])}
+        # a pixel picture's dither and cell edges read as grain, a screen or scanlines: they are the pixel art
+        for k in ("grain", "halftone", "scanlines"):
+            out[k] = None
+        out["note"] = "pixel art: grain, halftone and scanlines not read (the dither and the cells would pass for them)"
     out["summary"] = summarise(out)
     return out
 
@@ -150,6 +159,7 @@ def summarise(t: dict) -> dict:
     s["edges"] = None if e is None else "crisp" if e >= 0.32 else "soft" if e >= 0.2 else "blurred"
     s["halftone"] = bool(t.get("halftone"))
     s["scanlines"] = bool(t.get("scanlines"))
+    s["pixel"] = bool(t.get("pixel"))
     return s
 
 
@@ -168,5 +178,14 @@ def pooled(textures: list[dict]) -> dict:
     sls = [t["scanlines"] for t in textures if t.get("scanlines")]
     out["scanlines"] = ({"share": round(len(sls) / len(textures), 2),
                          "period_px": round(float(np.median([x["period_px"] for x in sls])), 2)} if sls else None)
+    # pixel art: the scale as a share of the picture's width (references come at different sizes), the rest as medians
+    px = [t["pixel"] for t in textures if t.get("pixel")]
+    out["pixel"] = ({"share": round(len(px) / len(textures), 2),
+                     "scale_of_width": round(float(np.median([p["scale"] / p["picture_width"] for p in px])), 5),
+                     "native_width": int(np.median([p["native"][0] for p in px])),
+                     "palette_size": int(np.median([p["palette_size"] for p in px])),
+                     "dither": float(np.mean([p["dither"] for p in px])) >= 0.5,
+                     "dither_share": round(float(np.median([p["dither_share"] for p in px])), 3),
+                     "palette": max(px, key=lambda p: p["palette_size"])["palette"]} if px else None)
     out["summary"] = summarise(out)
     return out

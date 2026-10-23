@@ -135,6 +135,15 @@ def _design_px(periodic: dict | None, size: list[int]) -> dict | None:
     return {**periodic, "period_px": round(periodic["period_px"] * max(size) / WORK, 2)} if periodic else None
 
 
+def _pixel(px: dict | None, size: list[int]) -> dict | None:
+    """Pixel art in the film's terms: how many design px one art pixel is, the native size kit/pixel.js draws at."""
+    if not px:
+        return None
+    scale = max(1, round(px["scale_of_width"] * size[0]))
+    return {"scale": scale, "native": [size[0] // scale, size[1] // scale], "palette_size": px["palette_size"],
+            "dither": px["dither"], "palette": px["palette"]}
+
+
 def style_tokens(project: Path, intake: dict) -> dict:
     m = lambda k: json.loads((project / "measure" / f"{k}.json").read_text())  # noqa: E731
     pal, tex, lay, typ = m("palette"), m("texture"), m("layout"), m("type")
@@ -151,7 +160,7 @@ def style_tokens(project: Path, intake: dict) -> dict:
         "layout": {"margin": lay.get("min_margin"), "align": lay.get("dominant_alignment"), "density": lay.get("density")},
         "texture": {"grain": tex.get("grain"), "mottle": tex.get("mottle"), "vignette": tex.get("vignette"),
                     "halftone": _design_px(tex.get("halftone"), size), "scanlines": _design_px(tex.get("scanlines"), size),
-                    "edges": tex["summary"].get("edges")},
+                    "edges": tex["summary"].get("edges"), "pixel": _pixel(tex.get("pixel"), size)},
     }
 
 
