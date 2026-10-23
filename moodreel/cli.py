@@ -14,6 +14,7 @@
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
   moodreel sketch <project>                               the measured motion replayed with neutral shapes
   moodreel bench roundtrip [--only name]                  distil the example films back and compare with their code
+  moodreel bench blind make|score                         packets for a blind distillation, and the judges' scores
 """
 from __future__ import annotations
 
@@ -174,6 +175,17 @@ def cmd_sketch(a):
     print(f"sketch -> {out}  (render: moodreel render video {out} --fps {a.fps})")
 
 
+def cmd_bench_blind(a):
+    from .bench import blind
+    out = Path(a.out)
+    if a.step == "make":
+        key = blind.make(Path(a.roundtrip), out, set(a.only.split(",")) if a.only else None)
+        print(f"{len(key)} packets -> {out}/<code>/packet (BRIEF.md for the director); JUDGE.md and KEY.json for the judge")
+    md = blind.score(out, REPO / "bench" / "roundtrip" / "REPORT.md")
+    (REPO / "bench" / "roundtrip" / "BLIND.md").write_text(md, encoding="utf-8")
+    print(md)
+
+
 def cmd_bench_roundtrip(a):
     from .bench.roundtrip import films, report
     md = report(films(Path(a.root), set(a.only.split(",")) if a.only else None), Path(a.out), a.workers)
@@ -263,6 +275,12 @@ def main(argv=None):
     q.add_argument("--out", default=str(REPO / "out" / "roundtrip"))
     q.add_argument("--workers", type=int, default=3)
     q.set_defaults(fn=cmd_bench_roundtrip)
+    q = b.add_parser("blind", help="packets for a blind distillation of the example films, and the judges' scores")
+    q.add_argument("step", choices=["make", "score"])
+    q.add_argument("--roundtrip", default=str(REPO / "out" / "roundtrip"))
+    q.add_argument("--out", default=str(REPO / "out" / "blind"))
+    q.add_argument("--only", help="comma-separated film names")
+    q.set_defaults(fn=cmd_bench_blind)
     a = ap.parse_args(argv)
     a.fn(a)
 

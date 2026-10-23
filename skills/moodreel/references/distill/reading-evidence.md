@@ -57,13 +57,13 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   (`class`). The grammar counts claimed families in `eases` and claimed classes in `classes`; the fits' best guesses
   are kept apart in `guesses`.
 - **The style's own curve**: when a role's tweens share a claimed class, one cubic-bezier is fitted through all of
-  them (`curve`, with the number of tweens and the residual). A house curve with no GSAP name (a Swiss snap,
-  `cubic-bezier(.7,0,.2,1)`) comes back this way. The kit takes a family read at least twice; else this curve when
+  them (`curve`, with the number of tweens and the residual). A house curve with no GSAP name (a snap that starts
+  late and lands hard, say) comes back this way. The kit takes a family read at least twice; else this curve when
   the class was read at least twice; else it keeps the timing, says `unread`, and the curve is yours to take from
   the evidence, marked `inferred`.
 - **One-axis changes** have a `reading`: `stretch` (a bar growing from its base, a word collapsing to its midline:
-  `sy` / `sx`, the share shown, with its `anchor`), `clip` (type rising out of a slot, a sun rising behind a
-  horizon: the element's position from the edge that moves with it, labelled `clip-rise`) and `wipe` (a mask or a
+  `sy` / `sx`, the share shown, with its `anchor`), `clip` (type rising out of a slot, a disc rising behind a
+  line: the element's position from the edge that moves with it, labelled `clip-rise`) and `wipe` (a mask or a
   roller sweeping a shape on in place: `wipe`, the share shown). A solid shape can't tell a stretch from a wipe or
   from rising inside a slot of its own size; it is read as a stretch. A slot hides a clip reveal's start, so its
   curve is rarely claimed: read its class from the evidence strip.
