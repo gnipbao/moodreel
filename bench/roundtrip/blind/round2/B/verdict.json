@@ -1,0 +1,10 @@
+{"sections": {"1": "same", "2": "same", "3": "same", "4": "same", "5": "partly", "6": "partly", "7": "same", "8": "partly", "9": "same", "10": "same", "11": "same"},
+ "notes": {
+  "1": "Close: limits the style to two inks (the original allows 2-3) and generalises the film's full-bleed band layout.",
+  "2": "Close: missing the paper knockout halo around figures, a screen angle per plate, and the 'two plates per area, at most one as a tint' rule.",
+  "5": "Registration is fixed for the whole film, with no kick or drift. The film's 12 px registration kick at 9.5 s was read as a 'pop' exit. 'Nothing moves on ones / step every draw' would also step camera moves, which the original keeps on ones.",
+  "6": "The locked framing is right. But its rule for a pan keeps the halftone screen fixed to the sheet, which contradicts the original: the screen stays fixed and the image slides under it, as if each frame were printed anew. It also never rules out dissolves or soft wipes.",
+  "8": "Overprint, layer pulls and the misregistered title are there. Missing: plates as narrative (the film ends with the warm plate lifting away, read here as a wipe or ink swap) and registration as rhythm (kick, drift).",
+  "9": "Close: missing the 'three halftones = mud' and one-plate-silhouette rules.",
+  "11": "Close: variation stays within a cool+warm pair and sheet assembly. A third ink and characters are not opened (unseen)."
+ }}

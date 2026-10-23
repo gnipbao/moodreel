@@ -1,0 +1,7 @@
+{"sections": {"1": "same", "2": "same", "3": "same", "4": "same", "5": "partly", "6": "same", "7": "same", "8": "same", "9": "same", "10": "same", "11": "same"},
+ "notes": {
+  "1": "Close: 'every move lands on a beat' is not in the essence. The exception idea is carried by the red square in §3, §5 and §8.",
+  "3": "Close: the signal is limited to one square and never a bar. The original lets any single element carry it and allows black type on it.",
+  "5": "The house curve (about .7,0,.2,1), clip-rise, midline collapse, knife strike and the linear exception all match. Missing: durations as note values that land on the beat. The film is on a 120 BPM grid; the 0.25 s staggers were seen, but no beat rule was drawn. Ripples are ordered left-to-right rather than by distance.",
+  "8": "Close: 'snap = beat', 'programme' and 're-flow' are absent, and the knife cut is folded into the collapse."
+ }}

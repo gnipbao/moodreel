@@ -1,0 +1,11 @@
+{"sections": {"1": "same", "2": "partly", "3": "same", "4": "same", "5": "same", "6": "same", "7": "same", "8": "same", "9": "same", "10": "same", "11": "same"},
+ "notes": {
+  "1": "Close: the essence leaves out pictures built from glyph ink density and the curved glass. The references show only text on a flat screen.",
+  "2": "States a flat, uncurved tube with no reflection and a smooth outline grotesque mono (JetBrains/Plex 800). The original has slight barrel curvature, a rounded mask, a faint reflection and a bitmap-style terminal face (VT323). The glyph-density picture pipeline and text afterglow are also missing (unseen).",
+  "3": "Close: no allowance for the single soft second colour switched on once. The film never used it. The one-phosphor brightness ramp and inverse video match.",
+  "4": "Close: the LOG-strip subtitle matches (dim rule, inverse tag, prompt, typed on). It does not say subtitles are typed in sync with the voice. For the typeface, see §2.",
+  "6": "Close: the grid-scale camera becomes a zoom on one promoted word. Pull-out, push into a glyph, scroll and text-to-image are unseen.",
+  "7": "Close: the inferred palette is consistent (analogue synth, relays, hum, silence). It calls the music dry, where the original uses long reverb on pads.",
+  "8": "Close: 'picture made of words' and the single colour change are absent (unseen). Power on/off, the log, the cursor wait and the promoted word are all moves from the original.",
+  "10": "Close: no glyph atlas, density ramp or CRT post-process (curvature, multi-level bloom). The references never needed them."
+ }}
