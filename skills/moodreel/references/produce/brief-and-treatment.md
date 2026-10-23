@@ -37,11 +37,26 @@ The 59 built-in styles come with STYLE.md and DEMO.md but no kit: `film new` wri
 `motion.js`. Fill them from §3, §4, §5 and §6 before drawing, so the film's numbers have one home. Links in DEMO.md open
 the original demo's source upstream: read them for how a texture or a move was built, then write your own.
 
-Styles marked `later` need what Moodreel doesn't do yet: real footage or data (sourcing, licensing and placing it).
-Tell the user which, and what you can still make: often a reading of the style that keeps its palette, type and
-timing. Styles marked `ready` needed more than flat 2D, and Moodreel now has it: a score that drives the picture
-(below), pixel art (`kit/pixel.js`), painted marks (`kit/brush.js`) and 3D (`kit/three.js`, three.js copied into the
-film by `film new`).
+Styles marked `ready` need more than flat 2D, and Moodreel has it: a score that drives the picture (below), pixel
+art (`kit/pixel.js`), painted marks (`kit/brush.js`), 3D (`kit/three.js`, three.js copied into the film by
+`film new`) and real material (below).
+
+## Real material (footage, scans, prints, maps, data)
+
+Styles built on real material (archive film, satellite plates, scans, footage, a data set) need the material itself,
+and the right to use it. Agree with the user what to use and where it comes from before getting anything: their own
+files, or sources they approve (public-domain archives, CC0 and CC BY collections, open data portals), downloaded
+only with their go-ahead. Then:
+
+```bash
+moodreel media add films/<name> clip.mp4 --name parade --source "<archive, item, URL>" --license "<terms>" --start 12 --end 18
+```
+
+Footage becomes one frame per film frame (trim with `--start`/`--end`, `--crop x,y,w,h`, `--width`, `--grade mono`);
+stills and data come in as they are. Every piece records its source and licence in `media/manifest.json` and in
+CREDITS, and `film check` fails a film with material that has neither, or files in `media/` without an entry. Never
+generate material that passes for archive or evidence: code-drawn packaging (cards, maps, marks) is fine and is the
+style's own; a fake document or photograph is not.
 
 ## The score first (music-led styles, or any film with its own music)
 

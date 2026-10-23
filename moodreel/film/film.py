@@ -244,6 +244,9 @@ def check(d: Path) -> dict:
         ok = ok and all(x["pass"] for x in out["frames"]["stills"])
     if "motion" in out:
         ok = ok and out["motion"]["ok"]
+    from .. import media
+    out["media"] = media.check(d)
+    ok = ok and out["media"]["ok"]
     if video.exists() and (d / "score.json").exists():
         out["cues"] = cue_sync(d, video)
         ok = ok and out["cues"]["ok"]
