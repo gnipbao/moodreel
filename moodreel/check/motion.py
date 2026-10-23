@@ -33,7 +33,7 @@ def claims(ref: dict, got: dict) -> list[dict]:
         out.append({"id": cid, "rule": rule, "reference": rv, "film": gv,
                     "result": "unknown" if ok is None else "pass" if ok else "fail"})
 
-    for role in ("entrance", "exit", "move"):
+    for role in ("entrance", "exit", "move", "counters"):
         R, G = ref.get(role), got.get(role)
         if not R:
             continue

@@ -41,7 +41,9 @@ order the items as `MOTION.stagger.order` says (left-to-right, top-to-bottom).
 
 **Per-letter text.** `glyphs(g, text, x)` gives each glyph's centre; animate glyph `k` with `enter(t, at + k * 0.03)`.
 
-**Counter.** `Math.round(value(t, at, d, 0, 4200, 'power3.out')).toLocaleString()`; report the final text in TEXTS.
+**Counter.** `Math.round(count(t, at, 0, 4200)).toLocaleString()` (the kit's `count` runs on the references' counting
+curve, `MOTION.count`, and its `format` says how they print numbers); without one, `value(t, at, d, 0, 4200, 'power3.out')`.
+Report the final text in TEXTS.
 
 **Camera push.** One transform for the world: `g.translate(W / 2 + panX, H / 2); g.scale(z, z); g.translate(-W / 2, -H / 2)`
 with `z = value(t, at, d, 1, 1.12, 'sine.inOut')`; draw the ground oversized so the edges never show.

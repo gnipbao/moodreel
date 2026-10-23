@@ -113,6 +113,12 @@ function drawEl(el, t, alpha) {
     g.save(); g.globalAlpha = alpha; g.strokeStyle = el.color; g.lineWidth = el.width * sx; g.setLineDash([len * d * sx, len * sx]);
     g.beginPath(); p.forEach(([x, y], k) => k ? g.lineTo(x * sx, y * sx) : g.moveTo(x * sx, y * sx)); g.stroke(); g.restore(); return;
   }
+  if (el.kind === 'counter') {          // its value printed as text, a tween of the number
+    const [whole, frac] = val(el, 'value', t).toFixed(el.decimals).split('.');
+    const s = whole.replace(/\B(?=(\d{3})+$)/g, el.sep) + (frac ? '.' + frac : '');
+    drawShape({ ...el, kind: 'text', text: el.prefix + s + el.suffix }, alpha, t, 0);
+    return;
+  }
   if (el.kind === 'chars') {            // one glyph at a time, each on its own staggered clock
     g.font = el.font;
     const glyphs = [...el.text], ws = widths[el.id] ??= glyphs.map(c => g.measureText(c).width / sx);

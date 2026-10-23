@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 from .. import video
-from . import camera, fit, profile, shots, track
+from . import camera, counter, fit, profile, shots, track
 
 
 def evidence(clip, run_tracks, path, cols=6):
@@ -83,6 +83,7 @@ def measure(path, out: Path, width=640) -> dict:
     e1 = shots.energy(shots.thumbs(clip), ranges, lag=1)   # frame to frame: what held drawings show
     events, runs_by_shot, n_el = [], {}, 0
     for sh in shots_:
+        shot_counts = []
         runs, thr = shots.motion_runs(e, sh, clip.fps)
         runs_by_shot[sh["id"]] = runs
         sh["stepping"] = shots.stepping(e1, runs)
@@ -100,6 +101,13 @@ def measure(path, out: Path, width=640) -> dict:
                 sh["camera"] = "pans"
                 continue
             tracks = track.track_run(clip, sh, run_, nxt, prev)
+            # numbers that count are read as values; the tracker's pieces of their digits go with them
+            counts = counter.find(clip, sh, run_, shot_counts)
+            shot_counts += counts
+            tracks = counter.absorb(shot_counts, tracks, counts)
+            for c in counts:
+                c["id"] = f"e{n_el}"
+                n_el += 1
             run_events = []
             for tr in tracks:
                 tr["id"] = f"e{n_el}"
@@ -107,13 +115,13 @@ def measure(path, out: Path, width=640) -> dict:
                 ev = profile.element_events(clip, tr, (sh.get("stepping") or {}).get("on", 1))
                 ev["id"] = tr["id"]
                 run_events.append(ev)
-            for ev in profile.merge_groups(run_events, clip.fps):
+            for ev in profile.merge_groups(run_events, clip.fps) + counts:
                 ev["label"] = profile.label(ev, (clip.src_w, clip.src_h))
                 events.append(ev)
             if tracks:
                 evidence(clip, tracks, out / "evidence" / f"shot{sh['id']}_run{k}.jpg")
     result = {"source": {"path": str(path), "fps": clip.fps, "w": clip.src_w, "h": clip.src_h,
-                         "frames": clip.n, "analysis_width": clip.w},
+                         "frames": clip.n, "analysis_width": clip.w, "counters_read": counter.available()},
               "shots": shots_, "transitions": transitions, "camera": cam_events, "events": events,
               "grammar": profile.grammar(clip, shots_, transitions, runs_by_shot, events, cam_events),
               "seconds": round(time.time() - t_start, 1)}
