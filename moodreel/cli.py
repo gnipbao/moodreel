@@ -10,6 +10,8 @@
   moodreel styles [query]                                 your styles and the built-in ones
   moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f]
   moodreel score <film>                                   the film's score.json as out/score.wav and score.js (cue times)
+  moodreel media add <film> <file> --name N --source S --license L [--start --end --crop --width --grade]
+  moodreel media list|check <film>                        real footage, stills and data, with source and licence
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
@@ -117,6 +119,22 @@ def cmd_styles(a):
         phase = "ready" if s.get("phase") == "later" and set(s.get("needs") or []) <= library.CAPABLE else s.get("phase", "?")
         print(f"{s['origin']:7s} {phase:5s} {s['slug']:22s} {s.get('name', '')} · {s.get('name_zh', '')}  [{needs}]")
     print(f"{len(rows)} styles")
+
+
+def cmd_media(a):
+    from . import media
+    if a.action == "add":
+        if not a.file:
+            raise SystemExit("media add <film> <file> --name N --source S --license L")
+        crop = tuple(int(v) for v in a.crop.split(",")) if a.crop else None
+        r = media.add(Path(a.film), Path(a.file), a.name or Path(a.file).stem, a.source or "", a.license or "",
+                      a.start, a.end, crop, a.width, a.grade)
+    elif a.action == "list":
+        r = media._manifest(Path(a.film))
+    else:
+        r = media.check(Path(a.film))
+    print(json.dumps(r, indent=1, ensure_ascii=False))
+    return 0 if r.get("ok", True) else 1
 
 
 def cmd_score(a):
@@ -248,6 +266,19 @@ def main(argv=None):
     p = sub.add_parser("styles", help="list your styles and the built-in ones")
     p.add_argument("query", nargs="?")
     p.set_defaults(fn=cmd_styles)
+    p = sub.add_parser("media", help="real footage, stills and data in a film, with source and licence")
+    p.add_argument("action", choices=["add", "list", "check"])
+    p.add_argument("film")
+    p.add_argument("file", nargs="?")
+    p.add_argument("--name")
+    p.add_argument("--source", help="where it came from: a URL, an archive and its catalogue number, the person who made it")
+    p.add_argument("--license", help="the terms it is used under: CC0, CC BY 4.0, public domain (and why), licensed from ...")
+    p.add_argument("--start", type=float)
+    p.add_argument("--end", type=float)
+    p.add_argument("--crop", help="x,y,w,h in the source's pixels")
+    p.add_argument("--width", type=int)
+    p.add_argument("--grade", choices=["none", "mono"])
+    p.set_defaults(fn=cmd_media)
     p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
     p.add_argument("film")
     p.set_defaults(fn=cmd_score)
@@ -297,7 +328,8 @@ def main(argv=None):
     q.add_argument("--only", help="comma-separated film names")
     q.set_defaults(fn=cmd_bench_blind)
     a = ap.parse_args(argv)
-    a.fn(a)
+    r = a.fn(a)
+    return r if isinstance(r, int) else None                # a command's exit status, when it gives one
 
 
 if __name__ == "__main__":

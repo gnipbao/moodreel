@@ -200,7 +200,10 @@ repaint that turns a flat illustration into strokes; the measurement reads visib
 direction), which makes seven more styles ready, from impasto and watercolour to ink wash and 80s cel anime. And
 3D (`kit/three.js`: a three.js scene set from t, rendered into its own WebGL canvas and laid on the 2D stage, type
 pinned to points in the world; `film new` copies three.js into the film), which makes ten more ready, from low-poly
-islands and glass product renders to tilt-shift and HD-2D. What remains is real footage and data: 15 styles. Only the documents are imported; Moodreel re-implements the techniques.
+islands and glass product renders to tilt-shift and HD-2D. And real material (`moodreel media add`: footage stored
+as one frame per film frame, stills and data, each with its source, licence and hash in a manifest and in CREDITS;
+`kit/media.js` gives the picture the frame of its own time; `film check` fails material with no source or licence),
+which makes the last 15 ready: every style in the library can now be made. Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 

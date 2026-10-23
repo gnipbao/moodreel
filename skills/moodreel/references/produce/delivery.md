@@ -11,6 +11,8 @@ moodreel film deliver films/<name> --music track.wav
 - **black frames** inside the film (after a render exists in `out/video.mp4`);
 - for a distilled style: **frames** (three stills scored against the style's references, as frame-check) and
   **motion** (the film's grammar against the style's, as motion-check);
+- for a film with `media/`: **media**, every piece with a source and a licence, and nothing in `media/` without an
+  entry in its manifest;
 - for a film with a `score.json`: **cues**, whether the picture lands on the music: each cue wants a move starting or
   landing, a cut, or the picture settling within two frames of it (a `stop` wants nothing); at least 80 % of them must
   be hit, and the share of landings on the beat is reported against chance.

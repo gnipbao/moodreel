@@ -20,6 +20,11 @@ built with it. Write a style's own modules next to these when it needs more (a w
 **Flat ground with paper.** `g.drawImage(paper(W, H, { color: PALETTE.ground, mottle: TEXTURE.mottle }), 0, 0)` once per
 frame (cached); fibres only when the references show them.
 
+**Footage and stills.** `const M = await load()` before `stage()`; `g.drawImage(M.frame('parade', t, { from: 4 }),
+...)` shows the clip from film time 4 s, held on its first frame before and its last after; `M.still('page')` for a
+scan or print, `M.data('table')` for numbers, `M.credit(name)` for the on-screen credit. The picture layer gets the
+style's look (grade, gate, weave); the type layer stays sharp.
+
 **3D.** `const L = layer3d(W, H, { background, shadows: true })`; build meshes, lights and materials once into
 `L.scene`; in draw, set every position, rotation and the camera from t (`L.look(orbit(t * speed, r, h), target)`;
 no clocks, no AnimationMixer), then `L.draw(g)` and draw type on top. `L.toScreen([x, y, z])` gives the stage point
