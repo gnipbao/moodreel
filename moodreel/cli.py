@@ -1,7 +1,10 @@
 """moodreel <command>: the command line.
 
-  moodreel motion <video> --out <dir>         measure a video's motion grammar
-  moodreel bench make|render|motion [...]     build, render and score the motion test films
+  moodreel intake <project> <ref>... [--source own|web]   copy references in, normalised; check they share a style
+  moodreel measure <project>                              palette, surface, layout, type, motion, rhythm
+  moodreel frame-check <project> <still>...               does a style frame look like the references?
+  moodreel motion <video> --out <dir>                     measure one video's motion grammar
+  moodreel bench make|render|motion [...]                 build, render and score the motion test films
 """
 from __future__ import annotations
 
@@ -38,6 +41,30 @@ def cmd_motion(a):
         print(f"  {ev['id']} shot{ev['shot']} {ev['kind']:9s} {ev['label']:22s} {props}")
 
 
+def cmd_intake(a):
+    from .intake import intake
+    r = intake(Path(a.project), [Path(x) for x in a.refs], a.source)
+    print(f"{len(r['refs'])} references -> {a.project}/refs; default size {r['default_size']}")
+    if not r["unity"]["unified"]:
+        print("the references split into palettes: " + " | ".join(", ".join(g) for g in r["unity"]["groups"]))
+    print(f"sheet: {a.project}/evidence/refs-sheet.jpg")
+
+
+def cmd_measure(a):
+    from .measure.run import measure
+    m = measure(Path(a.project))
+    print(f"measured: {', '.join(m)} -> {a.project}/measure/*.json, {a.project}/MEASURE.md")
+
+
+def cmd_frame_check(a):
+    from .check.frame import check
+    r = check(Path(a.project), [Path(x) for x in a.stills])
+    for s in r["stills"]:
+        print(f"{'PASS' if s['pass'] else 'FAIL'} {s['still']}: coverage {s['coverage']:.0%}, off-palette {s['off_palette']:.0%}, "
+              f"lightness EMD {s['lightness_emd']}; surface " + ", ".join(f"{k} {'ok' if v['ok'] else 'off' if v['ok'] is False else '?'}"
+                                                                         for k, v in s["surface"].items()) + f"; sheet {s['sheet']}")
+
+
 def _fixtures(a):
     root = Path(a.root)
     names = set(a.only.split(",")) if a.only else None
@@ -71,6 +98,19 @@ def cmd_bench_motion(a):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="moodreel")
     sub = ap.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("intake", help="copy references into a project and check they share a style")
+    p.add_argument("project")
+    p.add_argument("refs", nargs="+")
+    p.add_argument("--source", choices=["own", "web", "unknown"], default="unknown",
+                   help="own work may keep a reference sheet in the style pack; web references stay local")
+    p.set_defaults(fn=cmd_intake)
+    p = sub.add_parser("measure", help="measure palette, surface, layout, type, motion and rhythm")
+    p.add_argument("project")
+    p.set_defaults(fn=cmd_measure)
+    p = sub.add_parser("frame-check", help="score style frames against the references")
+    p.add_argument("project")
+    p.add_argument("stills", nargs="+")
+    p.set_defaults(fn=cmd_frame_check)
     p = sub.add_parser("motion", help="measure a video's motion grammar")
     p.add_argument("video")
     p.add_argument("--out", required=True)

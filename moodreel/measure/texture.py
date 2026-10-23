@@ -1,0 +1,153 @@
+"""Surface: grain, paper mottle, vignette, halftone screens, scanlines and how crisp the edges are.
+
+All of it is measured on a picture scaled to a long edge of WORK px, so numbers compare across references of
+different sizes. Grain and mottle are read only where the picture has no structure of its own (flat areas), so a
+busy illustration doesn't count as noise.
+"""
+from __future__ import annotations
+
+import cv2
+import numpy as np
+
+from .color import delta_e, rgb_to_lab
+
+WORK = 1280
+HALFTONE_LEVELS = 4.0    # a printed screen swings by tens of grey levels; codec blocks by under one
+SCANLINE_LEVELS = 2.0
+
+
+def _work(rgb):
+    h, w = rgb.shape[:2]
+    k = WORK / max(h, w)
+    return cv2.resize(rgb, (round(w * k), round(h * k)), interpolation=cv2.INTER_AREA) if k < 1 else rgb
+
+
+def _local_std(img, k):
+    m = cv2.boxFilter(img, -1, (k, k))
+    return np.sqrt(np.maximum(cv2.boxFilter(img * img, -1, (k, k)) - m * m, 0))
+
+
+def _peak(power, rmin, rmax):
+    """Strongest peak of a centred power spectrum in a ring, against the ring's median."""
+    h, w = power.shape
+    yy, xx = np.mgrid[:h, :w]
+    r = np.hypot(yy - h / 2, xx - w / 2)
+    ring = (r >= rmin) & (r <= rmax)
+    if not ring.any():
+        return 0.0, 0.0, 0.0
+    vals = power[ring]
+    i = int(np.argmax(vals))
+    py, px = yy[ring][i], xx[ring][i]
+    return float(vals[i] / (np.median(vals) + 1e-9)), float(r[py, px]), float(np.degrees(np.arctan2(py - h / 2, px - w / 2)) % 180)
+
+
+def _ring_max(power, rad):
+    h, w = power.shape
+    yy, xx = np.mgrid[:h, :w]
+    return power[np.abs(np.hypot(yy - h / 2, xx - w / 2) - rad) < 0.5].max()
+
+
+def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
+    img = _work(rgb)
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY).astype(np.float32)
+    h, w = gray.shape
+    smooth = cv2.GaussianBlur(gray, (0, 0), 2)
+    hp = gray - smooth
+    flat = _local_std(smooth, 15) < 2.5
+    flat_share = float(flat.mean())
+    out = {"work_size": [w, h], "flat_share": round(flat_share, 3)}
+
+    # grain: fine noise in flat areas; mottle: slow variation of the ground once a vignette is taken out
+    out["grain"] = round(float(hp[flat].std()), 2) if flat_share > 0.03 else None
+
+    # ground and vignette
+    ground = flat
+    if ground_hex:
+        g = rgb_to_lab(np.array([int(ground_hex[i:i + 2], 16) for i in (1, 3, 5)], np.float64))
+        lab = rgb_to_lab(cv2.resize(img, (w // 4, h // 4), interpolation=cv2.INTER_AREA).astype(np.float64))
+        near = delta_e(lab, g) < 12
+        ground = cv2.resize(near.astype(np.uint8), (w, h), interpolation=cv2.INTER_NEAREST).astype(bool) & flat
+    yy, xx = np.mgrid[:h, :w]
+    r2 = ((xx - w / 2) / (w / 2)) ** 2 + ((yy - h / 2) / (h / 2)) ** 2      # 0 at the centre, 2 in the corners
+    if ground.mean() > 0.05:
+        L = cv2.GaussianBlur(gray, (0, 0), 8)[ground]
+        A = np.stack([np.ones(ground.sum()), r2[ground]], 1)
+        a, b = np.linalg.lstsq(A, L, rcond=None)[0]
+        out["vignette"] = round(float(-2 * b / max(a, 1e-6)), 3)       # share of the centre's light lost at a corner
+        resid = L - A @ np.array([a, b])
+        out["mottle"] = round(float(resid.std()), 2)
+    else:
+        out["vignette"], out["mottle"] = None, None
+
+    # periodic screens. Judged by amplitude in grey levels, not by how sharp the spectral peak is: codec blocks
+    # (4 and 8 px) and the harmonics of a thin-line grid make sharp peaks too, but well under one level
+    n = 256
+    crops = [hp[y:y + n, x:x + n] for y in range(0, h - n + 1, n) for x in range(0, w - n + 1, n)]
+    crops = [c for c in crops if c.std() > 1.0]
+    out["halftone"] = None
+    if crops:
+        win = np.outer(np.hanning(n), np.hanning(n))
+        power = np.mean([np.abs(np.fft.fftshift(np.fft.fft2(c * win))) ** 2 for c in crops], axis=0)
+        ratio, rad, ang = _peak(power, 8, n / 2.2)
+        amp = 8 * float(np.sqrt(power.max() if rad == 0 else _ring_max(power, rad))) / n ** 2
+        if amp >= HALFTONE_LEVELS:
+            out["halftone"] = {"amplitude": round(amp, 1), "period_px": round(n / rad, 2), "angle": round(ang, 1)}
+    rows, cols = hp.mean(axis=1), hp.mean(axis=0)
+
+    def line_amp(sig):
+        spec = np.abs(np.fft.rfft(sig - sig.mean())) ** 2
+        lo, hi = len(sig) // 8, len(sig) // 2            # periods of 2 to 8 px
+        k = lo + int(np.argmax(spec[lo:hi]))
+        return 2 * float(np.sqrt(spec[k])) / len(sig), len(sig) / k
+    ra, rp = line_amp(rows)
+    ca, _ = line_amp(cols)
+    out["scanlines"] = ({"amplitude": round(ra, 2), "period_px": round(rp, 2)}
+                        if ra >= SCANLINE_LEVELS and ca < 0.3 * ra else None)
+
+    # edges: how much of an edge's contrast is crossed in one pixel (1 = a vector edge, lower = soft or brushy)
+    edges = cv2.Canny(cv2.GaussianBlur(gray, (3, 3), 0).astype(np.uint8), 40, 100) > 0
+    if edges.sum() > 50:
+        gx, gy = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3) / 8, cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3) / 8
+        grad = np.hypot(gx, gy)
+        span = cv2.dilate(gray, np.ones((5, 5))) - cv2.erode(gray, np.ones((5, 5)))
+        sharp = grad[edges] / np.maximum(span[edges], 1)
+        out["edge_sharpness"] = round(float(np.median(sharp)), 3)
+        out["edge_density"] = round(float(edges.mean()), 4)
+    else:
+        out["edge_sharpness"], out["edge_density"] = None, 0.0
+    out["summary"] = summarise(out)
+    return out
+
+
+def summarise(t: dict) -> dict:
+    """Words for the numbers, with the thresholds in the open."""
+    g = t.get("grain")
+    s = {"grain": None if g is None else "none" if g < 0.8 else "fine" if g < 2.5 else "visible" if g < 6 else "heavy"}
+    v = t.get("vignette")
+    s["vignette"] = None if v is None else "none" if v < 0.04 else "soft" if v < 0.15 else "strong"
+    m = t.get("mottle")
+    s["mottle"] = None if m is None else "none" if m < 0.8 else "paper" if m < 3 else "blotchy"
+    e = t.get("edge_sharpness")
+    s["edges"] = None if e is None else "crisp" if e >= 0.32 else "soft" if e >= 0.2 else "blurred"
+    s["halftone"] = bool(t.get("halftone"))
+    s["scanlines"] = bool(t.get("scanlines"))
+    return s
+
+
+def pooled(textures: list[dict]) -> dict:
+    """Median of each number over the references, and the words for it."""
+    keys = ["grain", "vignette", "mottle", "edge_sharpness", "edge_density", "flat_share"]
+    out = {}
+    for k in keys:
+        vals = [t[k] for t in textures if t.get(k) is not None]
+        out[k] = round(float(np.median(vals)), 3) if vals else None
+        out[f"{k}_range"] = [round(float(min(vals)), 3), round(float(max(vals)), 3)] if vals else None
+    hts = [t["halftone"] for t in textures if t.get("halftone")]
+    out["halftone"] = ({"share": round(len(hts) / len(textures), 2),
+                        "period_px": round(float(np.median([x["period_px"] for x in hts])), 2),
+                        "angle": round(float(np.median([x["angle"] for x in hts])), 1)} if hts else None)
+    sls = [t["scanlines"] for t in textures if t.get("scanlines")]
+    out["scanlines"] = ({"share": round(len(sls) / len(textures), 2),
+                         "period_px": round(float(np.median([x["period_px"] for x in sls])), 2)} if sls else None)
+    out["summary"] = summarise(out)
+    return out
