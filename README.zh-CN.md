@@ -34,7 +34,14 @@
 
 ## 试用
 
-需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上。`uv sync && npm install` 之后，`uv run moodreel motion <视频> --out <目录>` 测任意视频的运动语法；评测命令见 [bench/motion/README.md](bench/motion/README.md)。
+需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上。`uv sync && npm install` 之后：
+
+- `uv run moodreel intake <项目> <参考图和视频…>`：导入参考、归一化、检查是否属于同一风格；
+- `uv run moodreel measure <项目>`：测调色板和颜色角色、材质、版式、字号和字重、运动语法、节奏，写出给导演看的 `MEASURE.md`；
+- `uv run moodreel frame-check <项目> <风格帧>`：按参考给风格帧打分；
+- `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法。
+
+运动评测见 [bench/motion/README.md](bench/motion/README.md)。
 
 ## 致谢
 

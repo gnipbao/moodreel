@@ -56,7 +56,24 @@ Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+.
 uv sync && npm install
 ```
 
-Measure the motion grammar of any video (writes `motion.json` and evidence strips):
+Bring a few references into a project, check they share one style, and measure them (palette and colour roles,
+surface, layout, type sizes and weights, motion grammar, rhythm). `MEASURE.md` is the summary a director reads first:
+
+```bash
+uv run moodreel intake out/projects/my-style refs/*.png refs/teaser.mp4 --source own
+```
+
+```bash
+uv run moodreel measure out/projects/my-style
+```
+
+Score a style frame against the references (palette coverage, off-palette area, lightness, surface):
+
+```bash
+uv run moodreel frame-check out/projects/my-style frame.png
+```
+
+Measure the motion grammar of a single video:
 
 ```bash
 uv run moodreel motion path/to/video.mp4 --out out/my-video
@@ -81,7 +98,7 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
-| `moodreel/` | The Python package: `motion/` (shots, camera, tracking, ease fitting, grammar), `bench/` (test films and scorer), `cli.py` |
+| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check), `bench/` (test films and scorer), `cli.py` |
 | `styles/` | The style library |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |
 | `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |
