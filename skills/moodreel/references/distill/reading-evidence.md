@@ -75,7 +75,11 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
 - **Lines drawn on** (`draw`, the share of the stroke's own path that shows, labelled `draw-on` / `draw-off`): a thin
   stroke (a rule, a curve, a joined hand: one or two connected pieces, at least twenty times as long as it is wide)
   that grows from nothing along its path. A line faded in, or a word, is not one; nor is a line that moves.
-- **What isn't measured yet**: per-letter text, particles and loops, and elements nested
+- **Letters one after another** (`letters`: count, interval, order; labelled `per-letter`): a line of type at least
+  14 px tall at the analysis size whose glyphs each fade, rise or drop on their own staggered clock, each keeping to
+  its own columns. The first letter's tween stands for the word's; the interval goes to the grammar's staggers
+  (marked `letters`) and to `MOTION.letters` in the kit. A word that arrives whole, or slides in, is not one.
+- **What isn't measured yet**: particles and loops, and elements nested
   inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
   evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and
   describe them yourself, marked `inferred`.
