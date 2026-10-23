@@ -26,6 +26,10 @@ def _emd(h1, h2):
     return float(np.abs(np.cumsum(np.asarray(h1) - np.asarray(h2))).sum() / len(h1))
 
 
+REL = {"grain": 0.2, "vignette": 0.3, "edge_sharpness": 0.08}      # tolerance as a share of the reference value
+ABS = {"grain": 0.6, "vignette": 0.03, "edge_sharpness": 0.03}     # and never tighter than this
+
+
 def _surface(t, ref):
     out = {}
     for k in ("grain", "vignette", "edge_sharpness"):
@@ -34,8 +38,11 @@ def _surface(t, ref):
             out[k] = {"value": v, "refs": rng, "ok": None}
             continue
         lo, hi = rng
-        pad = 0.25 * max(hi - lo, abs(hi) * 0.2, 0.02)
-        out[k] = {"value": v, "refs": rng, "ok": bool(lo - pad <= v <= hi + pad)}
+        pad = max(0.25 * (hi - lo), REL[k] * abs((lo + hi) / 2), ABS[k])
+        ok = lo - pad <= v <= hi + pad
+        if k == "grain" and v < 2.5 and hi < 2.5:     # none and fine grain both read as clean: compression, not a look
+            ok = True
+        out[k] = {"value": v, "refs": rng, "ok": bool(ok)}
     return out
 
 

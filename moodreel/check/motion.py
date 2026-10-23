@@ -1,0 +1,93 @@
+"""`moodreel motion-check <project> <video>`: does a rendered film move the way the style does?
+
+The film is measured with the same code as the references (as REM checks a rebuild), and the two grammars are
+compared claim by claim, MoVer-style: each claim passes, fails, or is unknown when either side has no data
+(unknown never passes). The failures, with the numbers on both sides, are what the director fixes.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from ..motion.extract import measure
+
+TOL = {"duration": 0.25, "class_share": 0.20, "overshoot_share": 0.25, "stagger": 0.30, "hold": 0.8,
+       "shot": 0.35, "density": 0.15}
+
+
+def _med(x, k="duration_s"):
+    return ((x or {}).get(k) or {}).get("median")
+
+
+def _dominant(role):
+    c = (role or {}).get("classes") or {}
+    return (max(c, key=c.get), c[max(c, key=c.get)] / sum(c.values())) if c else (None, None)
+
+
+def claims(ref: dict, got: dict) -> list[dict]:
+    out = []
+
+    def add(cid, rule, rv, gv, ok):
+        out.append({"id": cid, "rule": rule, "reference": rv, "film": gv,
+                    "result": "unknown" if ok is None else "pass" if ok else "fail"})
+
+    for role in ("entrance", "exit", "move"):
+        R, G = ref.get(role), got.get(role)
+        if not R:
+            continue
+        rd, gd = _med(R), _med(G)
+        add(f"{role}.duration", f"median within ±{TOL['duration']:.0%}", rd, gd,
+            None if rd is None or gd is None else abs(gd - rd) <= TOL["duration"] * rd)
+        rc, rs = _dominant(R)
+        gs = ((G or {}).get("classes") or {}).get(rc, 0) / max(1, sum(((G or {}).get("classes") or {}).values())) if G else None
+        add(f"{role}.ease_class", f"share of '{rc}' within ±{TOL['class_share']:.0%}", rs and round(rs, 2),
+            gs if gs is None else round(gs, 2), None if gs is None or rs is None else abs(gs - rs) <= TOL["class_share"])
+        ro, go = R.get("overshoot_share"), (G or {}).get("overshoot_share")
+        add(f"{role}.overshoot_share", f"within ±{TOL['overshoot_share']:.0%}", ro, go,
+            None if ro is None or go is None else abs(go - ro) <= TOL["overshoot_share"])
+        if R.get("overshoot"):
+            lo, hi = R["overshoot"]["p25"] / 1.5, R["overshoot"]["p75"] * 1.5
+            gm = ((G or {}).get("overshoot") or {}).get("median")
+            add(f"{role}.overshoot", "median within reference p25/1.5 .. p75*1.5", [round(lo, 3), round(hi, 3)], gm,
+                None if gm is None else lo <= gm <= hi)
+    re_, rx = _med(ref.get("entrance")), _med(ref.get("exit"))
+    if re_ and rx and rx < re_:
+        ge, gx = _med(got.get("entrance")), _med(got.get("exit"))
+        add("exit_shorter", "exits shorter than entrances", [rx, re_], [gx, ge], None if ge is None or gx is None else gx < ge)
+    if ref.get("stagger"):
+        ri = sorted(s["interval_s"] for s in ref["stagger"])[len(ref["stagger"]) // 2]
+        gi = [s["interval_s"] for s in got.get("stagger") or []]
+        add("stagger", f"a stagger within ±{TOL['stagger']:.0%} of the interval", ri, gi or None,
+            None if not gi else any(abs(x - ri) <= TOL["stagger"] * ri for x in gi))
+    rh, gh = _med(ref, "hold_s"), _med(got, "hold_s")
+    add("hold", f"median hold at least {TOL['hold']:.0%} of the reference's", rh, gh,
+        None if rh is None or gh is None else gh >= TOL["hold"] * rh)
+    rs_, gs_ = ref.get("shots") or {}, got.get("shots") or {}
+    if rs_.get("count", 0) >= 2:
+        rl, gl = _med(rs_, "length_s"), _med(gs_, "length_s")
+        add("shot_length", f"median within ±{TOL['shot']:.0%}", rl, gl,
+            None if rl is None or gl is None else abs(gl - rl) <= TOL["shot"] * rl)
+    kinds = lambda s: {k for k, n in (("cut", s.get("cuts", 0)), ("dissolve", s.get("dissolves", 0)), ("dip", s.get("dips", 0))) if n}  # noqa: E731
+    add("transition_types", "no transition the references don't use", sorted(kinds(rs_)), sorted(kinds(gs_)),
+        kinds(gs_) <= kinds(rs_) if gs_ else None)
+    rdn, gdn = ref.get("motion_density"), got.get("motion_density")
+    add("density", f"within ±{TOL['density']}", rdn, gdn, None if rdn is None or gdn is None else abs(gdn - rdn) <= TOL["density"])
+    ron, gon = (ref.get("stepping") or {}).get("on", 1), (got.get("stepping") or {}).get("on", 1)
+    add("stepping", "drawings held on the same number of frames", ron, gon, ron == gon)
+    return out
+
+
+def check(project: Path, video: Path, reference: str | None = None) -> dict:
+    project = Path(project)
+    m = json.loads((project / "measure" / "motion.json").read_text())
+    ref = m["grammar"]
+    if "videos" in ref:                             # several references: compare with the one named, or the first
+        vid = reference or ref["videos"][0]
+        ref = m["per_video"][vid]["grammar"]
+    film = measure(str(video), project / "evidence" / f"motion-check-{Path(video).stem}")
+    cs = claims(ref, film["grammar"])
+    res = {"video": str(video), "claims": cs, "pass": sum(c["result"] == "pass" for c in cs),
+           "fail": sum(c["result"] == "fail" for c in cs), "unknown": sum(c["result"] == "unknown" for c in cs)}
+    res["ok"] = res["fail"] == 0 and res["unknown"] <= len(cs) // 4
+    (project / "measure" / f"motion-check-{Path(video).stem}.json").write_text(json.dumps(res, indent=1, default=float))
+    return res

@@ -73,7 +73,11 @@ def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
         L = cv2.GaussianBlur(gray, (0, 0), 8)[ground]
         A = np.stack([np.ones(ground.sum()), r2[ground]], 1)
         a, b = np.linalg.lstsq(A, L, rcond=None)[0]
-        out["vignette"] = round(float(-2 * b / max(a, 1e-6)), 3)       # share of the centre's light lost at a corner
+        lost = float(-2 * b)                                            # grey levels lost at a corner
+        # on a dark ground a level or two of unevenness is a large share of very little light: under 3 levels
+        # there is no vignette to reproduce
+        out["vignette"] = round(lost / max(a, 1e-6), 3) if lost >= 3 else 0.0
+        out["vignette_levels"] = round(lost, 1)
         resid = L - A @ np.array([a, b])
         out["mottle"] = round(float(resid.std()), 2)
     else:

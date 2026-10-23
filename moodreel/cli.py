@@ -3,6 +3,9 @@
   moodreel intake <project> <ref>... [--source own|web]   copy references in, normalised; check they share a style
   moodreel measure <project>                              palette, surface, layout, type, motion, rhythm
   moodreel frame-check <project> <still>...               does a style frame look like the references?
+  moodreel kit <project>                                  the style's tokens.js and motion.js, with the shared kit
+  moodreel scaffold <project>                             a first style frame drawn from the tokens (look/)
+  moodreel motion-check <project> <video>                 does a rendered film move the way the references do?
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
 """
@@ -65,6 +68,26 @@ def cmd_frame_check(a):
                                                                          for k, v in s["surface"].items()) + f"; sheet {s['sheet']}")
 
 
+def cmd_kit(a):
+    from .pack.kit import write_kit
+    print(f"kit -> {write_kit(Path(a.project))}")
+
+
+def cmd_scaffold(a):
+    from .pack.scaffold import scaffold
+    look = scaffold(Path(a.project))
+    print(f"style frame page -> {look}; render a still with:\n  node {RENDER} still {look} 2.5 --size "
+          f"{json.loads((Path(a.project) / 'intake.json').read_text())['default_size']} --out {look}/stills")
+
+
+def cmd_motion_check(a):
+    from .check.motion import check
+    r = check(Path(a.project), Path(a.video), a.reference)
+    for c in r["claims"]:
+        print(f"  {c['result']:7s} {c['id']:24s} {c['rule']:52s} reference {c['reference']} film {c['film']}")
+    print(f"{'OK' if r['ok'] else 'NOT YET'}: {r['pass']} pass, {r['fail']} fail, {r['unknown']} unknown")
+
+
 def _fixtures(a):
     root = Path(a.root)
     names = set(a.only.split(",")) if a.only else None
@@ -111,6 +134,17 @@ def main(argv=None):
     p.add_argument("project")
     p.add_argument("stills", nargs="+")
     p.set_defaults(fn=cmd_frame_check)
+    p = sub.add_parser("kit", help="write the style's kit from the measurements")
+    p.add_argument("project")
+    p.set_defaults(fn=cmd_kit)
+    p = sub.add_parser("scaffold", help="write a first style frame page drawn from the tokens")
+    p.add_argument("project")
+    p.set_defaults(fn=cmd_scaffold)
+    p = sub.add_parser("motion-check", help="compare a rendered film's motion with the references'")
+    p.add_argument("project")
+    p.add_argument("video")
+    p.add_argument("--reference", help="with several reference videos, the one to compare with (vid01...)")
+    p.set_defaults(fn=cmd_motion_check)
     p = sub.add_parser("motion", help="measure a video's motion grammar")
     p.add_argument("video")
     p.add_argument("--out", required=True)
