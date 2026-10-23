@@ -206,7 +206,9 @@ as one frame per film frame, stills and data, each with its source, licence and 
 which makes the last 15 ready: every style in the library can now be made. Films can also be narrated
 (`narration.json` → `moodreel voice`: lines placed at times or on cues, voiced, subtitled from `voice.js`, the music
 ducked under them at delivery) and carry sound effects without music (a score of cues alone), and be delivered
-as several variants of one picture code (`film.json` variants, read with `pick()`, `film deliver --all-variants`). Only the documents are imported; Moodreel re-implements the techniques.
+as several variants of one picture code (`film.json` variants, read with `pick()`, `film deliver --all-variants`), or
+exported as a HyperFrames composition (`moodreel export hyperframes`: a paused timeline whose every seek draws the
+film's own frame). Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 
