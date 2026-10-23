@@ -72,11 +72,21 @@ def _ease_for(role: dict | None) -> dict | None:
     return out
 
 
+def _count(role: dict | None) -> dict | None:
+    """A counting number's timing and ease, and how the references print it ('#,###', '$#.#M')."""
+    out = _ease_for(role)
+    if out and role.get("formats"):
+        out["format"] = max(role["formats"], key=role["formats"].get)
+    return out
+
+
 def motion_tokens(grammar: dict) -> dict:
     if "videos" in grammar:                         # several videos: take the first that has entrances
         vid = next((v for v in grammar["videos"] if grammar["entrance"].get(v)), grammar["videos"][0])
+        counters = next((c for c in (grammar.get("counters") or {}).values() if c), None)
         grammar = {"entrance": grammar["entrance"][vid], "exit": grammar["exit"][vid], "move": grammar["move"][vid],
-                   "stagger": [s for s in grammar["stagger"] if s.get("video") == vid], "shots": grammar["shots"][vid]}
+                   "stagger": [s for s in grammar["stagger"] if s.get("video") == vid], "shots": grammar["shots"][vid],
+                   "counters": counters}
     sh = grammar.get("shots") or {}
     every = grammar.get("stagger") or []
     st = [s for s in every if not s.get("letters")]          # elements in a group; letters in a word apart
@@ -84,7 +94,7 @@ def motion_tokens(grammar: dict) -> dict:
     cam = grammar.get("camera") or {}
     return {
         "enter": _ease_for(grammar.get("entrance")), "exit": _ease_for(grammar.get("exit")),
-        "move": _ease_for(grammar.get("move")),
+        "move": _ease_for(grammar.get("move")), "count": _count(grammar.get("counters")),
         "stagger": ({"interval": float(np.median([s["interval_s"] for s in st])),
                      "order": max({s["order"] for s in st}, key=[s["order"] for s in st].count)} if st else None),
         "letters": ({"interval": float(np.median([s["interval_s"] for s in lt])),
@@ -156,7 +166,7 @@ def write_kit(project: Path, out: Path | None = None) -> Path:
     motion_path = project / "measure" / "motion.json"
     mt = motion_tokens(json.loads(motion_path.read_text())["grammar"]) if motion_path.exists() else None
     source = SOURCES["motion"] + (" (no reference video: fill in from the chosen motion preset)" if mt is None else "")
-    (out / "motion.js").write_text(head + "import { tween, stagger } from './core.js';\n\n" + _js("MOTION", mt, source)
+    (out / "motion.js").write_text(head + "import { tween, stagger, value } from './core.js';\n\n" + _js("MOTION", mt, source)
                                    + MOTION_HELPERS)
     return out
 
@@ -170,4 +180,7 @@ export const enter = (t, at, i = 0) => tween(t, MOTION?.stagger ? stagger(at, MO
 export const exit = (t, at, i = 0) => tween(t, MOTION?.stagger ? stagger(at, MOTION.stagger.interval, i) : at,
   role('exit').duration ?? 0.4, role('exit').ease);
 export const move = (t, at) => tween(t, at, role('move').duration ?? 0.6, role('move').ease);
+// a number counting from `from` to `to`, starting at `at`, on the references' counting curve (print it as
+// MOTION.count.format says: '#,###' groups thousands, '#.#' keeps one decimal)
+export const count = (t, at, from, to) => value(t, at, role('count').duration ?? 1.2, from, to, role('count').ease);
 """

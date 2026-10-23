@@ -26,17 +26,18 @@ through all the tweens whose class was read, so a style's own curve comes back a
 finds cuts, dissolves and fades through a colour, camera pushes and pans (and measures the elements in the world,
 not on the moving screen), drawings held on twos, and staggers.
 
-Scored on 10 code-rendered test films with known motion ([bench/motion](bench/motion/README.md)), each also as a
+Scored on 11 code-rendered test films with known motion ([bench/motion](bench/motion/README.md)), each also as a
 degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 
 | | found | t50 within 1 frame | ease direction right | eases named / named wrong | transitions |
 |---|---|---|---|---|---|
-| clean | 94% | 86% | 97% | 29 / 0 | 13/14 |
+| clean | 94% | 86% | 97% | 30 / 0 | 13/14 |
 | degraded | 92% | 88% | 86% | 9 / 0 | 13/14 |
 
-Of the 11 moves the bench marks as beyond those readers, 10 are now found on the clean films: bars growing, an
-underline and an axis drawn on, a card turning as it grows (its `power3.out` named exactly), and a line of type
-arriving letter by letter (11 letters, 0.04 s apart, each `power3.out`).
+Of the 15 moves the bench marks as beyond those readers, 13 are now found on the clean films: bars growing, an
+underline and an axis drawn on, a card turning as it grows (its `power3.out` named exactly), a line of type
+arriving letter by letter (11 letters, 0.04 s apart, each `power3.out`), and numbers counting (0 to 4,200 in
+`power3.out`, $0.0M to $12.5M in `sine.inOut`, timed to the frame; read by OCR when tesseract is installed).
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
 
 ### The round trip
@@ -79,7 +80,8 @@ See [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) (Chinese) for the full design.
 
 ## Try it
 
-Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+.
+Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+; [tesseract](https://github.com/tesseract-ocr/tesseract)
+is optional and reads numbers that count (`brew install tesseract`, `apt install tesseract-ocr`).
 
 ```bash
 uv sync && npm install

@@ -3,7 +3,7 @@
 Each fixture is a render-contract page (window.DUR, window.render(t), window.READY) written from a spec, plus a
 truth.json computed from the same spec with the same ease formulas (motion/eases.py; the page carries a JS copy).
 Events whose kind the measurement does not cover yet (rotation, anisotropic scale, line draw-on, per-letter
-text) are kept with scope "v1": reported, but left out of the acceptance numbers.
+text, a counter's value) are kept with scope "v1": reported, but left out of the acceptance numbers.
 """
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ import numpy as np
 
 from ..motion import eases
 
-V1_PROPS = {"rot", "sx", "sy", "draw"}
+V1_PROPS = {"rot", "sx", "sy", "draw", "value"}
 FONT = "Helvetica, Arial, sans-serif"
 
 
@@ -33,6 +33,12 @@ def rect(id_, w, h, color, x, y, anims, r=0, **kw):
 
 def circle(id_, r, color, x, y, anims):
     return {"id": id_, "kind": "circle", "r": r, "color": color, "x": x, "y": y, "anims": anims}
+
+
+def counter(id_, size, color, x, y, anims, start=0, decimals=0, prefix="", suffix="", sep=","):
+    """A number drawn as text, its value tweened: `value` anims, printed with `decimals`, `prefix`, `suffix`, `sep`."""
+    return {"id": id_, "kind": "counter", "value": start, "decimals": decimals, "prefix": prefix, "suffix": suffix,
+            "sep": sep, "font": f"bold {size}px {FONT}", "color": color, "x": x, "y": y, "anims": anims}
 
 
 def fade_rise(t, d, ease, y, dy=40):
@@ -166,6 +172,18 @@ def letters():
         "transitions": []}
 
 
+def counters():
+    return {"name": "counters", "W": 1280, "H": 720, "fps": 30, "dur": 5.0, "shots": [
+        {"id": "A", "t0": 0.0, "t1": 5.0, "bg": {"kind": "flat", "c": "#f6f4ef"}, "elements": [
+            text("label", "ACTIVE USERS", 30, "#6b6b6b", 640, 150, [A("opacity", 0, 1, 0.2, 0.4, "power1.out")]),
+            counter("users", 120, "#1b1b1b", 640, 270,
+                    [A("opacity", 0, 1, 0.4, 0.3, "power1.out"), A("value", 0, 4200, 0.6, 1.6, "power3.out")]),
+            counter("share", 96, "#d6452f", 400, 520, [A("value", 0, 98, 1.4, 1.2, "expo.out")], suffix="%"),
+            counter("revenue", 96, "#2f6fd6", 880, 520, [A("value", 0, 12.5, 2.6, 1.4, "sine.inOut")], decimals=1,
+                    prefix="$", suffix="M")]}],
+        "transitions": []}
+
+
 def busy():
     chips = [rect(f"chip{i}", 200, 60, c, 250 + i * 260, 620, [A("y", 790, 620, 0.3 + i * 0.07, 0.5, "circ.out")], r=30)
              for i, c in enumerate(["#ff6b6b", "#feca57", "#48dbfb", "#1dd1a1"])]
@@ -203,7 +221,7 @@ def print_rhythm():
 
 
 FIXTURES = [mg_basic, keynote_dark, vertical_social, camera_push, on_twos, dips_and_drifts, dataviz_bars, letters,
-            busy, print_rhythm]
+            busy, print_rhythm, counters]
 
 PAGE = (Path(__file__).with_name("fixture_page.html")).read_text(encoding="utf-8")
 
@@ -244,7 +262,7 @@ def truth(spec) -> dict:
                 else:
                     x, y = _value(el, "x", end), _value(el, "y", end)
                 ex, ey = _to_screen(spec, shot, x, y, end)
-                v1 = a["prop"] in V1_PROPS or el["kind"] in ("chars", "path", "bar")
+                v1 = a["prop"] in V1_PROPS or el["kind"] in ("chars", "path", "bar", "counter")
                 events.append({"element": el["id"], "shot": shot["id"], "prop": a["prop"], "t0": a["t"],
                                "t1": round(end, 4), "dur": a["d"], "ease": a["ease"], "from": a["from"], "to": a["to"],
                                "end_xy": [round(ex, 1), round(ey, 1)], "scope": "v1" if v1 else "mvp",

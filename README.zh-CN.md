@@ -13,17 +13,17 @@
 视觉模型能模仿画面长什么样，却还原不了画面怎么动。Animation2Code 基准（2026）上，最好的模型外观相似度有 0.82–0.84，
 时间相似度却全部 ≤ 0.31。所以 Moodreel 用确定性代码测时长、缓动、过冲、错峰和节奏，让模型去理解和使用这些数字。
 
-在 10 条代码渲染、真值已知的测试片上评测（[bench/motion](bench/motion/README.md)），每条另有一份降质版
+在 11 条代码渲染、真值已知的测试片上评测（[bench/motion](bench/motion/README.md)），每条另有一份降质版
 （3/4 尺寸、25fps、逐帧颗粒、crf 30）：
 
 | | 召回 | t50 在 1 帧内 | 缓动方向正确 | 认定缓动族 / 认错 | 转场 |
 |---|---|---|---|---|---|
-| 干净版 | 94% | 86% | 97% | 29 / 0 | 13/14 |
+| 干净版 | 94% | 86% | 97% | 30 / 0 | 13/14 |
 | 降质版 | 92% | 88% | 86% | 9 / 0 | 13/14 |
 
 模板跟不上的地方（柱子从底部长高、字收成一条线、字从槽里升起、色块擦入），改为逐帧量元素露出的范围。缓动没有 GSAP 名字时，
-把方向类被认定的所有动画放在一起拟合一条 cubic-bezier，风格自己的曲线原样还原。测试片里标为超出读取器范围的 11 个运动，
-干净版现在能找到 10 个：柱子生长、下划线和坐标轴描出来、一边放大一边转正的卡片（缓动 `power3.out` 准确认定）、一行字逐字进来（11 个字母、间隔 0.04 s、每个都是 `power3.out`）。
+把方向类被认定的所有动画放在一起拟合一条 cubic-bezier，风格自己的曲线原样还原。测试片里标为超出读取器范围的 15 个运动，
+干净版现在能找到 13 个：柱子生长、下划线和坐标轴描出来、一边放大一边转正的卡片（缓动 `power3.out` 准确认定）、一行字逐字进来（11 个字母、间隔 0.04 s、每个都是 `power3.out`）、数字跳动（0 到 4,200 的 `power3.out`、$0.0M 到 $12.5M 的 `sine.inOut`，时间精确到帧；装了 tesseract 才用 OCR 读数）。
 
 详见 [docs/research/motion-extraction.md](docs/research/motion-extraction.md)，完整设计见 [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md)。
 
@@ -50,7 +50,7 @@
 
 ## 试用
 
-需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上。`uv sync && npm install` 之后：
+需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上；[tesseract](https://github.com/tesseract-ocr/tesseract) 可选，用来读跳动的数字（`brew install tesseract` 或 `apt install tesseract-ocr`）。`uv sync && npm install` 之后：
 
 - `uv run moodreel intake <项目> <参考图和视频…>`：导入参考、归一化、检查是否属于同一风格；
 - `uv run moodreel measure <项目>`：测调色板和颜色角色、材质、版式、字号和字重、运动语法、节奏，写出给导演看的 `MEASURE.md`；

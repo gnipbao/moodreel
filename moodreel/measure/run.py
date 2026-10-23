@@ -19,7 +19,7 @@ def _pool_motion(per_video: dict) -> dict:
     """With several reference videos, each keeps its own grammar; the pooled view lists the numbers side by side."""
     if len(per_video) == 1:
         return next(iter(per_video.values()))["grammar"]
-    keys = ("entrance", "exit", "move")
+    keys = ("entrance", "exit", "move", "counters")
     out = {"videos": list(per_video)}
     for k in keys:
         out[k] = {vid: m["grammar"].get(k) for vid, m in per_video.items()}
@@ -158,7 +158,7 @@ def _motion_lines(g: dict) -> list[str]:
     out.append(f"Shots: {sh['count']}, median length {_fmt((sh['length_s'] or {}).get('median'))} s; "
                f"{sh['cuts']} cuts, {sh['dissolves']} dissolves, {sh.get('dips', 0)} dips. Motion density {g['motion_density']}; "
                f"median hold {_fmt((g['hold_s'] or {}).get('median'))} s.")
-    for role in ("entrance", "exit", "move"):
+    for role in ("entrance", "exit", "move", "counters"):
         r = g.get(role)
         if not r:
             continue
@@ -169,9 +169,13 @@ def _motion_lines(g: dict) -> list[str]:
                  + (f"; one curve draws them: bezier{tuple(r['curve']['bezier'])} ({r['curve']['tweens']} tweens)"
                     if r.get("curve") else "")
                  if r.get("class_claimed") else "no ease read with confidence")
-        out.append(f"{role.capitalize()}s ({r['count']}): {_fmt(d.get('p25'))}–{_fmt(d.get('p75'))} s (median {_fmt(d.get('median'))}); "
+        name = {"entrance": "Entrances", "exit": "Exits", "move": "Moves", "counters": "Counters"}[role]
+        out.append(f"{name} ({r['count']}): {_fmt(d.get('p25'))}–{_fmt(d.get('p75'))} s (median {_fmt(d.get('median'))}); "
                    f"vocabulary {r['vocabulary']}; {eased}"
                    + (f"; unconfirmed guesses {r['guesses']}" if r.get("guesses") else "") + ".")
+    if g.get("counters"):
+        c = g["counters"]
+        out.append(f"Counters print as {c['formats']} and count " + ", ".join(f"{a:g}→{b:g}" for a, b in c["ranges"]) + ".")
     for s in g.get("stagger", []):
         out.append(f"Stagger: {s['count']} × {s['interval_s']} s, {s['order']} ({s['vocabulary']}).")
     if g.get("stepping") and g["stepping"]["on"] > 1:

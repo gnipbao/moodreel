@@ -79,6 +79,12 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
   14 px tall at the analysis size whose glyphs each fade, rise or drop on their own staggered clock, each keeping to
   its own columns. The first letter's tween stands for the word's; the interval goes to the grammar's staggers
   (marked `letters`) and to `MOTION.letters` in the kit. A word that arrives whole, or slides in, is not one.
+- **Numbers that count** (kind `count`, prop `value`, labelled `count`, or `count-in` when the number appears as it
+  starts): a number whose digits are redrawn in place, read frame by frame by OCR. `counter` gives the values it
+  counts between and how it is printed (`format`: prefix, suffix, decimals, thousands separator); the grammar's
+  `counters` role gives their durations, eases and printed forms, and the kit's `MOTION.count` and `count(t, at, from,
+  to)`. Read only when tesseract is installed (`source.counters_read` in motion.json): without it a counter shows up
+  as a scatter of small moves inside one box. A number that slides or scales in whole is not one.
 - **What isn't measured yet**: particles and loops, and elements nested
   inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
   evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and

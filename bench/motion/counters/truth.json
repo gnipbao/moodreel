@@ -1,0 +1,91 @@
+{
+ "name": "counters",
+ "W": 1280,
+ "H": 720,
+ "fps": 30,
+ "dur": 5.0,
+ "events": [
+  {
+   "element": "label",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.2,
+   "t1": 0.6,
+   "dur": 0.4,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    150.0
+   ],
+   "scope": "mvp"
+  },
+  {
+   "element": "users",
+   "shot": "A",
+   "prop": "opacity",
+   "t0": 0.4,
+   "t1": 0.7,
+   "dur": 0.3,
+   "ease": "power1.out",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    640.0,
+    270.0
+   ],
+   "scope": "v1"
+  },
+  {
+   "element": "users",
+   "shot": "A",
+   "prop": "value",
+   "t0": 0.6,
+   "t1": 2.2,
+   "dur": 1.6,
+   "ease": "power3.out",
+   "from": 0,
+   "to": 4200,
+   "end_xy": [
+    640.0,
+    270.0
+   ],
+   "scope": "v1"
+  },
+  {
+   "element": "share",
+   "shot": "A",
+   "prop": "value",
+   "t0": 1.4,
+   "t1": 2.6,
+   "dur": 1.2,
+   "ease": "expo.out",
+   "from": 0,
+   "to": 98,
+   "end_xy": [
+    400.0,
+    520.0
+   ],
+   "scope": "v1"
+  },
+  {
+   "element": "revenue",
+   "shot": "A",
+   "prop": "value",
+   "t0": 2.6,
+   "t1": 4.0,
+   "dur": 1.4,
+   "ease": "sine.inOut",
+   "from": 0,
+   "to": 12.5,
+   "end_xy": [
+    880.0,
+    520.0
+   ],
+   "scope": "v1"
+  }
+ ],
+ "transitions": [],
+ "stepping": []
+}

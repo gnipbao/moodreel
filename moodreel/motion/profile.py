@@ -224,6 +224,8 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
     """A plain name for the element's change. Off-frame is read from the edge it crossed, or from a fitted start
     (or end) level outside the frame: an element can jump from off frame to fully inside in one frame."""
     p = ev["props"]
+    if ev["kind"] == "count":
+        return "count-in" if ev["counter"].get("enters") else "count"
     parts = ["per-letter"] if ev.get("letters") else []
     mode = (ev.get("reading") or {}).get("mode")
     for k in ("sy", "sx"):
@@ -259,7 +261,7 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
 
 
 def main_prop(ev):
-    for k in ("scale", "sy", "sx", "wipe", "draw", "y", "x", "rot", "opacity"):
+    for k in ("scale", "sy", "sx", "wipe", "draw", "y", "x", "rot", "opacity", "value"):
         if k in ev["props"]:
             return k
     return None
@@ -273,10 +275,20 @@ def _stats(xs):
             "p25": round(float(np.percentile(xs, 25)), 3), "p75": round(float(np.percentile(xs, 75)), 3)}
 
 
+def _counters(summary, evs):
+    """A counting number's tween, with how far it counts and how it is printed."""
+    if not summary:
+        return None
+    fmt = lambda f: f"{f['prefix']}{'#,###' if f['sep'] else '#'}{'.' + '#' * f['decimals'] if f['decimals'] else ''}{f['suffix']}"  # noqa: E731
+    formats = [fmt(e["counter"]["format"]) for e in evs]
+    return {**summary, "formats": {f: formats.count(f) for f in dict.fromkeys(formats)},
+            "ranges": [[e["counter"]["from"], e["counter"]["to"]] for e in evs]}
+
+
 def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> dict:
     W, H = clip.src_w, clip.src_h
-    role = {"appear": "entrance", "disappear": "exit", "move": "move", "change": "move"}
-    groups = {"entrance": [], "exit": [], "move": []}
+    role = {"appear": "entrance", "disappear": "exit", "move": "move", "change": "move", "count": "counters"}
+    groups = {"entrance": [], "exit": [], "move": [], "counters": []}
     for ev in events:
         if ev["props"]:
             groups[role[ev["kind"]]].append(ev)
@@ -380,4 +392,5 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
         "hold_s": _stats([h for h in holds if h > 0]),
         "entrance": summarise(groups["entrance"]), "exit": summarise(groups["exit"]),
         "move": summarise(groups["move"]), "stagger": stagger,
+        "counters": _counters(summarise(groups["counters"]), groups["counters"]),
     }
