@@ -11,13 +11,19 @@
 //   node render/render.mjs still <dir> <t> [<t> ...] [--size 1920x1080] [--out <dir>/stills]
 //   node render/render.mjs texts <dir> [--step 0.1] [--size 1920x1080] [--out texts.json]   what window.TEXTS(t) reports
 //
-// Each worker opens its own page and encodes one contiguous range of frames; the ranges are joined without
+// Each worker drives a Chrome of its own and encodes one contiguous range of frames; the ranges are joined without
 // re-encoding. Any page error stops the render.
+//
+// Speed: Chrome paces frames to the display (vsync, 60 Hz), and a screenshot waits for the next one, which put about
+// 42 ms on every frame whatever its size or format. With that pacing off a screenshot takes 8-18 ms (1280x720 JPEG),
+// and each one still shows the frame just drawn (checked against the canvas's own pixels, frame by frame, on every
+// example). One Chrome per worker: tabs of one site share a renderer process, and the workers would take turns on its
+// main thread. Runs on puppeteer-core, with the Chrome puppeteer installs or MOODREEL_CHROME.
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
@@ -71,7 +77,7 @@ async function openPage(browser, url, w, h) {
   const page = await browser.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
-  page.on('requestfailed', r => errors.push(`failed to load ${r.url()}`));
+  page.on('requestfailed', r => errors.push(`failed to load ${r.url()} (${r.failure()?.errorText})`));
   await page.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: 'load' });
   await page.waitForFunction(() => window.READY === true, { timeout: 120_000 });
@@ -82,7 +88,7 @@ async function openPage(browser, url, w, h) {
 async function frame(ctx, t, type) {
   await ctx.page.evaluate(t => window.render(t), t);
   if (ctx.errors.length) throw new Error(ctx.errors.join('\n'));
-  return ctx.page.screenshot(type === 'jpeg' ? { type, quality: 95 } : { type });
+  return ctx.page.screenshot(type === 'jpeg' ? { type, quality: 95, optimizeForSpeed: true } : { type });
 }
 
 function encoder(file, fps) {
@@ -94,11 +100,12 @@ function encoder(file, fps) {
     ff.on('close', code => (code === 0 ? ok() : fail(new Error(`ffmpeg exited with ${code}`))));
   });
   const write = buf => (ff.stdin.write(buf) ? Promise.resolve() : new Promise(r => ff.stdin.once('drain', r)));
-  return { write, end: () => { ff.stdin.end(); return done; } };
+  return { write, end: () => { ff.stdin.end(); return done; }, kill: () => { done.catch(() => {}); ff.kill('SIGKILL'); } };
 }
 
-async function video(browser, url, o) {
-  const probe = await openPage(browser, url, o.w, o.h);
+async function video(launch, url, o) {
+  const first = await launch();
+  const probe = await openPage(first, url, o.w, o.h);
   const dur = await probe.page.evaluate(() => window.DUR);
   await probe.page.close();
   if (!(dur > 0)) throw new Error(`window.DUR must be a positive number of seconds (got ${dur})`);
@@ -108,17 +115,20 @@ async function video(browser, url, o) {
   const tmp = fs.mkdtempSync(path.join(path.dirname(out), '.segments-'));
   const per = Math.ceil(total / o.workers);
   const started = Date.now();
+  const open = new Set();                                  // encoders still taking frames: killed if the render fails
   try {
     const parts = await Promise.all([...Array(o.workers)].map(async (_, k) => {
       const a = k * per, b = Math.min(total, a + per);
       if (a >= b) return null;
-      const ctx = await openPage(browser, url, o.w, o.h);
+      const ctx = await openPage(k === 0 ? first : await launch(), url, o.w, o.h);
       const file = path.join(tmp, `part${k}.mp4`);
       const enc = encoder(file, o.fps);
+      open.add(enc);
       for (let f = a; f < b; f++) {
         await enc.write(await frame(ctx, f / o.fps, 'jpeg'));
         if ((f - a) % 60 === 0) console.log(`worker ${k}: ${f - a}/${b - a}`);
       }
+      open.delete(enc);
       await enc.end();
       await ctx.page.close();
       return file;
@@ -128,15 +138,16 @@ async function video(browser, url, o) {
     await new Promise((ok, fail) => spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', list,
       '-c', 'copy', out], { stdio: 'inherit' }).on('close', c => (c === 0 ? ok() : fail(new Error('joining parts failed')))));
   } finally {
+    for (const enc of open) enc.kill();
     fs.rmSync(tmp, { recursive: true, force: true });
   }
   console.log(`done ${out}: ${total} frames in ${((Date.now() - started) / 1000).toFixed(1)}s`);
 }
 
-async function stills(browser, url, o) {
+async function stills(launch, url, o) {
   const outDir = path.resolve(o.out || path.join(o.dir, 'stills'));
   fs.mkdirSync(outDir, { recursive: true });
-  const ctx = await openPage(browser, url, o.w, o.h);
+  const ctx = await openPage(await launch(), url, o.w, o.h);
   for (const t of o.times) {
     const file = path.join(outDir, `t_${t}.jpg`);
     fs.writeFileSync(file, await frame(ctx, t, 'jpeg'));
@@ -145,8 +156,8 @@ async function stills(browser, url, o) {
 }
 
 // every on-screen text over time, from the page's optional window.TEXTS(t): [{id, text, x0, y0, x1, y1}]
-async function texts(browser, url, o) {
-  const ctx = await openPage(browser, url, o.w, o.h);
+async function texts(launch, url, o) {
+  const ctx = await openPage(await launch(), url, o.w, o.h);
   const dur = await ctx.page.evaluate(() => window.DUR);
   const samples = [];
   for (let t = 0; t <= dur + 1e-9; t += o.step) {
@@ -162,14 +173,22 @@ async function texts(browser, url, o) {
 const o = parse(process.argv.slice(2));
 if (!fs.existsSync(path.join(o.dir, 'index.html'))) { console.error(`no index.html in ${o.dir}`); process.exit(2); }
 const server = await serve(o.dir);
-const browser = await puppeteer.launch({ headless: true, args: ['--hide-scrollbars', '--force-color-profile=srgb'] });
+const executablePath = process.env.MOODREEL_CHROME || await (await import('puppeteer')).default.executablePath();
+const browsers = [];
+async function launch() {
+  const b = await puppeteer.launch({ executablePath, headless: true, args: ['--hide-scrollbars', '--force-color-profile=srgb',
+    '--disable-gpu-vsync', '--disable-frame-rate-limit'] });
+  browsers.push(b);
+  return b;
+}
 try {
   const url = `http://127.0.0.1:${server.address().port}/index.html`;
-  await ({ video, still: stills, texts })[o.cmd](browser, url, o);
+  await ({ video, still: stills, texts })[o.cmd](launch, url, o);
 } catch (e) {
   console.error(e.message);
   process.exitCode = 1;
 } finally {
-  await browser.close();
+  await Promise.all(browsers.map(b => b.close().catch(() => {})));
+  server.closeAllConnections();
   server.close();
 }

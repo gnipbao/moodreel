@@ -186,7 +186,7 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 
 | Path | What it is |
 |---|---|
-| `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
+| `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome on puppeteer-core, one per worker, frame pacing off; ffmpeg). Example films render 1.8-3.5x faster at 1920x1080 than with screenshots paced to 60 Hz ([docs/research/render-speed.md](docs/research/render-speed.md)) |
 | `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, sketch, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `cli.py` |
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |

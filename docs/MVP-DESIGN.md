@@ -33,7 +33,7 @@
 |---|---|---|
 | 风格包格式 | Moodreel 自有格式：`style.json` + `STYLE.md`（11 节不变量）+ `DECISIONS.md` + `kit/` + `demo/` + `evidence/` | 规则文字给导演读，`kit/` 给影片执行；"风格 = 规则 + 可执行代码"是可复现的关键。11 节的划分参考了 lemo-opuscar |
 | 导演 | Opus 5.5，以 agent skill 形式运行（Claude Code 等支持 SKILL.md 的 agent） | 视觉理解、写绘制代码、看渲染结果在同一个会话里完成，不需要额外的 API 编排 |
-| 渲染 | 自研 `render/render.mjs`：页面导出 `window.DUR` / `window.render(t)` / `window.READY`，Puppeteer 逐帧截图，ffmpeg 编码，多 worker 分段并行。V1 基于 puppeteer-core 做加速版 | 已实现并通过测试片验证；"画面是时间的纯函数"让任意帧可以单独渲染、并行渲染、精确复核。本机实测 WebGL 走 Metal GPU |
+| 渲染 | 自研 `render/render.mjs`：页面导出 `window.DUR` / `window.render(t)` / `window.READY`，puppeteer-core 驱动无头 Chrome 逐帧截图，ffmpeg 编码，多 worker 分段并行，每个 worker 一个 Chrome。V1 加速版 ✅：关掉 Chrome 按显示器 60 Hz 出帧的节拍（每张截图原本要等约 42 ms），1080p 示例片快 1.8–3.5 倍，画面与旧版逐帧一致（[调研](research/render-speed.md)） | 已实现并通过测试片验证；"画面是时间的纯函数"让任意帧可以单独渲染、并行渲染、精确复核。本机实测 WebGL 走 Metal GPU |
 | 运动测量 | `motionx`：静止帧锚定跟踪 + BIC 缓动拟合 + 语法汇总，本地运行 | 原型已验证，见调研文档 |
 | 风格库 | 导入 lemo-opuscar 的 59 套风格文档（`styles/`，MIT © LemoLab，注明来源版本），标注 MVP 可做（23）或后期（36）及所需能力 | 一开源就有现成的风格可选；同时是蒸馏时的技法参照，也是往返测试的真值 |
 | 技法 | 自建原语库，先覆盖 23 套 MVP 风格最常用的技法 | 只搬文档、不搬 demo 源码，技法按 STYLE.md 的描述自己实现 |
@@ -284,7 +284,7 @@ moodreel/
 
 运动测量的扩展顺序（每一项都是一个新的"属性读取器"，拟合、认定和语法汇总共用；往返测试显示扁平风格最常用前两项，所以排在旋转前面）：单轴拉伸（柱子生长、下划线展开、收成一条线）✅ → 遮罩擦除和裁切揭示 ✅ → 平涂底上的镜头 ✅ → 旋转 ✅ → 描线生长 ✅ → 逐字和打字机 ✅（逐字） → 数字跳动（OCR 读值）→ 循环、粒子和环境动效（测周期和速度分布）→ 3D 和着色器（只测镜头和节奏）。
 
-V1：基于 puppeteer-core 的加速渲染器；后期五类能力，按顺序逐类解锁对应的内置风格：配乐驱动（原创配乐、节拍网格）→ 像素 → 绘画笔触 → 3D → 真实素材；逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌入；旁白和音效；HyperFrames 或 Remotion 导出适配器；批量变体。
+V1：基于 puppeteer-core 的加速渲染器 ✅；后期五类能力，按顺序逐类解锁对应的内置风格：配乐驱动（原创配乐、节拍网格）→ 像素 → 绘画笔触 → 3D → 真实素材；逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌入；旁白和音效；HyperFrames 或 Remotion 导出适配器；批量变体。
 
 ## 12. 风险与对策
 
