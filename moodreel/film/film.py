@@ -14,6 +14,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import numpy as np
+
 from .. import library
 
 REPO = Path(__file__).resolve().parents[2]
@@ -100,6 +102,13 @@ moodreel film deliver . ${{OUT:+--out "$OUT"}} {music}
 """
 
 
+SCORE = {"bpm": 120, "meter": 4, "offset": 0.0, "seed": 1,
+         "sections": [{"name": "intro", "bars": 2, "chords": ["C", "Am"], "groove": "four", "parts": ["kick", "hat", "pad"]},
+                      {"name": "body", "bars": 4, "chords": ["C", "Am", "F", "G7"], "groove": "backbeat",
+                       "parts": ["kick", "snare", "hat", "bass", "pad", "lead"]}],
+         "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "stab"}]}
+
+
 def _style(name: str) -> dict:
     s = library.find(name)
     if not s:
@@ -141,6 +150,10 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
     (d / "TREATMENT.md").write_text(TREATMENT.format(name=name, style=f"{s.get('name')} ({s['slug']}, {_shown(sdir)})"))
     (d / "CREDITS").write_text(f"{name}\n\nThird-party assets (fonts, images, music, samples) and their licences:\n\n")
     (d / "build.sh").write_text(BUILD.format(music=""))
+    if "music-led" in (st.get("needs") or []):        # the music comes first: a grid and cues for the picture
+        (d / "score.json").write_text(json.dumps(SCORE, indent=1))
+        from ..score.score import write as write_score
+        write_score(d)
     return d
 
 
@@ -199,6 +212,9 @@ def check(d: Path) -> dict:
     f = _film(d)
     w, h = (int(x) for x in f["size"].split("x"))
     out = {"film": f["name"]}
+    if (d / "score.json").exists():                    # the picture reads its cue times from score.js
+        from ..score.score import write as write_score
+        write_score(d)
     r = subprocess.run(["node", str(RENDER), "texts", str(d), "--size", f["size"], "--step", "0.1"], capture_output=True, text=True)
     if r.returncode:
         out["reading"] = {"error": r.stderr.strip()[-300:]}
@@ -224,10 +240,44 @@ def check(d: Path) -> dict:
         ok = ok and all(x["pass"] for x in out["frames"]["stills"])
     if "motion" in out:
         ok = ok and out["motion"]["ok"]
+    if video.exists() and (d / "score.json").exists():
+        out["cues"] = cue_sync(d, video)
+        ok = ok and out["cues"]["ok"]
     out["ok"] = ok
     (d / "out").mkdir(exist_ok=True)
     (d / "out" / "check.json").write_text(json.dumps(out, indent=1, default=float))
     return out
+
+
+CUE_TOL = 2              # frames: a picture move this near a cue lands on it
+CUES_HIT = 0.8           # share of the score's cues the picture has to land on
+
+
+def cue_sync(d: Path, video: Path) -> dict:
+    """Does the picture land on the music? Each of the score's cues wants a move starting or landing, a cut, or the
+    picture starting or settling (a motion run's ends: steadier than a fitted curve's end) within CUE_TOL frames of
+    it; a stop is a silence, which the picture may simply hold, so it wants nothing. The moves' landings are also
+    counted on the beat, against chance."""
+    from ..motion.extract import measure
+    from ..motion.profile import main_prop
+    from ..score.score import timeline
+    f = _film(d)
+    tl = timeline(json.loads((d / "score.json").read_text()))
+    m = measure(str(video), d / "out" / "motion")
+    marks = [ev["props"][main_prop(ev)][k] for ev in m["events"] if ev.get("props") and main_prop(ev) for k in ("t0", "t1")]
+    marks += [tr["t"] for tr in m["transitions"] if tr["type"] == "cut"]
+    marks += [t for s in m["shots"] for run in s.get("runs_t", []) for t in run]
+    tol = CUE_TOL / f["fps"]
+    cues = [c for c in tl["cues"] if c["t"] < f["duration"] and c["sound"] != "stop"]
+    missed = [c["name"] for c in cues if not any(abs(x - c["t"]) <= tol for x in marks)]
+    landings = np.array([ev["props"][main_prop(ev)]["t1"] for ev in m["events"] if ev.get("props") and main_prop(ev)])
+    beat = tl["beat_s"]
+    off = (landings - tl["offset"]) / beat
+    on = float(np.mean(np.abs(off - np.round(off)) * beat <= tol)) if len(landings) else None
+    hit = (len(cues) - len(missed)) / len(cues) if cues else 1.0
+    return {"cues": len(cues), "hit": len(cues) - len(missed), "missed": missed,
+            "landings_on_beat": None if on is None else round(on, 2), "chance": round(min(1.0, 2 * tol / beat), 2),
+            "ok": hit >= CUES_HIT}
 
 
 def _loudnorm(music: Path, dst: Path, duration: float) -> dict:
@@ -250,10 +300,15 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
     work = d / "out"
     work.mkdir(exist_ok=True)
     video = work / "video.mp4"
+    info = {}
+    if (d / "score.json").exists():                    # the film's own score, before the picture that lands on it
+        from ..score.score import write as write_score
+        info["score"] = write_score(d)
+        music = music or Path(info["score"]["wav"])
     subprocess.run(["node", str(RENDER), "video", str(d), "--fps", str(f["fps"]), "--size", f["size"], "--workers", str(workers),
                     "--out", str(video)], check=True)
     final = out / f"{f['name']}.mp4"
-    info = {"video": str(final)}
+    info["video"] = str(final)
     if music:
         mix = work / "mix.wav"
         info["music"] = _loudnorm(Path(music), mix, f["duration"])

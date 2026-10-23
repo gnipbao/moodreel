@@ -6,8 +6,8 @@ Read the style's STYLE.md (and for a distilled style, its kit) before asking any
 can't decide yourself:
 
 - the facts: names, numbers, claims, products that must appear (and that the user has the right to use);
-- their material: logo, typefaces, images, data, a music track (Moodreel doesn't compose music yet: with no track the
-  film is silent, or ask for one);
+- their material: logo, typefaces, images, data, a music track (or none: Moodreel can write the film's own score,
+  below);
 - length, size and language if not obvious (default: the style's size, the user's language, 15–30 s);
 - whether they want to see a storyboard before production (default: no).
 
@@ -37,6 +37,23 @@ The 59 built-in styles come with STYLE.md and DEMO.md but no kit: `film new` wri
 `motion.js`. Fill them from §3, §4, §5 and §6 before drawing, so the film's numbers have one home. Links in DEMO.md open
 the original demo's source upstream: read them for how a texture or a move was built, then write your own.
 
-Styles marked `later` need what Moodreel doesn't do yet (a painterly brush engine, 3D, pixel art, a score that drives
-the picture, real footage or data). Tell the user which, and what you can still make: often a flat 2D reading of the
-style that keeps its palette, type and timing.
+Styles marked `later` need what Moodreel doesn't do yet (a painterly brush engine, 3D, pixel art, real footage or
+data). Tell the user which, and what you can still make: often a flat 2D reading of the style that keeps its palette,
+type and timing. Styles marked `ready` needed a score that drives the picture, which Moodreel now writes.
+
+## The score first (music-led styles, or any film with its own music)
+
+A music-led style times the picture to the music: the tempo grid and the cue table come before any animation, and
+every picture hit lands on a listed cue. `film new` gives such a film a `score.json`; write it with the treatment:
+
+- `bpm`, `meter`, `seed`; `sections` in order, each with `bars`, a chord loop (one chord per bar: `C`, `Am7`, `F#m`,
+  `Bb7`, `Gsus4`...), a `groove` (four, backbeat, halftime, oompah, none) and its `parts` (kick, snare, clap, hat,
+  bass, pad, stab, pluck, lead), as the style's §7 asks (a jingle into each round, an oom-pah under a gag);
+- `cues`: every hit the picture lands on, by name, `bar` and `beat` (from 1; 2.5 is the off-beat after 2) and its
+  `sound`: stab, hit, pop, boing, ding, whoosh, clack, riser (it ends on the cue), or stop (the band falls silent for
+  `beats`: a held stare before a gag; other cues still sound in it).
+
+`moodreel score <film>` renders it to `out/score.wav` and writes `score.js`, which the picture imports: `cue('title')`
+is when the title lands, `bar(5, 3)` the time of bar 5, beat 3. Start each move so it lands there:
+`tween(t, cue('title') - d, d, ease)`. The instruments are synthesised (a bright toy band and pitched foley); a style
+whose §7 asks for an orchestra or a piano gets its grid and cues right and its timbre only roughly.

@@ -9,6 +9,7 @@
   moodreel pack <project> --slug S --name N               check a distilled style and add it to your library
   moodreel styles [query]                                 your styles and the built-in ones
   moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f]
+  moodreel score <film>                                   the film's score.json as out/score.wav and score.js (cue times)
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
@@ -113,8 +114,14 @@ def cmd_styles(a):
         rows = [s for s in rows if q in json.dumps(s, ensure_ascii=False).lower()]
     for s in rows:
         needs = ", ".join(s.get("needs") or []) or "-"
-        print(f"{s['origin']:7s} {s.get('phase', '?'):5s} {s['slug']:22s} {s.get('name', '')} · {s.get('name_zh', '')}  [{needs}]")
+        phase = "ready" if s.get("phase") == "later" and set(s.get("needs") or []) <= library.CAPABLE else s.get("phase", "?")
+        print(f"{s['origin']:7s} {phase:5s} {s['slug']:22s} {s.get('name', '')} · {s.get('name_zh', '')}  [{needs}]")
     print(f"{len(rows)} styles")
+
+
+def cmd_score(a):
+    from .score.score import write
+    print(json.dumps(write(Path(a.film)), indent=1))
 
 
 def cmd_film(a):
@@ -241,6 +248,9 @@ def main(argv=None):
     p = sub.add_parser("styles", help="list your styles and the built-in ones")
     p.add_argument("query", nargs="?")
     p.set_defaults(fn=cmd_styles)
+    p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
+    p.add_argument("film")
+    p.set_defaults(fn=cmd_score)
     p = sub.add_parser("film", help="make a film in a style: new, check, deliver")
     p.add_argument("action", choices=["new", "check", "deliver"])
     p.add_argument("target", help="the film's name (new) or folder (check, deliver)")

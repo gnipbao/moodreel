@@ -190,7 +190,9 @@ the director's flows, gates and rules.
 each style's `STYLE.md` (the invariants a director follows), `DEMO.md` (how its demo film was made) and a
 `style.json`. 23 of them are flat 2D styles the MVP draws (Swiss motion graphics, risograph, ukiyo-e, blueprint,
 spy titles…); 36 need capabilities that come later: painterly brush engines, 3D, pixel art, a score that drives
-the picture, or real footage and data. Only the documents are imported; Moodreel re-implements the techniques.
+the picture, or real footage and data. The score is now here (`moodreel score`: a film's tempo grid, sections and
+cues, drawn as music by deterministic synthesised instruments, with the cue times for the picture to land on), which
+makes three more styles ready: game show, microgame and 1930s rubber hose. Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 

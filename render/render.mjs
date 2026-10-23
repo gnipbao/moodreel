@@ -83,7 +83,14 @@ async function openPage(browser, url, w, h) {
   page.on('requestfailed', r => errors.push(`failed to load ${r.url()} (${r.failure()?.errorText})`));
   await page.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: 'load' });
-  await page.waitForFunction(() => window.READY === true, { timeout: 120_000 });
+  // ready, or an error first (a page that throws while loading never gets ready: say so now, not in two minutes)
+  let poll;
+  const failed = new Promise((_, fail) => { poll = setInterval(() => errors.length && fail(new Error(errors.join('\n'))), 100); });
+  try {
+    await Promise.race([page.waitForFunction(() => window.READY === true, { timeout: 120_000 }), failed]);
+  } finally {
+    clearInterval(poll);
+  }
   if (errors.length) throw new Error(errors.join('\n'));
   return { page, errors };
 }
