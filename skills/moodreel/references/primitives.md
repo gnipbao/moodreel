@@ -51,4 +51,9 @@ with `z = value(t, at, d, 1, 1.12, 'sine.inOut')`; draw the ground oversized so 
 **Dissolve / dip.** Draw the outgoing shot, then the incoming one with `globalAlpha = tween(...)`; for a dip, a full-frame
 rectangle of the dip colour whose alpha rises then falls around the cut.
 
+**Ambient loop.** `y + MOTION.loop.y * loop(t)` for a bob, `1 + MOTION.loop.scale * loop(t)` for a pulse,
+`g.rotate(t * MOTION.loop.rot * Math.PI / 180)` for a spin; offset `loop(t, period, i * 0.25)` per element so a row
+doesn't move in lockstep. **Particles:** seed each dot's place and speed from `MOTION.particles` (speed p10-p90,
+direction) and wrap it round the frame: `x = (x0 + vx * t) mod W`, so any frame stands alone.
+
 **On twos.** `const tt = step(t, 12)` for drawings at 24 fps; the camera keeps `t`.

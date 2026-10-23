@@ -2,9 +2,10 @@
 
 Writes <project>/sketch/ (index.html, main.js and the project's kit): as many shots as the references have (at
 most four) at their median length (longer when the moves need it), each with three elements that enter, one after
-another with the measured hold between (or the measured stagger), the commonest way the references' elements do
+another with the measured hold between (or the measured stagger; overlapping when they can't follow one another
+inside the shot), the commonest way the references' elements do
 (rise, slide, scale, grow, clip, wipe or fade), with the kit's ease and duration, and leave the same way with its
-exit ease when the references have exits; shots change by cuts or dissolves as the references' do, and the
+exit ease when the references have exits; shots change by cuts, dissolves or dips as the references' do, and the
 drawings are held on twos when theirs are. Measured with motion-check against the references, it tells whether
 the kit carries the style's motion; it is no film of the style, only its timing drawn plainly.
 """
@@ -31,8 +32,15 @@ const inDur = MOTION?.enter?.duration ?? 0.5, outDur = MOTION?.exit?.duration ??
 // several shots keep the references' shot length: the holds give way first
 const hold = SHOTS > 1 ? Math.max(0.2, Math.min(MOTION?.hold ?? 0.8, (__LEN__ - 0.3 - 3 * inDur - (EXITS ? 3 * outDur : 0)) / n))
   : MOTION?.hold ?? 0.8;
-// one element after another with the references' hold between, or their stagger when they stagger
-const nextIn = MOTION?.stagger?.interval ?? inDur + hold, nextOut = MOTION?.stagger?.interval ?? outDur + hold;
+// one element after another with the references' hold between, or their stagger when they stagger; entrances too
+// slow to follow one another inside the references' shot overlap instead
+let nextIn = MOTION?.stagger?.interval ?? inDur + hold, nextOut = MOTION?.stagger?.interval ?? outDur + hold;
+const fixed = 0.3 + inDur + hold + (EXITS ? outDur + hold : 0), spread = 2 * nextIn + (EXITS ? 2 * nextOut : 0);
+if (SHOTS > 1 && !MOTION?.stagger && fixed + spread > __LEN__) {
+  const k = Math.max(0, __LEN__ - fixed) / spread;
+  nextIn *= k;
+  nextOut *= k;
+}
 const IN = [0, 1, 2].map(i => 0.3 + i * nextIn), OUT = [0, 1, 2].map(i => IN[2] + inDur + hold + i * nextOut);
 const NEED = (EXITS ? OUT[2] + outDur : IN[2] + inDur) + hold;
 const LEN = SHOTS > 1 ? Math.max(__LEN__, NEED) : NEED;          // one shot: no idle tail to thin the motion out
@@ -102,6 +110,14 @@ stage({
       shot(g, local + LEN, s - 1);
       g.restore();
     }
+    const edge = Math.round(time / LEN) * LEN, dip = MOTION?.transitions?.dip ?? 0.5;
+    if (CHANGE === 'dip' && edge > 0 && edge < SHOTS * LEN && Math.abs(time - edge) < dip / 2) {  // through a colour
+      g.save();
+      g.globalAlpha = 1 - Math.abs(time - edge) / (dip / 2);
+      g.fillStyle = MOTION?.transitions?.dip_colours?.[0] ?? '#000000';
+      g.fillRect(0, 0, W, H);
+      g.restore();
+    }
   },
 });
 """
@@ -137,7 +153,8 @@ def write_sketch(project: Path, fps: int = 24) -> Path:
     main = (MAIN.replace("__SHOTS__", str(min(4, max(1, sh.get("count") or 1)))).replace("__LEN__", f"{length:.3f}")
             .replace("__KIND__", _kind((grammar.get("entrance") or {}).get("vocabulary")))
             .replace("__EXITS__", "true" if grammar.get("exit") else "false")
-            .replace("__CHANGE__", "dissolve" if sh.get("dissolves") and not sh.get("cuts") else "cut")
+            .replace("__CHANGE__", "dissolve" if sh.get("dissolves") and not sh.get("cuts")
+                     else "dip" if sh.get("dips") and not sh.get("cuts") else "cut")
             .replace("__FPS__", str(fps)))
     (out / "main.js").write_text(main)
     return out

@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 from .. import video
-from . import camera, counter, fit, profile, shots, track
+from . import ambient, camera, counter, fit, profile, shots, track
 
 
 def evidence(clip, run_tracks, path, cols=6):
@@ -82,8 +82,14 @@ def measure(path, out: Path, width=640) -> dict:
         e = shots.energy(shots.thumbs(clip), ranges, lag=2)
     e1 = shots.energy(shots.thumbs(clip), ranges, lag=1)   # frame to frame: what held drawings show
     events, runs_by_shot, n_el = [], {}, 0
+    loops, fields = [], []
     for sh in shots_:
         shot_counts = []
+        # what keeps moving all shot long: loops (their pieces are not the elements' moves) and particles
+        shot_loops = ambient.loops(clip, sh)
+        loops += shot_loops
+        if field := ambient.particles(clip, sh):
+            fields.append(field)
         runs, thr = shots.motion_runs(e, sh, clip.fps)
         runs_by_shot[sh["id"]] = runs
         sh["stepping"] = shots.stepping(e1, runs)
@@ -105,6 +111,7 @@ def measure(path, out: Path, width=640) -> dict:
             counts = counter.find(clip, sh, run_, shot_counts)
             shot_counts += counts
             tracks = counter.absorb(shot_counts, tracks, counts)
+            tracks = ambient.absorb(shot_loops, tracks)
             for c in counts:
                 c["id"] = f"e{n_el}"
                 n_el += 1
@@ -123,7 +130,9 @@ def measure(path, out: Path, width=640) -> dict:
     result = {"source": {"path": str(path), "fps": clip.fps, "w": clip.src_w, "h": clip.src_h,
                          "frames": clip.n, "analysis_width": clip.w, "counters_read": counter.available()},
               "shots": shots_, "transitions": transitions, "camera": cam_events, "events": events,
-              "grammar": profile.grammar(clip, shots_, transitions, runs_by_shot, events, cam_events),
+              "loops": loops, "particles": fields,
+              "grammar": {**profile.grammar(clip, shots_, transitions, runs_by_shot, events, cam_events),
+                          **ambient.grammar(loops, fields)},
               "seconds": round(time.time() - t_start, 1)}
     (out / "motion.json").write_text(json.dumps(clean(result), indent=1, ensure_ascii=False))
     return result
