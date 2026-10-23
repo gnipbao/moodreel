@@ -37,9 +37,11 @@ The 59 built-in styles come with STYLE.md and DEMO.md but no kit: `film new` wri
 `motion.js`. Fill them from §3, §4, §5 and §6 before drawing, so the film's numbers have one home. Links in DEMO.md open
 the original demo's source upstream: read them for how a texture or a move was built, then write your own.
 
-Styles marked `later` need what Moodreel doesn't do yet (a painterly brush engine, 3D, pixel art, real footage or
-data). Tell the user which, and what you can still make: often a flat 2D reading of the style that keeps its palette,
-type and timing. Styles marked `ready` needed a score that drives the picture, which Moodreel now writes.
+Styles marked `later` need what Moodreel doesn't do yet: real footage or data (sourcing, licensing and placing it).
+Tell the user which, and what you can still make: often a reading of the style that keeps its palette, type and
+timing. Styles marked `ready` needed more than flat 2D, and Moodreel now has it: a score that drives the picture
+(below), pixel art (`kit/pixel.js`), painted marks (`kit/brush.js`) and 3D (`kit/three.js`, three.js copied into the
+film by `film new`).
 
 ## The score first (music-led styles, or any film with its own music)
 

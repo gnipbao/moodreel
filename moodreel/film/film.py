@@ -150,6 +150,10 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
     (d / "TREATMENT.md").write_text(TREATMENT.format(name=name, style=f"{s.get('name')} ({s['slug']}, {_shown(sdir)})"))
     (d / "CREDITS").write_text(f"{name}\n\nThird-party assets (fonts, images, music, samples) and their licences:\n\n")
     (d / "build.sh").write_text(BUILD.format(music=""))
+    if "3d" in (st.get("needs") or []):               # three.js for kit/three.js, with its licence and a credit
+        from ..pack.kit import vendor_three
+        with open(d / "CREDITS", "a") as cr:
+            cr.write(f"- {vendor_three(d / 'kit')}\n")
     if "music-led" in (st.get("needs") or []):        # the music comes first: a grid and cues for the picture
         (d / "score.json").write_text(json.dumps(SCORE, indent=1))
         from ..score.score import write as write_score

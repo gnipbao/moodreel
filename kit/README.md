@@ -12,6 +12,7 @@
 | `texture.js` | `paper`（纸底与斑驳）、`grain`（颗粒）、`vignette`（暗角）、`screen`（网点）、`scanlines`（扫描线）、`misregister`（套色错位）。`grain` 和 `vignette` 的参数就是 `moodreel measure` 测出的数值，内部已按测量校准 |
 | `text.js` | `fit`（按宽度定字号）、`wrap`（中英文换行）、`glyphs`（逐字位置，用于逐字动画） |
 | `brush.js` | 绘画笔触：`stroke`（有宽度轮廓和毛边的笔触加鬃毛痕，`reveal` 控制画到哪里）、`wash`（水彩：多遍抖动叠加，边缘积色变深）、`dab`（刮刀：斜端、明暗抖动、受光起伏）、`crayon`（蜡笔：被纸纹打断的斑点）、`ink`（墨：芯加晕）、`repaint`（把用平涂画好的画面重画成刀块或笔触，沿边缘走，按画面颜色，缓存）；以及 `spine`、`ribbon`、`wobble`、`tooth` 几何工具。参数对应 `moodreel measure` 测出的 `TEXTURE.brush`（笔触边缘间距、方向、一致度） |
+| `three.js` | 3D：`layer3d(w, h, { background, shadows, exposure, fov, toneMapping })` 建 three.js 场景、相机和 WebGL 渲染器，`draw(g)` 把这一帧的 3D 画到舞台上（字和叠加层照常用 2D 画在上面），`look(eye, target)`、`orbit(angle, radius, height)`、`toScreen(point)`（把字钉在世界里的一点上）。每个物体、灯光和相机都由 t 算出，不用时钟和会保留状态的动画混合器。three.js（MIT）由 `moodreel film new` 为需要 3D 的风格复制到 `kit/vendor/three/`，并写进 CREDITS |
 | `pixel.js` | 像素画：`pixels(w, h, palette)` 建一张低分辨率的索引帧（`put`、`rect`、`line`、`disc`、按 Bayer 抖动的 `shade`、字符画 `sprite`、一像素描边 `outline`），`present` 按整数倍、不插值放大画到舞台上，可传查找表；`reduce`（降色深表）、`stepTable`（沿色阶提亮或压暗）、`nearest`、`snap`（镜头按整像素移动）。参数就是 `moodreel measure` 测出的 `TEXTURE.pixel`（倍数、原生尺寸、色数、抖动） |
 
 风格专属（由测量生成）：

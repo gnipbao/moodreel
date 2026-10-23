@@ -88,7 +88,7 @@ See [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) (Chinese) for the full design.
 
 ## Try it
 
-Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+; [tesseract](https://github.com/tesseract-ocr/tesseract)
+Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+ (`npm install` brings Chrome and three.js); [tesseract](https://github.com/tesseract-ocr/tesseract)
 is optional and reads numbers that count (`brew install tesseract`, `apt install tesseract-ocr`).
 
 ```bash
@@ -197,7 +197,10 @@ indexed framebuffer shown through a palette, scaled by whole pixels, with Bayer 
 measurement reads a reference's pixel scale, native size, palette and dither), which makes the 16-bit pixel RPG ready. And painted marks (`kit/brush.js`: brush strokes with bristles, watercolour
 washes that pool at the edge, palette-knife dabs with relief, crayon broken by paper tooth, ink that bleeds, and a
 repaint that turns a flat illustration into strokes; the measurement reads visible marks' coverage, scale and
-direction), which makes seven more styles ready, from impasto and watercolour to ink wash and 80s cel anime. Only the documents are imported; Moodreel re-implements the techniques.
+direction), which makes seven more styles ready, from impasto and watercolour to ink wash and 80s cel anime. And
+3D (`kit/three.js`: a three.js scene set from t, rendered into its own WebGL canvas and laid on the 2D stage, type
+pinned to points in the world; `film new` copies three.js into the film), which makes ten more ready, from low-poly
+islands and glass product renders to tilt-shift and HD-2D. What remains is real footage and data: 15 styles. Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 

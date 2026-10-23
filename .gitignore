@@ -13,3 +13,4 @@ stills/
 
 # rendered test films (moodreel bench render)
 bench/motion/*/*.mp4
+kit/vendor/
