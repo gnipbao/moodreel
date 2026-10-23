@@ -1,0 +1,32 @@
+{
+ "slug": "watercolor",
+ "name": "Watercolor Brush",
+ "name_zh": "水彩笔刷",
+ "category": "Hand-drawn & Painting",
+ "category_zh": "手绘与绘画",
+ "uses": [
+  "Nature documentary",
+  "Travel",
+  "Science explainers"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "painterly"
+ ],
+ "demo": {
+  "title": "Follow the Rain",
+  "line": "Follow the rain from Australia's red desert heart to its green coast in one unbroken painted walk.",
+  "line_zh": "跟着降雨从澳洲红色腹地一路画到绿色海岸，一镜到底。",
+  "duration_s": 113.6
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/watercolor",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

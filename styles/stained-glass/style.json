@@ -1,0 +1,30 @@
+{
+ "slug": "stained-glass",
+ "name": "Stained Glass",
+ "name_zh": "彩色玻璃窗",
+ "category": "Graphic & Type",
+ "category_zh": "图形与排版",
+ "uses": [
+  "Legends",
+  "Heritage",
+  "Holiday stories"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "The Dragon of the East Window",
+  "line": "Sunlight crosses a cathedral window from dawn to dusk, waking each pane of a knight-and-dragon tale.",
+  "line_zh": "阳光从清晨移到黄昏，照到哪一格花窗，哪一格的故事就动起来。",
+  "duration_s": 56.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/stained-glass",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

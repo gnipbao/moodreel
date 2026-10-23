@@ -1,0 +1,32 @@
+{
+ "slug": "rubber-hose",
+ "name": "1930s Rubber Hose Cartoon",
+ "name_zh": "1930s 橡皮管卡通",
+ "category": "Cartoon & Anime",
+ "category_zh": "卡通与动画",
+ "uses": [
+  "Food & drink",
+  "Retro ads",
+  "Kids"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "music-led"
+ ],
+ "demo": {
+  "title": "Coffee Cup Chase",
+  "line": "A coffee cup chases a runaway sugar cube around the kitchen, 1930s-cartoon style.",
+  "line_zh": "一只咖啡杯满厨房追一块逃跑的方糖。",
+  "duration_s": 50.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/rubber-hose",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

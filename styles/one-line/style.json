@@ -1,0 +1,30 @@
+{
+ "slug": "one-line",
+ "name": "One-line Drawing",
+ "name_zh": "一笔画",
+ "category": "Hand-drawn & Painting",
+ "category_zh": "手绘与绘画",
+ "uses": [
+  "Brand stories",
+  "Life milestones",
+  "Minimal ads"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "The Line That Never Lifted",
+  "line": "One unbroken line draws a whole life, then the pen passes to a child.",
+  "line_zh": "一根不离纸的线画完一个人的一生，再把笔交给孩子。",
+  "duration_s": 47.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/one-line",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

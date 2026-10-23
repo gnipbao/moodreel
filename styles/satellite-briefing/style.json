@@ -1,0 +1,32 @@
+{
+ "slug": "satellite-briefing",
+ "name": "Satellite Briefing",
+ "name_zh": "卫星简报",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Climate",
+  "News explainers",
+  "Geography"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "The Map Still Says Sea",
+  "line": "A satellite follows the map to the Aral Sea and finds a desert; only the part someone dammed came back.",
+  "line_zh": "卫星照着地图去找咸海，找到的是沙漠；只有筑了坝的那一块回来了。",
+  "duration_s": 37.8
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/satellite-briefing",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

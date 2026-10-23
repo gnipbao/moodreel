@@ -1,0 +1,32 @@
+{
+ "slug": "glass-product",
+ "name": "Glass Product Render",
+ "name_zh": "玻璃质感产品",
+ "category": "Materials & 3D",
+ "category_zh": "材质与 3D",
+ "uses": [
+  "Product launches",
+  "Consumer tech",
+  "Beauty"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "Aura — Hear the Light",
+  "line": "Unboxing and close-ups of Aura, fictional glass earbuds, in strip-light sweeps and caustics.",
+  "line_zh": "虚构玻璃耳机 Aura 的开箱与特写。",
+  "duration_s": 32.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/glass-product",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

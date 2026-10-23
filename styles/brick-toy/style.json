@@ -1,0 +1,32 @@
+{
+ "slug": "brick-toy",
+ "name": "Brick Toy",
+ "name_zh": "积木玩具",
+ "category": "Materials & 3D",
+ "category_zh": "材质与 3D",
+ "uses": [
+  "Toys & kids",
+  "Product builds",
+  "Space"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "Rocket from Spare Parts",
+  "line": "A brick astronaut builds a rocket from spare parts and flies to a brick moon.",
+  "line_zh": "积木宇航员用零件拼出火箭，飞向积木月亮。",
+  "duration_s": 54.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/brick-toy",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

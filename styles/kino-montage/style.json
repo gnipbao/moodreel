@@ -1,0 +1,33 @@
+{
+ "slug": "kino-montage",
+ "name": "Constructivist Montage",
+ "name_zh": "构成主义蒙太奇",
+ "category": "Edit & Documentary",
+ "category_zh": "剪辑与纪实",
+ "uses": [
+  "Industry histories",
+  "Milestones",
+  "Collective effort"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material",
+  "music-led"
+ ],
+ "demo": {
+  "title": "410 Days",
+  "line": "The Empire State's 1931 brochure credits its builders; the site film and Hine's photos answer: 2,500 a day.",
+  "line_zh": "帝国大厦的小册子写着建造者，工地实拍和老照片给出答案：每天 2,500 人。",
+  "duration_s": 60.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/kino-montage",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

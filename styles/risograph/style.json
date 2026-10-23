@@ -1,0 +1,30 @@
+{
+ "slug": "risograph",
+ "name": "Risograph Print",
+ "name_zh": "Risograph 孔版印刷",
+ "category": "Print & Printmaking",
+ "category_zh": "印刷与版画",
+ "uses": [
+  "Indie brands",
+  "Zines",
+  "Lifestyle"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Sunday Ride",
+  "line": "A Sunday-morning bike ride through the city — bakery, park, riverside — each stop adding an ink until three misregistered plates overprint.",
+  "line_zh": "周日早晨骑车穿过城市：面包店、公园、河边，每到一处加一版油墨，最后三版套印。",
+  "duration_s": 40.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/risograph",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

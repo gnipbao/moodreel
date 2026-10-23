@@ -1,0 +1,32 @@
+{
+ "slug": "microscope",
+ "name": "Microscope Story",
+ "name_zh": "显微叙事",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Biomedicine",
+  "Materials science",
+  "Skincare science"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "Measured Blue",
+  "line": "One continuous move from a liver slide to a single nucleus; two circles, counted pixel by pixel, differ 2.4 times in blue.",
+  "line_zh": "一镜从肝组织玻片推到单个细胞核，两个圆逐像素数出 2.4 倍的蓝。",
+  "duration_s": 39.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/microscope",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

@@ -20,16 +20,25 @@
 
 详见 [docs/research/motion-extraction.md](docs/research/motion-extraction.md)，完整设计见 [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md)。
 
+## 风格库
+
+[`styles/`](styles/README.md) 收录了从 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) 导入的 59 套风格，
+每套包含 `STYLE.md`（导演要遵守的不变量）、`DEMO.md`（上游 demo 片的做法）和 `style.json`。其中 23 套是 MVP 就能用代码
+画出来的扁平 2D 风格（瑞士动态排版、孔版印刷、浮世绘、蓝图、间谍片头……）；36 套需要后期能力：绘画笔触、3D、像素、
+配乐驱动、真实素材。只导入了文档，技法由 Moodreel 自己重新实现。
+
 ## 试用原型
 
 需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上。命令见 [research/motion-spike/README.md](research/motion-spike/README.md)。
 
 ## 致谢
 
-Moodreel 借鉴了以下项目的思路，没有使用它们的代码：[REM](https://github.com/sidart10/rem)、
+Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)、
 [motiscope](https://github.com/KumarSashank/motiscope)、[MoVer](https://arxiv.org/abs/2502.13372)、
 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar)、[HyperFrames](https://github.com/heygen-com/hyperframes)。
+除了 `styles/` 中来自 lemo-opuscar 的风格文档，没有使用它们的代码。
 
 ## 许可证
 
-[MIT](LICENSE)
+Moodreel 采用 [MIT](LICENSE)。`styles/` 中来自 lemo-opuscar 的风格文档同为 MIT，版权归 LemoLab（见
+[`styles/LICENSE-lemo-opuscar`](styles/LICENSE-lemo-opuscar)），每份文档都注明了来源版本。

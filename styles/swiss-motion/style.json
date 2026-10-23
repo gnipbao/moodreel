@@ -1,0 +1,30 @@
+{
+ "slug": "swiss-motion",
+ "name": "Swiss Motion Graphics",
+ "name_zh": "瑞士动态排版",
+ "category": "Graphic & Type",
+ "category_zh": "图形与排版",
+ "uses": [
+  "Brand identity",
+  "Events",
+  "Design education"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Five Rules for a Poster",
+  "line": "A concert poster lays itself out by five Swiss design rules; the fifth is to break just one.",
+  "line_zh": "一张音乐会海报按瑞士设计的五条规则自己排版，第五条是只打破一条。",
+  "duration_s": 44.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/swiss-motion",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

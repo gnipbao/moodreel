@@ -1,0 +1,30 @@
+{
+ "slug": "midcentury-toon",
+ "name": "Mid-century Cartoon",
+ "name_zh": "50s 扁平卡通",
+ "category": "Cartoon & Anime",
+ "category_zh": "卡通与动画",
+ "uses": [
+  "Set-up guides",
+  "Help centres",
+  "How-to"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Meet Pip",
+  "line": "A robot vacuum set up in three steps, told like a 1950s classroom film.",
+  "line_zh": "用 50 年代教育片的口吻，三步教你装好一台扫地机。",
+  "duration_s": 40.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/midcentury-toon",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "slug": "lidar-survey",
+ "name": "LiDAR Survey",
+ "name_zh": "点云测绘",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Heritage",
+  "Environment",
+  "Site surveys"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material",
+  "3d"
+ ],
+ "demo": {
+  "title": "The Fields Under the Forest",
+  "line": "A laser survey strips the canopy off a Connecticut forest and finds 3.4 km of old farm walls.",
+  "line_zh": "激光点云剥掉一片森林的树冠，露出当年农田的石墙：3.4 公里。",
+  "duration_s": 40.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/lidar-survey",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

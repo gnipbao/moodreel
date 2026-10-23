@@ -1,0 +1,32 @@
+{
+ "slug": "game-show",
+ "name": "Game Show Flat",
+ "name_zh": "综艺节奏扁平",
+ "category": "Games",
+ "category_zh": "游戏",
+ "uses": [
+  "Tech timelines",
+  "Year in review",
+  "Variety shows"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "music-led"
+ ],
+ "demo": {
+  "title": "Rhythm of AI, 1997 → 2026",
+  "line": "The history of AI as a rhythm game: models take the stage on the beat, and a report card closes the show.",
+  "line_zh": "把 AI 发展史做成一局节奏游戏，模型踩着拍登场，最后发成绩单。",
+  "duration_s": 148.8
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/game-show",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

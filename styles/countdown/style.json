@@ -1,0 +1,32 @@
+{
+ "slug": "countdown",
+ "name": "Live Countdown Split-screen",
+ "name_zh": "实时倒计时分屏",
+ "category": "Edit & Documentary",
+ "category_zh": "剪辑与纪实",
+ "uses": [
+  "Launches",
+  "Countdowns",
+  "Live events"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "Counting Itself Down",
+  "line": "The last minute of the Artemis II launch, uncut: one cell opens to nine, and they merge into one at ignition.",
+  "line_zh": "阿尔忒弥斯二号发射的最后一分钟，一秒不剪：格子从 1 开到 9，点火合成 1。",
+  "duration_s": 59.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/countdown",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

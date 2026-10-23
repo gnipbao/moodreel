@@ -1,0 +1,32 @@
+{
+ "slug": "cel-anime-80s",
+ "name": "80s Cel Anime",
+ "name_zh": "80 年代赛璐璐动画",
+ "category": "Cartoon & Anime",
+ "category_zh": "卡通与动画",
+ "uses": [
+  "Music videos",
+  "Game trailers",
+  "Nostalgia"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "painterly"
+ ],
+ "demo": {
+  "title": "City Lights, 1987",
+  "line": "A courier girl rides through a rain-soaked neon city to deliver a tape before the dawn launch.",
+  "line_zh": "快递少女骑车穿过雨后霓虹都市，赶在黎明发射前送到一盘磁带。",
+  "duration_s": 59.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/cel-anime-80s",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

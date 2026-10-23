@@ -1,0 +1,32 @@
+{
+ "slug": "data-physical",
+ "name": "Data Physicalization",
+ "name_zh": "数据实物化",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Annual reports",
+  "Investor decks",
+  "Energy data"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "Two Spirals",
+  "line": "Twelve years of wind and solar stacked as real plates, spiralling round a walnut dial until solar overtakes.",
+  "line_zh": "十二年风电和太阳能装机叠成实物，绕表盘升成两条螺旋，2021 年太阳能反超。",
+  "duration_s": 39.4
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/data-physical",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

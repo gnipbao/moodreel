@@ -1,0 +1,33 @@
+{
+ "slug": "hd-2d",
+ "name": "HD-2D",
+ "name_zh": "HD-2D",
+ "category": "Games",
+ "category_zh": "游戏",
+ "uses": [
+  "Game trailers",
+  "Fantasy",
+  "Story films"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "pixel",
+  "3d"
+ ],
+ "demo": {
+  "title": "The Lampbearer",
+  "line": "The lighthouse goes dark; a girl carries the last flame through a night forest and up the storm cliffs.",
+  "line_zh": "灯塔熄灭，孙女提着最后一簇火穿过夜林、爬上风暴悬崖。",
+  "duration_s": 76.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/hd-2d",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

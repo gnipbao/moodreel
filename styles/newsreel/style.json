@@ -1,0 +1,32 @@
+{
+ "slug": "newsreel",
+ "name": "1920s Newsreel",
+ "name_zh": "1920s 新闻影片",
+ "category": "Edit & Documentary",
+ "category_zh": "剪辑与纪实",
+ "uses": [
+  "History stories",
+  "Fads & eras",
+  "Anniversaries"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "Knock-Knee Alert",
+  "line": "1926: the papers say the Charleston will ruin America's knees; at Ford's own picnic the kids dance it anyway.",
+  "line_zh": "1926 年报纸说查尔斯顿会跳坏膝盖，福特工人野餐会上的孩子照跳不误。",
+  "duration_s": 54.6
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/newsreel",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

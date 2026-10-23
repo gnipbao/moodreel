@@ -1,0 +1,30 @@
+{
+ "slug": "living-screencast",
+ "name": "Living Screencast",
+ "name_zh": "活体实机录屏",
+ "category": "Information & Keynote",
+ "category_zh": "信息与发布",
+ "uses": [
+  "Product tutorials",
+  "Feature launches",
+  "Onboarding"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Clawd Moves In",
+  "line": "Clawd hops out of the terminal into the Claude app and acts out plan mode and self-checks in one take.",
+  "line_zh": "像素小人 Clawd 搬进 Claude 应用，一镜到底演示 Plan 模式和自检。",
+  "duration_s": 59.4
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/living-screencast",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

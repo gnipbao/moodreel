@@ -1,0 +1,1088 @@
+{
+ "generated_by": "scripts/import_lemo_styles.py",
+ "lemo_commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+ "styles": [
+  {
+   "slug": "archive-lighttable",
+   "name": "Archive Light Table",
+   "name_zh": "档案灯台",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/archive-lighttable",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "art-deco",
+   "name": "Art Deco",
+   "name_zh": "装饰艺术",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/art-deco",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "ascii-crt",
+   "name": "ASCII / CRT Terminal",
+   "name_zh": "ASCII / CRT 终端",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/ascii-crt",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "backrooms",
+   "name": "Liminal Found Footage",
+   "name_zh": "后室 / 新怪谈",
+   "category": "Cinema & Eras",
+   "category_zh": "电影与时代",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/backrooms",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "blueprint",
+   "name": "Blueprint",
+   "name_zh": "蓝图 / 工程制图",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/blueprint",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "brick-toy",
+   "name": "Brick Toy",
+   "name_zh": "积木玩具",
+   "category": "Materials & 3D",
+   "category_zh": "材质与 3D",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/brick-toy",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "briefing-board",
+   "name": "Engineering Briefing Board",
+   "name_zh": "工程简报板",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/briefing-board",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "caption-news",
+   "name": "Caption News",
+   "name_zh": "字幕新闻",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/caption-news",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "cel-anime-80s",
+   "name": "80s Cel Anime",
+   "name_zh": "80 年代赛璐璐动画",
+   "category": "Cartoon & Anime",
+   "category_zh": "卡通与动画",
+   "phase": "later",
+   "needs": [
+    "painterly"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/cel-anime-80s",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "city-symphony",
+   "name": "Time-lapse Symphony",
+   "name_zh": "延时交响",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material",
+    "music-led"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/city-symphony",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "countdown",
+   "name": "Live Countdown Split-screen",
+   "name_zh": "实时倒计时分屏",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/countdown",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "crayon-book",
+   "name": "Crayon Picture Book",
+   "name_zh": "蜡笔儿童绘本",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "later",
+   "needs": [
+    "painterly"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/crayon-book",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "dark-keynote",
+   "name": "Dark Tech Keynote",
+   "name_zh": "暗色科技发布",
+   "category": "Information & Keynote",
+   "category_zh": "信息与发布",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/dark-keynote",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "data-physical",
+   "name": "Data Physicalization",
+   "name_zh": "数据实物化",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/data-physical",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "dataviz",
+   "name": "Data Storytelling",
+   "name_zh": "数据叙事",
+   "category": "Information & Keynote",
+   "category_zh": "信息与发布",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/dataviz",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "engraving",
+   "name": "Copperplate Engraving",
+   "name_zh": "铜版画",
+   "category": "Print & Printmaking",
+   "category_zh": "印刷与版画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/engraving",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "game-show",
+   "name": "Game Show Flat",
+   "name_zh": "综艺节奏扁平",
+   "category": "Games",
+   "category_zh": "游戏",
+   "phase": "later",
+   "needs": [
+    "music-led"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/game-show",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "glass-product",
+   "name": "Glass Product Render",
+   "name_zh": "玻璃质感产品",
+   "category": "Materials & 3D",
+   "category_zh": "材质与 3D",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/glass-product",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "halftone-dossier",
+   "name": "Halftone Dossier",
+   "name_zh": "复古半调案卷",
+   "category": "Print & Printmaking",
+   "category_zh": "印刷与版画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/halftone-dossier",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "hd-2d",
+   "name": "HD-2D",
+   "name_zh": "HD-2D",
+   "category": "Games",
+   "category_zh": "游戏",
+   "phase": "later",
+   "needs": [
+    "pixel",
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/hd-2d",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "hologram-hud",
+   "name": "Sci-fi Hologram HUD",
+   "name_zh": "科幻全息界面",
+   "category": "Information & Keynote",
+   "category_zh": "信息与发布",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/hologram-hud",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "impasto",
+   "name": "Impasto Oil Painting",
+   "name_zh": "油画厚涂",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "later",
+   "needs": [
+    "painterly"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/impasto",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "ink-wash",
+   "name": "Chinese Ink Wash",
+   "name_zh": "中国水墨",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "later",
+   "needs": [
+    "painterly"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/ink-wash",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "iso-infographic",
+   "name": "Isometric Infographic",
+   "name_zh": "等距信息图",
+   "category": "Information & Keynote",
+   "category_zh": "信息与发布",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/iso-infographic",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "kino-montage",
+   "name": "Constructivist Montage",
+   "name_zh": "构成主义蒙太奇",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material",
+    "music-led"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/kino-montage",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "lidar-survey",
+   "name": "LiDAR Survey",
+   "name_zh": "点云测绘",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material",
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/lidar-survey",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "living-screencast",
+   "name": "Living Screencast",
+   "name_zh": "活体实机录屏",
+   "category": "Information & Keynote",
+   "category_zh": "信息与发布",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/living-screencast",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "lowpoly-island",
+   "name": "Low-poly Isometric Island",
+   "name_zh": "低多边形等距",
+   "category": "Materials & 3D",
+   "category_zh": "材质与 3D",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/lowpoly-island",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "microgame",
+   "name": "Microgame Frenzy",
+   "name_zh": "微游戏快闪",
+   "category": "Games",
+   "category_zh": "游戏",
+   "phase": "later",
+   "needs": [
+    "music-led"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/microgame",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "microscope",
+   "name": "Microscope Story",
+   "name_zh": "显微叙事",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/microscope",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "midcentury-toon",
+   "name": "Mid-century Cartoon",
+   "name_zh": "50s 扁平卡通",
+   "category": "Cartoon & Anime",
+   "category_zh": "卡通与动画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/midcentury-toon",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "news-package",
+   "name": "Broadcast News Package",
+   "name_zh": "电视新闻包装",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/news-package",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "newsreel",
+   "name": "1920s Newsreel",
+   "name_zh": "1920s 新闻影片",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/newsreel",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "one-line",
+   "name": "One-line Drawing",
+   "name_zh": "一笔画",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/one-line",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "paper-lantern",
+   "name": "Paper-cut Lightbox",
+   "name_zh": "纸雕灯影",
+   "category": "East Asian Traditions",
+   "category_zh": "东方传统",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/paper-lantern",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "paper-popup",
+   "name": "Paper Pop-up Book",
+   "name_zh": "纸片立体书",
+   "category": "Materials & 3D",
+   "category_zh": "材质与 3D",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/paper-popup",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "papercut-red",
+   "name": "Red Paper-cut",
+   "name_zh": "红色窗花剪纸",
+   "category": "East Asian Traditions",
+   "category_zh": "东方传统",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/papercut-red",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "pictogram-motion",
+   "name": "Pictogram Motion",
+   "name_zh": "象形运动图形",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/pictogram-motion",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "pixel-rpg",
+   "name": "16-bit Pixel RPG",
+   "name_zh": "16-bit 像素 RPG",
+   "category": "Games",
+   "category_zh": "游戏",
+   "phase": "later",
+   "needs": [
+    "pixel"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/pixel-rpg",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "risograph",
+   "name": "Risograph Print",
+   "name_zh": "Risograph 孔版印刷",
+   "category": "Print & Printmaking",
+   "category_zh": "印刷与版画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/risograph",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "rubber-hose",
+   "name": "1930s Rubber Hose Cartoon",
+   "name_zh": "1930s 橡皮管卡通",
+   "category": "Cartoon & Anime",
+   "category_zh": "卡通与动画",
+   "phase": "later",
+   "needs": [
+    "music-led"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/rubber-hose",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "satellite-briefing",
+   "name": "Satellite Briefing",
+   "name_zh": "卫星简报",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/satellite-briefing",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "scifi-toon",
+   "name": "Sci-Fi Sitcom Toon",
+   "name_zh": "科幻情景喜剧卡通",
+   "category": "Cartoon & Anime",
+   "category_zh": "卡通与动画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/scifi-toon",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "shadow-puppet",
+   "name": "Shadow Puppetry",
+   "name_zh": "皮影戏",
+   "category": "East Asian Traditions",
+   "category_zh": "东方传统",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/shadow-puppet",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "silent-film",
+   "name": "1920s Silent Film",
+   "name_zh": "1920s 默片",
+   "category": "Cinema & Eras",
+   "category_zh": "电影与时代",
+   "phase": "later",
+   "needs": [
+    "painterly",
+    "music-led"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/silent-film",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "silkscreen-poster",
+   "name": "Silkscreen Travel Poster",
+   "name_zh": "丝印旅行海报",
+   "category": "Print & Printmaking",
+   "category_zh": "印刷与版画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/silkscreen-poster",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "spy-titles",
+   "name": "60s Spy Title Sequence",
+   "name_zh": "60s 间谍片头",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/spy-titles",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "stained-glass",
+   "name": "Stained Glass",
+   "name_zh": "彩色玻璃窗",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/stained-glass",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "swiss-motion",
+   "name": "Swiss Motion Graphics",
+   "name_zh": "瑞士动态排版",
+   "category": "Graphic & Type",
+   "category_zh": "图形与排版",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/swiss-motion",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "teardown",
+   "name": "Exploded Teardown",
+   "name_zh": "产品拆解",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material",
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/teardown",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "telestrator",
+   "name": "Sports Telestrator",
+   "name_zh": "体育战术板",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/telestrator",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "tilt-shift",
+   "name": "Tilt-Shift Miniature",
+   "name_zh": "移轴微缩",
+   "category": "Materials & 3D",
+   "category_zh": "材质与 3D",
+   "phase": "later",
+   "needs": [
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/tilt-shift",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "ukiyoe",
+   "name": "Ukiyo-e",
+   "name_zh": "浮世绘",
+   "category": "East Asian Traditions",
+   "category_zh": "东方传统",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/ukiyoe",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "urban-sketch",
+   "name": "Urban Sketch · Pen & Wash",
+   "name_zh": "钢笔淡彩",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "later",
+   "needs": [
+    "painterly"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/urban-sketch",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "visual-investigation",
+   "name": "Visual Investigation",
+   "name_zh": "视觉调查",
+   "category": "Edit & Documentary",
+   "category_zh": "剪辑与纪实",
+   "phase": "later",
+   "needs": [
+    "real-material"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/visual-investigation",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "watercolor",
+   "name": "Watercolor Brush",
+   "name_zh": "水彩笔刷",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "later",
+   "needs": [
+    "painterly"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/watercolor",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "white-model",
+   "name": "Projection on White Model",
+   "name_zh": "白模投影",
+   "category": "Evidence Films",
+   "category_zh": "实证影像",
+   "phase": "later",
+   "needs": [
+    "real-material",
+    "3d"
+   ],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/white-model",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "whiteboard",
+   "name": "Whiteboard Explainer",
+   "name_zh": "白板讲解",
+   "category": "Hand-drawn & Painting",
+   "category_zh": "手绘与绘画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/whiteboard",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  },
+  {
+   "slug": "woodcut",
+   "name": "Woodcut Print",
+   "name_zh": "木刻版画",
+   "category": "Print & Printmaking",
+   "category_zh": "印刷与版画",
+   "phase": "mvp",
+   "needs": [],
+   "source": {
+    "project": "lemo-opuscar",
+    "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+    "path": "styles/woodcut",
+    "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 LemoLab"
+   }
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "slug": "dark-keynote",
+ "name": "Dark Tech Keynote",
+ "name_zh": "暗色科技发布",
+ "category": "Information & Keynote",
+ "category_zh": "信息与发布",
+ "uses": [
+  "Product launches",
+  "SaaS",
+  "Keynotes"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Room to Think",
+  "line": "Launch film for Tidy, a fictional app: one buried cursor snaps hundreds of windows back into place.",
+  "line_zh": "虚构 app Tidy 的发布片：被埋掉的光标一键把几百个窗口归位。",
+  "duration_s": 42.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/dark-keynote",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "slug": "pixel-rpg",
+ "name": "16-bit Pixel RPG",
+ "name_zh": "16-bit 像素 RPG",
+ "category": "Games",
+ "category_zh": "游戏",
+ "uses": [
+  "Game trailers",
+  "Recaps",
+  "Nostalgia"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "pixel"
+ ],
+ "demo": {
+  "title": "The Last Save Point",
+  "line": "At the final boss door a hero saves the game, and the save screen replays the whole journey.",
+  "line_zh": "勇士在最终 Boss 门前存档，存档画面闪回一路冒险。",
+  "duration_s": 54.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/pixel-rpg",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

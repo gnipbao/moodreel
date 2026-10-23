@@ -1,0 +1,33 @@
+{
+ "slug": "city-symphony",
+ "name": "Time-lapse Symphony",
+ "name_zh": "延时交响",
+ "category": "Edit & Documentary",
+ "category_zh": "剪辑与纪实",
+ "uses": [
+  "City films",
+  "Music montages",
+  "Openers"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material",
+  "music-led"
+ ],
+ "demo": {
+  "title": "One Day in New York",
+  "line": "One day in New York in time-lapse: rivers of light, a grid on the sixteenths, 1899 beside today.",
+  "line_zh": "纽约的一天：延时光河、踩着十六分音符的网格，1899 年和今天并排。",
+  "duration_s": 52.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/city-symphony",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

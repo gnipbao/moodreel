@@ -1,0 +1,33 @@
+{
+ "slug": "white-model",
+ "name": "Projection on White Model",
+ "name_zh": "白模投影",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Urban planning",
+  "Exhibitions",
+  "City data"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material",
+  "3d"
+ ],
+ "demo": {
+  "title": "How a Flattened City Grew Back",
+  "line": "A projector paints Rotterdam's white model layer by layer, from the 1940 gap to today's towers.",
+  "line_zh": "投影机把数据一层层刷上鹿特丹白模：从 1940 年的空洞到今天的塔楼。",
+  "duration_s": 40.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/white-model",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

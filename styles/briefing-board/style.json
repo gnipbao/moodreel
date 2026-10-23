@@ -1,0 +1,32 @@
+{
+ "slug": "briefing-board",
+ "name": "Engineering Briefing Board",
+ "name_zh": "工程简报板",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Engineering",
+  "Option comparisons",
+  "Briefings"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "The Ship Decides",
+  "line": "Four bridge types are tested on one briefing wall, and the ship that must pass under picks the winner.",
+  "line_zh": "一条河要架桥，四种桥型在一面简报墙上逐个受检，拍板的是桥下要过的船。",
+  "duration_s": 40.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/briefing-board",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

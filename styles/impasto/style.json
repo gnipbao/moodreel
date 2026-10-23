@@ -1,0 +1,32 @@
+{
+ "slug": "impasto",
+ "name": "Impasto Oil Painting",
+ "name_zh": "油画厚涂",
+ "category": "Hand-drawn & Painting",
+ "category_zh": "手绘与绘画",
+ "uses": [
+  "Music videos",
+  "Art & culture",
+  "Emotional ads"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "painterly"
+ ],
+ "demo": {
+  "title": "The Colour of Rain",
+  "line": "In a grey, rainy square one red umbrella opens, and a waltz paints the whole plaza in colour.",
+  "line_zh": "灰色雨中广场，第一把红伞撑开，圆舞曲把整个广场刷上颜色。",
+  "duration_s": 39.7
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/impasto",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

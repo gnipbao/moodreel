@@ -1,0 +1,30 @@
+{
+ "slug": "whiteboard",
+ "name": "Whiteboard Explainer",
+ "name_zh": "白板讲解",
+ "category": "Hand-drawn & Painting",
+ "category_zh": "手绘与绘画",
+ "uses": [
+  "Explainers",
+  "Online courses",
+  "Science"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Einstein in Your Pocket",
+  "line": "How your phone knows where you are: GPS, atomic clocks, and the 38 microseconds relativity adds every day.",
+  "line_zh": "手机怎么知道你在哪：GPS、原子钟，和相对论每天多出的 38 微秒。",
+  "duration_s": 111.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/whiteboard",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

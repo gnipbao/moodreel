@@ -1,0 +1,30 @@
+{
+ "slug": "halftone-dossier",
+ "name": "Halftone Dossier",
+ "name_zh": "复古半调案卷",
+ "category": "Print & Printmaking",
+ "category_zh": "印刷与版画",
+ "uses": [
+  "Humour",
+  "Pet content",
+  "Social shorts"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Case File: Chubby",
+  "line": "A chubby orange cat stands trial for testing gravity and 4 a.m. parkour, and walks free.",
+  "line_zh": "橘猫胖橘被立案审查：测试重力、凌晨跑酷，最后无罪释放。",
+  "duration_s": 30.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/halftone-dossier",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "slug": "pictogram-motion",
+ "name": "Pictogram Motion",
+ "name_zh": "象形运动图形",
+ "category": "Graphic & Type",
+ "category_zh": "图形与排版",
+ "uses": [
+  "Sports events",
+  "Visual identity",
+  "Event openers"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Aichi-Nagoya 2026 — All 43 Sports",
+  "line": "All 43 sports of the 2026 Asian Games as beat-locked geometric pictograms.",
+  "line_zh": "2026 亚运会 43 个大项，几何象形人卡着节拍快闪。",
+  "duration_s": 163.6
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/pictogram-motion",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

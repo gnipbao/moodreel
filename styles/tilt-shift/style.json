@@ -1,0 +1,32 @@
+{
+ "slug": "tilt-shift",
+ "name": "Tilt-Shift Miniature",
+ "name_zh": "移轴微缩",
+ "category": "Materials & 3D",
+ "category_zh": "材质与 3D",
+ "uses": [
+  "City promos",
+  "Real estate",
+  "Transport"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "Toy Town Rush Hour",
+  "line": "Morning rush hour in a town that looks like a model: traffic, trains and tiny people.",
+  "line_zh": "玩具城的早高峰，一切都像模型。",
+  "duration_s": 38.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/tilt-shift",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

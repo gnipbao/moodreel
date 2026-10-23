@@ -1,0 +1,32 @@
+{
+ "slug": "paper-lantern",
+ "name": "Paper-cut Lightbox",
+ "name_zh": "纸雕灯影",
+ "category": "East Asian Traditions",
+ "category_zh": "东方传统",
+ "uses": [
+  "Festivals",
+  "Gift brands",
+  "Cultural stories"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "A Mooncake's Longing",
+  "line": "A single mooncake tells the Mid-Autumn story of reunion and longing inside a glowing paper-cut lightbox.",
+  "line_zh": "一枚月饼讲中秋的团圆与思念，纸雕灯箱层层透光。",
+  "duration_s": 121.8
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/paper-lantern",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

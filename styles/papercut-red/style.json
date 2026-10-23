@@ -1,0 +1,30 @@
+{
+ "slug": "papercut-red",
+ "name": "Red Paper-cut",
+ "name_zh": "红色窗花剪纸",
+ "category": "East Asian Traditions",
+ "category_zh": "东方传统",
+ "uses": [
+  "Lunar New Year",
+  "Festive greetings",
+  "Folk tales"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Nian Comes to Town",
+  "line": "On New Year's Eve the beast Nian comes to town, and one girl's giant paper-cut lights up the village to scare it off.",
+  "line_zh": "除夕年兽进村，小女孩剪出的大窗花照亮全村，把它吓跑。",
+  "duration_s": 49.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/papercut-red",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

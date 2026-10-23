@@ -1,0 +1,30 @@
+{
+ "slug": "ukiyoe",
+ "name": "Ukiyo-e",
+ "name_zh": "浮世绘",
+ "category": "East Asian Traditions",
+ "category_zh": "东方传统",
+ "uses": [
+  "Travel",
+  "Japanese culture",
+  "Poetry"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Toward the Mountain",
+  "line": "A traveller walks toward a distant mountain; every shot is a woodblock print, a great wave at the climax, the mountain and the whole scroll at the end.",
+  "line_zh": "旅人走向远山，每个镜头都是一幅版画；巨浪是高潮，结尾是远山与整幅画轴拉远。",
+  "duration_s": 44.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/ukiyoe",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

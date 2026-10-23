@@ -1,8 +1,10 @@
 # Moodreel MVP 设计
 
-> 版本 0.2 · 2026-10-23 · 前置调研：[运动提取调研与原型](research/motion-extraction.md)
+> 版本 0.3 · 2026-10-23 · 前置调研：[运动提取调研与原型](research/motion-extraction.md)
 >
-> 0.2 相对 0.1 的变化：Moodreel 是独立开源项目，**不依赖** lemo-opuscar、Hypit 或 HyperFrames。风格包格式、渲染器、导演流程都是自己的；"按主题出片"这一半也由 Moodreel 自己完成。lemo-opuscar 的风格文档结构（把风格写成不变量、和单部影片分开）仍作为设计参考，并在 README 中致谢。
+> 0.2：Moodreel 是独立开源项目，**不依赖** lemo-opuscar、Hypit 或 HyperFrames。风格包格式、渲染器、导演流程都是自己的；"按主题出片"这一半也由 Moodreel 自己完成。
+>
+> 0.3：**风格库采用 lemo-opuscar 的 59 套风格文档**（只导入 `STYLE.md`、`DEMO.md` 和元数据，MIT，见 `styles/`）；demo 源码、配乐、配音和渲染工具一律不搬，参考其做法自己实现，以保持代码简洁，并和以后的反推蒸馏能力共用同一套代码。渲染器先用 Puppeteer，之后基于 puppeteer-core 做加速版。绘画笔触、3D、像素、配乐驱动、真实素材这五类能力放到后期。
 
 ## 0. 一句话
 
@@ -21,8 +23,8 @@
 
 - 不调用图像或视频生成模型，画面全部由代码绘制。
 - 不做像素级复刻，也不复用参考的内容（角色、构图、标志、旋律）。
-- 不做旁白配音、声音风格蒸馏和程序化音效（V1）。
-- 不做油画、水彩、手绘这类重材质风格（V1：先把技法原语库扩充上去）。
+- 不做旁白配音、原创配乐、声音风格蒸馏和程序化音效（V1）。
+- 风格库中需要以下能力的 36 套风格放到后期：绘画笔触（7 套）、3D（13 套）、像素（2 套）、配乐驱动（6 套）、真实素材（15 套）；有的风格同时需要多项。MVP 覆盖其余 23 套扁平 2D 风格。
 - 不做实拍或 AI 生成视频的风格蒸馏（V2）。
 
 ## 2. 关键决策
@@ -31,10 +33,11 @@
 |---|---|---|
 | 风格包格式 | Moodreel 自有格式：`style.json` + `STYLE.md`（11 节不变量）+ `DECISIONS.md` + `kit/` + `demo/` + `evidence/` | 规则文字给导演读，`kit/` 给影片执行；"风格 = 规则 + 可执行代码"是可复现的关键。11 节的划分参考了 lemo-opuscar |
 | 导演 | Opus 5.5，以 agent skill 形式运行（Claude Code 等支持 SKILL.md 的 agent） | 视觉理解、写绘制代码、看渲染结果在同一个会话里完成，不需要额外的 API 编排 |
-| 渲染 | 自研 `render/render.mjs`：页面导出 `window.DUR` / `window.render(t)` / `window.READY`，Puppeteer 逐帧截图，ffmpeg 编码，多 worker 分段并行 | 已实现并通过测试片验证；"画面是时间的纯函数"让任意帧可以单独渲染、并行渲染、精确复核 |
+| 渲染 | 自研 `render/render.mjs`：页面导出 `window.DUR` / `window.render(t)` / `window.READY`，Puppeteer 逐帧截图，ffmpeg 编码，多 worker 分段并行。V1 基于 puppeteer-core 做加速版 | 已实现并通过测试片验证；"画面是时间的纯函数"让任意帧可以单独渲染、并行渲染、精确复核。本机实测 WebGL 走 Metal GPU |
 | 运动测量 | `motionx`：静止帧锚定跟踪 + BIC 缓动拟合 + 语法汇总，本地运行 | 原型已验证，见调研文档 |
-| 技法 | 自建原语库（MVP 覆盖扁平 MG 的常见材质） | 不依赖外部风格库；"AI 纯代码视频"大多是扁平 MG，MVP 先覆盖这一类 |
-| 许可 | MIT | 借鉴 REM、motiscope、MoVer、lemo-opuscar、HyperFrames 的思路，不使用它们的代码 |
+| 风格库 | 导入 lemo-opuscar 的 59 套风格文档（`styles/`，MIT © LemoLab，注明来源版本），标注 MVP 可做（23）或后期（36）及所需能力 | 一开源就有现成的风格可选；同时是蒸馏时的技法参照，也是往返测试的真值 |
+| 技法 | 自建原语库，先覆盖 23 套 MVP 风格最常用的技法 | 只搬文档、不搬 demo 源码，技法按 STYLE.md 的描述自己实现 |
+| 许可 | MIT | 借鉴 REM、motiscope、MoVer、lemo-opuscar、HyperFrames 的思路；除 `styles/` 中的 lemo 风格文档外不使用它们的代码 |
 
 ## 3. 端到端流程
 
@@ -120,7 +123,12 @@ styles/<slug>/
 
 STYLE.md 只写对每部片都成立的规则；故事、镜头表、配乐结构等具体到 demo 的内容写在 `demo/` 的说明里，出片时不能照搬。
 
-**风格库**：用户的风格存在 `~/.moodreel/styles/<slug>/`，`~/.moodreel/styles/index.json` 登记名称、中英文名、一句话描述和路径。导演按名称查找。
+**风格库**有两处，导演按名称查找，先查用户的，再查内置的：
+
+- **内置**：仓库的 `styles/`。目前是从 lemo-opuscar 导入的 59 套，用 `scripts/import_lemo_styles.py --from <lemo 检出目录>` 重新导入或跟进上游。每套的 `style.json` 记录 `phase`（mvp / later）、`needs`（painterly / 3d / pixel / music-led / real-material）和 `source`（项目、路径、commit、许可）。导入的风格还没有 `kit/` 和 `demo/`：MVP 阶段导演按 STYLE.md 用原语库画；某套风格第一次被用好之后，把它的技法沉淀成该风格的 `kit/`。`DEMO.md` 里指向上游 demo 源码的链接固定在导入时的 commit，只作阅读参考。
+- **用户**：蒸馏出来的风格存在 `~/.moodreel/styles/<slug>/`，`~/.moodreel/styles/index.json` 登记。
+
+出片时 `phase: later` 的风格要提示用户：哪项能力还没有，能做到什么程度。
 
 ## 6. 蒸馏各阶段
 
@@ -199,11 +207,11 @@ Gate 3 通过后，`moodreel pack`：校验名称不重名、`demo/build.sh` 能
 | 层 | 方法 | MVP 验收线 |
 |---|---|---|
 | 运动测量 | 测试片扩充到 10 条以上：现有 mg-basic，加镜头推拉、一拍二、逐字动画、旋转、描边生长、文字密集、深色背景、竖屏；每条都有干净版和压力版 | 召回 ≥ 90%；t50 在 1 帧内 ≥ 85%；方向类 ≥ 80%；**认定的缓动族认错率 ≤ 5%** |
-| 往返测试 | 用 Moodreel 自己按已知 STYLE.md 渲染 5 套差异明显的"种子风格"影片（色彩、材质、运动都由我们设定，是天然真值），再把影片和截图作为输入去蒸馏，逐节对比产出的 STYLE.md 和原版，并比较两版 demo 片的运动语法 | 11 节中 ≥ 8 节被判为同一风格；运动断言 ≥ 80% 通过 |
+| 往返测试 | 从风格库的 23 套 MVP 风格中挑 5 套差异明显的，按其 STYLE.md 用 Moodreel 渲染影片（真值就是那份 STYLE.md），再把影片和截图作为输入去蒸馏，逐节对比产出的 STYLE.md 和原版，并比较两版影片的运动语法 | 11 节中 ≥ 8 节被判为同一风格；运动断言 ≥ 80% 通过 |
 | 风格帧 | Gate 2 两轮内通过的比例；frame-check 分数和人工判断的一致性 | ≥ 70% |
 | 端到端 | 同一风格做 3 个不同主题，盲评是否"像参考" | 3 个里 ≥ 2 个被认为同风格 |
 
-种子风格同时也是开源仓库里的示例和教程素材。
+往返测试渲染出的影片同时也是开源仓库里的示例和教程素材。
 
 ## 9. 导演的职责与 skill 结构
 
@@ -242,8 +250,9 @@ moodreel/
 │   └── cli.py
 ├── render/render.mjs            已实现
 ├── kit/                         原语库与 kit 模板：textures、transitions、eases、text
+├── styles/                      内置风格库（已导入 59 套）
+├── scripts/import_lemo_styles.py 已实现
 ├── skills/moodreel/             见 §9
-├── seeds/                       种子风格（示例 + 往返测试真值）
 ├── bench/                       运动测试片 + 往返测试
 ├── research/motion-spike/       原型（冻结）
 └── docs/
@@ -266,12 +275,12 @@ moodreel/
 |---|---|---|
 | W1 | motionx 迁入 Python 包；一拍二检测和镜头运动；测试片扩到 10 条 | 运动测量达到 §8 验收线 |
 | W2 | Intake、联系表、palette、texture、layout、type；frame-check | 2 套真实参考出完整测量结果 |
-| W3 | 原语库 v0（扁平 MG 材质、转场、文字处理）、kit 生成；skill 的蒸馏流程（Interpret、Gate 1–2） | 1 套真实参考走到 Gate 2 |
+| W3 | 原语库 v0：先统计 23 套 MVP 风格 §2、§8 里反复出现的技法（平涂与纸纹、半调与网点、套色错位、颗粒、暗角、硬阴影、剪切边、描线生长、逐字入场、遮罩擦除），按出现频率实现；kit 生成；skill 的蒸馏流程（Interpret、Gate 1–2） | 1 套真实参考走到 Gate 2 |
 | W4 | demo 片、motion-check 闭环、pack 和风格库 | 1 套风格完整入库 |
-| W5 | 出片流程（brief、treatment、draw、check、deliver）、文字停留检查、音乐与响度 | 用入库的风格按 3 个主题出片 |
-| W6 | 5 套种子风格 + 往返测试；README 示例；准备转公开 | 达到 §8 验收线 |
+| W5 | 出片流程（brief、treatment、draw、check、deliver）、文字停留检查、音乐与响度 | 用蒸馏出的风格和 2 套内置 MVP 风格各按一个主题出片 |
+| W6 | 往返测试（5 套内置 MVP 风格）；README 示例片；准备转公开 | 达到 §8 验收线 |
 
-V1：逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌入；重材质原语（笔触、水彩、油画）；旁白和音效；HyperFrames 或 Remotion 导出适配器；批量变体。
+V1：基于 puppeteer-core 的加速渲染器；后期五类能力，按顺序逐类解锁对应的内置风格：配乐驱动（原创配乐、节拍网格）→ 像素 → 绘画笔触 → 3D → 真实素材；逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌入；旁白和音效；HyperFrames 或 Remotion 导出适配器；批量变体。
 
 ## 12. 风险与对策
 
@@ -279,7 +288,8 @@ V1：逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌�
 |---|---|---|
 | 复杂运动测不出来（镜头、3D、逐字、粒子） | §5、§8 偏弱 | 测不了的由导演读证据条带写定性规则，标为推断；按 V1 路线逐类补齐（见调研文档 §5） |
 | 测量参数是在单条测试片上调的，存在过拟合 | 真实素材上效果下降 | W1 先扩充测试片并加入真实参考，再冻结参数 |
-| 没有现成风格库，材质模仿全靠原语库 | 风格帧不像 | MVP 收窄到扁平 MG；原语库按真实参考的需要逐步扩充；frame-check 加人工闸门 |
+| 风格库只有文档、没有技法代码，材质模仿全靠原语库 | 风格帧不像 | MVP 收窄到 23 套扁平 2D 风格；原语库按这些风格的高频技法优先实现；frame-check 加人工闸门；风格用好一次就沉淀成它自己的 kit |
+| 上游 lemo-opuscar 更新风格文档 | 内置风格落后 | 导入脚本可重复运行，按 commit 跟进；导入前对比差异，人工确认 |
 | 出片这一半也要自己做，工作量变大 | 工期 | MVP 不做配音和程序化音效，音乐只支持用户提供的音轨 |
 | 参考之间风格不统一 | 蒸馏出四不像 | Intake 做统一性检查 |
 | 导演写进主观或错误的数值 | 风格漂移 | 台账强制每个数都有出处；pack 前校验 |
@@ -290,7 +300,7 @@ V1：逐字、旋转、描边、遮罩、循环动画的测量；CSD 风格嵌�
 - 参考素材留在本地，不进入风格包；只有用户声明是自有素材时，才保留参考联系表。
 - 网络参考片只在本地测量，不上传到任何云端模型。
 - 字体和材质资源只用 OFL、CC0、CC BY，记录在 `CREDITS`。
-- 借鉴的开源项目在 README 中致谢；不复制它们的代码。
+- 借鉴的开源项目在 README 中致谢。`styles/` 中的 lemo-opuscar 风格文档按 MIT 保留版权和许可声明（`styles/LICENSE-lemo-opuscar`），每份文档注明来源 commit；除此之外不复制它们的代码。上游 demo 片和静帧是 CC BY 4.0，没有导入。
 
 ## 14. 待确认
 

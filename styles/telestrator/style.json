@@ -1,0 +1,32 @@
+{
+ "slug": "telestrator",
+ "name": "Sports Telestrator",
+ "name_zh": "体育战术板",
+ "category": "Edit & Documentary",
+ "category_zh": "剪辑与纪实",
+ "uses": [
+  "Sports analysis",
+  "Match recaps",
+  "Coaching"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "Freeze Frame",
+  "line": "Down 3–0 at half-time, Fenerbahçe scored three in 12 minutes: freeze, draw, split screen, shot map.",
+  "line_zh": "半场 0–3，费内巴切 12 分钟连进三球：冻住画面、画线、分屏、射门图。",
+  "duration_s": 54.4
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/telestrator",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

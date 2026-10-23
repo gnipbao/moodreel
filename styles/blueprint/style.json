@@ -1,0 +1,30 @@
+{
+ "slug": "blueprint",
+ "name": "Blueprint",
+ "name_zh": "蓝图 / 工程制图",
+ "category": "Graphic & Type",
+ "category_zh": "图形与排版",
+ "uses": [
+  "Engineering",
+  "Hardware launches",
+  "Tech explainers"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "Patent Pending: The Cloud Catcher",
+  "line": "An inventor's blueprint draws, explodes and assembles a cloud-catching machine, and its revision cloud starts to rain.",
+  "line_zh": "发明家的蓝图自己画出一台接云机器，修订云线变成了真的雨云。",
+  "duration_s": 46.7
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/blueprint",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

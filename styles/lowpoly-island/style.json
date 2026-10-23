@@ -1,0 +1,32 @@
+{
+ "slug": "lowpoly-island",
+ "name": "Low-poly Isometric Island",
+ "name_zh": "低多边形等距",
+ "category": "Materials & 3D",
+ "category_zh": "材质与 3D",
+ "uses": [
+  "Game trailers",
+  "World building",
+  "Calm content"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "The Island That Grew",
+  "line": "An island and its village grow tile by tile from an empty sea, each tile a note, into a starry night.",
+  "line_zh": "空海里一格格长出小岛和村庄，每放一块响一个音符，直到星空。",
+  "duration_s": 53.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/lowpoly-island",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

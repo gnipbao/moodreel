@@ -1,0 +1,30 @@
+{
+ "slug": "iso-infographic",
+ "name": "Isometric Infographic",
+ "name_zh": "等距信息图",
+ "category": "Information & Keynote",
+ "category_zh": "信息与发布",
+ "uses": [
+  "Process explainers",
+  "Supply chains",
+  "Annual reports"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "From Bean to Cup",
+  "line": "A coffee's journey from the plantation to your hands, across one isometric world.",
+  "line_zh": "一杯咖啡从种植园到你手里的旅程。",
+  "duration_s": 58.8
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/iso-infographic",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

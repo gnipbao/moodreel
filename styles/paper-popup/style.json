@@ -1,0 +1,32 @@
+{
+ "slug": "paper-popup",
+ "name": "Paper Pop-up Book",
+ "name_zh": "纸片立体书",
+ "category": "Materials & 3D",
+ "category_zh": "材质与 3D",
+ "uses": [
+  "Children's books",
+  "Game trailers",
+  "Story films"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "Pip's Paper Adventure",
+  "line": "A pop-up book opens on a desk; a sprite named Pip adventures through paper worlds and jumps out into ours.",
+  "line_zh": "立体书在书桌上打开，小精灵 Pip 在纸片世界冒险，最后跳出书外。",
+  "duration_s": 133.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/paper-popup",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

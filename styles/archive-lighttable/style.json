@@ -1,0 +1,32 @@
+{
+ "slug": "archive-lighttable",
+ "name": "Archive Light Table",
+ "name_zh": "档案灯台",
+ "category": "Evidence Films",
+ "category_zh": "实证影像",
+ "uses": [
+  "Brand history",
+  "Archive stories",
+  "Museums"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "real-material"
+ ],
+ "demo": {
+  "title": "Two Seconds Short",
+  "line": "The telegram said 57 seconds; under a loupe, the Wrights' glass negatives and the archive say 59.",
+  "line_zh": "电报说最长飞了 57 秒；放大镜下，莱特兄弟的底片和档案说是 59 秒。",
+  "duration_s": 40.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/archive-lighttable",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

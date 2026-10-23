@@ -1,0 +1,32 @@
+{
+ "slug": "crayon-book",
+ "name": "Crayon Picture Book",
+ "name_zh": "蜡笔儿童绘本",
+ "category": "Hand-drawn & Painting",
+ "category_zh": "手绘与绘画",
+ "uses": [
+  "Picture books",
+  "Bedtime stories",
+  "Kids' learning"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "painterly"
+ ],
+ "demo": {
+  "title": "The Moon Can't Sleep",
+  "line": "The moon can't sleep, so a little girl climbs onto the roof to sing it a lullaby.",
+  "line_zh": "月亮失眠了，小女孩爬上屋顶给它唱摇篮曲。",
+  "duration_s": 52.0
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/crayon-book",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

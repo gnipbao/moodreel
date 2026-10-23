@@ -1,0 +1,32 @@
+{
+ "slug": "microgame",
+ "name": "Microgame Frenzy",
+ "name_zh": "微游戏快闪",
+ "category": "Games",
+ "category_zh": "游戏",
+ "uses": [
+  "Game trailers",
+  "Onboarding",
+  "Social shorts"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "music-led"
+ ],
+ "demo": {
+  "title": "Five-Second Astronaut",
+  "line": "A clumsy cadet survives a five-second boot camp, faster and faster, until the boss: landing home.",
+  "line_zh": "见习宇航员闯五秒训练营，越来越快，Boss 关亲手降落回地球。",
+  "duration_s": 59.8
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/microgame",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

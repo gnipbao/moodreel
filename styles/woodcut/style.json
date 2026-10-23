@@ -1,0 +1,30 @@
+{
+ "slug": "woodcut",
+ "name": "Woodcut Print",
+ "name_zh": "木刻版画",
+ "category": "Print & Printmaking",
+ "category_zh": "印刷与版画",
+ "uses": [
+  "Folk tales",
+  "Craft brands",
+  "Book trailers"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "mvp",
+ "needs": [],
+ "demo": {
+  "title": "The Bell Founder",
+  "line": "A village spends a whole winter casting one bell; the first time it rings, the snow stops.",
+  "line_zh": "村子用一整个冬天铸一口钟，钟声第一次响起，雪停了。",
+  "duration_s": 58.5
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/woodcut",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}

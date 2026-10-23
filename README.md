@@ -66,24 +66,36 @@ uv run research/motion-spike/extract.py research/motion-spike/fixtures/mg-basic/
 uv run research/motion-spike/evaluate.py research/motion-spike/fixtures/mg-basic/truth.json research/motion-spike/out/clean/motion.json
 ```
 
+## Style library
+
+[`styles/`](styles/README.md) holds 59 styles imported from [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar):
+each style's `STYLE.md` (the invariants a director follows), `DEMO.md` (how its demo film was made) and a
+`style.json`. 23 of them are flat 2D styles the MVP draws (Swiss motion graphics, risograph, ukiyo-e, blueprint,
+spy titles…); 36 need capabilities that come later: painterly brush engines, 3D, pixel art, a score that drives
+the picture, or real footage and data. Only the documents are imported; Moodreel re-implements the techniques.
+
 ## Repository
 
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
+| `styles/` | The style library |
 | `research/motion-spike/` | Motion measurement prototype (`motionx`), ground-truth fixtures and the scorer |
+| `scripts/import_lemo_styles.py` | Re-imports the style documents from a lemo-opuscar checkout |
 | `docs/` | Design and research notes |
 
 ## Acknowledgements
 
-Moodreel stands on ideas from these projects; it uses none of their code.
+Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/`, it uses
+none of their code.
 
 - [REM](https://github.com/sidart10/rem) — fit eases by BIC and claim only clear winners; check a rebuild with the same measurement.
 - [motiscope](https://github.com/KumarSashank/motiscope) — localized motion energy, percentile thresholds, numbers for *when* and frames for *what*.
 - [MoVer](https://arxiv.org/abs/2502.13372) — motion properties as verifiable predicates fed back to the generator.
-- [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) — a style written as invariants (essence, materials, colour, type, motion, camera, sound, native moves, pitfalls) kept apart from any one film.
+- [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) — a style written as invariants (essence, materials, colour, type, motion, camera, sound, native moves, pitfalls) kept apart from any one film; its 59 style documents are the start of our library.
 - [HyperFrames](https://github.com/heygen-com/hyperframes) — video as a deterministic function of time, rendered in a browser.
 
 ## License
 
-[MIT](LICENSE)
+Moodreel is [MIT](LICENSE). The style documents in `styles/` that come from lemo-opuscar are MIT, Copyright (c)
+2026 LemoLab ([`styles/LICENSE-lemo-opuscar`](styles/LICENSE-lemo-opuscar)); each one names its source commit.

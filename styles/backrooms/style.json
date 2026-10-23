@@ -1,0 +1,32 @@
+{
+ "slug": "backrooms",
+ "name": "Liminal Found Footage",
+ "name_zh": "后室 / 新怪谈",
+ "category": "Cinema & Eras",
+ "category_zh": "电影与时代",
+ "uses": [
+  "Horror",
+  "Mystery & ARG",
+  "Game teasers"
+ ],
+ "size": "1920x1080",
+ "fps": 24,
+ "phase": "later",
+ "needs": [
+  "3d"
+ ],
+ "demo": {
+  "title": "Night Shift Orientation",
+  "line": "A new night-shift hire films their first night in an endless yellow office, following the rules on the wall.",
+  "line_zh": "新夜班员工拍下入职第一晚：无尽的黄色办公空间，和墙上的员工守则。",
+  "duration_s": 59.7
+ },
+ "source": {
+  "project": "lemo-opuscar",
+  "repository": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/backrooms",
+  "commit": "3961ddb3d24d8876e0e2754f7790d66908acee51",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 LemoLab"
+ }
+}
