@@ -185,22 +185,25 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
     def summarise(evs):
         if not evs:
             return None
-        durs, eases_, classes, labels, over = [], {}, {}, {}, []
+        durs, eases_, classes, guesses, labels, over = [], {}, {}, {}, {}, []
         travel = []
         for ev in evs:
             m = ev["props"][main_prop(ev)]
             durs.append(max(p["dur"] for p in ev["props"].values()))
-            name = m["ease"] if m["ease"] != "unknown" else m["best"]
-            eases_[name] = eases_.get(name, 0) + 1
-            c = eases.shape_class(m["best"])
-            classes[c] = classes.get(c, 0) + 1
             labels[ev["label"]] = labels.get(ev["label"], 0) + 1
-            over.append(m["overshoot"])
             for ax, size in (("x", W), ("y", H)):
                 if ax in ev["props"]:
                     travel.append(abs(ev["props"][ax]["delta"]) / size)
-        out = {"count": len(evs), "duration_s": _stats(durs), "eases": eases_, "classes": classes,
-               "vocabulary": labels, "overshoot_share": round(float(np.mean([o > 0.02 for o in over])), 2),
+            if m["ease"] == "unknown":                  # the fit's best guess is kept apart: it never becomes a token
+                guesses[m["best"]] = guesses.get(m["best"], 0) + 1
+                continue
+            eases_[m["ease"]] = eases_.get(m["ease"], 0) + 1
+            c = eases.shape_class(m["ease"])
+            classes[c] = classes.get(c, 0) + 1
+            over.append(m["overshoot"])
+        out = {"count": len(evs), "claimed": len(over), "duration_s": _stats(durs), "eases": eases_, "classes": classes,
+               "guesses": guesses, "vocabulary": labels,
+               "overshoot_share": round(float(np.mean([o > 0.02 for o in over])), 2) if over else None,
                "overshoot": _stats([o for o in over if o > 0.02]),
                "travel_frac_of_frame": _stats(travel)}
         scales = [ev["props"]["scale"]["from"] for ev in evs if "scale" in ev["props"]]

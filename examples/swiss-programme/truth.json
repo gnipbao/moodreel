@@ -1,0 +1,727 @@
+{
+ "name": "swiss-programme",
+ "W": 1920,
+ "H": 1080,
+ "fps": 24,
+ "dur": 15.0,
+ "events": [
+  {
+   "element": "one",
+   "shot": "A",
+   "prop": "y",
+   "t0": 1.625,
+   "t1": 2.0,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1146,
+   "to": 558,
+   "end_xy": [
+    196,
+    558
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "caption1",
+   "shot": "A",
+   "prop": "y",
+   "t0": 2.125,
+   "t1": 2.5,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 984,
+   "to": 957,
+   "end_xy": [
+    246,
+    957
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "bar0",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 2.625,
+   "t1": 3.0,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1033,
+    688.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar1",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 2.875,
+   "t1": 3.25,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1179,
+    640.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar2",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 3.125,
+   "t1": 3.5,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1325,
+    712.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar3",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 3.375,
+   "t1": 3.75,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1471,
+    616.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar4",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 3.625,
+   "t1": 4.0,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1617,
+    664.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar5",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 3.875,
+   "t1": 4.25,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1763,
+    592.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "measure",
+   "shot": "A",
+   "prop": "y",
+   "t0": 4.125,
+   "t1": 4.5,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 376,
+   "to": 275,
+   "end_xy": [
+    1162,
+    275
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "camera",
+   "shot": "A",
+   "prop": "panx",
+   "t0": 5.625,
+   "t1": 6.0,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 0,
+   "to": -960,
+   "end_xy": [
+    960,
+    540
+   ],
+   "scope": "v1",
+   "reader": "camera on a flat ground"
+  },
+  {
+   "element": "two",
+   "shot": "A",
+   "prop": "y",
+   "t0": 6.125,
+   "t1": 6.5,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1146,
+   "to": 558,
+   "end_xy": [
+    1156,
+    558
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square0",
+   "shot": "A",
+   "prop": "y",
+   "t0": 6.625,
+   "t1": 7.0,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1086,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square1",
+   "shot": "A",
+   "prop": "y",
+   "t0": 6.75,
+   "t1": 7.125,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1176,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square2",
+   "shot": "A",
+   "prop": "y",
+   "t0": 6.875,
+   "t1": 7.25,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1266,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square3",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.0,
+   "t1": 7.375,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1356,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square4",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.125,
+   "t1": 7.5,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1446,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square5",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.25,
+   "t1": 7.625,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1536,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square6",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.375,
+   "t1": 7.75,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1626,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "square7",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.5,
+   "t1": 7.875,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 952,
+   "to": 890,
+   "end_xy": [
+    1716,
+    890
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "caption2",
+   "shot": "A",
+   "prop": "y",
+   "t0": 7.125,
+   "t1": 7.5,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 984,
+   "to": 957,
+   "end_xy": [
+    1221,
+    957
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  },
+  {
+   "element": "signal",
+   "shot": "A",
+   "prop": "x",
+   "t0": 8.5,
+   "t1": 10.0,
+   "dur": 1.5,
+   "ease": "none",
+   "from": 2160,
+   "to": 1520,
+   "end_xy": [
+    1520,
+    420
+   ],
+   "scope": "mvp",
+   "reader": "move"
+  },
+  {
+   "element": "knife",
+   "shot": "A",
+   "prop": "draw",
+   "t0": 10.5,
+   "t1": 10.75,
+   "dur": 0.25,
+   "ease": "none",
+   "from": 0,
+   "to": 1,
+   "end_xy": [
+    1256,
+    550
+   ],
+   "scope": "v1",
+   "reader": "draw-on"
+  },
+  {
+   "element": "two",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 10.875,
+   "t1": 11.25,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1156,
+    558
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square0",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.5,
+   "t1": 11.75,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1086,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square1",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.5312,
+   "t1": 11.7812,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1176,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square2",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.5625,
+   "t1": 11.8125,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1266,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square3",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.5938,
+   "t1": 11.8438,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1356,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square4",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.625,
+   "t1": 11.875,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1446,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square5",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.6562,
+   "t1": 11.9062,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1536,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square6",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.6875,
+   "t1": 11.9375,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1626,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "square7",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.7188,
+   "t1": 11.9688,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1716,
+    890
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "caption2",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.5625,
+   "t1": 11.8125,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    1221,
+    957
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar0",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.6875,
+   "t1": 11.9375,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    73,
+    688.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar1",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.75,
+   "t1": 12.0,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    219,
+    640.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar2",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.8125,
+   "t1": 12.0625,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    365,
+    712.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar3",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.875,
+   "t1": 12.125,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    511,
+    616.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar4",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 11.9375,
+   "t1": 12.1875,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    657,
+    664.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "bar5",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 12.0,
+   "t1": 12.25,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    803,
+    592.0
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "measure",
+   "shot": "A",
+   "prop": "sy",
+   "t0": 12.125,
+   "t1": 12.375,
+   "dur": 0.25,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1,
+   "to": 0,
+   "end_xy": [
+    202,
+    275
+   ],
+   "scope": "v1",
+   "reader": "stretch"
+  },
+  {
+   "element": "programme",
+   "shot": "A",
+   "prop": "y",
+   "t0": 12.375,
+   "t1": 12.75,
+   "dur": 0.375,
+   "ease": "bezier(0.7,0,0.2,1)",
+   "from": 1086,
+   "to": 985,
+   "end_xy": [
+    346,
+    985
+   ],
+   "scope": "v1",
+   "reader": "mask"
+  }
+ ],
+ "transitions": [],
+ "stepping": [
+  {
+   "t0": 0.0,
+   "t1": 15.0,
+   "on": 1
+  }
+ ],
+ "omitted": [
+  "the first dot (20 px) and the 1 px grid lines: below the readers' size floor"
+ ],
+ "stills": [
+  5.0,
+  8.0,
+  10.0,
+  13.5
+ ],
+ "palette": {
+  "ground": "#EAE9E5",
+  "ink": "#111111",
+  "accent": "#E30613"
+ },
+ "surface": {
+  "grain": 0,
+  "vignette": 0,
+  "halftone": null
+ },
+ "type": {
+  "title": 0.0889,
+  "weight": [
+   700
+  ]
+ },
+ "motion": {
+  "entrance": "inOut",
+  "exit": "inOut",
+  "move": "inOut"
+ }
+}

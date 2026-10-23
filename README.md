@@ -7,8 +7,9 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 
 [中文说明](README.zh-CN.md)
 
-> **Status: pre-alpha.** Motion measurement (`moodreel motion`) passes its acceptance bench on code-rendered test
-> films. The style pack, the director workflow and the rest of the CLI are designed and being built.
+> **Status: pre-alpha.** The whole path works end to end: references in, measurements, a kit, a packed style, a
+> film made in it, checked and delivered. Motion measurement passes its acceptance bench, and two example films
+> survive the round trip (below). Readers for clip reveals, one-axis stretch and wipes are next.
 
 ## Why measure motion?
 
@@ -32,6 +33,21 @@ degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 
 Rotation, one-axis stretch (a bar growing), line draw-on and per-letter text are not measured yet.
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
+
+### The round trip
+
+Two example films ([examples/](examples/README.md)), each made in code from a library style, distilled back as if
+they were a user's references and compared with the values in their own code
+([bench/roundtrip](bench/roundtrip/REPORT.md)):
+
+| film (style) | palette roles | surface | title | cuts, drawing rate | moves found | eases named / named wrong |
+|---|---|---|---|---|---|---|
+| swiss-programme (Swiss motion) | ΔE 0.2 | no grain, vignette or screen | size −14 %, weight 700 | ✓ | 10 / 40 | 0 / 0 |
+| first-light (risograph) | ΔE ≤ 4.4 | grain; halftone 7.0 px at 14.8° (film: 7 px at 15°) | size +25 %, weight | ✓ | 1 / 11 | 1 / 0 |
+
+Colour, surface, type and rhythm come back. Most moves in these two styles are clip reveals, bars growing on one
+axis and wipes, which the readers don't cover yet: they come back timed, with the curve left to the director (the
+kit says `unread`) rather than named wrong.
 
 ## How it will work
 
@@ -111,10 +127,14 @@ Measure the motion grammar of a single video:
 uv run moodreel motion path/to/video.mp4 --out out/my-video
 ```
 
-Build, render and score the test films:
+Build, render and score the test films, and distil the example films back:
 
 ```bash
 uv run moodreel bench make && uv run moodreel bench render && uv run moodreel bench motion
+```
+
+```bash
+uv run moodreel bench roundtrip
 ```
 
 ## Use it with an agent
@@ -148,11 +168,13 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
-| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, pack), `film/`, `library.py`, `bench/` (test films and scorer), `cli.py` |
+| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `cli.py` |
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
+| `examples/` | Example films made in library styles, with the values their code uses ([examples/README.md](examples/README.md)) |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |
+| `bench/roundtrip/` | The round trip's latest report ([bench/roundtrip/README.md](bench/roundtrip/README.md)) |
 | `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |
 | `scripts/import_lemo_styles.py` | Re-imports the style documents from a lemo-opuscar checkout |
 | `docs/` | Design and research notes |

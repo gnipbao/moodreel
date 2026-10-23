@@ -15,11 +15,13 @@ from pathlib import Path
 
 import numpy as np
 
+from ..measure.texture import WORK
 from ..motion import eases
 
 REPO = Path(__file__).resolve().parents[2]
 SHARED = ["eases.js", "core.js", "stage.js", "texture.js", "text.js"]
 WEIGHT = {"light": 300, "regular": 400, "bold": 700, "black": 900}
+INK_PER_EM = 0.9
 
 
 def _back_for(overshoot: float) -> str:
@@ -32,6 +34,11 @@ def _back_for(overshoot: float) -> str:
 def _ease_for(role: dict | None) -> dict | None:
     if not role:
         return None
+    # timings were measured, the curve was not (one reading among many is a guess too): the director picks it
+    if role.get("claimed", role.get("count", 1)) < min(2, role.get("count", 1)):
+        return {"ease": None, "duration": (role.get("duration_s") or {}).get("median"), "count": role.get("count"),
+                "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
+                "vocabulary": role.get("vocabulary")}
     classes = role.get("classes") or {}
     dominant = max(classes, key=classes.get) if classes else None
     names = {n: c for n, c in (role.get("eases") or {}).items() if eases.shape_class(n) == dominant} or role.get("eases") or {}
@@ -76,6 +83,17 @@ def motion_tokens(grammar: dict) -> dict:
     }
 
 
+def _em(ink_height: float | None) -> float | None:
+    """A line's font size from its measured ink height: a mixed-case line from ascender to descender is
+    about nine tenths of the em (a line without either reads smaller; check the crops)."""
+    return round(ink_height / INK_PER_EM, 4) if ink_height else None
+
+
+def _design_px(periodic: dict | None, size: list[int]) -> dict | None:
+    """A screen or scanline period measured at texture.WORK, in the film's design pixels."""
+    return {**periodic, "period_px": round(periodic["period_px"] * max(size) / WORK, 2)} if periodic else None
+
+
 def style_tokens(project: Path, intake: dict) -> dict:
     m = lambda k: json.loads((project / "measure" / f"{k}.json").read_text())  # noqa: E731
     pal, tex, lay, typ = m("palette"), m("texture"), m("layout"), m("type")
@@ -84,20 +102,23 @@ def style_tokens(project: Path, intake: dict) -> dict:
         "size": size,
         "palette": {**{k: v for k, v in pal["roles"].items() if not k.endswith("contrast")},
                     "colors": [{"hex": c["hex"], "area": c["area"]} for c in pal["colors"] if c["area"] >= 0.003]},
-        "type": {"title": typ.get("title_height"), "body": typ.get("body_height"),
+        "type": {"title": _em(typ.get("title_height")), "body": _em(typ.get("body_height")),
                  "titleWeight": WEIGHT.get(typ.get("weight_title") or "", 700),
                  "bodyWeight": WEIGHT.get(typ.get("weight_overall") or "", 400),
                  "display": "Helvetica Neue, Helvetica, Arial, sans-serif",
                  "text": "Helvetica Neue, Helvetica, Arial, sans-serif"},
         "layout": {"margin": lay.get("min_margin"), "align": lay.get("dominant_alignment"), "density": lay.get("density")},
         "texture": {"grain": tex.get("grain"), "mottle": tex.get("mottle"), "vignette": tex.get("vignette"),
-                    "halftone": tex.get("halftone"), "scanlines": tex.get("scanlines"), "edges": tex["summary"].get("edges")},
+                    "halftone": _design_px(tex.get("halftone"), size), "scanlines": _design_px(tex.get("scanlines"), size),
+                    "edges": tex["summary"].get("edges")},
     }
 
 
 SOURCES = {"size": "intake.json default_size", "palette": "measure/palette.json roles, colors",
-           "type": "measure/type.json (families are placeholders until the director picks licensed faces)",
-           "layout": "measure/layout.json medians", "texture": "measure/texture.json medians",
+           "type": "measure/type.json line heights as font sizes (ink = 0.9 em); families are placeholders until the "
+                   "director picks licensed faces",
+           "layout": "measure/layout.json medians",
+           "texture": "measure/texture.json medians (screen and scanline periods in design px)",
            "motion": "measure/motion.json grammar"}
 
 
@@ -124,7 +145,7 @@ def write_kit(project: Path, out: Path | None = None) -> Path:
 
 
 MOTION_HELPERS = """
-const role = r => MOTION?.[r] ?? { ease: 'power2.out', duration: 0.5 };
+const role = r => ({ ...MOTION?.[r], ease: MOTION?.[r]?.ease ?? 'power2.out' });
 
 // progress (0-1) of an element's entrance / exit / move that starts at `at`; i staggers it within a group
 export const enter = (t, at, i = 0) => tween(t, MOTION?.stagger ? stagger(at, MOTION.stagger.interval, i) : at,

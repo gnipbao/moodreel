@@ -113,3 +113,24 @@ def test_camera_push_and_pan_on_a_textured_ground():
 def test_flat_ground_without_change_is_a_locked_camera():
     clip = _clip([_flat((40, 40, 40))] * 20)
     assert camera.estimate(clip, {"start": 0, "end": 20})["status"] == "locked"
+
+
+def test_css_bezier_eases_and_their_class():
+    f = eases.get("bezier(0.7,0,0.2,1)")
+    assert np.allclose(f(np.array([0.0, 1.0])), [0, 1], atol=1e-3) and f(np.array([0.25]))[0] < 0.1
+    assert eases.shape_class("bezier(0.7,0,0.2,1)") == "inOut"
+    assert eases.shape_class("bezier(0,0,0.58,1)") == "out"
+    assert eases.shape_class("bezier(0.34,1.56,0.64,1)") == "out+overshoot"
+
+
+def test_a_shape_printed_on_the_ground_is_no_cut_but_a_slide_change_is():
+    ground = np.full((36, 64, 3), 230.0, np.float32)
+    sea = ground.copy()
+    sea[20:] = (0, 130, 138)                                  # content that stays
+    sky = sea.copy()
+    sky[:10] = (150, 190, 185)                                # a band printed in one frame onto bare ground
+    assert shots.cuts(np.stack([sea] * 5 + [sky] * 5)) == []
+    slide1, slide2 = ground.copy(), ground.copy()
+    slide1[8:18, 6:40] = (20, 20, 20)                         # old content leaves as new content lands
+    slide2[22:30, 20:60] = (200, 40, 60)
+    assert shots.cuts(np.stack([slide1] * 5 + [slide2] * 5)) == [5]

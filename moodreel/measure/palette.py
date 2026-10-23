@@ -4,8 +4,10 @@ Per picture: k-means in CIELAB, then clusters closer than JND_MERGE (CIEDE2000) 
 compression noise doesn't split one colour into several. Across pictures: the per-picture palettes are pooled,
 each picture weighing the same, and merged again; a colour's `presence` is how many pictures use it.
 
-Roles follow what a viewer reads: the ground holds the frame's border; the ink stands furthest in lightness from
-the ground; the accent is the most saturated colour that stays small. Everything is measured; naming the logic
+Roles follow what a viewer reads: the ground is what a video shows before anything stands on it (its opening
+frame, when that is one colour), else the colour holding the frame's border; the ink stands furthest in lightness
+from the ground, weighed by how much of the picture it takes; the accent is the most saturated colour that stays
+small. Everything is measured; naming the logic
 ("red only for the one thing that matters") is the director's job.
 """
 from __future__ import annotations
@@ -126,7 +128,14 @@ def unity(palettes: list[dict], thr: float = 15.0) -> dict:
     return {"groups": list(groups.values()), "unified": len(groups) == 1, "distances": np.round(D, 1).tolist()}
 
 
-def pooled(palettes: list[dict]) -> dict:
+def opening_ground(rgb: np.ndarray, share: float = 0.85) -> str | None:
+    """The colour covering at least `share` of a video's opening frame, or None when the film opens on a picture."""
+    lab = rgb_to_lab(_small(rgb).reshape(-1, 3).astype(np.float64))
+    med = np.median(lab, axis=0)
+    return hex_(lab_to_rgb(med)) if (delta_e(lab, med) < 8).mean() >= share else None
+
+
+def pooled(palettes: list[dict], ground_hint: str | None = None) -> dict:
     """One palette for the style: every picture weighs the same."""
     cols = []
     for i, p in enumerate(palettes):
@@ -136,16 +145,26 @@ def pooled(palettes: list[dict]) -> dict:
     cols = sorted(_merge(cols, POOL_MERGE), key=lambda c: -c["area"])
     colors = [_describe(c) for c in cols]
     hist = np.mean([p["luminance_hist"] for p in palettes], axis=0)
-    return {"colors": colors, "roles": roles(colors), "luminance_hist": [round(float(x), 4) for x in hist],
-            "structure": structure(colors)}
+    return {"colors": colors, "roles": roles(colors, ground_hint), "luminance_hist": [round(float(x), 4) for x in hist],
+            "structure": structure(colors, ground_hint)}
 
 
-def roles(colors: list[dict]) -> dict:
+def _ground(colors: list[dict], hint: str | None = None) -> dict:
+    if hint:
+        lab = rgb_to_lab(np.array([int(hint[i:i + 2], 16) for i in (1, 3, 5)], np.float64))
+        near = min(colors, key=lambda c: float(delta_e(np.array(c["lab"]), lab)))
+        if float(delta_e(np.array(near["lab"]), lab)) < 10:
+            return near
+    return max(colors, key=lambda c: (c.get("border", 0), c["area"]))
+
+
+def roles(colors: list[dict], ground_hint: str | None = None) -> dict:
     if not colors:
         return {}
-    ground = max(colors, key=lambda c: (c.get("border", 0), c["area"]))
+    ground = _ground(colors, ground_hint)
     rest = [c for c in colors if c is not ground and c["area"] >= 0.01]
-    ink = max(rest, key=lambda c: abs(c["lightness"] - ground["lightness"]), default=None)
+    # a sliver of the darkest overprint is not the ink a whole sea is printed in
+    ink = max(rest, key=lambda c: abs(c["lightness"] - ground["lightness"]) * np.sqrt(c["area"]), default=None)
     pool = [c for c in colors if c is not ground and c is not ink and 0.003 <= c["area"] < 0.15 and c["chroma"] >= 20]
     accent = max(pool, key=lambda c: c["chroma"], default=None)
     rgb = lambda c: [int(c["hex"][i:i + 2], 16) for i in (1, 3, 5)]  # noqa: E731
@@ -160,12 +179,12 @@ def roles(colors: list[dict]) -> dict:
     return out
 
 
-def structure(colors: list[dict]) -> dict:
+def structure(colors: list[dict], ground_hint: str | None = None) -> dict:
     """The palette's logic in numbers: how many hues, how light the ground, how saturated the picture."""
     area = np.array([c["area"] for c in colors])
     chromatic = [c for c in colors if c["chroma"] >= 15 and c["area"] >= 0.005]
     hues = sorted({int(c["hue"] // 30) for c in chromatic})
-    ground = max(colors, key=lambda c: (c.get("border", 0), c["area"]))
+    ground = _ground(colors, ground_hint)
     return {"hue_families": len(hues), "chromatic_colours": len(chromatic),
             "ground": "light" if ground["lightness"] >= 60 else "dark" if ground["lightness"] <= 35 else "mid",
             "ground_lightness": ground["lightness"],
