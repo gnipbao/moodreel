@@ -10,12 +10,17 @@ moodreel film deliver films/<name> --music track.wav
 - **reading**: lines that leave before they can be read (needs window.TEXTS, see drawing.md);
 - **black frames** inside the film (after a render exists in `out/video.mp4`);
 - for a distilled style: **frames** (three stills scored against the style's references, as frame-check) and
-  **motion** (the film's grammar against the style's, as motion-check).
+  **motion** (the film's grammar against the style's, as motion-check);
+- for a film with a `score.json`: **cues**, whether the picture lands on the music: each cue wants a move starting or
+  landing, a cut, or the picture settling within two frames of it (a `stop` wants nothing); at least 80 % of them must
+  be hit, and the share of landings on the beat is reported against chance.
 
 Fix everything it finds in one round, then check once more. What is still off after that, tell the user in one line.
 
 `film deliver` renders the film, normalises the music to −14 LUFS (two-pass loudnorm, a 1 s fade at the end), muxes,
-and writes `<name>.mp4` and `poster.jpg` (at `film.json → poster`). Without music the film is silent.
+and writes `<name>.mp4` and `poster.jpg` (at `film.json → poster`). With no `--music` it uses the film's own score
+(`score.json`, rendered first, so the picture reads the cue times it was written to); with neither, the film is
+silent.
 
 ## Before handing over
 
