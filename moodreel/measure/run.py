@@ -124,7 +124,11 @@ def report(intake: dict, m: dict) -> str:
           + (f"; pixel art in {tex['pixel']['share']:.0%} of the pictures: {tex['pixel']['native_width']} px wide natively "
              f"(one pixel = {tex['pixel']['scale_of_width']:.2%} of the width), {tex['pixel']['palette_size']} colours, "
              f"{'ordered dither' if tex['pixel']['dither'] else 'no dither'} ({tex['pixel']['dither_share']:.0%} checkerboard)"
-             if tex.get("pixel") else "") + ".", ""]
+             if tex.get("pixel") else "")
+          + (f"; brush marks in {tex['brush']['share']:.0%} of the pictures, over {tex['brush']['coverage']:.0%} of the frame: "
+             f"edges every {_fmt(tex['brush']['edge_spacing_px'])} px (at {texture.WORK} px wide), running "
+             f"{_fmt(tex['brush']['direction_deg'])}° (0 = across, 90 = up and down; agreement {_fmt(tex['brush']['agreement'])})"
+             if tex.get("brush") else "") + ".", ""]
     if lay:
         mg = lay["margins"]
         L += ["## Layout (observed, medians)", "",

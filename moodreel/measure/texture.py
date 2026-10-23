@@ -9,7 +9,7 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from . import pixel
+from . import brush, pixel
 
 from .color import delta_e, rgb_to_lab
 
@@ -137,6 +137,9 @@ def texture(rgb: np.ndarray, ground_hex: str | None = None) -> dict:
         out["edge_density"] = round(float(edges.mean()), 4)
     else:
         out["edge_sharpness"], out["edge_density"] = None, 0.0
+    marks = None if art else brush.read(img)
+    if marks:
+        out["brush"] = marks
     if art:
         out["pixel"] = {**art, "picture_width": int(rgb.shape[1])}
         # a pixel picture's dither and cell edges read as grain, a screen or scanlines: they are the pixel art
@@ -160,6 +163,7 @@ def summarise(t: dict) -> dict:
     s["halftone"] = bool(t.get("halftone"))
     s["scanlines"] = bool(t.get("scanlines"))
     s["pixel"] = bool(t.get("pixel"))
+    s["brush"] = bool(t.get("brush"))
     return s
 
 
@@ -187,5 +191,13 @@ def pooled(textures: list[dict]) -> dict:
                      "dither": float(np.mean([p["dither"] for p in px])) >= 0.5,
                      "dither_share": round(float(np.median([p["dither_share"] for p in px])), 3),
                      "palette": max(px, key=lambda p: p["palette_size"])["palette"]} if px else None)
+    bs = [t["brush"] for t in textures if t.get("brush")]
+    axial = np.radians([2 * b["direction_deg"] for b in bs])          # strokes are axial: average on doubled angles
+    out["brush"] = ({"share": round(len(bs) / len(textures), 2),
+                     "edge_spacing_px": round(float(np.median([b["edge_spacing_px"] for b in bs])), 1),
+                     "coherence": round(float(np.median([b["coherence"] for b in bs])), 2),
+                     "direction_deg": round(float(np.degrees(np.arctan2(np.sin(axial).mean(), np.cos(axial).mean())) / 2) % 180, 1),
+                     "agreement": round(float(np.median([b["agreement"] for b in bs])), 2),
+                     "coverage": round(float(np.median([b["coverage"] for b in bs])), 2)} if bs else None)
     out["summary"] = summarise(out)
     return out

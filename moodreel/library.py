@@ -9,7 +9,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 
 # what Moodreel can draw beyond flat 2D: a style whose needs are all here can be made now
-CAPABLE = {"music-led", "pixel"}
+CAPABLE = {"music-led", "pixel", "painterly"}
 
 
 def home() -> Path:
