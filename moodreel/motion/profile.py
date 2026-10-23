@@ -3,13 +3,13 @@ from __future__ import annotations
 
 import numpy as np
 
-from . import eases
-from .fit import PREFER, fit_move
+from . import eases, extent
+from .fit import PREFER, fit_move, shared_bezier
 from .track import series
 
 PROP = {"cx": "x", "cy": "y", "s": "scale", "a": "opacity"}
 OPACITY_GAP = 25.0
-CLAIM_TRAVEL = {"cx": 0.03, "cy": 0.03, "s": 0.1}   # smallest travel whose ease family may be named (of W; scale)
+CLAIM_TRAVEL = {"cx": 0.03, "cy": 0.03, "s": 0.1, "share": 0.1}   # smallest travel whose ease may be named (of W; scale; share)
 
 
 MAX_RESID = 0.08         # a fit worse than this (rms, in units of the travel) is not one tween
@@ -36,17 +36,57 @@ def _cut_off(t, v, f, t_end):
     return tail > 0.15 * mean
 
 
+def _doubt(f: dict, **why) -> dict:
+    """Neither the family nor the class of this curve can be named (its start or end was not seen, or it is too
+    small to have a shape)."""
+    f.update(ease="unknown", **{"class": None}, **why)
+    return f
+
+
+def _keep(f: dict, t, v, w=None) -> dict:
+    """The readings a fit was made from, for the style's shared curve (dropped before motion.json is written)."""
+    ok = ~np.isnan(v) & (np.ones_like(v, bool) if w is None else np.asarray(w) > 0)
+    f["_samples"] = {"t": np.asarray(t)[ok], "v": np.asarray(v)[ok]}
+    return f
+
+
+def _one_axis(t, fps, X, prefer) -> dict | None:
+    """A stretch or a wipe, read as the share shown (0 to 1): its start and end levels are seen, nothing hidden."""
+    f = fit_move(t, X["series"], fps, prefer=prefer)
+    if not f or f["resid"] > MAX_RESID or abs(f["delta"]) < 0.1:
+        return None
+    if _cut_off(t, X["series"], f, t[-1]):
+        _doubt(f, cut_off=True)
+    elif abs(f["delta"]) < CLAIM_TRAVEL["share"]:
+        _doubt(f)
+    return _keep({**f, "anchor": X["anchor"]}, t, X["series"])
+
+
 def element_events(clip, track: dict, on: int = 1) -> dict:
     S = series(clip, track)
     t, fps, W, H = _drawing_time(S["t"], clip.fps, on), clip.fps, clip.src_w, clip.src_h
     side = S["edge_side"]
     out = {"kind": track["kind"], "shot": track["shot"], "box": [round(v, 1) for v in track["box"]],
            "via_edge": side, "props": {}}
+    role = {"appear": "entrance", "disappear": "exit"}.get(track["kind"], "move")
+    prefer = PREFER[role]
+    # one axis changing while an edge holds still: a stretch, a wipe or a clip reveal, which the template misreads
+    X = extent.reading(clip, track)
+    if X and X["mode"] != "clip":
+        f = _one_axis(t, fps, X, prefer)
+        if f:
+            out["reading"] = {k: X[k] for k in ("mode", "axis", "anchor")}
+            out["props"][X["prop"]] = f
+            return out
+    elif X:
+        # a clip reveal is a move whose leading edge is seen before the whole element is: no scale, no fade
+        out["reading"] = {k: X[k] for k in ("mode", "axis", "anchor")}
+        key = "c" + X["axis"]
+        S = {**S, key: X["series"], "s": np.full_like(S["s"], np.nan), "a": np.zeros_like(S["a"]), "intermediate_a": 0,
+             "w": np.where(np.isnan(X["series"]), 0.0, 1.0)}
     a = S["a"]
     afit = None
     # a fade is claimed only when it is seen: three or more trustworthy readings part-way between 0 and 1
-    role = {"appear": "entrance", "disappear": "exit"}.get(track["kind"], "move")
-    prefer = PREFER[role]
     if np.nanmax(a) - np.nanmin(a) > 0.15 and S["intermediate_a"] >= 3:
         afit = fit_move(t, a, fps, monotone=True, gap_needed=OPACITY_GAP, prefer=prefer)
         if afit and afit["dur"] < 3 / fps:          # a one-frame jump is an element arriving, not a fade
@@ -86,19 +126,19 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
                             start=start if start is not None else (0.0 if k == "s" and f["pinned"] else None), end=end,
                             prefer=prefer)
             if tied and tied["bic"] <= f["bic"] + 4:
-                tied["tied_to"] = "opacity"
-                tied["ease"] = "unknown"           # its start is borrowed from the fade: an assumption
-                f = tied
+                f = _doubt(tied, tied_to="opacity")   # its start is borrowed from the fade: an assumption
         if f and (f["resid"] > MAX_RESID or abs(f["delta"]) < thr[k]):
             f = None
         if f and _cut_off(t, v, f, t[-1]):
-            f["ease"], f["cut_off"] = "unknown", True
+            _doubt(f, cut_off=True)
         if f and abs(f["delta"]) < CLAIM_TRAVEL[k] * (W if k != "s" else 1):
-            f["ease"] = "unknown"                  # a short travel is measured, but its curve is too small to name
+            _doubt(f)                              # a short travel is measured, but its curve is too small to name
         if f:
-            out["props"][PROP[k]] = f
+            out["props"][PROP[k]] = _keep(f, t, v, S["w"])
     if afit and _cut_off(t, a, afit, t[-1]):
-        afit["ease"], afit["cut_off"] = "unknown", True
+        _doubt(afit, cut_off=True)
+    if afit:
+        _keep(afit, t, a)
     return out
 
 
@@ -138,6 +178,12 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
     (or end) level outside the frame: an element can jump from off frame to fully inside in one frame."""
     p = ev["props"]
     parts = []
+    mode = (ev.get("reading") or {}).get("mode")
+    for k in ("sy", "sx"):
+        if k in p:
+            parts.append(("grow-" if ev["kind"] != "disappear" else "collapse-") + k[1])
+    if "wipe" in p:
+        parts.append("wipe-" + ("out" if ev["kind"] == "disappear" else "in"))
     if "scale" in p:
         parts.append("scale-pop" if p["scale"]["overshoot"] > 0.02 else "scale")
     for axis, size in (("x", frame[0]), ("y", frame[1])):
@@ -147,7 +193,9 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
         far = p[axis]["to"] if ev["kind"] == "disappear" else p[axis]["from"]
         half = ev["box"][2 + (axis == "y")] / 2
         off = ev["via_edge"] or far < -half * 0.5 or far > size + half * 0.5
-        if ev["kind"] in ("move", "change") and not off:
+        if mode == "clip":
+            parts.append(("clip-rise" if d < 0 else "clip-drop") if axis == "y" else "clip-slide")
+        elif ev["kind"] in ("move", "change") and not off:
             parts.append(f"move-{axis}")
         elif off:
             parts.append(("slide" if axis == "x" else "drop" if d > 0 else "rise") +
@@ -160,7 +208,7 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
 
 
 def main_prop(ev):
-    for k in ("scale", "y", "x", "opacity"):
+    for k in ("scale", "sy", "sx", "wipe", "y", "x", "opacity"):
         if k in ev["props"]:
             return k
     return None
@@ -185,8 +233,8 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
     def summarise(evs):
         if not evs:
             return None
-        durs, eases_, classes, guesses, labels, over = [], {}, {}, {}, {}, []
-        travel = []
+        durs, eases_, classes, guesses, labels, over, named = [], {}, {}, {}, {}, [], 0
+        travel, by_class = [], {}
         for ev in evs:
             m = ev["props"][main_prop(ev)]
             durs.append(max(p["dur"] for p in ev["props"].values()))
@@ -194,18 +242,29 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
             for ax, size in (("x", W), ("y", H)):
                 if ax in ev["props"]:
                     travel.append(abs(ev["props"][ax]["delta"]) / size)
-            if m["ease"] == "unknown":                  # the fit's best guess is kept apart: it never becomes a token
+            if m["ease"] != "unknown":
+                eases_[m["ease"]] = eases_.get(m["ease"], 0) + 1
+                named += 1
+            else:                                       # the fit's best guess is kept apart: it never becomes a token
                 guesses[m["best"]] = guesses.get(m["best"], 0) + 1
-                continue
-            eases_[m["ease"]] = eases_.get(m["ease"], 0) + 1
-            c = eases.shape_class(m["ease"])
-            classes[c] = classes.get(c, 0) + 1
-            over.append(m["overshoot"])
-        out = {"count": len(evs), "claimed": len(over), "duration_s": _stats(durs), "eases": eases_, "classes": classes,
-               "guesses": guesses, "vocabulary": labels,
+            c = m.get("class") or (eases.shape_class(m["ease"]) if m["ease"] != "unknown" else None)
+            if c:
+                classes[c] = classes.get(c, 0) + 1
+                over.append(m["overshoot"])
+                if m.get("_samples") is not None:
+                    by_class.setdefault(c, []).append({**m["_samples"], "A": m["from"], "B": m["delta"],
+                                                       "t0": m["t0"], "t1": m["t1"]})
+        out = {"count": len(evs), "claimed": named, "class_claimed": len(over), "duration_s": _stats(durs),
+               "eases": eases_, "classes": classes, "guesses": guesses, "vocabulary": labels,
                "overshoot_share": round(float(np.mean([o > 0.02 for o in over])), 2) if over else None,
                "overshoot": _stats([o for o in over if o > 0.02]),
                "travel_frac_of_frame": _stats(travel)}
+        # the style's own curve: one cubic-bezier through every tween of the role's commonest claimed class
+        if classes:
+            top = max(classes, key=classes.get)
+            curve = shared_bezier(by_class.get(top, []))
+            if curve and curve["resid"] <= MAX_RESID:
+                out["curve"] = {**curve, "class": top}
         scales = [ev["props"]["scale"]["from"] for ev in evs if "scale" in ev["props"]]
         if scales:
             out["scale_from"] = _stats(scales)

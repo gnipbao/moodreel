@@ -18,15 +18,16 @@ REPO = Path(__file__).resolve().parents[1]
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="needs node")
 def test_js_eases_match_python(tmp_path):
-    names = [n for n, _ in eases.candidates()] + ["back.inOut(1.7)"]
+    curves = ["bezier(0.7,0,0.2,1)", "bezier(0.727,-0.033,0.18,1.039)"]   # a style's own curve, as the kit writes it
+    names = [n for n, _ in eases.candidates()] + ["back.inOut(1.7)"] + curves
     u = np.linspace(0, 1, 21).tolist()
     script = tmp_path / "eases.mjs"
     script.write_text(f"import {{ ease }} from '{(REPO / 'kit' / 'eases.js').as_uri()}';\n"
                       f"const names = {json.dumps(names)}, u = {json.dumps(u)};\n"
                       "console.log(JSON.stringify(Object.fromEntries(names.map(n => [n, u.map(ease(n))]))));\n")
     out = json.loads(subprocess.run(["node", str(script)], capture_output=True, text=True, check=True).stdout)
-    for n in names:
-        assert np.allclose(out[n], eases.get(n)(np.array(u)), atol=1e-9), n
+    for n in names:                                   # beziers are solved numerically on both sides
+        assert np.allclose(out[n], eases.get(n)(np.array(u)), atol=2e-3 if n in curves else 1e-9), n
 
 
 def test_back_for_matches_the_overshoot():

@@ -48,9 +48,9 @@ def _masks(P, Q, w):
         q_fg = (np.abs(Q - np.median(Q[ring], axis=0)).max(axis=2) > DIFF_THR) & near
         ap, aq, inter = p_fg.sum(), q_fg.sum(), (p_fg & q_fg).sum()
         if aq and ap < 0.15 * aq:
-            out.append(("appear", q_fg))
+            out += [("appear", m) for m in _unjoin(q_fg, area_min)]
         elif ap and aq < 0.15 * ap:
-            out.append(("disappear", p_fg))
+            out += [("disappear", m) for m in _unjoin(p_fg, area_min)]
         elif inter / max(1, (p_fg | q_fg).sum()) > 0.5:
             out.append(("change", q_fg))
         else:                                   # moved: follow where it arrived back to where it left, on raw pixels
@@ -81,6 +81,26 @@ def _pair_moves(regions, P, Q):
             taken |= {i, j}
             out.append(("move", regions[i][1]))
     return out + [r for k, r in enumerate(regions) if k not in taken]
+
+
+def _unjoin(mask, area_min, k=5):
+    """Solid shapes joined only by a thin rule (bars standing on an axis) are separate elements, and so is the
+    rule. Text is left whole: an opening this wide removes its strokes, so nothing solid is left to split."""
+    opened = cv2.morphologyEx(mask.astype(np.uint8), cv2.MORPH_OPEN, np.ones((k, k), np.uint8))
+    n, lab = cv2.connectedComponents(opened)
+    blobs = [lab == i for i in range(1, n) if (lab == i).sum() >= 4 * area_min]
+    # solid shapes only: the glyphs of a word over its underline stay one element
+    if len(blobs) < 2 or any(b.sum() < 0.75 * np.prod(_box(b)[2:]) for b in blobs):
+        return [mask]
+    # what joins them, taken whole (the shapes cut it into pieces): a rule is long and thin
+    rule = mask & ~(cv2.dilate(opened, np.ones((3, 3), np.uint8)) > 0)
+    if not rule.any():
+        return [mask]
+    _, _, bw, bh = _box(rule)
+    if min(bw, bh) > k - 1 or max(bw, bh) < 8 * min(bw, bh):
+        return [mask]                                 # not one thin straight line (a word's hairlines aren't)
+    grown = [cv2.dilate(b.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & mask for b in blobs]
+    return grown + ([rule] if rule.sum() >= area_min else [])
 
 
 def _split(mask, area_min):

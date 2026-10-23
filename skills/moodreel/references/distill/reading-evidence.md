@@ -49,15 +49,26 @@ vocabulary (rise+fade, scale-pop, slide-in…), travel, start scale, staggers wi
 
 - **What to trust**: t50 timing (within a frame on the bench), ease *class* (in / out / inOut, with overshoot or
   ringing), staggers, cuts and dissolves, camera on a textured ground.
-- **What is claimed only when sure**: an ease *family*. `ease: "unknown"` with a `best` means the curve's class is known
-  but not its name; `equivalent` lists the families that fit the same samples. Write the class and the bezier.
-  The grammar's `classes` and `eases` count claimed curves only; the fits' best guesses are kept apart in `guesses`.
-  The kit takes an ease only when it was read with confidence at least twice; otherwise `motion.js` keeps the
-  timing and says `unread`, and the curve is yours to take from the evidence, marked `inferred`.
-- **What isn't measured yet**: rotation, one-axis stretch (bars growing, collapsing to a line), line draw-on,
-  per-letter text, masks, wipes and clip reveals (text rising out of a slot), particles and loops. They come out as
-  scale or slide events whose curves stay unread. Look at the evidence strips (`evidence/motion-*/evidence/*.jpg`,
-  every motion run with its tracked elements boxed) and describe them yourself, marked `inferred`.
+- **What is claimed only when sure**: an ease *family*. `ease: "unknown"` with a `best` means the curve's name is
+  not claimed; `equivalent` lists the families that fit the same samples. Its *class* (in, out, inOut, with
+  overshoot) needs fewer readings and is claimed on its own when every family the evidence can't rule out shares it
+  (`class`). The grammar counts claimed families in `eases` and claimed classes in `classes`; the fits' best guesses
+  are kept apart in `guesses`.
+- **The style's own curve**: when a role's tweens share a claimed class, one cubic-bezier is fitted through all of
+  them (`curve`, with the number of tweens and the residual). A house curve with no GSAP name (a Swiss snap,
+  `cubic-bezier(.7,0,.2,1)`) comes back this way. The kit takes a family read at least twice; else this curve when
+  the class was read at least twice; else it keeps the timing, says `unread`, and the curve is yours to take from
+  the evidence, marked `inferred`.
+- **One-axis changes** have a `reading`: `stretch` (a bar growing from its base, a word collapsing to its midline:
+  `sy` / `sx`, the share shown, with its `anchor`), `clip` (type rising out of a slot, a sun rising behind a
+  horizon: the element's position from the edge that moves with it, labelled `clip-rise`) and `wipe` (a mask or a
+  roller sweeping a shape on in place: `wipe`, the share shown). A solid shape can't tell a stretch from a wipe or
+  from rising inside a slot of its own size; it is read as a stretch. A slot hides a clip reveal's start, so its
+  curve is rarely claimed: read its class from the evidence strip.
+- **What isn't measured yet**: rotation, line draw-on, per-letter text, particles and loops, and elements nested
+  inside a larger shape that changes in the same run (reflections on a sea that is being wiped on). Look at the
+  evidence strips (`evidence/motion-*/evidence/*.jpg`, every motion run with its tracked elements boxed) and
+  describe them yourself, marked `inferred`.
 - **Camera unknown or locked on a flat ground** can't tell a pan from the whole picture moving: a page turn on a plain
   ground reads as elements moving together.
 

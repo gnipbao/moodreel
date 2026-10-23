@@ -17,6 +17,7 @@ from . import eases
 
 EASE_GAP = 10.0
 MIN_SHAPED = 8           # readings in transition needed to name a family: fewer, and neighbours fit as well
+MIN_SHAPED_CLASS = 4     # ...and to name only its class (in, out, inOut), which every near family must share
 EQUIVALENT = 0.03        # two families draw the same curve when their fits differ by at most this much of the travel
 
 
@@ -141,7 +142,13 @@ def fit_move(t, v, fps, t0_range=None, t1_max=None, w=None, start=None, end=None
     rho = float(np.clip(np.corrcoef(r[:-1], r[1:])[0, 1], 0, 0.95)) if len(r) > 3 and r.std() > 0 else 0.0
     gap_eff = gap * (1 - rho) / (1 + rho) if np.isfinite(gap) else gap
     claim = gap_eff >= gap_needed and shaped >= MIN_SHAPED and not pinned     # a pinned level is an assumption
-    return {"ease": best if claim else "unknown", "best": best, "next": other, "equivalent": sorted(same),
+    # the class alone needs fewer readings than a family: it is claimed when every family the evidence can't rule
+    # out (within the gap that shrinks to the threshold, and the equivalents) draws the same class
+    reach = gap_needed * (1 + rho) / (1 - rho)
+    near = {best, *(r for r in ranked if fits[r]["bic"] - fits[ranked[0]]["bic"] < reach or eases.family(r) in same)}
+    classes = {eases.shape_class(r) for r in near}
+    cls = classes.pop() if len(classes) == 1 and shaped >= MIN_SHAPED_CLASS and not pinned else None
+    return {"ease": best if claim else "unknown", "class": cls, "best": best, "next": other, "equivalent": sorted(same),
             "shaped_samples": shaped,
             "bic_gap": round(gap, 1) if np.isfinite(gap) else None,
             "evidence": round(gap_eff, 1) if np.isfinite(gap_eff) else None, "rho": round(rho, 2),
@@ -181,3 +188,27 @@ def bezier_for(name):
     r = least_squares(lambda p: _bezier_y(p, x) - y, [0.33, 0.33, 0.67, 0.67],
                       bounds=([0, -2, 0, -2], [1, 3, 1, 3]))
     return [round(float(p), 3) for p in r.x]
+
+
+def shared_bezier(samples: list[dict]) -> dict | None:
+    """One cubic-bezier for several tweens of a style (a curve with no GSAP name, like a house snap): each tween
+    keeps its own levels and may shift its start and end a little; the four control values are shared.
+    samples: [{"t", "v", "A", "B", "t0", "t1"}] from fits that claimed the same class."""
+    if len(samples) < 2:
+        return None
+    n = len(samples)
+    x0 = [0.42, 0.0, 0.58, 1.0] + [x for s in samples for x in (s["t0"], s["t1"])]
+    lo = [0, -1, 0, -1] + [x for s in samples for x in (s["t0"] - 0.15, s["t1"] - 0.15)]
+    hi = [1, 2, 1, 2] + [x for s in samples for x in (s["t0"] + 0.15, s["t1"] + 0.15)]
+
+    def resid(p):
+        out = []
+        for i, s in enumerate(samples):
+            t0, t1 = p[4 + 2 * i], max(p[5 + 2 * i], p[4 + 2 * i] + 1e-3)
+            u = np.clip((s["t"] - t0) / (t1 - t0), 0, 1)
+            out.append((s["v"] - (s["A"] + s["B"] * _bezier_y(p[:4], u))) / abs(s["B"]))
+        return np.concatenate(out)
+
+    r = least_squares(resid, x0, bounds=(lo, hi))
+    rms = float(np.sqrt(np.mean(r.fun ** 2)))
+    return {"bezier": [round(float(v), 3) for v in r.x[:4]], "tweens": n, "resid": round(rms, 4)}

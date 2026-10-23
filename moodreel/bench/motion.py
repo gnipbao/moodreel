@@ -62,8 +62,10 @@ def match(truth, motion):
                 used[best[1]["id"]] = 1
             rows.append((te, best))
             continue
+        # a solid shape swept on and one stretched from the same edge look alike: either reading finds it
+        alias = {"wipe": ("sx", "sy"), "sx": ("wipe",), "sy": ("wipe",)}.get(te["prop"], ())
         for ev in events:
-            p = ev["props"].get(te["prop"])
+            p = ev["props"].get(te["prop"]) or next((ev["props"][a] for a in alias if a in ev["props"]), None)
             # a merged group (parts that moved as one tween) stands for each of its members
             if p is None or used.get((ev["id"], te["prop"]), 0) >= len(ev.get("members", [ev["id"]])):
                 continue
@@ -72,6 +74,9 @@ def match(truth, motion):
             # did not move, plus time
             ex, ey = te["end_xy"]
             dist = abs(by - ey) if te["prop"] == "x" else abs(bx - ex) if te["prop"] == "y" else np.hypot(bx - ex, by - ey)
+            if te["prop"] in ("sx", "sy", "wipe"):          # a truth may place a stretch at its anchor, not its centre
+                x0, y0, w_, h_ = ev["box"]
+                dist = min(np.hypot(px - ex, py - ey) for px, py in ((bx, by), (bx, y0), (bx, y0 + h_), (x0, by), (x0 + w_, by)))
             if ev.get("members") and (ev["box"][0] <= ex <= ev["box"][0] + ev["box"][2]
                                       and ev["box"][1] <= ey <= ev["box"][1] + ev["box"][3]):
                 dist = 0                                # the group box spans its members

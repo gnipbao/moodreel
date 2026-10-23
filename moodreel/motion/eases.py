@@ -120,7 +120,8 @@ def shape_class(name: str) -> str:
         x1, y1, x2, y2 = (float(v) for v in name.split("(")[1].rstrip(")").split(","))
         slow_in, slow_out = y1 < x1, y2 > x2
         c = "inOut" if slow_in and slow_out else "in" if slow_in else "out" if slow_out else "linear"
-        return c + ("+overshoot" if not (0 <= y1 <= 1 and 0 <= y2 <= 1) else "")
+        y = bezier(x1, y1, x2, y2)(np.linspace(0, 1, 401))      # overshoot as drawn, not as the handles lean
+        return c + ("+overshoot" if y.max() > 1.02 or y.min() < -0.02 else "")
     direction = fam.split(".")[1]
     if fam.startswith("back."):
         return f"{direction}+overshoot"

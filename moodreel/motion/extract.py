@@ -38,7 +38,7 @@ def evidence(clip, run_tracks, path, cols=6):
 
 def clean(o):
     if isinstance(o, dict):
-        return {k: clean(v) for k, v in o.items() if k not in ("readings", "mask")}
+        return {k: clean(v) for k, v in o.items() if k not in ("readings", "mask", "_samples")}
     if isinstance(o, (list, tuple)):
         return [clean(v) for v in o]
     if isinstance(o, (np.floating, np.integer)):

@@ -9,7 +9,7 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 
 > **Status: pre-alpha.** The whole path works end to end: references in, measurements, a kit, a packed style, a
 > film made in it, checked and delivered. Motion measurement passes its acceptance bench, and two example films
-> survive the round trip (below). Readers for clip reveals, one-axis stretch and wipes are next.
+> survive the round trip (below). A camera on a plain ground, rotation and line draw-on are next.
 
 ## Why measure motion?
 
@@ -19,7 +19,10 @@ So Moodreel measures timing, easing, overshoot, stagger and rhythm with determin
 model to understand and use those numbers.
 
 `moodreel motion` finds every element a motion run changes, tracks its position, scale and opacity in one template
-match, fits each change against the GSAP ease families, and only names an ease when the evidence is clear. It also
+match, fits each change against the GSAP ease families, and only names an ease when the evidence is clear. Where the
+template can't follow, it measures how much of the element shows: a bar growing from its base, a word collapsing
+to a line, type rising out of a slot, a shape wiped on. When the curve has no GSAP name, one cubic-bezier is fitted
+through all the tweens whose class was read, so a style's own curve comes back as itself. It also
 finds cuts, dissolves and fades through a colour, camera pushes and pans (and measures the elements in the world,
 not on the moving screen), drawings held on twos, and staggers.
 
@@ -31,7 +34,8 @@ degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 | clean | 94% | 86% | 97% | 29 / 0 | 13/14 |
 | degraded | 92% | 88% | 86% | 9 / 0 | 13/14 |
 
-Rotation, one-axis stretch (a bar growing), line draw-on and per-letter text are not measured yet.
+Of the 11 moves the bench marks as beyond those readers, 6 are now found on the clean films (bars growing, an
+underline drawn out); rotation, line draw-on and per-letter text are not measured yet.
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
 
 ### The round trip
@@ -40,14 +44,15 @@ Two example films ([examples/](examples/README.md)), each made in code from a li
 they were a user's references and compared with the values in their own code
 ([bench/roundtrip](bench/roundtrip/REPORT.md)):
 
-| film (style) | palette roles | surface | title | cuts, drawing rate | moves found | eases named / named wrong |
-|---|---|---|---|---|---|---|
-| swiss-programme (Swiss motion) | ΔE 0.2 | no grain, vignette or screen | size −14 %, weight 700 | ✓ | 10 / 40 | 0 / 0 |
-| first-light (risograph) | ΔE ≤ 4.4 | grain; halftone 7.0 px at 14.8° (film: 7 px at 15°) | size +25 %, weight | ✓ | 1 / 11 | 1 / 0 |
+| film (style) | palette roles | surface | title | cuts, drawing rate | the kit's curves | moves found | eases named / named wrong |
+|---|---|---|---|---|---|---|---|
+| swiss-programme (Swiss motion) | ΔE 0.2 | no grain, vignette or screen | size −14 %, weight 700 | ✓ | entrances `bezier(0.73,−0.03,0.18,1.04)` (film: `0.7,0,0.2,1`) | 22 / 40 | 0 / 0 |
+| first-light (risograph) | ΔE ≤ 4.4 | grain; halftone 7.0 px at 14.8° (film: 7 px at 15°) | size +25 %, weight | ✓ | left to the director | 4 / 11 | 3 / 0 |
 
-Colour, surface, type and rhythm come back. Most moves in these two styles are clip reveals, bars growing on one
-axis and wipes, which the readers don't cover yet: they come back timed, with the curve left to the director (the
-kit says `unread`) rather than named wrong.
+Colour, surface, type and rhythm come back, and so does the Swiss film's house curve, which has no GSAP name. The
+risograph sun is read rising behind its horizon with the film's exact `power2.out`. What is still missed is said
+plainly in the report: type rising in a slot of its own size reads as a stretch, a camera on a plain ground as
+elements moving together, and reflections nested in a sea that is being wiped on aren't seen apart from it.
 
 ## How it will work
 

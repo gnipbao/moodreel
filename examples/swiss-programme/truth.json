@@ -20,7 +20,7 @@
     558
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "caption1",
@@ -37,7 +37,7 @@
     957
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "bar0",
@@ -156,7 +156,7 @@
     275
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "camera",
@@ -190,7 +190,7 @@
     558
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square0",
@@ -207,7 +207,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square1",
@@ -224,7 +224,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square2",
@@ -241,7 +241,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square3",
@@ -258,7 +258,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square4",
@@ -275,7 +275,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square5",
@@ -292,7 +292,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square6",
@@ -309,7 +309,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "square7",
@@ -326,7 +326,7 @@
     890
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "caption2",
@@ -343,7 +343,7 @@
     957
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   },
   {
    "element": "signal",
@@ -683,7 +683,7 @@
     985
    ],
    "scope": "v1",
-   "reader": "mask"
+   "reader": "clip"
   }
  ],
  "transitions": [],

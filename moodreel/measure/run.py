@@ -150,9 +150,12 @@ def _motion_lines(g: dict) -> list[str]:
         if not r:
             continue
         d = r["duration_s"] or {}
-        eased = (f"eases read with confidence in {r.get('claimed', 0)}: classes {r['classes']}; "
-                 f"overshoot in {r['overshoot_share']:.0%}" + (f" (median {r['overshoot']['median']:.0%})" if r.get("overshoot") else "")
-                 if r.get("claimed") else "no ease read with confidence")
+        eased = (f"classes read with confidence in {r.get('class_claimed', 0)} ({r['classes']}), families in "
+                 f"{r.get('claimed', 0)}; overshoot in {r['overshoot_share']:.0%}"
+                 + (f" (median {r['overshoot']['median']:.0%})" if r.get("overshoot") else "")
+                 + (f"; one curve draws them: bezier{tuple(r['curve']['bezier'])} ({r['curve']['tweens']} tweens)"
+                    if r.get("curve") else "")
+                 if r.get("class_claimed") else "no ease read with confidence")
         out.append(f"{role.capitalize()}s ({r['count']}): {_fmt(d.get('p25'))}–{_fmt(d.get('p75'))} s (median {_fmt(d.get('median'))}); "
                    f"vocabulary {r['vocabulary']}; {eased}"
                    + (f"; unconfirmed guesses {r['guesses']}" if r.get("guesses") else "") + ".")

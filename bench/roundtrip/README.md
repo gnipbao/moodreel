@@ -31,10 +31,11 @@ It writes [REPORT.md](REPORT.md) here; the work folders (references, project, me
 | kit eases | entrance, exit, move class | the kit's class is the film's; *unknown* when the kit leaves the curve unread (safe: the director picks it), *fail* only when it names a wrong one |
 
 Then every move in the film, scored as the [motion bench](../motion/README.md) scores its test films (matched by
-place and t50 within a quarter second) and grouped by the reader it needs: `move`, `scale` and `opacity` are what
-the readers cover today (`mvp`); `mask` (clip reveals, wipes), `stretch` (one-axis scale), `draw-on` and a camera
-on a flat ground are not yet (`v1`). Each move is *missed*, *claimed right* or *wrong* (the ease class was named),
-or *guessed right* or *wrong* (timed, but the curve was left unread).
+place and t50 within a quarter second) and grouped by the reader it needs: `move`, `scale` and `opacity` (the
+template tracker, `mvp`); `clip`, `stretch` and `wipe` (the extent reader, added after the first round trip and
+still marked `v1` in the truth); `draw-on` and a camera on a flat ground (not measured yet). A stretch and a wipe
+match each other, since a solid shape can't tell them apart. Each move is *missed*, *claimed right* or *wrong* (the
+ease family or class was claimed), or *guessed right* or *wrong* (timed, but the curve was left unread).
 
 ## Adding a film
 
@@ -44,4 +45,5 @@ Make it with `moodreel film new <name> --style <slug> --root examples`, then wri
 height, `weight` as a list of acceptable weights); `motion` (the dominant `entrance`, `exit` and `move` class, or
 null); `transitions` and `stepping` as in the motion bench; and `events`, one per tween, with `element`, `prop`,
 `t0`, `t1`, `ease` (a GSAP name or `bezier(x1,y1,x2,y2)`), `from`, `to`, `end_xy` (the element's centre at rest, in
-screen pixels at the design size), `scope` and `reader`. List what you leave out, and why, in `omitted`.
+screen pixels at the design size; a stretch may give its anchor instead), `scope` and `reader`. Props are `x`, `y`,
+`scale`, `opacity`, `sx`, `sy`, `wipe` (the share shown), `draw` and `panx`. List what you leave out, and why, in `omitted`.

@@ -34,22 +34,33 @@ def _back_for(overshoot: float) -> str:
 def _ease_for(role: dict | None) -> dict | None:
     if not role:
         return None
-    # timings were measured, the curve was not (one reading among many is a guess too): the director picks it
-    if role.get("claimed", role.get("count", 1)) < min(2, role.get("count", 1)):
-        return {"ease": None, "duration": (role.get("duration_s") or {}).get("median"), "count": role.get("count"),
-                "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
-                "vocabulary": role.get("vocabulary")}
+    count = role.get("count", 1)
+    named, classed = role.get("claimed", count), role.get("class_claimed", role.get("claimed", count))
     classes = role.get("classes") or {}
-    dominant = max(classes, key=classes.get) if classes else None
-    names = {n: c for n, c in (role.get("eases") or {}).items() if eases.shape_class(n) == dominant} or role.get("eases") or {}
-    name = max(names, key=names.get) if names else "power2.out"
-    over = role.get("overshoot") or {}
-    if role.get("overshoot_share", 0) >= 0.4 and over.get("median"):
-        name = _back_for(over["median"])
+    ranked = sorted(classes.values(), reverse=True)
+    # a tie between two classes is not a style's habit
+    dominant = max(classes, key=classes.get) if classes and (len(ranked) < 2 or ranked[0] > ranked[1]) else None
+    names = {n: c for n, c in (role.get("eases") or {}).items() if eases.shape_class(n) == dominant}
+    curve = role.get("curve")
     dur = (role.get("duration_s") or {}).get("median")
     from ..motion.fit import bezier_for
-    out = {"ease": name, "class": eases.shape_class(name), "duration": dur, "bezier": bezier_for(name),
-           "overshoot_share": role.get("overshoot_share"), "count": role.get("count")}
+    # a family read with confidence at least twice; else the style's own curve, when the class was read at least
+    # twice and one bezier draws those tweens; else the timing only, and the director picks the curve
+    if named >= min(2, count) and names:
+        name = max(names, key=names.get)
+        over = role.get("overshoot") or {}
+        if role.get("overshoot_share", 0) >= 0.4 and over.get("median"):
+            name = _back_for(over["median"])
+        bezier, source = bezier_for(name), "named"
+    elif classed >= min(2, count) and curve and curve["class"] == dominant:
+        name, bezier = "bezier({},{},{},{})".format(*curve["bezier"]), curve["bezier"]
+        source = f"one curve through {curve['tweens']} tweens whose class was read"
+    else:
+        return {"ease": None, "duration": dur, "count": count,
+                "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
+                "vocabulary": role.get("vocabulary")}
+    out = {"ease": name, "class": eases.shape_class(name), "duration": dur, "bezier": bezier, "source": source,
+           "overshoot_share": role.get("overshoot_share"), "count": count}
     if role.get("scale_from"):
         out["scale_from"] = role["scale_from"]["median"]
     if role.get("travel_frac_of_frame"):
