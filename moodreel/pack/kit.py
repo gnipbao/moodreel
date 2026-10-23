@@ -58,9 +58,15 @@ def _ease_for(role: dict | None) -> dict | None:
         dur = curve.get("duration") or dur
         source = f"one curve through {curve['tweens']} tweens whose class was read"
     else:
-        return {"ease": None, "duration": dur, "count": count,
-                "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
-                "vocabulary": role.get("vocabulary")}
+        out = {"ease": None, "duration": dur, "count": count,
+               "unread": "no ease was read with confidence; take it from STYLE.md or the references by eye",
+               "vocabulary": role.get("vocabulary")}
+        # what was read, too seldom to stand for the role: a lead for the director, never used by the helpers
+        if classes or curve:
+            out["seen"] = {"classes": classes, "of": count,
+                           **({"curve": "bezier({},{},{},{})".format(*curve["bezier"]), "curve_class": curve["class"]}
+                              if curve else {})}
+        return out
     out = {"ease": name, "class": eases.shape_class(name), "duration": dur, "bezier": bezier, "source": source,
            "overshoot_share": role.get("overshoot_share"), "count": count}
     if role.get("scale_from"):
@@ -88,7 +94,8 @@ def motion_tokens(grammar: dict) -> dict:
                    "stagger": [s for s in grammar["stagger"] if s.get("video") == vid], "shots": grammar["shots"][vid],
                    "counters": counters,
                    "loops": next((c for c in (grammar.get("loops") or {}).values() if c), None),
-                   "particles": next((c for c in (grammar.get("particles") or {}).values() if c), None)}
+                   "particles": next((c for c in (grammar.get("particles") or {}).values() if c), None),
+                   "beat": next((c for c in (grammar.get("beat") or {}).values() if c), None)}
     sh = grammar.get("shots") or {}
     every = grammar.get("stagger") or []
     st = [s for s in every if not s.get("letters")]          # elements in a group; letters in a word apart
@@ -112,6 +119,8 @@ def motion_tokens(grammar: dict) -> dict:
         "loop": ({"period": grammar["loops"]["period_s"]["median"] if grammar["loops"].get("period_s") else None,
                   **{k: v["median"] for k, v in grammar["loops"]["props"].items()}} if grammar.get("loops") else None),
         "particles": (grammar.get("particles") or [None])[0],
+        "beat": ({"bpm": grammar["beat"]["bpm"], "period": round(60 / grammar["beat"]["bpm"], 4),
+                  "phase": grammar["beat"]["phase_s"]} if grammar.get("beat") else None),
     }
 
 
@@ -190,4 +199,6 @@ export const move = (t, at) => tween(t, at, role('move').duration ?? 0.6, role('
 export const count = (t, at, from, to) => value(t, at, role('count').duration ?? 1.2, from, to, role('count').ease);
 // an ambient loop, -1..1, at the references' period (MOTION.loop also has how far they bob, pulse or breathe)
 export const loop = (t, period = MOTION?.loop?.period ?? 2, phase = 0) => Math.sin(2 * Math.PI * (t / period + phase));
+// the time of beat n on the references' grid (n may be fractional: 2.5 is the off-beat after beat 2)
+export const beat = n => (MOTION?.beat?.phase ?? 0) + n * (MOTION?.beat?.period ?? 0.5);
 """

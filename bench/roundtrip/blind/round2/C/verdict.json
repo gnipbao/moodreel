@@ -1,0 +1,10 @@
+{"sections": {"1": "same", "2": "same", "3": "same", "4": "partly", "5": "partly", "6": "partly", "7": "same", "8": "same", "9": "same", "10": "same", "11": "same"},
+ "notes": {
+  "1": "Close: row shifts (the original's signature) and 'chapter = hue' are not in the essence; the film shows neither. 'No multi-hue palettes' should apply per card only.",
+  "3": "Close: reads a single chapter. The five-hue chapter set, dark type on light hues and low-versus-full pattern contrast were never exercised.",
+  "4": "Title, translation line, mono corners and tick bar match. But subtitles are told to replace the translation line in its style. The original puts captions in a mono line on a hue band at the bottom and keeps the bilingual card intact.",
+  "5": "Beat lock, expo-out arrivals, mask slide-up with the second line about 0.08 s later, and the figure assembling from alternating sides all match. But it says the tile field never moves within a card, which contradicts the breathing rows (alternating drift, quarter-cell jumps on beats). No pace ladder.",
+  "6": "The locked flat frame and the text/stage split match. But cards change by hard cuts, where the original uses rotating grid transitions (sliding rows, dropping columns, push, quarter-discs, iris, tile flip) and moves the camera along the grid.",
+  "8": "Close: chapter = colour, pace-ladder runs, long take, count-up and icon wall are unseen. 'One verb per item' is reduced to an idle bob.",
+  "11": "Close: every film is held to one hue and 8- or 16-beat cards. Chapter hues and half-length rapid-fire runs are not opened (unseen)."
+ }}

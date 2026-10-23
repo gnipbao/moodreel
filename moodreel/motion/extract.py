@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 from .. import video
-from . import ambient, camera, counter, fit, profile, shots, track
+from . import ambient, beat, camera, counter, fit, profile, shots, track
 
 
 def evidence(clip, run_tracks, path, cols=6):
@@ -132,7 +132,7 @@ def measure(path, out: Path, width=640) -> dict:
               "shots": shots_, "transitions": transitions, "camera": cam_events, "events": events,
               "loops": loops, "particles": fields,
               "grammar": {**profile.grammar(clip, shots_, transitions, runs_by_shot, events, cam_events),
-                          **ambient.grammar(loops, fields)},
+                          **ambient.grammar(loops, fields), "beat": beat.grid(events, transitions, clip.fps)},
               "seconds": round(time.time() - t_start, 1)}
     (out / "motion.json").write_text(json.dumps(clean(result), indent=1, ensure_ascii=False))
     return result

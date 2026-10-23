@@ -75,6 +75,16 @@ pictogram-motion 3. No section was judged "different" or "absent": every miss is
 film's surface right and then turns what that one film didn't do into a rule (no second hue, no green phosphor,
 never rotate or zoom, the mosaic never moves), and puts the beat lock under sound instead of motion.
 
+Second run (2026-10-24), after the skill learned that what the references don't show is unseen, not forbidden (a
+"never" needs evidence; the rest stays open in §11; a beat grid is a motion rule) and Moodreel learned to read a beat
+grid from silent motion (morning: 120 BPM): a new director and a new judge with the same instructions. All five pass:
+ascii-crt 10, swiss-motion 10, risograph 8, pictogram-motion 8, dark-keynote 8; again nothing "different" or
+"absent". The two judges are different agents and not equally strict (ascii-crt still says "never a second hue",
+judged "partly" in the first run and "same" in the second; scored the stricter way it is 9, still a pass). What still
+costs points: camera and transition grammar when the film only cuts, the risograph's registration kick and its
+plate lifted away as a story, and the beat lock of the two films whose grid wasn't measured (dark-keynote,
+swiss-motion). Each run's STYLE.md files, verdicts and table are in [blind/](blind/) (`round1/`, `round2/`).
+
 ## Adding a film
 
 Make it with `moodreel film new <name> --style <slug> --root examples`, then write `truth.json` next to `main.js`:

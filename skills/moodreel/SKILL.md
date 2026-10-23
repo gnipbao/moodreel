@@ -48,6 +48,8 @@ intake ─► measure ─► read ─► write STYLE.md · LEDGER.md · DECISION
 3. **Write** (`references/distill/writing-style-md.md`): `ANALYSIS.md` (3–5 traits that make the style recognisable,
    each tied to evidence; what it is not), then `STYLE.md` (11 sections), `LEDGER.md` (`references/distill/ledger.md`)
    and `DECISIONS.md` (choices the measurement can't make: typefaces, how materials are built, sound direction).
+   What the references don't show is unseen, not forbidden: write "never" only where the evidence or the medium
+   says so, and leave the rest open in §11 (the guide's "Few references" section).
 4. **Gate 1**: show the decisions in one message (each: choice, alternatives, evidence, cost) and wait for an OK.
 5. **Look**: `moodreel kit <project>`, `moodreel scaffold <project>`; rewrite `look/main.js` into the style's own
    picture with the kit (`references/primitives.md`); render a still; `moodreel frame-check` it

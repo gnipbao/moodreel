@@ -183,8 +183,10 @@ def cmd_bench_blind(a):
         print(f"{len(key)} packets -> {out}/<code>/packet (BRIEF.md for the director); JUDGE.md and KEY.json for the judge")
     md = blind.score(out, REPO / "bench" / "roundtrip" / "REPORT.md")
     (REPO / "bench" / "roundtrip" / "BLIND.md").write_text(md, encoding="utf-8")
-    if a.step == "score":
-        blind.keep(out, REPO / "bench" / "roundtrip" / "blind")
+    if a.step == "score":                               # each round kept apart: blind/round<N>/
+        dest = REPO / "bench" / "roundtrip" / "blind" / f"round{a.round}"
+        blind.keep(out, dest)
+        (dest / "BLIND.md").write_text(md, encoding="utf-8")
     print(md)
 
 
@@ -279,6 +281,7 @@ def main(argv=None):
     q.set_defaults(fn=cmd_bench_roundtrip)
     q = b.add_parser("blind", help="packets for a blind distillation of the example films, and the judges' scores")
     q.add_argument("step", choices=["make", "score"])
+    q.add_argument("--round", default="1", help="which blind round the verdicts are (kept in bench/roundtrip/blind/round<N>)")
     q.add_argument("--roundtrip", default=str(REPO / "out" / "roundtrip"))
     q.add_argument("--out", default=str(REPO / "out" / "blind"))
     q.add_argument("--only", help="comma-separated film names")

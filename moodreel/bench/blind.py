@@ -12,8 +12,8 @@ films has, so the distillation goes to someone else:
   (a director who reads only the packet writes <packet>/STYLE.md)
   (a judge reads JUDGE.md and writes out/blind/<code>/verdict.json)
   moodreel bench blind score    the verdicts and the judge's notes, beside the round trip's own five, into
-                                bench/roundtrip/BLIND.md; the distilled STYLE.md files and verdicts are kept beside it
-                                (bench/roundtrip/blind/<code>/)
+                                bench/roundtrip/BLIND.md; the distilled STYLE.md files, verdicts and that table are
+                                kept per round (bench/roundtrip/blind/round<N>/, --round N)
 """
 from __future__ import annotations
 

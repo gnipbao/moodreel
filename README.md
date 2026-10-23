@@ -66,9 +66,10 @@ Colours, surfaces, type and rhythm come back; so does the Swiss film's house cur
 "Sections held" counts the five STYLE.md sections the measurements speak for (materials, colour, type, motion,
 camera); the other six are the director's judgement, tested blind: `moodreel bench blind` packs each film's
 references and measurements for a director who hasn't read the style, and scores the judges' verdicts
-([BLIND.md](bench/roundtrip/BLIND.md)). On the first blind run one style of five reaches 8 of 11 sections judged the
-same (Swiss motion; the others 7, 6, 5 and 3): the surface comes back, but the director turns what one film didn't
-do into "never" (no second hue, never rotate), and that is what the next round fixes.
+([BLIND.md](bench/roundtrip/BLIND.md)). On the first blind run one style of five reached 8 of 11 sections judged the
+same: the director turned what one film didn't do into "never". After the skill learned that unseen is not forbidden,
+and Moodreel learned to read a beat grid from silent motion, a second blind run (new director, new judge) passes all
+five: 10, 10, 8, 8 and 8 of 11.
 
 ## How it will work
 

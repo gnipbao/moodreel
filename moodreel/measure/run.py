@@ -19,7 +19,7 @@ def _pool_motion(per_video: dict) -> dict:
     """With several reference videos, each keeps its own grammar; the pooled view lists the numbers side by side."""
     if len(per_video) == 1:
         return next(iter(per_video.values()))["grammar"]
-    keys = ("entrance", "exit", "move", "counters", "loops", "particles")
+    keys = ("entrance", "exit", "move", "counters", "loops", "particles", "beat")
     out = {"videos": list(per_video)}
     for k in keys:
         out[k] = {vid: m["grammar"].get(k) for vid, m in per_video.items()}
@@ -187,6 +187,12 @@ def _motion_lines(g: dict) -> list[str]:
         out.append(f"Particles: about {f['count']} in frame, radius {_fmt(f['radius_px'])} px, drifting "
                    f"{_fmt(f['speed']['p10'])}–{_fmt(f['speed']['p90'])} px/s toward {_fmt(f['direction_deg'])}° "
                    f"(0 = right, 90 = down; spread {_fmt(f['spread_deg'])}°).")
+    if g.get("beat"):
+        b = g["beat"]
+        out.append(f"Beat grid: moves start and land, and shots cut, on a {_fmt(b['bpm'])} BPM grid"
+                   + (f" (in {b['subdivision']}s of the beat)" if b["subdivision"] > 1 else "")
+                   + f" counted from {_fmt(b['phase_s'])} s: {b['on_grid']} of {b['marks']} within a frame and a half "
+                   f"(chance {b['chance']:.0%}; p {b['p_value']}). A timing rule for §5 and §6, whatever the sound.")
     for s in g.get("stagger", []):
         out.append(f"Stagger: {s['count']} × {s['interval_s']} s, {s['order']} ({s['vocabulary']}).")
     if g.get("stepping") and g["stepping"]["on"] > 1:
