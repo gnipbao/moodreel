@@ -19,6 +19,8 @@ moodreel film deliver films/<name> --music track.wav
 
 Fix everything it finds in one round, then check once more. What is still off after that, tell the user in one line.
 
+With a `narration.json`, `film deliver` voices it first (the subtitles read `voice.js`), brings the speech to
+−16 dBFS, sets the music 6 dB lower and ducks it further under each line, and mixes the two before the loudness pass.
 `film deliver` renders the film, normalises the music to −14 LUFS (two-pass loudnorm, a 1 s fade at the end), muxes,
 and writes `<name>.mp4` and `poster.jpg` (at `film.json → poster`). With no `--music` it uses the film's own score
 (`score.json`, rendered first, so the picture reads the cue times it was written to); with neither, the film is

@@ -203,7 +203,9 @@ pinned to points in the world; `film new` copies three.js into the film), which 
 islands and glass product renders to tilt-shift and HD-2D. And real material (`moodreel media add`: footage stored
 as one frame per film frame, stills and data, each with its source, licence and hash in a manifest and in CREDITS;
 `kit/media.js` gives the picture the frame of its own time; `film check` fails material with no source or licence),
-which makes the last 15 ready: every style in the library can now be made. Only the documents are imported; Moodreel re-implements the techniques.
+which makes the last 15 ready: every style in the library can now be made. Films can also be narrated
+(`narration.json` → `moodreel voice`: lines placed at times or on cues, voiced, subtitled from `voice.js`, the music
+ducked under them at delivery) and carry sound effects without music (a score of cues alone). Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 

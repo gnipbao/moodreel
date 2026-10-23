@@ -9,6 +9,9 @@ picture hit lands on a listed cue. `score.json` holds both, and the music's arra
    "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "stab"},
             {"name": "gasp", "bar": 6, "beat": 1, "sound": "stop", "beats": 2}, ...]}
 
+With no sections (or sections with "parts": []) a score is the film's sound effects alone, its cues placed in bars
+and beats of the tempo all the same.
+
 Bars and beats count from 1 (beat 2.5 is the off-beat after 2); one chord per bar, cycling. Grooves: four (a kick on
 every beat), backbeat (kick 1 and 3, snare 2 and 4), halftime (kick 1, snare 3), oompah (bass on 1 and 3, a chord
 stab on 2 and 4), none. Parts: kick, snare, clap, hat, bass, pad, stab, pluck (an arpeggio in eighths), lead (a
@@ -129,7 +132,8 @@ def render(score: dict) -> tuple[np.ndarray, dict]:
     tl = timeline(score)
     rng = np.random.default_rng(score.get("seed", 0))
     beat_s, meter = tl["beat_s"], tl["meter"]
-    band = np.zeros(int((tl["duration"] + 1.0) * S.SR), np.float32)
+    last = max([c["t"] for c in tl["cues"]] + [0.0])     # a score of cues alone (sound effects) runs past its last
+    band = np.zeros(int((max(tl["duration"], last + 2.0) + 1.0) * S.SR), np.float32)
     for s, at in zip(score["sections"], tl["sections"]):
         _section(band, s, at["start"], beat_s, meter, rng)
     cues = np.zeros_like(band)

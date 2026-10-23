@@ -10,6 +10,7 @@
   moodreel styles [query]                                 your styles and the built-in ones
   moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f]
   moodreel score <film>                                   the film's score.json as out/score.wav and score.js (cue times)
+  moodreel voice <film>                                   narration.json voiced: out/voice.wav and voice.js (line times)
   moodreel media add <film> <file> --name N --source S --license L [--start --end --crop --width --grade]
   moodreel media list|check <film>                        real footage, stills and data, with source and licence
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
@@ -119,6 +120,11 @@ def cmd_styles(a):
         phase = "ready" if s.get("phase") == "later" and set(s.get("needs") or []) <= library.CAPABLE else s.get("phase", "?")
         print(f"{s['origin']:7s} {phase:5s} {s['slug']:22s} {s.get('name', '')} · {s.get('name_zh', '')}  [{needs}]")
     print(f"{len(rows)} styles")
+
+
+def cmd_voice(a):
+    from . import voice
+    print(json.dumps(voice.write(Path(a.film)), indent=1))
 
 
 def cmd_media(a):
@@ -266,6 +272,9 @@ def main(argv=None):
     p = sub.add_parser("styles", help="list your styles and the built-in ones")
     p.add_argument("query", nargs="?")
     p.set_defaults(fn=cmd_styles)
+    p = sub.add_parser("voice", help="voice a film's narration.json: out/voice.wav and voice.js")
+    p.add_argument("film")
+    p.set_defaults(fn=cmd_voice)
     p = sub.add_parser("media", help="real footage, stills and data in a film, with source and licence")
     p.add_argument("action", choices=["add", "list", "check"])
     p.add_argument("film")
