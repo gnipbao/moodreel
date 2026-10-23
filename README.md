@@ -57,7 +57,9 @@ Values that aren't "nothing fails" are left to the director (a curve the kit did
 Colours, surfaces, type and rhythm come back; so does the Swiss film's house curve, which has no GSAP name
 (`bezier(0.73,−0.03,0.18,1.04)` against `0.7,0,0.2,1`), and its page turn on a plain ground, read as a camera pan.
 "Sections held" counts the five STYLE.md sections the measurements speak for (materials, colour, type, motion,
-camera); the other six are the director's judgement.
+camera); the other six are the director's judgement, tested blind: `moodreel bench blind` packs each film's
+references and measurements for a director who hasn't read the style, and scores the judges' verdicts
+([BLIND.md](bench/roundtrip/BLIND.md)).
 
 ## How it will work
 

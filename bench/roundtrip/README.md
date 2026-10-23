@@ -48,6 +48,26 @@ surface), §3 colour (the palette), §4 type, §5 motion (the kit's eases, and t
 editing (transitions, the drawing rate, camera moves). The other six sections are the director's judgement; a
 fair test of them needs a director distilling real references without having read the style.
 
+## Blind distillation (the other six sections)
+
+```bash
+uv run moodreel bench blind make
+```
+
+turns each round-trip project into a packet under a neutral code (`out/blind/A/packet`, `B`, ...): the references,
+`MEASURE.md`, `measure/`, `evidence/`, the kit, the STYLE.md template and `BRIEF.md`, with every path or file name
+that could name the film left out. A director who has read neither the style nor this repository's examples (an
+agent started fresh, or a person) works only from the packet and writes `STYLE.md` there. A judge then follows
+`out/blind/JUDGE.md`, comparing it with the library's STYLE.md section by section into
+`out/blind/<code>/verdict.json`, and
+
+```bash
+uv run moodreel bench blind score
+```
+
+writes [BLIND.md](BLIND.md): the eleven verdicts per film beside the round trip's own five, and §8's line (at
+least 8 of 11 "same"). Whoever made the films can't be the director: they have read the styles.
+
 ## Adding a film
 
 Make it with `moodreel film new <name> --style <slug> --root examples`, then write `truth.json` next to `main.js`:
