@@ -73,6 +73,17 @@ Score a style frame against the references (palette coverage, off-palette area, 
 uv run moodreel frame-check out/projects/my-style frame.png
 ```
 
+Write the style's kit (the shared primitives plus `tokens.js` and `motion.js` from the measurements), draw a first
+style frame from it, and check a rendered film's motion against the references, claim by claim:
+
+```bash
+uv run moodreel kit out/projects/my-style && uv run moodreel scaffold out/projects/my-style
+```
+
+```bash
+uv run moodreel motion-check out/projects/my-style film.mp4
+```
+
 Measure the motion grammar of a single video:
 
 ```bash
@@ -98,7 +109,8 @@ the picture, or real footage and data. Only the documents are imported; Moodreel
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome + ffmpeg) |
-| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check), `bench/` (test films and scorer), `cli.py` |
+| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold), `bench/` (test films and scorer), `cli.py` |
+| `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |
 | `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |

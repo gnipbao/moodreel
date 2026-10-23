@@ -39,6 +39,9 @@
 - `uv run moodreel intake <项目> <参考图和视频…>`：导入参考、归一化、检查是否属于同一风格；
 - `uv run moodreel measure <项目>`：测调色板和颜色角色、材质、版式、字号和字重、运动语法、节奏，写出给导演看的 `MEASURE.md`；
 - `uv run moodreel frame-check <项目> <风格帧>`：按参考给风格帧打分；
+- `uv run moodreel kit <项目>`：由测量结果生成风格的 kit（`tokens.js`、`motion.js` 和共用原语，见 [kit/README.md](kit/README.md)）；
+- `uv run moodreel scaffold <项目>`：只用测出的数值画出第一版风格帧，作为导演修改的起点；
+- `uv run moodreel motion-check <项目> <影片>`：用同一套测量逐条比对影片的运动语法和参考是否一致；
 - `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法。
 
 运动评测见 [bench/motion/README.md](bench/motion/README.md)。
