@@ -1,0 +1,11 @@
+every-style
+
+Third-party assets (fonts, images, music, samples) and their licences:
+
+- show (footage): Moodreel example film quiz-night (examples/quiz-night in this repository) — MIT (this repository)
+- harbour (footage): Moodreel example film harbour-dawn (examples/harbour-dawn in this repository) — MIT (this repository)
+- island (footage): Moodreel example film tide-town (examples/tide-town in this repository) — MIT (this repository)
+- save (footage): Moodreel example film first-save (examples/first-save in this repository) — MIT (this repository)
+- Typefaces: system faces (PingFang SC and Helvetica Neue on macOS), not shipped with the film; the style sets Noto
+  Sans SC and Inter Tight (both OFL), which a published film ships instead.
+- No images, music or samples. The channel 画格快讯 FRAME WIRE is fictional.

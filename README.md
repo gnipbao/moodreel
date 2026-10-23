@@ -219,7 +219,7 @@ film's own frame). Only the documents are imported; Moodreel re-implements the t
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
-| `examples/` | Example films made in library styles, with the values their code uses ([examples/README.md](examples/README.md)) |
+| `examples/` | Example films made in library styles: five with the values their code uses, for the round trip, and five showing score, pixel, brush, 3D and footage ([examples/README.md](examples/README.md)) |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |
 | `bench/roundtrip/` | The round trip's latest report ([bench/roundtrip/README.md](bench/roundtrip/README.md)) |
 | `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |

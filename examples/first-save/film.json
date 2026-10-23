@@ -1,0 +1,9 @@
+{
+ "name": "first-save",
+ "style": "pixel-rpg",
+ "style_origin": "builtin",
+ "size": "1920x1080",
+ "fps": 24,
+ "duration": 10.0,
+ "poster": 6.0
+}

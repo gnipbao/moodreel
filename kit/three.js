@@ -8,7 +8,7 @@ import * as THREE from './vendor/three/three.module.js';
 export { THREE };
 
 export function layer3d(width, height, { background = null, antialias = true, shadows = false, exposure = 1,
-  fov = 35, near = 0.1, far = 1000, toneMapping = 'aces' } = {}) {
+  fov = 35, near = 0.1, far = 1000, toneMapping = 'aces', ortho = null } = {}) {
   const canvas = document.createElement('canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias, preserveDrawingBuffer: true, alpha: background === null });
   renderer.setPixelRatio(1);
@@ -23,7 +23,9 @@ export function layer3d(width, height, { background = null, antialias = true, sh
   }
   const scene = new THREE.Scene();
   if (background) scene.background = new THREE.Color(background);
-  const camera = new THREE.PerspectiveCamera(fov, width / height, near, far);
+  // perspective by default; `ortho: h` gives an orthographic camera showing h world units from the centre to the top
+  const camera = ortho ? new THREE.OrthographicCamera(-ortho * width / height, ortho * width / height, ortho, -ortho, near, far)
+    : new THREE.PerspectiveCamera(fov, width / height, near, far);
   const L = {
     THREE, renderer, scene, camera, canvas,
     // render the scene and put it on the stage (or in a box on it)

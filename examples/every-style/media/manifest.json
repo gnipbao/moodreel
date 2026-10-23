@@ -1,0 +1,86 @@
+{
+ "show": {
+  "source": "Moodreel example film quiz-night (examples/quiz-night in this repository)",
+  "license": "MIT (this repository)",
+  "sha256": "1389814740c2e8b66b5ffdbab3418692744620217c1329f708647366fd140ca8",
+  "original": "quiz-night.mp4",
+  "added": "2026-10-24",
+  "kind": "footage",
+  "path": "media/show/",
+  "frames": 87,
+  "fps": 24,
+  "duration": 3.625,
+  "size": [
+   1280,
+   720
+  ],
+  "start": 4.0,
+  "end": 7.6,
+  "crop": null,
+  "width": 1280,
+  "grade": null
+ },
+ "harbour": {
+  "source": "Moodreel example film harbour-dawn (examples/harbour-dawn in this repository)",
+  "license": "MIT (this repository)",
+  "sha256": "12ae93f3602a2e787c3ca93ed4ac0a264b900154a0b5694df5cabcdd40cbcbe7",
+  "original": "harbour-dawn.mp4",
+  "added": "2026-10-24",
+  "kind": "footage",
+  "path": "media/harbour/",
+  "frames": 82,
+  "fps": 24,
+  "duration": 3.417,
+  "size": [
+   1280,
+   720
+  ],
+  "start": 4.6,
+  "end": 8.0,
+  "crop": null,
+  "width": 1280,
+  "grade": null
+ },
+ "island": {
+  "source": "Moodreel example film tide-town (examples/tide-town in this repository)",
+  "license": "MIT (this repository)",
+  "sha256": "ff7e8f5d4977d9b0095731695d0fe542f94bd3862c499438a2bc5e13f1c357ba",
+  "original": "tide-town.mp4",
+  "added": "2026-10-24",
+  "kind": "footage",
+  "path": "media/island/",
+  "frames": 82,
+  "fps": 24,
+  "duration": 3.417,
+  "size": [
+   1280,
+   720
+  ],
+  "start": 2.0,
+  "end": 5.4,
+  "crop": null,
+  "width": 1280,
+  "grade": null
+ },
+ "save": {
+  "source": "Moodreel example film first-save (examples/first-save in this repository)",
+  "license": "MIT (this repository)",
+  "sha256": "529ee8f1160572cfe7a14daed7039b05a6f5f797eb9441e8d6be0472bb214a6c",
+  "original": "first-save.mp4",
+  "added": "2026-10-24",
+  "kind": "footage",
+  "path": "media/save/",
+  "frames": 84,
+  "fps": 24,
+  "duration": 3.5,
+  "size": [
+   1280,
+   720
+  ],
+  "start": 6.5,
+  "end": 10.0,
+  "crop": null,
+  "width": 1280,
+  "grade": null
+ }
+}
