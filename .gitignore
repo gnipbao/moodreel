@@ -1,0 +1,12 @@
+# dependencies
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+
+# generated: measurements, renders, review stills, render scratch
+out/
+stills/
+.segments-*/
+
+.DS_Store

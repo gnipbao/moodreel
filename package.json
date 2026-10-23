@@ -1,0 +1,20 @@
+{
+  "name": "moodreel",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Moodboard in, reel out: distill a visual and motion style from references, then render new code-drawn films in it.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "moodreel-render": "render/render.mjs"
+  },
+  "scripts": {
+    "render": "node render/render.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "25.12.0"
+  }
+}

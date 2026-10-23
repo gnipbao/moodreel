@@ -1,0 +1,154 @@
+#!/usr/bin/env node
+// Render a page that draws itself as a function of time.
+//
+// The page contract (a folder with index.html):
+//   window.DUR = <seconds>;              length of the film
+//   window.render = (t) => { ... };      draw the frame at second t; deterministic, no state carried between calls
+//   window.READY = true;                 set once fonts and images are loaded
+//
+// Usage:
+//   node render/render.mjs video <dir> [--fps 30] [--size 1920x1080] [--workers 2] [--out <dir>/out/video.mp4]
+//   node render/render.mjs still <dir> <t> [<t> ...] [--size 1920x1080] [--out <dir>/stills]
+//
+// Each worker opens its own page and encodes one contiguous range of frames; the ranges are joined without
+// re-encoding. Any page error stops the render.
+import fs from 'node:fs';
+import http from 'node:http';
+import path from 'node:path';
+import { spawn } from 'node:child_process';
+import puppeteer from 'puppeteer';
+
+const TYPES = {
+  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif',
+  '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.otf': 'font/otf', '.wasm': 'application/wasm',
+};
+
+function parse(argv) {
+  const [cmd, dir, ...rest] = argv;
+  const opts = { fps: 30, size: '1920x1080', workers: 1, out: null, times: [] };
+  for (let i = 0; i < rest.length; i++) {
+    const a = rest[i];
+    if (a === '--fps') opts.fps = Number(rest[++i]);
+    else if (a === '--size') opts.size = rest[++i];
+    else if (a === '--workers') opts.workers = Number(rest[++i]);
+    else if (a === '--out') opts.out = rest[++i];
+    else opts.times.push(Number(a));
+  }
+  const [w, h] = opts.size.split('x').map(Number);
+  if (!['video', 'still'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)) {
+    console.error('usage: render.mjs video|still <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--out path]');
+    process.exit(2);
+  }
+  return { cmd, dir: path.resolve(dir), w, h, ...opts };
+}
+
+// Static files from the film folder only, on loopback.
+function serve(root) {
+  return new Promise(resolve => {
+    const server = http.createServer((req, res) => {
+      let rel;
+      try { rel = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { res.writeHead(400).end(); return; }
+      const file = path.resolve(root, '.' + rel);
+      if (file !== root && !file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
+      fs.readFile(file, (err, data) => {
+        if (err) { res.writeHead(404).end(); return; }
+        res.writeHead(200, { 'Content-Type': TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream' }).end(data);
+      });
+    });
+    server.listen(0, '127.0.0.1', () => resolve(server));
+  });
+}
+
+async function openPage(browser, url, w, h) {
+  const page = await browser.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  page.on('requestfailed', r => errors.push(`failed to load ${r.url()}`));
+  await page.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
+  await page.goto(url, { waitUntil: 'load' });
+  await page.waitForFunction(() => window.READY === true, { timeout: 120_000 });
+  if (errors.length) throw new Error(errors.join('\n'));
+  return { page, errors };
+}
+
+async function frame(ctx, t, type) {
+  await ctx.page.evaluate(t => window.render(t), t);
+  if (ctx.errors.length) throw new Error(ctx.errors.join('\n'));
+  return ctx.page.screenshot(type === 'jpeg' ? { type, quality: 95 } : { type });
+}
+
+function encoder(file, fps) {
+  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg',
+    '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-pix_fmt', 'yuv420p', file],
+  { stdio: ['pipe', 'inherit', 'inherit'] });
+  const done = new Promise((ok, fail) => {
+    ff.on('error', fail);
+    ff.on('close', code => (code === 0 ? ok() : fail(new Error(`ffmpeg exited with ${code}`))));
+  });
+  const write = buf => (ff.stdin.write(buf) ? Promise.resolve() : new Promise(r => ff.stdin.once('drain', r)));
+  return { write, end: () => { ff.stdin.end(); return done; } };
+}
+
+async function video(browser, url, o) {
+  const probe = await openPage(browser, url, o.w, o.h);
+  const dur = await probe.page.evaluate(() => window.DUR);
+  await probe.page.close();
+  if (!(dur > 0)) throw new Error(`window.DUR must be a positive number of seconds (got ${dur})`);
+  const total = Math.round(dur * o.fps);
+  const out = path.resolve(o.out || path.join(o.dir, 'out', 'video.mp4'));
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  const tmp = fs.mkdtempSync(path.join(path.dirname(out), '.segments-'));
+  const per = Math.ceil(total / o.workers);
+  const started = Date.now();
+  try {
+    const parts = await Promise.all([...Array(o.workers)].map(async (_, k) => {
+      const a = k * per, b = Math.min(total, a + per);
+      if (a >= b) return null;
+      const ctx = await openPage(browser, url, o.w, o.h);
+      const file = path.join(tmp, `part${k}.mp4`);
+      const enc = encoder(file, o.fps);
+      for (let f = a; f < b; f++) {
+        await enc.write(await frame(ctx, f / o.fps, 'jpeg'));
+        if ((f - a) % 60 === 0) console.log(`worker ${k}: ${f - a}/${b - a}`);
+      }
+      await enc.end();
+      await ctx.page.close();
+      return file;
+    }));
+    const list = path.join(tmp, 'parts.txt');
+    fs.writeFileSync(list, parts.filter(Boolean).map(p => `file '${p}'`).join('\n'));
+    await new Promise((ok, fail) => spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', list,
+      '-c', 'copy', out], { stdio: 'inherit' }).on('close', c => (c === 0 ? ok() : fail(new Error('joining parts failed')))));
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  console.log(`done ${out}: ${total} frames in ${((Date.now() - started) / 1000).toFixed(1)}s`);
+}
+
+async function stills(browser, url, o) {
+  const outDir = path.resolve(o.out || path.join(o.dir, 'stills'));
+  fs.mkdirSync(outDir, { recursive: true });
+  const ctx = await openPage(browser, url, o.w, o.h);
+  for (const t of o.times) {
+    const file = path.join(outDir, `t_${t}.jpg`);
+    fs.writeFileSync(file, await frame(ctx, t, 'jpeg'));
+    console.log(file);
+  }
+}
+
+const o = parse(process.argv.slice(2));
+if (!fs.existsSync(path.join(o.dir, 'index.html'))) { console.error(`no index.html in ${o.dir}`); process.exit(2); }
+const server = await serve(o.dir);
+const browser = await puppeteer.launch({ headless: true, args: ['--hide-scrollbars', '--force-color-profile=srgb'] });
+try {
+  const url = `http://127.0.0.1:${server.address().port}/index.html`;
+  await (o.cmd === 'video' ? video(browser, url, o) : stills(browser, url, o));
+} catch (e) {
+  console.error(e.message);
+  process.exitCode = 1;
+} finally {
+  await browser.close();
+  server.close();
+}
