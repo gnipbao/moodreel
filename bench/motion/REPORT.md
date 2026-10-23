@@ -4,8 +4,8 @@
 
 | variant | props found | spurious | t50 ≤ 1 f | class | family | named / wrong | transitions | staggers | stepping | v1 found |
 |---|---|---|---|---|---|---|---|---|---|---|
-| clean | 90/96 | 30 | 0.856 | 0.967 | 0.556 | 29 / 0 | 13/14 (+0) | 5/6 | 2/2 | 8/11 |
-| stress | 88/96 | 23 | 0.875 | 0.864 | 0.341 | 9 / 0 | 13/14 (+0) | 3/6 | 1/2 | 3/11 |
+| clean | 90/96 | 25 | 0.856 | 0.967 | 0.556 | 29 / 0 | 13/14 (+0) | 5/6 | 2/2 | 10/11 |
+| stress | 88/96 | 19 | 0.875 | 0.864 | 0.341 | 9 / 0 | 13/14 (+0) | 3/6 | 1/2 | 5/11 |
 
 **clean**: ✓ recall 0.938 (target ≥ 0.9) · ✓ t50_within_1f 0.856 (target ≥ 0.85) · ✓ class_ok 0.967 (target ≥ 0.8) · ✓ claimed_wrong_rate 0.0 (target ≤ 0.05)
 
@@ -231,25 +231,25 @@ Spurious: e5.x, e6.x, e6.y, e9.x, e9.y, e10.x, e11.x, e11.y
 
 | element | prop | scope | truth | measured | claimed (BIC gap) | t0 err (f) | t50 err (f) | family | class |
 |---|---|---|---|---|---|---|---|---|---|
-| kinetic | y | v1 | power3.out 0.30-0.80s | **missed** | | | | | |
-| kinetic | opacity | v1 | power3.out 0.30-0.80s | **missed** | | | | | |
+| kinetic | y | v1 | power3.out 0.30-0.80s | power4.out 0.32-0.90s | yes (111.1) | 0.5 | 0.4 | ✗ | ✓ |
+| kinetic | opacity | v1 | power3.out 0.30-0.80s | power3.out 0.30-0.80s | yes (197.9) | 0.0 | 0.0 | ✓ | ✓ |
 | kinetic | opacity | v1 | power2.in 3.20-3.60s | **missed** | | | | | |
 | words | opacity | mvp | power2.out 1.20-1.70s | power2.out 1.20-1.72s | yes (120.4) | 0.0 | 0.1 | ✓ | ✓ |
 | underline | sx | v1 | power3.inOut 1.50-2.10s | power3.inOut 1.50-2.10s | yes (102.3) | 0.0 | 0.0 | ✓ | ✓ |
 
-Spurious: e0.opacity, e0.y, e1.opacity, e1.y, e1.rot, e3.draw, e4.sy
+Spurious: e3.draw, e4.opacity
 
 ### letters · stress
 
 | element | prop | scope | truth | measured | claimed (BIC gap) | t0 err (f) | t50 err (f) | family | class |
 |---|---|---|---|---|---|---|---|---|---|
-| kinetic | y | v1 | power3.out 0.30-0.80s | **missed** | | | | | |
-| kinetic | opacity | v1 | power3.out 0.30-0.80s | **missed** | | | | | |
+| kinetic | y | v1 | power3.out 0.30-0.80s | power2.out 0.26-0.74s | yes (30.4) | -1.2 | -0.6 | ✗ | ✓ |
+| kinetic | opacity | v1 | power3.out 0.30-0.80s | power1.out 0.28-0.62s | no (15.9) | -0.6 | -0.0 | ✗ | ✓ |
 | kinetic | opacity | v1 | power2.in 3.20-3.60s | **missed** | | | | | |
 | words | opacity | mvp | power2.out 1.20-1.70s | power3.out 1.22-1.72s | no (5.7) | 0.6 | -0.1 | ✗ | ✓ |
 | underline | sx | v1 | power3.inOut 1.50-2.10s | sine.inOut 1.62-1.98s | no (17.8) | 3.6 | 0.0 | ✗ | ✓ |
 
-Spurious: e0.y, e1.opacity, e1.y, e1.rot, e3.draw, e4.wipe
+Spurious: e3.draw, e4.opacity
 
 ### mg-basic · clean
 

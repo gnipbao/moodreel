@@ -154,8 +154,8 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 | group | value | film | distilled | result |
 |---|---|---|---|---|
 | palette | ground | ['#0E3B43', '#17606B', '#1F8A96'] | #175f6b (ΔE 0.6) | ✓ |
-| palette | ink | #F4EBDD | #f1eadb (ΔE 1.2) | ✓ |
-| palette | accent | none (tones of the hue) | #6dbdc3 | ✓ |
+| palette | ink | #F4EBDD | #f2eadb (ΔE 0.8) | ✓ |
+| palette | accent | none (tones of the hue) | #6ebdc3 | ✓ |
 | surface | grain (levels) | 0 | 0.08 | ✓ |
 | surface | vignette | 0 | 0.0 | ✓ |
 | surface | halftone | none | — | ✓ |
@@ -171,13 +171,13 @@ Motion by the reader each move needs:
 
 | reader | scope | events | found | claimed right | claimed wrong | guessed right | guessed wrong |
 |---|---|---|---|---|---|---|---|
-| scale | mvp | 3 | 3 | 0 | 0 | 1 | 2 |
-| move | mvp | 15 | 6 | 0 | 0 | 4 | 2 |
-| clip | v1 | 6 | 3 | 0 | 0 | 2 | 1 |
+| scale | mvp | 3 | 3 | 0 | 0 | 0 | 3 |
+| move | mvp | 15 | 6 | 0 | 0 | 5 | 1 |
+| clip | v1 | 6 | 3 | 0 | 0 | 1 | 2 |
 
 | element | prop | reader | film | measured | verdict | t50 err (f) |
 |---|---|---|---|---|---|---|
-| sun0 | scale | scale | expo.out 0.10-0.50s (out) | power4.out 0.10-0.42s | guess right | 0.1 |
+| sun0 | scale | scale | expo.out 0.10-0.50s (out) | circ.inOut 0.00-0.31s | guess wrong | 0.4 |
 | head0 | x | move | expo.out 0.25-0.75s (out) | — | missed | — |
 | torso0 | x | move | expo.out 0.38-0.88s (out) | — | missed | — |
 | legs0 | x | move | expo.out 0.50-1.00s (out) | — | missed | — |
@@ -189,10 +189,10 @@ Motion by the reader each move needs:
 | head1 | x | move | expo.out 4.25-4.75s (out) | — | missed | — |
 | torso1 | x | move | expo.out 4.38-4.88s (out) | — | missed | — |
 | legs1 | x | move | expo.out 4.50-5.00s (out) | — | missed | — |
-| title1 | y | clip | expo.out 5.00-5.50s (out) | expo.out 5.04-5.54s | guess right | 1.0 |
+| title1 | y | clip | expo.out 5.00-5.50s (out) | power1.inOut 4.96-5.27s | guess wrong | 1.6 |
 | zh1 | y | clip | expo.out 5.08-5.58s (out) | — | missed | — |
 | figure1 | y | move | sine.inOut 6.50-7.00s (inOut) | sine.inOut 6.52-6.96s | guess right | -0.2 |
-| figure1 | y | move | sine.inOut 7.00-7.50s (inOut) | none 7.06-7.46s | guess wrong | 0.2 |
+| figure1 | y | move | sine.inOut 7.00-7.50s (inOut) | sine.inOut 7.00-7.50s | guess right | 0.0 |
 | sun2 | scale | scale | expo.out 8.10-8.50s (out) | circ.inOut 8.00-8.31s | guess wrong | 0.4 |
 | head2 | x | move | expo.out 8.25-8.75s (out) | — | missed | — |
 | torso2 | x | move | expo.out 8.38-8.88s (out) | — | missed | — |
@@ -212,10 +212,10 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 | hold | median hold at least 80% of the reference's | 0.292 | 0.354 | ✓ |
 | shot_length | median within ±35% | 4.0 | 4.0 | ✓ |
 | transition_types | no transition the references don't use | ['cut'] | ['cut'] | ✓ |
-| density | within ±0.15 | 0.417 | 0.326 | ? |
+| density | within ±0.15 | 0.42 | 0.33 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e1.x, e1.y, e2.y, e2.scale, e3.y, e3.scale, e6.y, e9.x, e9.y, e10.y, e13.y, e18.y, e21.y.
+Measured but not in the film: e1.x, e1.y, e2.y, e2.scale, e3.y, e3.scale, e6.y, e9.x, e9.y, e10.y, e12.y, e18.y, e21.y.
 Left out of the truth: the HUD: mono corners and progress ticks appear with each cut.
 
 ## shipped

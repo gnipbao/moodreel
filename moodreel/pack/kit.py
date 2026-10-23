@@ -78,13 +78,17 @@ def motion_tokens(grammar: dict) -> dict:
         grammar = {"entrance": grammar["entrance"][vid], "exit": grammar["exit"][vid], "move": grammar["move"][vid],
                    "stagger": [s for s in grammar["stagger"] if s.get("video") == vid], "shots": grammar["shots"][vid]}
     sh = grammar.get("shots") or {}
-    st = grammar.get("stagger") or []
+    every = grammar.get("stagger") or []
+    st = [s for s in every if not s.get("letters")]          # elements in a group; letters in a word apart
+    lt = [s for s in every if s.get("letters")]
     cam = grammar.get("camera") or {}
     return {
         "enter": _ease_for(grammar.get("entrance")), "exit": _ease_for(grammar.get("exit")),
         "move": _ease_for(grammar.get("move")),
         "stagger": ({"interval": float(np.median([s["interval_s"] for s in st])),
                      "order": max({s["order"] for s in st}, key=[s["order"] for s in st].count)} if st else None),
+        "letters": ({"interval": float(np.median([s["interval_s"] for s in lt])),
+                     "order": max({s["order"] for s in lt}, key=[s["order"] for s in lt].count)} if lt else None),
         "hold": (grammar.get("hold_s") or {}).get("median"),
         "shot": (sh.get("length_s") or {}).get("median"),
         "transitions": {"cuts": sh.get("cuts", 0), "dissolves": sh.get("dissolves", 0), "dips": sh.get("dips", 0),

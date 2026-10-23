@@ -205,3 +205,31 @@ def test_a_line_drawn_along_its_path_reads_as_drawn_and_a_fade_does_not():
     D = extent.drawn(_stroke_film(path), _track(box))
     assert D is not None and D[0] == 0 and D[-1] > 0.95 and np.all(np.diff(D) >= -0.05)
     assert extent.drawn(_stroke_film(path, fade=True), _track(box)) is None
+
+
+def _word_film(stagger):
+    """WORDS: each letter fades in while rising 30 px over 12 frames, `stagger` frames after the one before."""
+    from moodreel.motion import eases as E
+    frames = []
+    for f in range(N):
+        img = np.empty((H, W, 3), np.uint8)
+        img[:] = (16, 20, 24)
+        for i, ch in enumerate("WORDS"):
+            p = float(E.get("power3.out")(np.clip((f - 6 - i * stagger) / 12, 0, 1)))
+            if p <= 0:
+                continue
+            layer = np.zeros_like(img)
+            cv2.putText(layer, ch, (40 + i * 50, int(110 + 30 * (1 - p))), cv2.FONT_HERSHEY_DUPLEX, 1.8, (245, 245, 245), 3,
+                        cv2.LINE_AA)
+            img = np.where(layer > 0, (img * (1 - p) + layer * p).astype(np.uint8), img)
+        frames.append(img)
+    return Clip("", FPS, W, H, np.stack(frames), 1.0)
+
+
+def test_letters_arriving_one_by_one_are_read_with_their_stagger():
+    from moodreel.motion import letters
+    tr = {"kind": "appear", "shot": 0, "p": 2, "q": 38, "box": [38, 78, 252, 36], "readings": {}}
+    t = np.arange(2, 39) / FPS
+    L = letters.reading(_word_film(2), tr, t)
+    assert L and L["count"] == 5 and L["order"] == "left-to-right" and abs(L["interval"] - 2 / FPS) < 0.5 / FPS
+    assert letters.reading(_word_film(0), tr, t) is None          # the word arriving whole is the tracker's

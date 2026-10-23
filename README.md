@@ -8,8 +8,8 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 [中文说明](README.zh-CN.md)
 
 > **Status: pre-alpha.** The whole path works end to end: references in, measurements, a kit, a packed style, a
-> film made in it, checked and delivered. Motion measurement passes its acceptance bench, and two example films
-> survive the round trip (below). Per-letter text is next.
+> film made in it, checked and delivered. Motion measurement passes its acceptance bench, and five example films
+> survive the round trip (below).
 
 ## Why measure motion?
 
@@ -34,9 +34,9 @@ degraded copy (3/4 size, 25 fps, moving grain, crf 30):
 | clean | 94% | 86% | 97% | 29 / 0 | 13/14 |
 | degraded | 92% | 88% | 86% | 9 / 0 | 13/14 |
 
-Of the 11 moves the bench marks as beyond those readers, 8 are now found on the clean films (bars growing, an
-underline and an axis drawn on, a card turning as it grows, its `power3.out` named exactly); per-letter text is not
-measured yet.
+Of the 11 moves the bench marks as beyond those readers, 10 are now found on the clean films: bars growing, an
+underline and an axis drawn on, a card turning as it grows (its `power3.out` named exactly), and a line of type
+arriving letter by letter (11 letters, 0.04 s apart, each `power3.out`).
 Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
 
 ### The round trip

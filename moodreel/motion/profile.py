@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from . import eases, extent
+from . import eases, extent, letters
 from .fit import PREFER, fit_move, shared_bezier
 from .track import series
 
@@ -63,6 +63,11 @@ def _one_axis(t, fps, X, prefer) -> dict | None:
     return _keep({**f, "anchor": X["anchor"]}, t, X["series"])
 
 
+def thr_y(W: float) -> float:
+    """The least travel that counts as a move (as for any element's x or y)."""
+    return 0.008 * W
+
+
 def element_events(clip, track: dict, on: int = 1) -> dict:
     S = series(clip, track)
     t, fps, W, H = _drawing_time(S["t"], clip.fps, on), clip.fps, clip.src_w, clip.src_h
@@ -71,6 +76,15 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
            "via_edge": side, "props": {}}
     role = {"appear": "entrance", "disappear": "exit"}.get(track["kind"], "move")
     prefer = PREFER[role]
+    # a line of letters arriving (or leaving) one after another
+    L = letters.reading(clip, track, t, prefer)
+    if L:
+        out["reading"] = {"mode": "letters", "axis": None, "anchor": None}
+        out["letters"] = {k: L[k] for k in ("count", "interval", "order")}
+        out["props"]["opacity"] = L["opacity"]
+        if L["y"] and abs(L["y"]["delta"]) >= thr_y(W):
+            out["props"]["y"] = L["y"]
+        return out
     # a thin stroke drawn along its own path, straight or curved
     D = extent.drawn(clip, track)
     if D is not None:
@@ -174,6 +188,20 @@ def merge_groups(events: list[dict], fps: float) -> list[dict]:
     tol = 1.5 / fps
     out = []
     for ev in events:
+        # words whose letters keep one clock (the second's first letter one interval after the first's last) are
+        # one line of letters
+        if ev.get("letters"):
+            g = next((g for g in out if g.get("letters") and g["kind"] == ev["kind"] and g["shot"] == ev["shot"]
+                      and abs(onset(ev) - onset(g) - g["letters"]["count"] * g["letters"]["interval"])
+                      <= 2.5 * g["letters"]["interval"] + tol), None)
+            if g:
+                x0, y0 = min(g["box"][0], ev["box"][0]), min(g["box"][1], ev["box"][1])
+                x1 = max(g["box"][0] + g["box"][2], ev["box"][0] + ev["box"][2])
+                y1 = max(g["box"][1] + g["box"][3], ev["box"][1] + ev["box"][3])
+                g["box"] = [x0, y0, x1 - x0, y1 - y0]
+                g["letters"]["count"] += ev["letters"]["count"]
+                g["members"] = g.get("members", [g["id"]]) + [ev["id"]]
+                continue
         for g in out:
             if g["kind"] != ev["kind"] or g["shot"] != ev["shot"] or set(g["props"]) != set(ev["props"]) or not ev["props"]:
                 continue
@@ -196,7 +224,7 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
     """A plain name for the element's change. Off-frame is read from the edge it crossed, or from a fitted start
     (or end) level outside the frame: an element can jump from off frame to fully inside in one frame."""
     p = ev["props"]
-    parts = []
+    parts = ["per-letter"] if ev.get("letters") else []
     mode = (ev.get("reading") or {}).get("mode")
     for k in ("sy", "sx"):
         if k in p:
@@ -315,6 +343,11 @@ def grammar(clip, shots_, transitions, runs_by_shot, events, cam_events=()) -> d
                          else "top-to-bottom" if ys == sorted(ys) else "unordered")
                 stagger.append({"shot": sh["id"], "vocabulary": lab, "count": len(es),
                                 "interval_s": round(float(np.median(d)), 3), "order": order})
+
+    for ev in events:                                   # letters on their own staggered clocks
+        if ev.get("letters"):
+            stagger.append({"shot": ev["shot"], "vocabulary": "per-letter", "count": ev["letters"]["count"],
+                            "interval_s": ev["letters"]["interval"], "order": ev["letters"]["order"], "letters": True})
 
     moving, holds = 0, []
     for sh in shots_:
