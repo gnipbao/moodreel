@@ -219,6 +219,9 @@ def check(d: Path) -> dict:
     if (d / "score.json").exists():                    # the picture reads its cue times from score.js
         from ..score.score import write as write_score
         write_score(d)
+    if (d / "narration.json").exists():                # ...and its subtitles' times from voice.js
+        from .. import voice
+        voice.write(d)
     r = subprocess.run(["node", str(RENDER), "texts", str(d), "--size", f["size"], "--step", "0.1"], capture_output=True, text=True)
     if r.returncode:
         out["reading"] = {"error": r.stderr.strip()[-300:]}
@@ -312,10 +315,27 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
         from ..score.score import write as write_score
         info["score"] = write_score(d)
         music = music or Path(info["score"]["wav"])
+    if (d / "narration.json").exists():                # its narration, before the picture that subtitles it
+        from .. import voice
+        info["voice"] = voice.write(d)
+    spoken = work / "voice.wav" if (work / "voice.wav").exists() and (d / "narration.json").exists() else None
     subprocess.run(["node", str(RENDER), "video", str(d), "--fps", str(f["fps"]), "--size", f["size"], "--workers", str(workers),
                     "--out", str(video)], check=True)
     final = out / f"{f['name']}.mp4"
     info["video"] = str(final)
+    if spoken:                                         # music ducks under the voice, then the two are one track
+        premix = work / "premix.wav"
+        if music:
+            # the bed 6 dB down under narration, and a further dip under each line; the voice at full level both sides
+            graph = ("[0:a]aresample=48000,aformat=channel_layouts=stereo,volume=-6dB[m];"
+                     "[1:a]pan=stereo|c0=c0|c1=c0,asplit[v][key];"
+                     "[m][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[duck];"
+                     "[duck][v]amix=inputs=2:duration=longest:normalize=0[out]")
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(music), "-i", str(spoken), "-filter_complex", graph,
+                            "-map", "[out]", str(premix)], check=True)
+        else:
+            shutil.copyfile(spoken, premix)
+        music = premix
     if music:
         mix = work / "mix.wav"
         info["music"] = _loudnorm(Path(music), mix, f["duration"])

@@ -41,6 +41,23 @@ Styles marked `ready` need more than flat 2D, and Moodreel has it: a score that 
 art (`kit/pixel.js`), painted marks (`kit/brush.js`), 3D (`kit/three.js`, three.js copied into the film by
 `film new`) and real material (below).
 
+## Narration and sound effects
+
+A narrated film writes its lines into `narration.json` with the treatment: `voice` and `rate`, and `lines`, each placed
+`at` a time, after the line before (`gap`, 0.4 s by default) or on a score `cue`:
+
+```json
+{"voice": "Samantha", "rate": 180, "lines": [{"id": "open", "at": 1.0, "text": "Every morning starts the same way."},
+ {"id": "turn", "cue": "title", "text": "Then it doesn't."}]}
+```
+
+`moodreel voice <film>` voices them (the system's voices; `say -v '?'` lists them, Mandarin and Cantonese included),
+refuses lines that overlap or run past the end, and writes `voice.js`: `line(t)` is the line being spoken, for the
+style's own subtitles (draw them as §4 says and report them in TEXTS). A system voice is a draft: for publication
+the user licenses a voice or records the lines (a WAV at `out/voice.wav` in their place). Sound effects without
+music are a `score.json` with cues and no sections: each cue a pop, boing, ding, whoosh, riser, clack or hit at a
+bar and beat of the film's tempo.
+
 ## Real material (footage, scans, prints, maps, data)
 
 Styles built on real material (archive film, satellite plates, scans, footage, a data set) need the material itself,
