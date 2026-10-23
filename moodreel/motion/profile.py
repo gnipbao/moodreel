@@ -7,9 +7,10 @@ from . import eases, extent
 from .fit import PREFER, fit_move, shared_bezier
 from .track import series
 
-PROP = {"cx": "x", "cy": "y", "s": "scale", "a": "opacity"}
+PROP = {"cx": "x", "cy": "y", "s": "scale", "r": "rot", "a": "opacity"}
 OPACITY_GAP = 25.0
-CLAIM_TRAVEL = {"cx": 0.03, "cy": 0.03, "s": 0.1, "share": 0.1}   # smallest travel whose ease may be named (of W; scale; share)
+# smallest travel whose ease may be named: of the width, of scale, in degrees, of the share shown
+CLAIM_TRAVEL = {"cx": 0.03, "cy": 0.03, "s": 0.1, "r": 8.0, "share": 0.1}
 
 
 MAX_RESID = 0.08         # a fit worse than this (rms, in units of the travel) is not one tween
@@ -82,8 +83,15 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
         # a clip reveal is a move whose leading edge is seen before the whole element is: no scale, no fade
         out["reading"] = {k: X[k] for k in ("mode", "axis", "anchor")}
         key = "c" + X["axis"]
-        S = {**S, key: X["series"], "s": np.full_like(S["s"], np.nan), "a": np.zeros_like(S["a"]), "intermediate_a": 0,
+        S = {**S, key: X["series"], "s": np.full_like(S["s"], np.nan), "r": np.full_like(S["r"], np.nan),
+             "a": np.zeros_like(S["a"]), "intermediate_a": 0,
              "w": np.where(np.isnan(X["series"]), 0.0, 1.0)}
+    # a flat elongated shape: its turn from the silhouette's axis, where the template's can't be trusted
+    silhouette = False
+    if np.nanmax(np.abs(np.nan_to_num(S["r"]))) < 1.0:
+        R = extent.turn(clip, track)
+        if R is not None and np.nanmax(np.abs(np.nan_to_num(R))) >= 4.0:
+            S, silhouette = {**S, "r": R}, True
     a = S["a"]
     afit = None
     # a fade is claimed only when it is seen: three or more trustworthy readings part-way between 0 and 1
@@ -95,12 +103,12 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
         out["props"]["opacity"] = afit
     # a change counts when the fitted travel is large enough; what is seen of it can be much less (a rise that
     # starts transparent is half done when it becomes visible), but not mere jitter
-    thr = {"cx": 0.008 * W, "cy": 0.008 * W, "s": 0.04}
-    seen = {"cx": 0.003 * W, "cy": 0.003 * W, "s": 0.02}
+    thr = {"cx": 0.008 * W, "cy": 0.008 * W, "s": 0.04, "r": 4.0}
+    seen = {"cx": 0.003 * W, "cy": 0.003 * W, "s": 0.02, "r": 2.0}
     bw, bh = track["box"][2], track["box"][3]
     offscreen = {("cx", "left"): -bw / 2, ("cx", "right"): W + bw / 2,
                  ("cy", "top"): -bh / 2, ("cy", "bottom"): H + bh / 2}
-    for k in ("cx", "cy", "s"):
+    for k in ("cx", "cy", "s", "r"):
         v = S[k]
         valid = ~np.isnan(v)
         if valid.sum() < 5 or np.nanpercentile(v, 95) - np.nanpercentile(v, 5) < seen[k]:
@@ -115,7 +123,10 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
         elif track["kind"] == "disappear":
             t1_max = max(tv[-1], afit["t1"] if afit else t[-1]) + 3 / fps
             end = pin
-        f = fit_move(t, v, fps, t0_range, t1_max, w=S["w"], start=start, end=end, prefer=prefer)
+        if k == "r" and silhouette:                  # seen wherever it is read, before and after: nothing hidden
+            f = fit_move(t, v, fps, prefer=prefer)
+        else:
+            f = fit_move(t, v, fps, t0_range, t1_max, w=S["w"], start=start, end=end, prefer=prefer)
         if f and k == "s" and f["from"] < 0:          # a scale can't start below zero: it grew from nothing
             f = fit_move(t, v, fps, t0_range, t1_max, w=S["w"], start=0.0, prefer=prefer) or f
         # one start or two? Tweens placed at one timeline position share their start (GSAP from({y, opacity}),
@@ -131,7 +142,7 @@ def element_events(clip, track: dict, on: int = 1) -> dict:
             f = None
         if f and _cut_off(t, v, f, t[-1]):
             _doubt(f, cut_off=True)
-        if f and abs(f["delta"]) < CLAIM_TRAVEL[k] * (W if k != "s" else 1):
+        if f and abs(f["delta"]) < CLAIM_TRAVEL[k] * (W if k in ("cx", "cy") else 1):
             _doubt(f)                              # a short travel is measured, but its curve is too small to name
         if f:
             out["props"][PROP[k]] = _keep(f, t, v, S["w"])
@@ -202,13 +213,15 @@ def label(ev: dict, frame=(1920, 1080)) -> str:
                          ("-out" if ev["kind"] == "disappear" else "-in"))
         else:
             parts.append({"x": "drift-x", "y": "rise" if d < 0 else "sink"}[axis])
+    if "rot" in p:
+        parts.append("turn")
     if "opacity" in p:
         parts.append("fade")
     return "+".join(parts) or "static"
 
 
 def main_prop(ev):
-    for k in ("scale", "sy", "sx", "wipe", "y", "x", "opacity"):
+    for k in ("scale", "sy", "sx", "wipe", "y", "x", "rot", "opacity"):
         if k in ev["props"]:
             return k
     return None

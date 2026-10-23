@@ -9,8 +9,8 @@ Each example film rendered, taken in as references, measured and written into a 
 | boot | 10/14 | cuts and transitions | 3/11 | 1 | 0 | 6/7 (8 unknown) | 4/5 |
 | first-light | 11/14 | — | 4/11 | 3 | 0 | 6/6 (8 unknown) | 5/5 |
 | morning | 9/13 | title weight | 12/24 | 0 | 0 | 4/4 (4 unknown) | 4/5 |
-| shipped | 10/13 | — | 6/11 | 0 | 0 | 6/6 (10 unknown) | 5/5 |
-| swiss-programme | 11/13 | — | 23/40 | 0 | 0 | 8/9 (6 unknown) | 5/5 |
+| shipped | 10/13 | — | 6/11 | 0 | 0 | 5/6 (10 unknown) | 5/5 |
+| swiss-programme | 11/13 | — | 23/40 | 0 | 0 | 7/8 (6 unknown) | 5/5 |
 
 Sections held: of the five STYLE.md sections the measurements speak for (§2 materials, §3 colour, §4 type, §5 motion, §6 camera and editing). §1 and §7-§11 (essence, sound, native moves, pitfalls, engine, variation) are the director's judgement and need a blind distillation of real references.
 
@@ -77,7 +77,7 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 | density | within ±0.15 | 0.511 | 0.67 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e4.scale, e5.opacity, e14.scale, e16.x, e16.scale, e17.x, e18.x, e18.y, e18.scale, e19.x, e19.y, e19.scale, e20.x, e20.y, e20.scale, e21.x, e21.y, e21.scale, e22.y.
+Measured but not in the film: e4.scale, e5.opacity, e14.scale, e16.x, e16.scale, e17.x, e18.x, e18.y, e18.scale, e19.x, e19.y, e19.scale, e20.x, e20.y, e20.scale, e20.rot, e21.x, e21.y, e21.scale, e22.y.
 Left out of the truth: the raster flash after power-on (an afterglow, not a tween); the LOG strip's words (typed in two steps); the cursor's blink.
 
 ## first-light
@@ -139,9 +139,9 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
 | exit_shorter | exits shorter than entrances | [0.188, 1.51] | [0.198, 1.458] | ✓ |
-| hold | median hold at least 80% of the reference's | 0.667 | 0.646 | ✓ |
+| hold | median hold at least 80% of the reference's | 0.667 | 0.667 | ✓ |
 | transition_types | no transition the references don't use | [] | [] | ✓ |
-| density | within ±0.15 | 0.583 | 0.447 | ? |
+| density | within ±0.15 | 0.583 | 0.434 | ? |
 | stepping | drawings held on the same number of frames | 2 | 2 | ✓ |
 
 Measured but not in the film: e0.sx, e14.scale, e19.x.
@@ -225,7 +225,7 @@ Sections the measurements speak for: §2. Materials ✓, §3. Colour ✓, §4. T
 | group | value | film | distilled | result |
 |---|---|---|---|---|
 | palette | ground | #0B0D12 | #0e1017 (ΔE 1.8) | ✓ |
-| palette | ink | #E9EDF5 | #e5e9f2 (ΔE 1.0) | ✓ |
+| palette | ink | #E9EDF5 | #e4e8f1 (ΔE 1.2) | ✓ |
 | palette | accent | #B7F34A | #b3ed4a (ΔE 1.3) | ✓ |
 | surface | grain (levels) | 0 | 1.13 | ✓ |
 | surface | vignette | [0.5, 0.8] | 0.726 | ✓ |
@@ -265,24 +265,24 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| entrance.duration | median within ±25% (at least a frame) | 0.208 | 0.188 | ✓ |
+| entrance.duration | median within ±25% (at least a frame) | 0.312 | 0.354 | ✓ |
 | entrance.ease_class | share of 'out+overshoot' within ±20% | 1.0 | None | ? |
 | entrance.overshoot_share | within ±25% | 1.0 | None | ? |
-| entrance.overshoot | median within reference p25/1.5 .. p75*1.5 | [0.032, 0.072] | None | ? |
-| exit.duration | median within ±25% (at least a frame) | 0.167 | 0.167 | ✓ |
+| entrance.overshoot | median within reference p25/1.5 .. p75*1.5 | [0.034, 0.076] | None | ? |
+| exit.duration | median within ±25% (at least a frame) | 0.177 | 0.25 | ✗ |
 | exit.ease_class | share of 'None' within ±20% | None | None | ? |
 | exit.overshoot_share | within ±25% | None | None | ? |
 | move.duration | median within ±25% (at least a frame) | 0.208 | None | ? |
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
-| exit_shorter | exits shorter than entrances | [0.167, 0.208] | [0.167, 0.188] | ✓ |
-| stagger | a stagger within ±30% of the interval | 0.5 | None | ? |
-| hold | median hold at least 80% of the reference's | 0.5 | 0.458 | ✓ |
+| exit_shorter | exits shorter than entrances | [0.177, 0.312] | [0.25, 0.354] | ✓ |
+| stagger | a stagger within ±30% of the interval | 0.078 | None | ? |
+| hold | median hold at least 80% of the reference's | 0.5 | 0.417 | ✓ |
 | transition_types | no transition the references don't use | [] | [] | ✓ |
-| density | within ±0.15 | 0.233 | 0.559 | ? |
+| density | within ±0.15 | 0.233 | 0.4 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e0.y, e0.scale, e1.x, e1.y, e1.scale, e2.x, e2.y, e2.scale, e8.y, e9.x, e9.y, e9.scale, e10.x, e10.y, e10.scale, e11.opacity, e11.x, e11.y, e11.scale, e12.x, e12.scale, e13.x, e13.y, e13.scale, e14.y, e15.opacity, e15.x, e15.y, e15.scale, e16.y, e16.scale, e17.x, e17.y, e17.scale, e18.y, e20.y, e20.scale.
+Measured but not in the film: e0.y, e0.scale, e1.x, e1.y, e1.scale, e2.x, e2.y, e2.scale, e7.rot, e8.y, e9.x, e9.y, e9.scale, e10.x, e10.y, e10.scale, e11.opacity, e11.x, e11.y, e11.scale, e12.x, e12.scale, e13.x, e13.y, e13.scale, e14.y, e15.opacity, e15.x, e15.y, e15.scale, e16.y, e16.scale, e18.y, e20.y, e20.scale.
 Left out of the truth: the checks (28 px): below the readers' size floor; the window's last squash to a dot (0.1 s, a line).
 
 ## swiss-programme
@@ -362,7 +362,7 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 
 | claim | rule | references | sketch | result |
 |---|---|---|---|---|
-| entrance.duration | median within ±25% (at least a frame) | 0.5 | 0.625 | ✓ |
+| entrance.duration | median within ±25% (at least a frame) | 0.5 | 0.583 | ✓ |
 | entrance.ease_class | share of 'inOut' within ±20% | 1.0 | 1.0 | ✓ |
 | entrance.overshoot_share | within ±25% | 0.0 | 0.0 | ✓ |
 | exit.duration | median within ±25% (at least a frame) | 0.312 | 0.396 | ✗ |
@@ -371,12 +371,11 @@ The kit's motion replayed (`moodreel sketch`) and checked against the references
 | move.duration | median within ±25% (at least a frame) | 0.312 | None | ? |
 | move.ease_class | share of 'None' within ±20% | None | None | ? |
 | move.overshoot_share | within ±25% | None | None | ? |
-| exit_shorter | exits shorter than entrances | [0.312, 0.5] | [0.396, 0.625] | ✓ |
-| stagger | a stagger within ±30% of the interval | 2.25 | [2.25] | ✓ |
-| hold | median hold at least 80% of the reference's | 0.833 | 1.875 | ✓ |
+| exit_shorter | exits shorter than entrances | [0.312, 0.5] | [0.396, 0.583] | ✓ |
+| hold | median hold at least 80% of the reference's | 0.833 | 0.833 | ✓ |
 | transition_types | no transition the references don't use | [] | [] | ✓ |
-| density | within ±0.15 | 0.447 | 0.167 | ? |
+| density | within ±0.15 | 0.447 | 0.261 | ? |
 | stepping | drawings held on the same number of frames | 1 | 1 | ✓ |
 
-Measured but not in the film: e1.sy, e11.sy, e12.sy, e13.sy, e14.wipe, e15.sy, e16.sy, e18.scale, e20.scale, e21.scale, e30.x, e30.y, e30.scale, e36.x, e36.scale.
+Measured but not in the film: e1.sy, e10.rot, e11.sy, e12.sy, e13.sy, e14.wipe, e15.sy, e16.sy, e18.scale, e20.scale, e21.scale, e30.x, e30.y, e30.scale, e36.x, e36.scale.
 Left out of the truth: the first dot (20 px) and the 1 px grid lines: below the readers' size floor.

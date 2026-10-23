@@ -34,6 +34,7 @@ TRUST_NCC = 0.85     # ...matched this well (a fading word does; a word half hid
 UNIFORM = 0.06       # both sizes within this of each other, partly shown: a uniform scale
 FULL_COLOUR = 0.7    # share of the changed pixels in the element's own colours, partly shown: less is a fade
 LEADS = 0.5          # NCC of what shows of a clip reveal with the element's own leading part
+ELONGATED = 1.5      # long over short axis of a silhouette whose turn can be read from its shape
 LEVEL = 24           # colour quantisation for telling the element's own colours
 
 
@@ -137,6 +138,62 @@ def _leads(clip, ext, f, axis, held_by) -> bool:
         return True
     s = _ncc(V, lead) if V.shape == lead.shape and min(V.shape[:2]) >= 2 else None
     return s is not None and s >= LEADS
+
+
+def _axis(mask: np.ndarray) -> tuple[float, float] | None:
+    """The silhouette's long axis (degrees, clockwise from the x axis, as CSS turns) and how elongated it is."""
+    m = cv2.moments(mask.astype(np.uint8), binaryImage=True)
+    if m["m00"] < 20:
+        return None
+    a, b, c = m["mu20"] / m["m00"], m["mu11"] / m["m00"], m["mu02"] / m["m00"]
+    spread = np.sqrt(4 * b * b + (a - c) ** 2)
+    long, short = (a + c + spread) / 2, (a + c - spread) / 2
+    return float(np.degrees(0.5 * np.arctan2(2 * b, a - c))), float(np.sqrt(long / max(short, 1e-6)))
+
+
+def turn(clip: Clip, track: dict) -> np.ndarray | None:
+    """Per frame, how far an elongated element's silhouette is turned from its rest (degrees, clockwise), where it
+    shows whole and as elongated as at rest; None when it isn't elongated enough to tell. For flat shapes, whose
+    template can't tell a turn from a change of size. The silhouette is the element's own colours against the
+    ground around it, so it is read the same whether the element arrives, leaves or turns in place."""
+    p, q = track["p"], track["q"]
+    rest_img = _rest(clip, p - 2, p) if track["kind"] == "disappear" else _rest(clip, q, q + 2)
+    x, y, w, h = (int(round(v / clip.scale)) for v in track["box"])
+    if min(w, h) < 8:
+        return None
+    mx, my = int(MARGIN[0] * w) + MARGIN[1], int(MARGIN[0] * h) + MARGIN[1]
+    X0, Y0, X1, Y1 = max(0, x - mx), max(0, y - my), min(clip.w, x + w + mx), min(clip.h, y + h + my)
+    at_rest = rest_img[Y0:Y1, X0:X1]
+    rim = np.concatenate([at_rest[0], at_rest[-1], at_rest[:, 0], at_rest[:, -1]])
+    ground = np.median(rim, axis=0)
+    box = np.zeros(at_rest.shape[:2], bool)
+    box[y - Y0:y - Y0 + h, x - X0:x - X0 + w] = True
+    mine = _colours(at_rest, box & (np.abs(at_rest - ground).max(axis=2) > DIFF_THR))
+
+    def silhouette(img):
+        img = img[Y0:Y1, X0:X1].astype(np.float32)
+        fg = (np.abs(img - ground).max(axis=2) > DIFF_THR) & np.isin(_keys(img), mine)
+        n, lab, stats, _ = cv2.connectedComponentsWithStats(fg.astype(np.uint8), 8)
+        if n < 2:
+            return None
+        k = 1 + int(np.argmax(stats[1:, 4]))
+        bx, by, bw, bh, area = stats[k]
+        inside = bx > 0 and by > 0 and bx + bw < X1 - X0 and by + bh < Y1 - Y0
+        return (_axis(lab == k), area) if inside else None
+
+    rest = silhouette(rest_img)
+    if not rest or not rest[0] or rest[0][1] < ELONGATED:
+        return None
+    (a0, e0), area0 = rest
+    out = []
+    for f in range(p, q + 1):
+        sil = silhouette(clip.frames[f])
+        # a rigid turn keeps the silhouette whole, inside the window and as elongated as at rest
+        if not sil or not sil[0] or sil[1] < 0.4 * area0 or abs(sil[0][1] / e0 - 1) > 0.15:
+            out.append(np.nan)
+            continue
+        out.append((sil[0][0] - a0 + 90) % 180 - 90)
+    return np.array(out)
 
 
 def _content(clip, ext, f, axis) -> str:
