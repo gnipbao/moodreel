@@ -20,6 +20,13 @@ built with it. Write a style's own modules next to these when it needs more (a w
 **Flat ground with paper.** `g.drawImage(paper(W, H, { color: PALETTE.ground, mottle: TEXTURE.mottle }), 0, 0)` once per
 frame (cached); fibres only when the references show them.
 
+**Brushwork.** Paint a static plate flat (plain shapes, value first), then `g.drawImage(repaint(plate, { key, cell,
+fine, mark: 'dab' | 'stroke' }), 0, 0)`: coarse marks over the planes, fine ones along the edges, each along its edge
+(cached, so a static plate costs nothing per frame). Marks being painted on screen are drawn live: `stroke(g, points,
+{ width, profile, bristles, reveal })`, `ink(g, points, { wet, reveal })`, `crayon(g, points, { width, tooth })`,
+`wash(g, polygon, { passes, jitter, pool })`. Lay them at `TEXTURE.brush.spacing` and turned by
+`TEXTURE.brush.angle` when the references were measured; everything takes a seed.
+
 **Pixel art.** `const P = pixels(...TEXTURE.pixel.native, TEXTURE.pixel.palette)`; draw with `P.rect`, `P.line`,
 `P.disc`, `P.sprite(rows, legend, x, y)` and dithered gradients `P.shade(x, y, w, h, a, b, u)`, all in native pixels;
 `P.present(g, { scale: TEXTURE.pixel.scale, table })` each frame. A palette fade or a colour-depth change is a table

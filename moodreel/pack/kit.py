@@ -144,6 +144,15 @@ def _pixel(px: dict | None, size: list[int]) -> dict | None:
             "dither": px["dither"], "palette": px["palette"]}
 
 
+def _brush(b: dict | None, size: list[int]) -> dict | None:
+    """Brush marks in design px: the spacing of their edges (the scale to lay kit/brush.js marks at), which way they
+    run (radians, as canvas rotations) and how much they agree."""
+    if not b:
+        return None
+    return {"spacing": round(b["edge_spacing_px"] * max(size) / WORK, 1), "angle": round(float(np.radians(b["direction_deg"])), 3),
+            "agreement": b["agreement"], "coverage": b["coverage"]}
+
+
 def style_tokens(project: Path, intake: dict) -> dict:
     m = lambda k: json.loads((project / "measure" / f"{k}.json").read_text())  # noqa: E731
     pal, tex, lay, typ = m("palette"), m("texture"), m("layout"), m("type")
@@ -160,7 +169,8 @@ def style_tokens(project: Path, intake: dict) -> dict:
         "layout": {"margin": lay.get("min_margin"), "align": lay.get("dominant_alignment"), "density": lay.get("density")},
         "texture": {"grain": tex.get("grain"), "mottle": tex.get("mottle"), "vignette": tex.get("vignette"),
                     "halftone": _design_px(tex.get("halftone"), size), "scanlines": _design_px(tex.get("scanlines"), size),
-                    "edges": tex["summary"].get("edges"), "pixel": _pixel(tex.get("pixel"), size)},
+                    "edges": tex["summary"].get("edges"), "pixel": _pixel(tex.get("pixel"), size),
+                    "brush": _brush(tex.get("brush"), size)},
     }
 
 

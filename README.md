@@ -194,7 +194,10 @@ the picture, or real footage and data. The score is now here (`moodreel score`: 
 cues, drawn as music by deterministic synthesised instruments, with the cue times for the picture to land on), which
 makes three more styles ready: game show, microgame and 1930s rubber hose. So is pixel art (`kit/pixel.js`: an
 indexed framebuffer shown through a palette, scaled by whole pixels, with Bayer dither and palette tables; the
-measurement reads a reference's pixel scale, native size, palette and dither), which makes the 16-bit pixel RPG ready. Only the documents are imported; Moodreel re-implements the techniques.
+measurement reads a reference's pixel scale, native size, palette and dither), which makes the 16-bit pixel RPG ready. And painted marks (`kit/brush.js`: brush strokes with bristles, watercolour
+washes that pool at the edge, palette-knife dabs with relief, crayon broken by paper tooth, ink that bleeds, and a
+repaint that turns a flat illustration into strokes; the measurement reads visible marks' coverage, scale and
+direction), which makes seven more styles ready, from impasto and watercolour to ink wash and 80s cel anime. Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 
