@@ -85,6 +85,14 @@ def measure(project: Path) -> dict:
                                        for vid, m in motion.items()}}
     if rhy:
         out["rhythm"] = rhy
+    reads = {}
+    for it in items:                                      # each shot read as code: techniques, motion, finish
+        if it["kind"] == "video":
+            from . import shot
+            res = shot.dossier(str(project / it["file"]), out=project / "evidence" / f"shots-{it['id']}")
+            reads[it["id"]] = {"pooled": shot.pooled(res["shots"]), "shots": res["shots"]}
+    if reads:
+        out["shots"] = reads
 
     for k, v in out.items():
         (project / "measure" / f"{k}.json").write_text(json.dumps(v, indent=1, ensure_ascii=False, default=float))
@@ -161,6 +169,9 @@ def report(intake: dict, m: dict) -> str:
         else:
             L.append(f"{len(g['videos'])} videos, kept apart: see `measure/motion.json`.")
         L.append("")
+    for vid, rd in (m.get("shots") or {}).items():
+        from .shot import pooled_lines
+        L += [f"## Shots read as code ({vid})", "", *pooled_lines(rd["pooled"]), ""]
     for vid, rh in (m.get("rhythm") or {}).items():
         if rh.get("audio"):
             c, a = rh["cuts_on_beat"], rh["arrivals_on_beat"]

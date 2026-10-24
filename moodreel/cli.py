@@ -215,6 +215,22 @@ def cmd_compare(a):
     print(compare.report(res))
 
 
+def cmd_dossier(a):
+    from .measure import shot
+    shots = json.loads(Path(a.shots).read_text()) if a.shots else None
+    res = shot.dossier(a.video, shots, a.out, a.every)
+    print(shot.report(res) if not a.out else f"{a.out}/DOSSIER.md: {len(res['shots'])} shots")
+
+
+def cmd_pose(a):
+    from .measure import pose
+    if a.grid:
+        print(pose.grid(a.image, a.grid))
+        return
+    aspect = None if a.aspect == "solve" else float(a.aspect)
+    print(pose.report(pose.run(a.image, pose.parse_points(a.points) if a.points else None, aspect, a.fov)))
+
+
 def cmd_score(a):
     from .score.score import write
     print(json.dumps(write(Path(a.film)), indent=1))
@@ -399,6 +415,20 @@ def main(argv=None):
     p.add_argument("--offset", type=float, default=0.0, help="remake time = reference time + offset")
     p.add_argument("--json", help="write the full result here")
     p.set_defaults(fn=cmd_compare)
+    p = sub.add_parser("dossier", help="read each shot of a video as its code would be written: motion (pan, zoom, roll, "
+                       "spin, parallax), linework, finish, colour, and what to build")
+    p.add_argument("video")
+    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the video's own cuts)")
+    p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
+    p.add_argument("--out", help="a folder for DOSSIER.md, dossier.json and each shot's keyframes and flow arrows")
+    p.set_defaults(fn=cmd_dossier)
+    p = sub.add_parser("pose", help="the 3D camera from a rectangle in a frame: pitch, yaw, roll, distance, field of view")
+    p.add_argument("image")
+    p.add_argument("--points", help="the rectangle's corners in order round it: x1,y1,x2,y2,x3,y3,x4,y4 (default: found)")
+    p.add_argument("--aspect", default="1", help="the rectangle's width per unit height, or 'solve'")
+    p.add_argument("--fov", type=float, help="the vertical field of view in degrees, when known (a film keeps its lens)")
+    p.add_argument("--grid", help="instead: write the frame with a labelled coordinate grid here, to read corners off it")
+    p.set_defaults(fn=cmd_pose)
     p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
     p.add_argument("film")
     p.set_defaults(fn=cmd_score)

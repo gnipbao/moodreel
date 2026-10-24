@@ -1,5 +1,43 @@
 # Changelog
 
+## Unreleased: reading shots as code
+
+Learned by setting a remake drawn from stills beside the source code of the same film
+([docs/research/VISION-TO-CODE.md](docs/research/VISION-TO-CODE.md)): reading by eye ran darker (0.82 of the light),
+more saturated (1.25x the accent), sparser (0.79x the line), with less glow (0.63x), slower (0.63x), and moved in
+directions unrelated to the reference; it also missed which technique a shot needs.
+
+- `moodreel dossier <video>`: each shot read as code. Motion from the flow of the picture's own lines (pan, zoom, roll,
+  spin, surges, a perspective fit for a 3D camera, the frame-by-frame track and its chart), linework at 1280 wide
+  (share of line, width, hatching, orientations), finish (glow, colour fringe, grain), colour, and technique hints
+  calibrated against the source (hatching 4 of 9 plates found, no false alarms; 3D camera 6 of 10, 1 false of 12).
+- `moodreel pose <frame>`: the 3D camera from a rectangle in the picture (pitch, yaw, roll, distance, field of view,
+  the rectangle's aspect), with `--grid` to read corners off a frame.
+- `moodreel measure` reads every video reference's shots and adds "Shots read as code" to MEASURE.md: which techniques
+  the style needs and its camera vocabulary.
+- skills: `references/distill/reading-shots.md`, what each hint means, what a picture usually is in code, and the
+  rebuild loop; SKILL.md and the distill guides point to it.
+- A blind rebuild of one plate from the video alone, with these tools, rose from the stills-built 0.61 to 0.69
+  (`moodreel compare`); the source scores 0.94.
+
+## Unreleased: remakes that match
+
+A remake whose stills matched still moved wrong: shot by shot, its optical flow agreed with the reference's at a median
+of 0.1 and ran at 0.6 of its speed. See [docs/GPU.md](docs/GPU.md).
+
+- `moodreel compare <reference> <remake>`: window by window (the reference's own shots by default), structure (SSIM),
+  detail, tone, motion direction (optical flow, cell by cell) and speed, the worst windows first with what is wrong.
+- `kit/gl.js`: a GPU layer for pages. Full-screen shader passes into HDR targets (several outputs for a G-buffer),
+  Canvas layers as textures, tens of thousands of anti-aliased hairlines a frame (2D or 3D), a GLSL library (noise,
+  signed distances, smooth union, engraving hatch, a heat ramp) and a film post (bloom pyramid, halation, chromatic
+  fringe, tone shoulder, vignette). Adapted from pdoom-video's engine (MIT).
+- `kit/outline.js`: glyph outlines from TrueType files (simple and composite glyphs), for type broken into strokes or
+  particles. `kit/anim.js`: pulse, spring, keyframes, frame-stable seeds, paths walked by length.
+- `stage({ faces, prepare })`: font files registered by family name; a step after fonts and images load and before the
+  first frame, for what measures text.
+- `moodreel music` keeps an aligner's syllable timings, and `kit/music.js` `progress` follows them.
+- `film deliver` brings three.js for a film that uses `kit/gl.js`.
+
 ## Unreleased: films that follow their song
 
 Learned from the source of [mexicat/pdoom-video](https://github.com/mexicat/pdoom-video) (MIT) while remaking it shot by
@@ -23,24 +61,6 @@ shot: a music video lands on its song because every motion is computed from the 
 - `film.json` `"motion_blur": {"samples", "shutter"}`: `film deliver` renders with motion blur.
 - Fixed: a mix a little longer than the film came out of the loudness pass 0.1 s short (loudnorm's timestamps ran
   ahead of its samples), so the film lost its last six frames at 60 fps and the fade-out began early.
-
-## Unreleased: remakes that match
-
-A remake whose stills matched still moved wrong: shot by shot, its optical flow agreed with the reference's at a median
-of 0.1 and ran at 0.6 of its speed. See [docs/GPU.md](docs/GPU.md).
-
-- `moodreel compare <reference> <remake>`: window by window (the reference's own shots by default), structure (SSIM),
-  detail, tone, motion direction (optical flow, cell by cell) and speed, the worst windows first with what is wrong.
-- `kit/gl.js`: a GPU layer for pages. Full-screen shader passes into HDR targets (several outputs for a G-buffer),
-  Canvas layers as textures, tens of thousands of anti-aliased hairlines a frame (2D or 3D), a GLSL library (noise,
-  signed distances, smooth union, engraving hatch, a heat ramp) and a film post (bloom pyramid, halation, chromatic
-  fringe, tone shoulder, vignette). Adapted from pdoom-video's engine (MIT).
-- `kit/outline.js`: glyph outlines from TrueType files (simple and composite glyphs), for type broken into strokes or
-  particles. `kit/anim.js`: pulse, spring, keyframes, frame-stable seeds, paths walked by length.
-- `stage({ faces, prepare })`: font files registered by family name; a step after fonts and images load and before the
-  first frame, for what measures text.
-- `moodreel music` keeps an aligner's syllable timings, and `kit/music.js` `progress` follows them.
-- `film deliver` brings three.js for a film that uses `kit/gl.js`.
 
 ## v0.1.0: the MVP (2026-10-24, pre-alpha)
 
