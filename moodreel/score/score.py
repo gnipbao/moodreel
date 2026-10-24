@@ -312,6 +312,7 @@ def write(film: Path) -> dict:
     (film / "score.js").write_text(JS.format(score=json.dumps(tl, indent=1)))
     credits = film / "CREDITS"
     if uses_samples(score) and credits.exists() and samples.credit() not in credits.read_text():
-        credits.write_text(credits.read_text().rstrip("\n") + f"\n- {samples.credit()}\n")
+        text = credits.read_text()
+        credits.write_text(text + ("" if text.endswith("\n") else "\n") + f"- {samples.credit()}\n")
     return {"wav": str(wav), "js": str(film / "score.js"), **{k: tl[k] for k in ("bpm", "bars", "duration")},
             "cues": len(tl["cues"])}

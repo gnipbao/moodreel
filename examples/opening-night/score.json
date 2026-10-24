@@ -1,0 +1,26 @@
+{
+ "bpm": 120, "meter": 4, "offset": 0.0, "seed": 11, "key": "F",
+ "sections": [
+  {"name": "title", "bars": 1, "chords": ["F"], "groove": "none", "parts": []},
+  {"name": "vamp", "bars": 1, "chords": ["F"], "groove": "oompah", "parts": ["piano"]},
+  {"name": "band", "bars": 2, "chords": ["D7", "G7"], "groove": "oompah", "parts": ["piano", "tuba"]},
+  {"name": "chorus", "bars": 2, "chords": ["C7", "F"], "groove": "oompah", "parts": ["piano", "tuba", "brass", "clarinet"]},
+  {"name": "tag", "bars": 1, "chords": ["C7"], "groove": "oompah", "parts": ["piano", "tuba", "clarinet"]},
+  {"name": "end", "bars": 1, "chords": ["F"], "groove": "none", "parts": []}
+ ],
+ "cues": [
+  {"name": "title", "bar": 1, "beat": 1, "sound": "piano"},
+  {"name": "tap1", "bar": 1, "beat": 3, "sound": "clack"},
+  {"name": "tap2", "bar": 1, "beat": 4, "sound": "clack"},
+  {"name": "curtain", "bar": 2, "beat": 3, "sound": "whoosh"},
+  {"name": "tuba", "bar": 3, "beat": 1, "sound": "timpani"},
+  {"name": "freeze", "bar": 4, "beat": 3, "sound": "stop", "beats": 1},
+  {"name": "peek", "bar": 4, "beat": 3.5, "sound": "clack"},
+  {"name": "leap", "bar": 5, "beat": 1, "sound": "brass"},
+  {"name": "tada", "bar": 7, "beat": 1, "sound": "brass"},
+  {"name": "reach", "bar": 7, "beat": 2, "sound": "whoosh"},
+  {"name": "swell", "bar": 8, "beat": 1, "sound": "roll", "beats": 2},
+  {"name": "end", "bar": 8, "beat": 1, "sound": "piano"},
+  {"name": "end_brass", "bar": 8, "beat": 1, "sound": "brass"}
+ ]
+}

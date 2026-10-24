@@ -16,7 +16,8 @@ test material: `moodreel bench roundtrip` distils each one back and compares the
 ## The later capabilities
 
 One short film per capability added after the first 23 styles, each made properly in a library style and passing
-`film check`. They are tutorials, not round-trip material, so they carry no `truth.json`.
+`film check`; opening-night is the score again, played by sampled instruments. They are tutorials, not round-trip
+material, so they carry no `truth.json`.
 
 | Film | Style | Length | What it shows |
 |---|---|---|---|
@@ -25,6 +26,7 @@ One short film per capability added after the first 23 styles, each made properl
 | [harbour-dawn](harbour-dawn/TREATMENT.md) | Watercolor Brush (`watercolor`) | 10 s, 1920×1080, 24 fps | `kit/brush.js`: washes behind brush-edge wipes, bristled strokes and ink laid in slices of time, structure first, one accent, a hand-lettered label |
 | [tide-town](tide-town/TREATMENT.md) | Low-poly Isometric Island (`lowpoly-island`) | 10 s, 1920×1080, 24 fps | `kit/three.js`: flat-shaded primitives under an orthographic camera, tiles rising, houses dropping with a squash, trees popping on a 1/8 s grid, a faceted sea displaced from t (three.js is vendored on `film new` and on delivery) |
 | [every-style](every-style/TREATMENT.md) | Caption News (`caption-news`) | 12.5 s, 1920×1080, 24 fps | real material: the four films above taken in with `moodreel media add` (source and licence in `media/manifest.json`), drawn by time with `kit/media.js`, captions slammed in chunks with a keyword block, source tags and footage credits; `build.sh` delivers the four films first |
+| [opening-night](opening-night/TREATMENT.md) | 1930s Rubber Hose Cartoon (`rubber-hose`) | 16 s, 1920×1080 (4:3 gate), 24 fps | sampled instruments: a score of stride piano, tuba oom-pah, trumpet and horn stabs, a clarinet and timpani (`moodreel samples fetch` first), each player entering when its part does; the band stops dead for one beat and everything freezes; all 12 cues land on a move; characters on twos with a boiling line, ink constant under squash, a worn print |
 
 Render one (needs the setup in the main README):
 
