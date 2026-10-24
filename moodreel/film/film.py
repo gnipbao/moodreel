@@ -12,6 +12,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -107,6 +108,28 @@ SCORE = {"bpm": 120, "meter": 4, "offset": 0.0, "seed": 1,
                       {"name": "body", "bars": 4, "chords": ["C", "Am", "F", "G7"], "groove": "backbeat",
                        "parts": ["kick", "snare", "hat", "bass", "pad", "lead"]}],
          "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "stab"}]}
+# styles whose band is acoustic start from sampled instruments (moodreel samples fetch), after their STYLE.md sound
+BANDS = {
+    "silent-film": {"bpm": 112, "meter": 4, "offset": 0.0, "seed": 1,      # an upright piano plays every event
+                    "sections": [{"name": "vamp", "bars": 2, "chords": ["C", "Am"], "groove": "none", "parts": ["piano"]},
+                                 {"name": "chase", "bars": 4, "chords": ["C", "A7", "Dm", "G7"], "groove": "oompah", "parts": ["piano"]}],
+                    "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "piano"}]},
+    "rubber-hose": {"bpm": 132, "meter": 4, "offset": 0.0, "seed": 1,      # a hot dance band: stride, tuba, clarinet, horns
+                    "sections": [{"name": "vamp", "bars": 2, "chords": ["F", "D7"], "groove": "oompah", "parts": ["piano", "tuba", "hat"]},
+                                 {"name": "chorus", "bars": 4, "chords": ["F", "D7", "G7", "C7"], "groove": "oompah",
+                                  "parts": ["piano", "tuba", "brass", "clarinet", "hat"]}],
+                    "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "brass"}]},
+    "city-symphony": {"bpm": 120, "meter": 4, "offset": 0.0, "seed": 1,    # strings, winds and timpani, additive
+                      "sections": [{"name": "dawn", "bars": 2, "chords": ["C", "Am"], "groove": "none", "parts": ["strings", "harp"]},
+                                   {"name": "work", "bars": 4, "chords": ["C", "Am", "F", "G"], "groove": "four",
+                                    "parts": ["pizz", "strings", "clarinet", "timpani"]}],
+                      "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "roll", "beats": 4}]},
+    "kino-montage": {"bpm": 126, "meter": 4, "offset": 0.0, "seed": 1,     # a minor machine ostinato, brass on the beat
+                     "sections": [{"name": "build", "bars": 2, "chords": ["Dm", "Dm"], "groove": "none", "parts": ["pizz", "timpani"]},
+                                  {"name": "machine", "bars": 4, "chords": ["Dm", "Dm", "Bb", "A7"], "groove": "four",
+                                   "parts": ["pizz", "tuba", "brass", "snare", "timpani"]}],
+                     "cues": [{"name": "title", "bar": 3, "beat": 1, "sound": "brass"}]},
+}
 
 
 def _style(name: str) -> dict:
@@ -155,7 +178,12 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
         with open(d / "CREDITS", "a") as cr:
             cr.write(f"- {vendor_three(d / 'kit')}\n")
     if "music-led" in (st.get("needs") or []):        # the music comes first: a grid and cues for the picture
-        (d / "score.json").write_text(json.dumps(SCORE, indent=1))
+        from ..score import samples
+        band = BANDS.get(s["slug"])
+        if band and not samples.ready():
+            print(f"{s['slug']} plays acoustic instruments: run `moodreel samples fetch`, then take the band from "
+                  "BANDS in moodreel/film/film.py into score.json (this one is synthesised)", file=sys.stderr)
+        (d / "score.json").write_text(json.dumps(band if band and samples.ready() else SCORE, indent=1))
         from ..score.score import write as write_score
         write_score(d)
     return d

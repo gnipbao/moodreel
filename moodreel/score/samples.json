@@ -1,0 +1,1315 @@
+{
+ "source": {
+  "name": "Versilian Studios Chamber Orchestra 2, Community Edition",
+  "repo": "https://github.com/sgossner/VSCO-2-CE",
+  "commit": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+  "license": "CC0 1.0",
+  "credit": "Versilian Studios; upright piano by Simon Dalzell (Ivy Audio)"
+ },
+ "instruments": {
+  "piano": [
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_000.wav",
+    "midi": 21,
+    "release": 0.35,
+    "bytes": 4500238,
+    "sha256": "32f3cda282b64a65c6b2b071c91d98019514e8ffe80154a915431fa03443ee93",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_002.wav",
+    "midi": 25,
+    "release": 0.35,
+    "bytes": 6074254,
+    "sha256": "2ba9838d073b9dec7ed19a4b2b3ba608f62a8a1c89694d7ef1f1afd47406683f",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_004.wav",
+    "midi": 29,
+    "release": 0.35,
+    "bytes": 5625058,
+    "sha256": "ea7f8c8e997794656422b9c19f3a96f8ba03a0282ee664b97437c13b5ed2865c",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_006.wav",
+    "midi": 33,
+    "release": 0.35,
+    "bytes": 4936726,
+    "sha256": "80ade36a6030d83d868b6abbd1e9ab6f85ec2494cfe25d2affffd88f453e81e0",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_008.wav",
+    "midi": 37,
+    "release": 0.35,
+    "bytes": 6862312,
+    "sha256": "52be11ac2a57389f2d12cbd82df9b175da7b60e423d8a1154e1d7fc3340ecd6e",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_010.wav",
+    "midi": 41,
+    "release": 0.35,
+    "bytes": 7572904,
+    "sha256": "324c53abf03b2b32ff74f52886806ab5d4a7a37f6eb9c746558799037d7e12da",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_012.wav",
+    "midi": 45,
+    "release": 0.35,
+    "bytes": 6306106,
+    "sha256": "9accd92b779985736589d7bf25b93f1d6d508830d2f2aad3e76a481549cc1ca2",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_014.wav",
+    "midi": 49,
+    "release": 0.35,
+    "bytes": 6180628,
+    "sha256": "0bdf66b89c2cd8042118b2cf9898aab334820fff7538b8553655a3d11d2ba107",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_016.wav",
+    "midi": 53,
+    "release": 0.35,
+    "bytes": 4643212,
+    "sha256": "87b90b8161b5ddac5f1e81cce7895c726aff220e735586059c7ed684a5ae82dc",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_018.wav",
+    "midi": 57,
+    "release": 0.35,
+    "bytes": 5748202,
+    "sha256": "fb39ae501f7dde4aa3626d2e382b3709962cbe5d48b6c001ba7c911d1ffb6aeb",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_020.wav",
+    "midi": 61,
+    "release": 0.35,
+    "bytes": 4346848,
+    "sha256": "dc314226819e7af0768cd7fc08933f5e5b550083145e05af630fd7556f4d3913",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_022.wav",
+    "midi": 65,
+    "release": 0.35,
+    "bytes": 4476550,
+    "sha256": "9a4e03fa389b7e59ea6b3a6719eef52be8d607844283c7163662030f57b60942",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_024.wav",
+    "midi": 69,
+    "release": 0.35,
+    "bytes": 3204940,
+    "sha256": "a00ae1a2b2a78c154b067a9709afc1ce2d3be9f08d9f4ad3c9c869a7db80eb75",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_026.wav",
+    "midi": 73,
+    "release": 0.35,
+    "bytes": 2656870,
+    "sha256": "4e668e75c3922c79ef06bd46806224dbf8dbfa0be1569847a1cd17e573a967ec",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_028.wav",
+    "midi": 77,
+    "release": 0.35,
+    "bytes": 3008866,
+    "sha256": "84fe87bd24dc93d354213f730517a29f485c40715d5959af97976b364110b70a",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_030.wav",
+    "midi": 81,
+    "release": 0.35,
+    "bytes": 3144364,
+    "sha256": "4b558995c108f7f1dcede12c7e0444caa2658205fea34a314abf485dc6b7e710",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_032.wav",
+    "midi": 85,
+    "release": 0.35,
+    "bytes": 2888572,
+    "sha256": "8a4b127b8420c276d8935495d13b4e493c3eaa8f8aaef75bbc4f74d6437160f2",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_034.wav",
+    "midi": 89,
+    "release": 0.35,
+    "bytes": 2605408,
+    "sha256": "c5305eb820902b66b0a55768733956ff21d98692810d6e2cec24d68879ef5fcd",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_036.wav",
+    "midi": 93,
+    "release": 0.35,
+    "bytes": 2254930,
+    "sha256": "87ef3cb2e7f234b56ca70ff323e2714bccd80d771fc6ac02dfef3405c217085c",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_038.wav",
+    "midi": 97,
+    "release": 0.35,
+    "bytes": 1425370,
+    "sha256": "ace4ec29aa6ae232566174c6b74ae861ce24e38e2cb3ab1d1ea5cf8e145ebdbd",
+    "pitch_from": "mapping chart"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_040.wav",
+    "midi": 101.3,
+    "release": 0.35,
+    "bytes": 667948,
+    "sha256": "25028a985a79b059659b785ecb29388bb8c173cf3a1b2e185fb8c64491d0f476",
+    "pitch_from": "mapping chart; tuned by measurement (+30 cents)"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_042.wav",
+    "midi": 105.38,
+    "release": 0.35,
+    "bytes": 633034,
+    "sha256": "11dce969f3f159c10fbcdf4a743e4f18937b59e5e259fc24d197965fc241514d",
+    "pitch_from": "mapping chart; tuned by measurement (+38 cents)"
+   },
+   {
+    "path": "Keys/Upright Piano/Player_dyn2_rr1_044.wav",
+    "midi": 108.6,
+    "release": 0.35,
+    "bytes": 581164,
+    "sha256": "8dbeca4e4254bd3635fdb7be54bbe57cddd751a3d0a0bda64e85baf02a4de999",
+    "pitch_from": "mapping chart; tuned by measurement (+60 cents)"
+   }
+  ],
+  "strings": [
+   {
+    "path": "Strings/Cello Section/susvib/susvib_C1_v3_1.wav",
+    "midi": 36,
+    "release": 0.4,
+    "bytes": 3335948,
+    "sha256": "19195ab85ab71626bd11e7100febdaeeba1c237ff5887b934fd0ffd8dfad82cb",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_E1_v3_1.wav",
+    "midi": 40,
+    "release": 0.4,
+    "bytes": 3080426,
+    "sha256": "ee190b95be4f2416b9f41d248d255a4d7067b722f9b21482b30bc9872a9bb0d1",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_G1_v3_1.wav",
+    "midi": 43,
+    "release": 0.4,
+    "bytes": 3370496,
+    "sha256": "e4c61d4ab855ec20ddb69ff608a1c066ff8a779ddd08d1dfe1d534d3a4563ad0",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_B1_v3_1.wav",
+    "midi": 47,
+    "release": 0.4,
+    "bytes": 3372962,
+    "sha256": "8331a0e13f41243efab111f9b5e9185524c27ee48631269acecafc954ab7eaa8",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_D2_v3_1.wav",
+    "midi": 50,
+    "release": 0.4,
+    "bytes": 3291368,
+    "sha256": "fc946615cd6550570c8f05d61c0d59b9079bf9daba8bf25be7943487fea5a7ae",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_F2_v3_1.wav",
+    "midi": 53,
+    "release": 0.4,
+    "bytes": 3062696,
+    "sha256": "d965197faf2e6ab8675f1d65505e5ba934a5ab769412d314bad94133e18f24d0",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_G2_v2.wav",
+    "midi": 55,
+    "release": 0.4,
+    "bytes": 2681324,
+    "sha256": "c0b06a23f0245c042f0609dc0db704adc14bfc9ea8a34cb5c97d80096715a0e6",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_A2_v3_1.wav",
+    "midi": 57,
+    "release": 0.4,
+    "bytes": 3082676,
+    "sha256": "b7f226f19b9616abe5fa4a27ef50116667e19eb0127f30eacfa6d1a83e9149f0",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_A2_v2.wav",
+    "midi": 57,
+    "release": 0.4,
+    "bytes": 2231504,
+    "sha256": "db6bad06c78577a105f6c2a5dc5c7ac0643c36e6904742411f0506dd9d6fa84b",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_B2_v2.wav",
+    "midi": 59,
+    "release": 0.4,
+    "bytes": 2373380,
+    "sha256": "a822fd195e60881afac5e0801d8d494b782a8f6787a08f3c711f5e00290b3fb6",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_C3_v3_1.wav",
+    "midi": 60,
+    "release": 0.4,
+    "bytes": 3019394,
+    "sha256": "51e884d54eea3bf4ba7ee35289a09f15ddb6a52cd849248d01bf18477ccbd07b",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_D3_v2.wav",
+    "midi": 62,
+    "release": 0.4,
+    "bytes": 2457908,
+    "sha256": "77893dbf1ea1be8c40ad756d16b916298e6b1b0742495e9853e020375592357c",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_E3_v3_1.wav",
+    "midi": 64,
+    "release": 0.4,
+    "bytes": 3278270,
+    "sha256": "24a7ffdc23087026c4ef2d421441253c71490df9cf0757e93ffb14b4e61481ef",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_F#3_v2.wav",
+    "midi": 66,
+    "release": 0.4,
+    "bytes": 1720800,
+    "sha256": "d7bc6b4c259b9543de4fe66228ee107205b8f539c8d7c1de71f5781d45a14fc7",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_G3_v3_1.wav",
+    "midi": 67,
+    "release": 0.4,
+    "bytes": 3335768,
+    "sha256": "17df597c259a849870aa25e9fbfa6093371851f83ba7b9deb9cb9e1ec11463a7",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_A3_v2.wav",
+    "midi": 69,
+    "release": 0.4,
+    "bytes": 1671704,
+    "sha256": "3fc4a9e22037643fce11e755da72c61c664893f83e637c24a7b5c2d3824ab986",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_B3_v3_1.wav",
+    "midi": 71,
+    "release": 0.4,
+    "bytes": 2865086,
+    "sha256": "1c8b571516ac503df871bbea74756dfc3813b4bc10a76921d231afb0175cdbf1",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_C4_v2.wav",
+    "midi": 72,
+    "release": 0.4,
+    "bytes": 2017512,
+    "sha256": "5857387b40c412f756ef281c1171247664432a4e5078c98142d595d15cd92ef9",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_D4_v3_1.wav",
+    "midi": 74,
+    "release": 0.4,
+    "bytes": 2801210,
+    "sha256": "2ea7f580738dbcf143b9c9f72703071aa7a8f6bfa33cdd2c2e5da961df1805bb",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_E4_v2.wav",
+    "midi": 76,
+    "release": 0.4,
+    "bytes": 1702620,
+    "sha256": "030c09a631ebbc7304fc0b47bb5c346cd646e7451d9fdc531870f2534c60d9e9",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/susvib/susvib_F4_v3_1.wav",
+    "midi": 77,
+    "release": 0.4,
+    "bytes": 2726342,
+    "sha256": "24ea4a0f892cb60c4a52d6a5b1ef8281e4e9a9f78b5f938e078da7cbbfd5ba19",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_G4_v2.wav",
+    "midi": 79,
+    "release": 0.4,
+    "bytes": 2150136,
+    "sha256": "a1d6d5a0397541692e2f88a0cd9820eabe90407784ee631aa3bfa74772637a65",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_B4_v2.wav",
+    "midi": 83,
+    "release": 0.4,
+    "bytes": 1923744,
+    "sha256": "bdb85532f47e4ebd681f9617a415116e7e5aeb786dce2eeab5ab9b93c1b31644",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/susVib/VlnEns_susVib_D5_v2.wav",
+    "midi": 86,
+    "release": 0.4,
+    "bytes": 1976276,
+    "sha256": "0c2ca9de723bed0a0968e32126b934f778cd678b367a29e7fde91004daf84daf",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "pizz": [
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_C1_v2_RR1.wav",
+    "midi": 36,
+    "release": 0.1,
+    "bytes": 981176,
+    "sha256": "eb757d0688c447d609e9583c3943b9b51f5dee3c8b309ef6e03cac0c36910f15",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_E1_v2_RR1.wav",
+    "midi": 40,
+    "release": 0.1,
+    "bytes": 826130,
+    "sha256": "e5dc2a92063c0d2262336239a227e686c4977b6f8aaf65a2dda13c71ffe982df",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_G1_v2_RR1.wav",
+    "midi": 43,
+    "release": 0.1,
+    "bytes": 884180,
+    "sha256": "a12366cff3dd68c4a1622bd504161caa9ed18d23f9d03ed413936a0829188cf1",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_B1_v2_RR1.wav",
+    "midi": 47,
+    "release": 0.1,
+    "bytes": 1058144,
+    "sha256": "d5898f41739b4929530aa7d4a3f1660ee2bb6096b375c1f034eb6d26cbb10623",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_D2_v2_RR1.wav",
+    "midi": 50,
+    "release": 0.1,
+    "bytes": 770222,
+    "sha256": "5f80f5fd2f8f3f2cc33b8e7cdba1c5984b5a8158d6d34cd03fe48ae46b335461",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_F2_v2_RR1.wav",
+    "midi": 53,
+    "release": 0.1,
+    "bytes": 479312,
+    "sha256": "eb5b95b1f7b22370ad00713db544f2eb3cae6b70a29fcaf673c54d485e73c8a3",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_G2_v2_rr1.wav",
+    "midi": 55,
+    "release": 0.1,
+    "bytes": 532010,
+    "sha256": "8de544d9df9ced1fc296d8c4589d354112339802f722361f8625a604ccfd556b",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_A2_v2_RR1.wav",
+    "midi": 57,
+    "release": 0.1,
+    "bytes": 748484,
+    "sha256": "187df4d1d5621877d32cbfb3d174dcacb85aa59caf3359d9ce398bec4f7ccf56",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_A2_v2_rr1.wav",
+    "midi": 57,
+    "release": 0.1,
+    "bytes": 187354,
+    "sha256": "75a9bbd0120e03affffe89dd711e5a088507917362e0a197019ff9eff8101340",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_B2_v2_rr1.wav",
+    "midi": 59,
+    "release": 0.1,
+    "bytes": 180134,
+    "sha256": "71aaf7c111d427e76d91a58efc4cf661880cae85ec91123f8f57d421fe36cd06",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_C3_v2_RR1.wav",
+    "midi": 60,
+    "release": 0.1,
+    "bytes": 762122,
+    "sha256": "fbc86686ef092e92e473dce4d1ff5f1e351dcc76ed2d94b0d336c1346f314e59",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_D3_v2_rr1.wav",
+    "midi": 62,
+    "release": 0.1,
+    "bytes": 391226,
+    "sha256": "772b8e3bf0f0143cd9aa73dbf64607a41776c0f124c62ef3fecb835f3510ce6a",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_E3_v2_RR1.wav",
+    "midi": 64,
+    "release": 0.1,
+    "bytes": 613436,
+    "sha256": "ad072009df18f24c4ae0b2fd4b8cbf803a1ba1d195fcae5ea8c882111e9555b3",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_F#3_v2_rr1.wav",
+    "midi": 66,
+    "release": 0.1,
+    "bytes": 157066,
+    "sha256": "2c6093daad3f6f7a977ac9775660b57227429651d35d489d6f98e617067e8ea6",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_G3_v2_RR1.wav",
+    "midi": 67,
+    "release": 0.1,
+    "bytes": 720596,
+    "sha256": "6c2baf71b5fd733bc8c86e7eed625f3eefae85dedd7952f0d1e9fd812c75347a",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_A3_v2_rr1.wav",
+    "midi": 69,
+    "release": 0.1,
+    "bytes": 194010,
+    "sha256": "631720219cbd7b11718b393bdacf04eb512ef5071f9e5d0d73d74b3f17179ec2",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_B3_v2_RR1.wav",
+    "midi": 71,
+    "release": 0.1,
+    "bytes": 528038,
+    "sha256": "016e6cc084ae4e60eb52b0a60ffada2314211f1eb5bcc95c6a73b64ac0afbde8",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_C4_v2_rr1.wav",
+    "midi": 72,
+    "release": 0.1,
+    "bytes": 184590,
+    "sha256": "909eb79fc2c9076909680fa3c2dabdbbd15870f674a883ddab33bbcd0dac965a",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_D4_v2_RR1.wav",
+    "midi": 74,
+    "release": 0.1,
+    "bytes": 345608,
+    "sha256": "286d0e59972bb575c54a7be68865874908e93ed3e928637905308f5b6d0a531f",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_E4_v2_rr1.wav",
+    "midi": 76,
+    "release": 0.1,
+    "bytes": 146742,
+    "sha256": "1e1dcef99c3961a601ed0c8336fbf4819fd432ab783445fe4f44fc488e598993",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Cello Section/pizzT/pizzT_F4_v2_RR1.wav",
+    "midi": 77,
+    "release": 0.1,
+    "bytes": 267632,
+    "sha256": "a0d172b71a6f33890ba5212485e9a23dcc8982bf8ba78b1031c97f3cd419c2a3",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_G4_v2_rr1.wav",
+    "midi": 79,
+    "release": 0.1,
+    "bytes": 184102,
+    "sha256": "46d42acdbfe83337f6c6775e03fa99ac99275fd357bdd2d4fa73702c4c7be542",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_B4_v2_rr1.wav",
+    "midi": 83,
+    "release": 0.1,
+    "bytes": 106362,
+    "sha256": "ec6f6320f9403a5e0bbb1d0c534abe667a6a2093654343a389b26cf083d513d2",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Strings/Violin Section/Pizz/VlnEns_Pizz_D5_v2_rr1.wav",
+    "midi": 86,
+    "release": 0.1,
+    "bytes": 113286,
+    "sha256": "50445c5f94fe25272ed98dd03d5af1c34b555f24aa2a7803653aa3b51ed929fc",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "trumpet": [
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_F2_v2_rr1.wav",
+    "midi": 53.49,
+    "release": 0.08,
+    "bytes": 190468,
+    "sha256": "4a76a421189667d815bef41a8719c50aa0491a18ff0719f3bf832647311e1503",
+    "pitch_from": "name, +1 octave (measured); tuned by measurement (+49 cents)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_A2_v2_rr1.wav",
+    "midi": 57,
+    "release": 0.08,
+    "bytes": 166660,
+    "sha256": "541fc8058d47837d0d71424eb103b933446ea8a3fab0616d249320a0b9a8a889",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_C3_v2_rr1.wav",
+    "midi": 60,
+    "release": 0.08,
+    "bytes": 201220,
+    "sha256": "dcd3d370fe299ca76b222066d7facd0034a549a105051ed474f8dd1f478f1afa",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_D#3_v2_rr1.wav",
+    "midi": 63,
+    "release": 0.08,
+    "bytes": 227856,
+    "sha256": "f032aa47913409ff845bdd521ced7f7275c83642edc94447f71cd0c4141af170",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_F3_v2_rr1.wav",
+    "midi": 65,
+    "release": 0.08,
+    "bytes": 237684,
+    "sha256": "2c134b65498f84486690a2abb7f6dfe3af41e082d720096632ac702a98b9b9ba",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_G3_v2_rr1.wav",
+    "midi": 67,
+    "release": 0.08,
+    "bytes": 210292,
+    "sha256": "1819a3fab5c2c6ffb1eb76f7d3880886db4e4a3a713f8c323cdc10ad1332a128",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_A#3_v2_rr1.wav",
+    "midi": 70,
+    "release": 0.08,
+    "bytes": 218460,
+    "sha256": "d8cbce4381ae171e4ba19963da5c9d8c5a140164775e0c5ca0ec5afcdadd1d57",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_D4_v2_rr1.wav",
+    "midi": 74,
+    "release": 0.08,
+    "bytes": 235968,
+    "sha256": "a817b4b11b818e04cf73197a382b380c5dd8576f1e7f7d1ee359559d0542eb8a",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_F4_v2_rr1.wav",
+    "midi": 77,
+    "release": 0.08,
+    "bytes": 244372,
+    "sha256": "624f8ff3ba6845dd5acfaec1730d7bfcc6bf05fd2260bd4023d00a7dacffbaa2",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_A4_v2_rr1.wav",
+    "midi": 81,
+    "release": 0.08,
+    "bytes": 213260,
+    "sha256": "d28cae30c146c8df5da21ff31ebe2ee570b8f77f18793c11f05bdbc1b16b4d7f",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Trumpet/stac/Sum_SHTrumpet_stac_C5_v2_rr1.wav",
+    "midi": 84,
+    "release": 0.08,
+    "bytes": 156828,
+    "sha256": "17dd7aad381f8663dbb5d5657319c9bece2ea4b6331ce2e8a233dc73de77be2d",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "horn": [
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_C1_v2_rr1.wav",
+    "midi": 36,
+    "release": 0.08,
+    "bytes": 217880,
+    "sha256": "52ecbed088857dc7e94c395e506e2dadda7ba66f1c7ebea13b5ed4197a7240c7",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_D#1_v2_rr1.wav",
+    "midi": 39,
+    "release": 0.08,
+    "bytes": 231760,
+    "sha256": "53db1abfcc4bc920707b8a8bad3bc4e84ac90b6319239f771cac6bda49bfe28e",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_G1_v2_rr1.wav",
+    "midi": 43,
+    "release": 0.08,
+    "bytes": 203244,
+    "sha256": "2c63af39d2de44df7f6ceb1dabded4b1c640566a5c7e7966eaaaea6e8b7f7bfe",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_A#1_v2_rr1.wav",
+    "midi": 46,
+    "release": 0.08,
+    "bytes": 170144,
+    "sha256": "21ff086ea3846becf0374f3e3a575707b8debbc4b9a94b7b2675fe53a87807fb",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_D2_v2_rr1.wav",
+    "midi": 50,
+    "release": 0.08,
+    "bytes": 227660,
+    "sha256": "aa488c9a79b1ddca82d82e216b912be61a33c649a1d58841882556883d1b0654",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_F2_v2_rr1.wav",
+    "midi": 53,
+    "release": 0.08,
+    "bytes": 203892,
+    "sha256": "13e10aa9d65c9dfac0926db82b87b83eae460c8806b8c909f537f684db05c0af",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_A2_v2_rr1.wav",
+    "midi": 57,
+    "release": 0.08,
+    "bytes": 258348,
+    "sha256": "1f7159887489a01fe61a53c47ed09c3f460d59e25f391a1bd851e725c039228c",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_C3_v2_rr1.wav",
+    "midi": 60,
+    "release": 0.08,
+    "bytes": 116584,
+    "sha256": "fdaf3d5ad1e732a6e8e466ee232b101fe83b4cc79e79941315fba3037666eedf",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_D4_v2_rr1.wav",
+    "midi": 74,
+    "release": 0.08,
+    "bytes": 258364,
+    "sha256": "06003ac8bfaa154949296447bf6b5cf74df9656137402564ab0717e91bd00714",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/F Horn/stac/MOHorn_stac_F4_v2_rr1.wav",
+    "midi": 77,
+    "release": 0.08,
+    "bytes": 155352,
+    "sha256": "a8abc312d5fc44ccc2b076aaf22932a0011c1c30c35a57565c8f584df1d75e92",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "tuba": [
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_A#0_v2_rr1_Sum.wav",
+    "midi": 34,
+    "release": 0.08,
+    "bytes": 152280,
+    "sha256": "8ffdd2adcb4f77136461d437feda1f093920307fc83ea290c14b3664e0a5064b",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_D#1_v2_rr1_Sum.wav",
+    "midi": 39,
+    "release": 0.08,
+    "bytes": 227256,
+    "sha256": "62450773c01a68affba727ae23539e09d43e760a2ecdf7192ba2dd2c3daae636",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_F1_v2_rr1_Sum.wav",
+    "midi": 41.3,
+    "release": 0.08,
+    "bytes": 169920,
+    "sha256": "d70368b6c3e3ae067f285201637860fc6c9f15fdc85e553feb5cd05e1585b102",
+    "pitch_from": "name, +1 octave (measured); tuned by measurement (+30 cents)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_A#1_v2_rr1_Sum.wav",
+    "midi": 46,
+    "release": 0.08,
+    "bytes": 167612,
+    "sha256": "15a09f4ccccd48c69ad6a3771a75e01c16b206fcfbf5bc925432d326c8480168",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_D2_v2_rr1_Sum.wav",
+    "midi": 50,
+    "release": 0.08,
+    "bytes": 125584,
+    "sha256": "4ed9b5455e0c8b2532e9cac41e32a9218e96a4260a0104008b0a86083d3b7ce2",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_F2_v2_rr1_Sum.wav",
+    "midi": 53,
+    "release": 0.08,
+    "bytes": 174564,
+    "sha256": "85b1e4d289417593141ff062262a7ce11f1829db6d018d164d9df3e0fe16d830",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_A#2_v2_rr1_Sum.wav",
+    "midi": 58,
+    "release": 0.08,
+    "bytes": 137144,
+    "sha256": "ff8a307edd5af7efa2690d66ebf8dde0bb185d31ac3d0552bb90458c2118fc73",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Brass/Tuba/stac/Tuba3_stac_D3_v2_rr1_Sum.wav",
+    "midi": 62,
+    "release": 0.08,
+    "bytes": 164920,
+    "sha256": "f00c8b0c259e6901e6f84f5151dfce61fce75a18dfc4748eea9b638db7d71041",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "clarinet": [
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_D2_v2_rr1_sum.wav",
+    "midi": 50,
+    "release": 0.15,
+    "bytes": 1689164,
+    "sha256": "b1a793ff45d8f068dd83b591924b1a29bbece98e6e8177b31fc003f2f426fe00",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_F2_v2_rr1_sum.wav",
+    "midi": 53,
+    "release": 0.15,
+    "bytes": 1835164,
+    "sha256": "36348e1fd1a1e53485c7f48983cfd758ced036f6af1a832671bf5ef1f8b00448",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_A#2_v2_rr1_sum.wav",
+    "midi": 58,
+    "release": 0.15,
+    "bytes": 1909388,
+    "sha256": "82be872b7915c833e06910846e3398b55591f69bfe6474c39dd4051742db2700",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_D3_v2_rr1_sum.wav",
+    "midi": 62,
+    "release": 0.15,
+    "bytes": 1876188,
+    "sha256": "30e686ffc58caa48bbfae309a06f1c27c75b192fb653729ffdf8586cbd9b8405",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_F3_v2_rr1_sum.wav",
+    "midi": 65,
+    "release": 0.15,
+    "bytes": 2069572,
+    "sha256": "3c9a237651cd049cacdf4052ef85ff406da1d9e5d4f59439c20f45a7578ff431",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_A#3_v2_rr1_sum.wav",
+    "midi": 70,
+    "release": 0.15,
+    "bytes": 1791140,
+    "sha256": "779e2cad84f6f5103272f17cb4637a94d8e9c533a5811233595960cad61b391f",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_D4_v2_rr1_sum.wav",
+    "midi": 74,
+    "release": 0.15,
+    "bytes": 2047596,
+    "sha256": "4bdc53f3ef917cc9146e10cec5eb33744524e8b510c4a39c080dc5c774b3c956",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_F4_v2_rr1_sum.wav",
+    "midi": 77,
+    "release": 0.15,
+    "bytes": 2142808,
+    "sha256": "9988142d8fd2856af4217e3983316a42ef1d91b6381afd9fa138072d91122c2e",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_A#4_v2_rr1_sum.wav",
+    "midi": 82,
+    "release": 0.15,
+    "bytes": 1823220,
+    "sha256": "569e902693e7d04ecd20507f0a3dd0be92a7a3cdf14ab685d89aefacff2a34cb",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_D5_v2_rr1_sum.wav",
+    "midi": 86,
+    "release": 0.15,
+    "bytes": 1772224,
+    "sha256": "4cedd1d7bd779fe357529e34ff398bc0e80c5088fc3908944962d65fcdc94823",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Woodwinds/Clarinet/susLong/DCClar_susLong_F#5_v2_rr1_sum.wav",
+    "midi": 89.02,
+    "release": 0.15,
+    "bytes": 1252444,
+    "sha256": "2f024789f1b2ecc25f0e07dcff06084e4c2def83ff74e693c098c28fbec319fc",
+    "pitch_from": "name, +1 octave (measured); tuned by measurement (-98 cents)"
+   }
+  ],
+  "marimba": [
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_F1_loud_01.wav",
+    "midi": 41,
+    "release": 0.2,
+    "bytes": 972392,
+    "sha256": "c5cb5ce59540b0a23628a919e90153a6cee9bb35325b056e0710c12b64f0b193",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_C2_loud_01.wav",
+    "midi": 48,
+    "release": 0.2,
+    "bytes": 2236004,
+    "sha256": "bfad3b0e57d04c31e6079aba11fb0a6c5c84627fd4bc46e4e0923663586c460c",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_G2_loud_01.wav",
+    "midi": 55,
+    "release": 0.2,
+    "bytes": 1855448,
+    "sha256": "3bd173f56481e537c3489a94d1e4dd59c304f9f98679c7c90890fc9f5795c25d",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_B2_loud_01.wav",
+    "midi": 59,
+    "release": 0.2,
+    "bytes": 1585778,
+    "sha256": "a329138008daae1c03652822d7079c0e1e9941071b8c22195e1985f0c685fdeb",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_F3_loud_01.wav",
+    "midi": 65,
+    "release": 0.2,
+    "bytes": 1589876,
+    "sha256": "379e749add43b12959fae06cc272f1871899cc05460faf41ead77b93e5d01843",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_C4_loud_01.wav",
+    "midi": 72,
+    "release": 0.2,
+    "bytes": 1016564,
+    "sha256": "4af539d47a452d7fad26e171b1c8adcca272cee97191f040d192680462c880b8",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_G4_loud_01.wav",
+    "midi": 79,
+    "release": 0.2,
+    "bytes": 800102,
+    "sha256": "36f39f9f24789001add2b4c440defb7641178b0e8449c5cb7f1960bccaf0aaaf",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_B4_loud_01.wav",
+    "midi": 83,
+    "release": 0.2,
+    "bytes": 694454,
+    "sha256": "d04aed26222822d14435fa61b88cdcce95606a5e94bb5e7167d266875343a39c",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_F5_loud_01.wav",
+    "midi": 89,
+    "release": 0.2,
+    "bytes": 551306,
+    "sha256": "a434c15978b2ea4b8921feeb3fd1f177447324d06c177801e0e46c12a97abc86",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Marimba/Marimba_hit_Outrigger_C6_loud_01.wav",
+    "midi": 96,
+    "release": 0.2,
+    "bytes": 472142,
+    "sha256": "2e42b1b6f6923f32e3daadc12b063e94d15af20fa410ddcb267eb906fd6e0e89",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "glock": [
+   {
+    "path": "Percussion/Glock/glock_medium_G4.wav",
+    "midi": 79,
+    "release": 0.4,
+    "bytes": 1271310,
+    "sha256": "6c4649b13e24fa01e4634edad8fe8edf18aef33facc5d49fe53097b376bac4da",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Glock/glock_medium_C5.wav",
+    "midi": 84,
+    "release": 0.4,
+    "bytes": 1271310,
+    "sha256": "635f898e0bcb6975b96b18efd9c896f6f1b97ff12174a339ada4814e49675660",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Glock/glock_medium_G5.wav",
+    "midi": 91,
+    "release": 0.4,
+    "bytes": 1226714,
+    "sha256": "7045c0ef7260e2f1ad11a64406cf7575ed898d1207a91104d33d78caefac63e4",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Glock/glock_medium_C6.wav",
+    "midi": 96,
+    "release": 0.4,
+    "bytes": 1271310,
+    "sha256": "e942cbf502cf6731df2925945fe3234c876cb63f047d91007b6929887f9e4904",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Glock/glock_medium_G6.wav",
+    "midi": 103,
+    "release": 0.4,
+    "bytes": 843122,
+    "sha256": "a2ba94e59119cd5272c1161fc8b8fbfb94c7b44de45a9a6cc5973b1c332103af",
+    "pitch_from": "name, +1 octave (measured)"
+   },
+   {
+    "path": "Percussion/Glock/glock_medium_C7.wav",
+    "midi": 108,
+    "release": 0.4,
+    "bytes": 492418,
+    "sha256": "b2ecbe0e60c983bbfaa49a1f45f8a11559f7dba27b8c8a032eb2cb7366a36910",
+    "pitch_from": "name, +1 octave (measured)"
+   }
+  ],
+  "harp": [
+   {
+    "path": "Strings/Harp/KSHarp_E1_f.wav",
+    "midi": 28,
+    "release": 0.5,
+    "bytes": 4001190,
+    "sha256": "70f534627d6155bab46262e0383a8b431c25fde78ca029947d453748b1f73038",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_G1_mp.wav",
+    "midi": 31,
+    "release": 0.5,
+    "bytes": 1189890,
+    "sha256": "f9fa1a6ea784320125fef31495ff223ceea675641d0728c2a33b431c06a78bfb",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_B1_mf.wav",
+    "midi": 35,
+    "release": 0.5,
+    "bytes": 2284022,
+    "sha256": "284034807efbb429cb63f6fb744834b18e6281a4914e6460de0a5818b5d0d0e6",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_D2_mf.wav",
+    "midi": 38,
+    "release": 0.5,
+    "bytes": 1741118,
+    "sha256": "b9cbdc08e43fc0b28ac70246df991cb390f5cbd7f31519b3cc7f70d283b70566",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_F2_mf.wav",
+    "midi": 41,
+    "release": 0.5,
+    "bytes": 3086590,
+    "sha256": "d5c0fb42c176af334fd6f6d1b97858556619c51e177efb5b0c6c23bc19ce6dad",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_A2_mf.wav",
+    "midi": 45,
+    "release": 0.5,
+    "bytes": 2007670,
+    "sha256": "1df9f4d138ca3931fcb458bcdf01304cadf2e5f4eef67bbc17b0e42c0e60fce6",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_C3_mf.wav",
+    "midi": 48,
+    "release": 0.5,
+    "bytes": 1586172,
+    "sha256": "e5d232771704e140959819de8cf2a3e0ba49d021ca77354c42664ce4fce6d9f3",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_E3_mf.wav",
+    "midi": 52,
+    "release": 0.5,
+    "bytes": 2461138,
+    "sha256": "aafa9d41ec0f77da8f2891055af8b3f9557e0ba1f1df93d53ae6e1fda07afae5",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_G3_mf.wav",
+    "midi": 55,
+    "release": 0.5,
+    "bytes": 1806874,
+    "sha256": "62600eb1b37bc2829ca65351f7ca7e506c9ae472abd5bea0765a8b8fa7df2772",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_B3_mf.wav",
+    "midi": 59,
+    "release": 0.5,
+    "bytes": 1981130,
+    "sha256": "f6f71be8c640822ef48a448b245585659acdfcc7ed5774e10f37be2fc02fcab4",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_D4_mf.wav",
+    "midi": 62,
+    "release": 0.5,
+    "bytes": 1921690,
+    "sha256": "ebfde8aab4411019e37e3426f4dd88d6a52a38c2d0261d7f10ec63d8ff584dc7",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_F4_mf.wav",
+    "midi": 65,
+    "release": 0.5,
+    "bytes": 1913498,
+    "sha256": "db27ebbb37334c10e06f2ae63f4d9ff555e4d11704fcc6f0bcf503863867e577",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_A4_mf.wav",
+    "midi": 69,
+    "release": 0.5,
+    "bytes": 2143618,
+    "sha256": "3665f3975cad4a33f46784aa4f896f4b4319ba2b7831e892d975bc38c9f09f23",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_C5_mf.wav",
+    "midi": 72,
+    "release": 0.5,
+    "bytes": 1237142,
+    "sha256": "7c8b862f6fd3f1442ed87537af976d84bda8c05a5b4900e8907d570b5202a517",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_E5_mf.wav",
+    "midi": 76,
+    "release": 0.5,
+    "bytes": 1171586,
+    "sha256": "95dd9ddb0bd15bee7687906e00f25aafcaa43020cc9501f0e8b6cabf0e9a53ec",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_G5_mf.wav",
+    "midi": 79,
+    "release": 0.5,
+    "bytes": 1049778,
+    "sha256": "f2004dfc617997fbabc6f849add2af06f4f859361c44a8fca0f993dc7f999540",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_B5_mf.wav",
+    "midi": 83,
+    "release": 0.5,
+    "bytes": 779058,
+    "sha256": "f2757b674c6b7301bed52e17a1ae3e3d34d628b3f7edc5773ebb25798d2541f7",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_D6_mf.wav",
+    "midi": 86,
+    "release": 0.5,
+    "bytes": 687750,
+    "sha256": "b040b61fb279efa1a9b9c60dcbd8626a37f57ffb30f3b50747a2123ee4db5bd2",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_F6_mf.wav",
+    "midi": 89,
+    "release": 0.5,
+    "bytes": 413126,
+    "sha256": "7cf4c012542df737be39900af262fdd980681956e734f43af106718184f34213",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_A6_mf.wav",
+    "midi": 93,
+    "release": 0.5,
+    "bytes": 636870,
+    "sha256": "4605355d22fae6f58190bf0d033d2ebdd745d63e2e43204d6f41ad27e4f09af0",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_B6_mf.wav",
+    "midi": 95,
+    "release": 0.5,
+    "bytes": 483966,
+    "sha256": "720e56b99f84d4ef1b9bc8cd3c217170320f523edb68488af3da76d2217e16f7",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_D7_f.wav",
+    "midi": 98,
+    "release": 0.5,
+    "bytes": 396134,
+    "sha256": "87ca6f45c5c242d9cd595911278290a4abdba587f71ed263acb1650236fcd4a7",
+    "pitch_from": "name"
+   },
+   {
+    "path": "Strings/Harp/KSHarp_F7_f.wav",
+    "midi": 100.69,
+    "release": 0.5,
+    "bytes": 332482,
+    "sha256": "638b40d6c6c674257daa89b0b1e5108973ccbf13d7cc282e21266d3fb71500c5",
+    "pitch_from": "name; tuned by measurement (-31 cents)"
+   }
+  ],
+  "timpani": [
+   {
+    "path": "Percussion/Timpani/Timpani1_Hit_v3_rr1_Sum.wav",
+    "midi": 41.43,
+    "release": 0.6,
+    "bytes": 1602676,
+    "sha256": "8b39a785901d08dee14dd89914bdf2201e16ee418965e4d903fdb8e280a14d24",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Timpani4_Hit_v3_rr1_Sum.wav",
+    "midi": 52.42,
+    "release": 0.6,
+    "bytes": 1012976,
+    "sha256": "05170757d30297aa680bfbc082c6e438deb1d1d72c5e757610d0b1bbd525968f",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Timpani2_Hit_v3_rr1_Sum.wav",
+    "midi": 53.56,
+    "release": 0.6,
+    "bytes": 1895164,
+    "sha256": "69e5d604effd3f29c86117d22ad2335f73e43f5d47868dc57d8fa593975ee241",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Timpani5_Hit_v3_rr1_Sum.wav",
+    "midi": 54.5,
+    "release": 0.6,
+    "bytes": 1036528,
+    "sha256": "da8212316bb05e3c06c730d6a67ae4b3c8ed90ca5ec8c52410cb9d0cde1bddb4",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Timpani3_Hit_v3_rr1_Sum.wav",
+    "midi": 56.3,
+    "release": 0.6,
+    "bytes": 1608252,
+    "sha256": "46cd2ba3798f9e3a6be515b13dbc37d2ef65c82afb0d0e9e34121e4524bfcd3a",
+    "pitch_from": "measured"
+   }
+  ],
+  "timpani_roll": [
+   {
+    "path": "Percussion/Timpani/Rolls/Timpani1_Roll_v3_rr1_Sum.wav",
+    "midi": 41.82,
+    "release": 0.3,
+    "bytes": 5196524,
+    "sha256": "834f3fcf28a546d854cf3e331cde3d14da68788d130ca306a2ef6f975230566a",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Rolls/Timpani2_Roll_v3_rr1_Sum.wav",
+    "midi": 47.24,
+    "release": 0.3,
+    "bytes": 4404508,
+    "sha256": "3f78dc5077ed03ea6bc1c125e27be8882b8260ba37ec379da06b80334c7661e7",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Rolls/Timpani3_Roll_v3_rr1_Sum.wav",
+    "midi": 49.5,
+    "release": 0.3,
+    "bytes": 4340208,
+    "sha256": "5d41045533f0163be7ca264cf9c18b3a4e898ecba334c49c0786f14d04665d3a",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Rolls/Timpani5_Roll_v3_rr1_Sum.wav",
+    "midi": 52.08,
+    "release": 0.3,
+    "bytes": 3143844,
+    "sha256": "1b18f7b552be1f9e099abc9ae14724adebd200dec96f46ae12223cd9fdd3f120",
+    "pitch_from": "measured"
+   },
+   {
+    "path": "Percussion/Timpani/Rolls/Timpani4_Roll_v3_rr1_Sum.wav",
+    "midi": 52.15,
+    "release": 0.3,
+    "bytes": 3064788,
+    "sha256": "c9ce7599c5f5612a66d01a3830a3ec92311cca4985ca6764c4b2b70b6a89e535",
+    "pitch_from": "measured"
+   }
+  ]
+ }
+}

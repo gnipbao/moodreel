@@ -18,6 +18,14 @@ stab on 2 and 4), none. Parts: kick, snare, clap, hat, bass, pad, stab, pluck (a
 two-bar motif from the chord tones, seeded). Cue sounds: stab, hit, pop, boing, ding, whoosh, riser (it ends on the
 cue), clack, and stop (the band falls silent for `beats`, reverb tails too; other cues still sound in it).
 
+Sampled instruments (real recordings, samples.py; `moodreel samples fetch` first) are parts too: piano (stride on
+oompah: bass notes on 1 and 3, chords on 2 and 4; else a held bass note under chords on the beat, or a broken chord
+with no groove), strings (the chord held through the bar over its root), pizz (the chord walked a beat at a time),
+brass (trumpets and a horn on the stab's beats), tuba (the bass's beats), clarinet and glock (the lead's motif, an
+octave and two octaves up), marimba (the pluck's eighths), harp (the chord rising over two octaves in eighths) and
+timpani (the root on each downbeat). Sampled cue sounds: brass, piano (a chord), timpani (the root), roll (a timpani
+roll that ends on its cue, `beats` long), glock (the chord's top note) and harp (a glissando that ends on its cue).
+
 `render` gives the audio and the timeline; `write` puts `out/score.wav` and `score.js` (the timeline as a module the
 picture imports: SCORE, bar(n, beat), cue(name)) in the film folder. The same seed draws the same music.
 """
@@ -29,6 +37,7 @@ from pathlib import Path
 
 import numpy as np
 
+from . import samples
 from . import synth as S
 
 NOTES = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
@@ -36,7 +45,17 @@ QUALITIES = {"": (0, 4, 7), "m": (0, 3, 7), "7": (0, 4, 7, 10), "maj7": (0, 4, 7
              "dim": (0, 3, 6), "sus4": (0, 5, 7), "sus2": (0, 2, 7), "6": (0, 4, 7, 9), "m6": (0, 3, 7, 9)}
 GROOVES = ("four", "backbeat", "halftime", "oompah", "none")
 LEVEL = {"kick": 0.9, "snare": 0.6, "clap": 0.5, "hat": 0.35, "bass": 0.55, "pad": 0.3, "stab": 0.45, "pluck": 0.35,
-         "lead": 0.4, "cue": 0.7}
+         "lead": 0.4, "cue": 0.7, "piano": 0.5, "strings": 0.3, "pizz": 0.45, "brass": 0.45, "tuba": 0.6,
+         "clarinet": 0.35, "glock": 0.25, "marimba": 0.4, "harp": 0.3, "timpani": 0.5}
+SAMPLED_PARTS = ("piano", "strings", "pizz", "brass", "tuba", "clarinet", "glock", "marimba", "harp", "timpani")
+SAMPLED_CUES = ("brass", "piano", "timpani", "roll", "glock", "harp")
+
+
+def uses_samples(score: dict) -> list[str]:
+    """The sampled parts and cue sounds a score asks for."""
+    parts = {p for s in score.get("sections", []) for p in s.get("parts") or [] if p in SAMPLED_PARTS}
+    cues = {c.get("sound") for c in score.get("cues", []) if c.get("sound") in SAMPLED_CUES}
+    return sorted(parts | cues)
 
 
 def chord(name: str) -> tuple[int, tuple[int, ...]]:
@@ -117,6 +136,7 @@ def _section(buf, s, start, beat_s, meter, rng):
             if "pluck" in parts:
                 for h in (0, 1):
                     _place(buf, S.pluck(tones[(2 * k + h) % len(tones)] + 12, 0.45 * beat_s, rng, LEVEL["pluck"]), t + h * beat_s / 2)
+        _sampled(buf, parts, groove, name, t0, beat_s, meter, lead_motif, b)
         if "pad" in parts:
             _place(buf, S.pad(tones, meter * beat_s, rng, LEVEL["pad"]), t0)
         if "lead" in parts:                                # the same two-bar motif over every pair of bars
@@ -128,8 +148,102 @@ def _section(buf, s, start, beat_s, meter, rng):
                 t += dur * beat_s
 
 
+def _sampled(buf, parts, groove, name, t0, beat_s, meter, motif, b):
+    """One bar of the sampled parts."""
+    if not parts & set(SAMPLED_PARTS):
+        return
+    N, C = samples.note, samples.chord
+    tones, low, mid = _voicing(name, 60), _voicing(name, 36)[0], _voicing(name, 48)
+    beat = lambda k: t0 + k * beat_s                       # noqa: E731
+    bar = meter * beat_s
+    if "piano" in parts:
+        if groove == "oompah":                             # stride: bass notes on 1 and 3, the chord on 2 and 4
+            for k in range(meter):
+                x = N("piano", low + (7 if k == 2 else 0), 0.8 * beat_s, LEVEL["piano"]) if k % 2 == 0 else \
+                    C("piano", tones, 0.6 * beat_s, LEVEL["piano"] * 0.9)
+                _place(buf, x, beat(k))
+        elif groove == "none":                              # a broken chord in eighths over a held bass note
+            _place(buf, N("piano", low + 12, bar, LEVEL["piano"] * 0.8), t0)
+            for e in range(2 * meter):
+                _place(buf, N("piano", tones[e % len(tones)] + 12 * (e // len(tones) % 2), 0.9 * beat_s, LEVEL["piano"] * 0.7),
+                       t0 + e * beat_s / 2)
+        else:                                               # a held bass note, chords on the beat
+            _place(buf, N("piano", low, bar, LEVEL["piano"]), t0)
+            for k in range(meter):
+                if groove == "four" or k % 2 == 0:
+                    _place(buf, C("piano", tones, 0.9 * beat_s, LEVEL["piano"] * (1 if k == 0 else 0.8)), beat(k))
+    if "strings" in parts:                                 # the chord held through the bar over its root
+        _place(buf, C("strings", [mid[0] - 12, *tones], bar, LEVEL["strings"]), t0)
+    if "pizz" in parts:                                    # the chord walked a beat at a time
+        walk = [mid[0], mid[1], mid[2 % len(mid)], mid[1]]
+        for k in range(meter):
+            _place(buf, N("pizz", walk[k % 4], 0.5 * beat_s, LEVEL["pizz"]), beat(k))
+    if "brass" in parts:                                   # trumpets on the chord, a horn on the root, on the stab's beats
+        for k in range(meter):
+            if (groove == "oompah" and k % 2 == 1) or (groove != "oompah" and k == 0):
+                x = C("trumpet", tones, 0.35 * beat_s, LEVEL["brass"])
+                h = N("horn", mid[0], 0.35 * beat_s, LEVEL["brass"] * 0.8)
+                _place(buf, x, beat(k))
+                _place(buf, h, beat(k))
+    if "tuba" in parts:                                    # the bass's beats
+        for k in range(meter):
+            if k % 2 == 0:
+                _place(buf, N("tuba", low + (7 if groove == "oompah" and k == 2 else 0), 0.7 * beat_s, LEVEL["tuba"]), beat(k))
+    for inst, up in (("clarinet", 12), ("glock", 24)):     # the lead's motif
+        if inst in parts:
+            t, end = t0, t0 + bar
+            for deg, dur in motif[(b % 2) * 4:(b % 2) * 4 + 4]:
+                if t >= end:
+                    break
+                d = min(dur * beat_s, end - t) * (0.9 if inst == "clarinet" else 0.5)
+                _place(buf, N(inst, tones[deg % len(tones)] + up, d, LEVEL[inst]), t)
+                t += dur * beat_s
+    if "marimba" in parts:                                 # the pluck's eighths
+        for e in range(2 * meter):
+            _place(buf, N("marimba", tones[e % len(tones)] + 12, 0.4 * beat_s, LEVEL["marimba"]), t0 + e * beat_s / 2)
+    if "harp" in parts:                                    # the chord rising over two octaves in eighths
+        rise = [m + 12 * o for o in (0, 1, 2) for m in mid]
+        for e in range(2 * meter):
+            _place(buf, N("harp", rise[e % len(rise)], 1.2 * beat_s, LEVEL["harp"]), t0 + e * beat_s / 2)
+    if "timpani" in parts:                                 # the root on each downbeat
+        _place(buf, N("timpani", 41 + (low - 41) % 12, beat_s, LEVEL["timpani"]), t0)
+
+
+def _cue_sampled(snd: str, chord_name: str, beats: float, beat_s: float) -> tuple[np.ndarray, float]:
+    """A sampled cue sound and how long before its cue it starts (a roll or glissando ends on it)."""
+    tones, low, mid = _voicing(chord_name, 60), _voicing(chord_name, 36)[0], _voicing(chord_name, 48)
+    lvl = LEVEL["cue"]
+    if snd == "brass":
+        x = samples.chord("trumpet", tones, 0.5 * beat_s, lvl)
+        h = samples.note("horn", mid[0], 0.5 * beat_s, lvl * 0.8)
+        n = max(len(x), len(h))
+        return np.pad(x, (0, n - len(x))) + np.pad(h, (0, n - len(h))), 0.0
+    if snd == "piano":
+        x = samples.chord("piano", [low, *tones, tones[0] + 12], 1.5 * beat_s, lvl)
+        return x, 0.0
+    if snd == "timpani":
+        return samples.note("timpani", 41 + (low - 41) % 12, 1.5 * beat_s, lvl), 0.0
+    if snd == "roll":                                      # a roll that swells into its cue
+        d = beats * beat_s
+        x = samples.note("timpani_roll", 41 + (low - 41) % 12, d, lvl)[: int(d * S.SR)]
+        return x * np.linspace(0.25, 1, len(x), dtype=np.float32) ** 1.5, d
+    if snd == "glock":
+        return samples.note("glock", tones[-1] + 24, beat_s, lvl * 0.7), 0.0
+    if snd == "harp":                                      # a glissando up an octave and a half
+        steps = [m + 12 * o for o in (0, 1) for m in mid] + [mid[0] + 24]
+        d, out = 0.5, np.zeros(int((0.5 + 2.0) * S.SR), np.float32)
+        for k, m in enumerate(steps):
+            _place(out, samples.note("harp", m, 1.5, lvl * 0.7), k * d / (len(steps) - 1))   # the last on the cue
+        return out, d
+    raise ValueError(snd)
+
+
 def render(score: dict) -> tuple[np.ndarray, dict]:
     tl = timeline(score)
+    need = uses_samples(score)
+    if need and not samples.ready():
+        raise SystemExit(f"score.json uses sampled instruments ({', '.join(need)}): run `moodreel samples fetch` first "
+                         "(downloads 272 MB of CC0 samples, once)")
     rng = np.random.default_rng(score.get("seed", 0))
     beat_s, meter = tl["beat_s"], tl["meter"]
     last = max([c["t"] for c in tl["cues"]] + [0.0])     # a score of cues alone (sound effects) runs past its last
@@ -148,10 +262,16 @@ def render(score: dict) -> tuple[np.ndarray, dict]:
         elif snd == "riser":
             x = S.riser(rng, LEVEL["cue"], dur=c.get("beats", 2) * beat_s)
             t -= len(x) / S.SR                                     # a riser ends on its cue
+        elif snd in SAMPLED_CUES:
+            bar = int((t - tl["offset"]) / (meter * beat_s))
+            names = [ch for s in score["sections"] for b in range(s["bars"]) for ch in [s["chords"][b % len(s["chords"])]]] or ["C"]
+            x, lead_in = _cue_sampled(snd, names[min(bar, len(names) - 1)], c.get("beats", 2), beat_s)
+            t -= lead_in
         elif snd in S.FOLEY:
             x = S.FOLEY[snd](rng, LEVEL["cue"])
         else:
-            raise ValueError(f"cue {c['name']}: sound {snd!r} is not one of stop, stab, {', '.join(S.FOLEY)}")
+            raise ValueError(f"cue {c['name']}: sound {snd!r} is not one of stop, stab, {', '.join(S.FOLEY)}, "
+                             f"{', '.join(SAMPLED_CUES)}")
         _place(cues, x, max(0.0, t))
     band = S.reverb(band, 0.4, 0.15)
     cues = np.concatenate([cues, np.zeros(len(band) - len(cues), np.float32)])
@@ -190,5 +310,8 @@ def write(film: Path) -> dict:
     wav = film / "out" / "score.wav"
     wavfile.write(wav, S.SR, (np.clip(audio, -1, 1) * 32767).astype(np.int16))
     (film / "score.js").write_text(JS.format(score=json.dumps(tl, indent=1)))
+    credits = film / "CREDITS"
+    if uses_samples(score) and credits.exists() and samples.credit() not in credits.read_text():
+        credits.write_text(credits.read_text().rstrip("\n") + f"\n- {samples.credit()}\n")
     return {"wav": str(wav), "js": str(film / "score.js"), **{k: tl[k] for k in ("bpm", "bars", "duration")},
             "cues": len(tl["cues"])}

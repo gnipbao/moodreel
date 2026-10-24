@@ -95,6 +95,18 @@ is optional and reads numbers that count (`brew install tesseract`, `apt install
 uv sync && npm install
 ```
 
+Two downloads are optional and asked for by name, once: style embeddings for `frame-check` (the CSD model's weights,
+CC BY 4.0, 2.4 GB fetched and kept as 0.6 GB) and the sampled instruments for scores (272 MB of CC0 recordings from
+Versilian Studios Chamber Orchestra 2):
+
+```bash
+uv run moodreel csd setup
+```
+
+```bash
+uv run moodreel samples fetch
+```
+
 Bring a few references into a project, check they share one style, and measure them (palette and colour roles,
 surface, layout, type sizes and weights, motion grammar, rhythm). `MEASURE.md` is the summary a director reads first:
 
@@ -106,7 +118,8 @@ uv run moodreel intake out/projects/my-style refs/*.png refs/teaser.mp4 --source
 uv run moodreel measure out/projects/my-style
 ```
 
-Score a style frame against the references (palette coverage, off-palette area, lightness, surface):
+Score a style frame against the references (palette coverage, off-palette area, lightness, surface, and with style
+embeddings the style itself: its CSD similarity to the references, against how well they agree with each other):
 
 ```bash
 uv run moodreel frame-check out/projects/my-style frame.png
@@ -191,7 +204,8 @@ each style's `STYLE.md` (the invariants a director follows), `DEMO.md` (how its 
 `style.json`. 23 of them are flat 2D styles the MVP draws (Swiss motion graphics, risograph, ukiyo-e, blueprint,
 spy titles…); 36 need capabilities that come later: painterly brush engines, 3D, pixel art, a score that drives
 the picture, or real footage and data. The score is now here (`moodreel score`: a film's tempo grid, sections and
-cues, drawn as music by deterministic synthesised instruments, with the cue times for the picture to land on), which
+cues, drawn as music by deterministic synthesised instruments or by sampled ones, upright piano, strings, pizzicato,
+trumpets, horn, tuba, clarinet, marimba, glockenspiel, harp and timpani, with the cue times for the picture to land on), which
 makes three more styles ready: game show, microgame and 1930s rubber hose. So is pixel art (`kit/pixel.js`: an
 indexed framebuffer shown through a palette, scaled by whole pixels, with Bayer dither and palette tables; the
 measurement reads a reference's pixel scale, native size, palette and dither), which makes the 16-bit pixel RPG ready. And painted marks (`kit/brush.js`: brush strokes with bristles, watercolour
@@ -208,7 +222,8 @@ which makes the last 15 ready: every style in the library can now be made. Films
 ducked under them at delivery) and carry sound effects without music (a score of cues alone), and be delivered
 as several variants of one picture code (`film.json` variants, read with `pick()`, `film deliver --all-variants`), or
 exported as a HyperFrames composition (`moodreel export hyperframes`: a paused timeline whose every seek draws the
-film's own frame). Only the documents are imported; Moodreel re-implements the techniques.
+film's own frame) or a Remotion project (`moodreel export remotion`: one composition whose every frame is the film's
+own). Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Repository
 
