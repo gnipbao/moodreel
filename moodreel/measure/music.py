@@ -159,7 +159,8 @@ def load_lyrics(path: str | Path) -> list[dict]:
     if lines and "words" not in lines[0]:
         lines = [{"text": " ".join(w["w"] for w in lines), "start": lines[0]["start"], "end": lines[-1]["end"], "words": lines}]
     return [{"text": ln.get("text") or " ".join(w["w"] for w in ln["words"]), "start": ln["start"], "end": ln["end"],
-             "words": [{"w": w["w"], "start": w["start"], "end": w["end"]} for w in ln["words"]]} for ln in lines]
+             "words": [{"w": w["w"], "start": w["start"], "end": w["end"], **({"syl": w["syl"]} if w.get("syl") else {})}
+                       for w in ln["words"]]} for ln in lines]
 
 
 def from_json(path: str | Path, lyrics=None, offset: float = 0.0) -> dict:
@@ -175,7 +176,9 @@ def from_json(path: str | Path, lyrics=None, offset: float = 0.0) -> dict:
             "features": {k: [round(x, 3) for x in v] for k, v in feats.items()}}
     if lyrics:
         data["lyrics"] = [{**ln, "start": ln["start"] + offset, "end": ln["end"] + offset,
-                           "words": [{**w, "start": w["start"] + offset, "end": w["end"] + offset} for w in ln["words"]]}
+                           "words": [{**w, "start": w["start"] + offset, "end": w["end"] + offset,
+                                      **({"syl": [[s0 + offset, s1 + offset] for s0, s1 in w["syl"]]} if w.get("syl") else {})}
+                                     for w in ln["words"]]}
                           for ln in lyrics]
     return data
 

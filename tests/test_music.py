@@ -63,19 +63,21 @@ def test_a_drum_loop_gives_its_tempo_beats_bars_and_drums(tmp_path):
 
 
 def test_lyrics_in_any_of_three_shapes_and_an_analysis_from_elsewhere_shifted(tmp_path):
-    words = [{"w": "I'm", "start": 1.0, "end": 1.2}, {"w": "upping", "start": 1.2, "end": 1.6}]
+    words = [{"w": "I'm", "start": 1.0, "end": 1.2}, {"w": "upping", "start": 1.2, "end": 1.6, "syl": [[1.2, 1.3], [1.3, 1.6]]}]
     shapes = [{"lines": [{"text": "I'm upping", "start": 1.0, "end": 1.6, "words": words}]},
               [{"text": "I'm upping", "start": 1.0, "end": 1.6, "words": words}], words]
     for i, s in enumerate(shapes):
         (tmp_path / f"l{i}.json").write_text(json.dumps(s))
         lines = music.load_lyrics(tmp_path / f"l{i}.json")
-        assert lines[0]["words"][1] == {"w": "upping", "start": 1.2, "end": 1.6} and lines[0]["text"] == "I'm upping"
+        assert lines[0]["words"][1] == {"w": "upping", "start": 1.2, "end": 1.6, "syl": [[1.2, 1.3], [1.3, 1.6]]}
+        assert lines[0]["text"] == "I'm upping" and "syl" not in lines[0]["words"][0]   # syllables kept where the aligner gave them
     a = {"duration": 4.0, "bpm": 120.0, "fps": 100, "beats": [0.5, 1.0], "downbeats": [0.5], "sections": [],
          "onsets": {"kick": [[0.5, 0.9]]}, "rms": [0.1] * 400}
     (tmp_path / "audio.json").write_text(json.dumps(a))
     d = music.from_json(tmp_path / "audio.json", music.load_lyrics(tmp_path / "l2.json"), offset=0.05)
     assert d["beats"] == [0.55, 1.05] and d["onsets"]["kick"] == [[0.55, 0.9]] and d["features"]["rms"][0] == 0.1
     assert d["lyrics"][0]["words"][0]["start"] == pytest.approx(1.05)
+    assert d["lyrics"][0]["words"][1]["syl"] == [[pytest.approx(1.25), pytest.approx(1.35)], [pytest.approx(1.35), pytest.approx(1.65)]]
     out = music.write_module(d, tmp_path / "music-data.js", "a test")
     src = out.read_text()
     assert json.loads(src.split("export const AUDIO = ")[1].split(";\n")[0])["bpm"] == 120.0

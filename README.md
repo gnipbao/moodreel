@@ -189,6 +189,15 @@ uv run moodreel music song.wav --lyrics words.json --out films/my-film/music-dat
 node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
 ```
 
+Match a remake to its reference shot by shot, not just in stills: `moodreel compare` measures each of the reference's
+shots for picture, detail, tone, motion direction and speed, worst first. What a 2D canvas can't draw (ray-marched
+bodies, lensing, dense line fields, engraving that follows a surface) goes through `kit/gl.js`, the GPU layer. See
+[docs/GPU.md](docs/GPU.md):
+
+```bash
+uv run moodreel compare reference.mp4 remake.mp4
+```
+
 ## Use it with an agent
 
 Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
@@ -256,7 +265,7 @@ own). Only the documents are imported; Moodreel re-implements the techniques.
 Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/` and the parts
 of pdoom-video adapted under its MIT license (see `NOTICE`), it uses none of their code.
 
-- [pdoom-video](https://github.com/mexicat/pdoom-video) — a music video computed from its song's data: word-aligned lyrics, drum hits and a beat grid drive every cut, slam and camera move, and sub-frame motion blur. The model for `moodreel music`, `kit/music.js` and docs/MUSIC-SYNC.md (MIT).
+- [pdoom-video](https://github.com/mexicat/pdoom-video) — a music video computed from its song's data: word-aligned lyrics, drum hits and a beat grid drive every cut, slam and camera move, and sub-frame motion blur. The model for `moodreel music`, `kit/music.js` and docs/MUSIC-SYNC.md; `kit/gl.js` and `kit/anim.js` are adapted from its engine (MIT).
 
 - [FrameVelo](https://github.com/gnipbao/framevelo) — the video engine: frames kept on the GPU and encoded in hardware (a dependency, Apache-2.0).
 

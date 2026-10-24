@@ -231,10 +231,11 @@ def readtime(samples: list[dict], width: int, height: int, step: float) -> list[
 
 
 def _vendored(d: Path) -> None:
-    """A film that uses kit/three.js gets three.js back in kit/vendor/ if it's missing (vendored copies aren't kept
-    in git: `npm install` in the repository brings them)."""
-    if (d / "kit" / "three.js").exists() and not (d / "kit" / "vendor" / "three" / "three.module.js").exists() \
-            and "three.js" in (d / "main.js").read_text():
+    """A film that uses kit/three.js or kit/gl.js (built on it) gets three.js back in kit/vendor/ if it's missing
+    (vendored copies aren't kept in git: `npm install` in the repository brings them)."""
+    uses = any(k in p.read_text() for p in [d / "main.js", *d.glob("lib/**/*.js"), *d.glob("shots/**/*.js")] if p.exists()
+               for k in ("kit/three.js", "kit/gl.js", "./three.js", "./gl.js"))
+    if (d / "kit" / "three.js").exists() and not (d / "kit" / "vendor" / "three" / "three.module.js").exists() and uses:
         from ..pack.kit import vendor_three
         vendor_three(d / "kit")
 

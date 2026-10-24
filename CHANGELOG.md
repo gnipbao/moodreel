@@ -24,6 +24,24 @@ shot: a music video lands on its song because every motion is computed from the 
 - Fixed: a mix a little longer than the film came out of the loudness pass 0.1 s short (loudnorm's timestamps ran
   ahead of its samples), so the film lost its last six frames at 60 fps and the fade-out began early.
 
+## Unreleased: remakes that match
+
+A remake whose stills matched still moved wrong: shot by shot, its optical flow agreed with the reference's at a median
+of 0.1 and ran at 0.6 of its speed. See [docs/GPU.md](docs/GPU.md).
+
+- `moodreel compare <reference> <remake>`: window by window (the reference's own shots by default), structure (SSIM),
+  detail, tone, motion direction (optical flow, cell by cell) and speed, the worst windows first with what is wrong.
+- `kit/gl.js`: a GPU layer for pages. Full-screen shader passes into HDR targets (several outputs for a G-buffer),
+  Canvas layers as textures, tens of thousands of anti-aliased hairlines a frame (2D or 3D), a GLSL library (noise,
+  signed distances, smooth union, engraving hatch, a heat ramp) and a film post (bloom pyramid, halation, chromatic
+  fringe, tone shoulder, vignette). Adapted from pdoom-video's engine (MIT).
+- `kit/outline.js`: glyph outlines from TrueType files (simple and composite glyphs), for type broken into strokes or
+  particles. `kit/anim.js`: pulse, spring, keyframes, frame-stable seeds, paths walked by length.
+- `stage({ faces, prepare })`: font files registered by family name; a step after fonts and images load and before the
+  first frame, for what measures text.
+- `moodreel music` keeps an aligner's syllable timings, and `kit/music.js` `progress` follows them.
+- `film deliver` brings three.js for a film that uses `kit/gl.js`.
+
 ## v0.1.0: the MVP (2026-10-24, pre-alpha)
 
 The whole design in [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) is built: milestones W1-W6 and every V1 item.
