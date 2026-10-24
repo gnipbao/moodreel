@@ -1,6 +1,6 @@
 {
   "name": "moodreel",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "description": "Moodboard in, reel out: distill a visual and motion style from references, then render new code-drawn films in it.",
   "license": "MIT",
