@@ -3,6 +3,7 @@
   moodreel intake <project> <ref>... [--source own|web]   copy references in, normalised; check they share a style
   moodreel measure <project>                              palette, surface, layout, type, motion, rhythm
   moodreel frame-check <project> <still>...               does a style frame look like the references?
+  moodreel csd setup | compare <picture or video>...       style embeddings: download once; style similarity
   moodreel kit <project>                                  the style's tokens.js and motion.js, with the shared kit
   moodreel scaffold <project>                             a first style frame drawn from the tokens (look/)
   moodreel motion-check <project> <video>                 does a rendered film move the way the references do?
@@ -10,8 +11,9 @@
   moodreel styles [query]                                 your styles and the built-in ones
   moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f] [--variant V | --all-variants]
   moodreel score <film>                                   the film's score.json as out/score.wav and score.js (cue times)
+  moodreel samples fetch|list                             the sampled instruments (CC0): download once; what is there
   moodreel voice <film>                                   narration.json voiced: out/voice.wav and voice.js (line times)
-  moodreel export hyperframes <film> [--out d] [--variant v]  the film as a HyperFrames composition
+  moodreel export hyperframes|remotion <film> [--out d] [--variant v]  the film as a HyperFrames composition or Remotion project
   moodreel media add <film> <file> --name N --source S --license L [--start --end --crop --width --grade]
   moodreel media list|check <film>                        real footage, stills and data, with source and licence
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
@@ -77,7 +79,51 @@ def cmd_frame_check(a):
     for s in r["stills"]:
         print(f"{'PASS' if s['pass'] else 'FAIL'} {s['still']}: coverage {s['coverage']:.0%}, off-palette {s['off_palette']:.0%}, "
               f"lightness EMD {s['lightness_emd']}; surface " + ", ".join(f"{k} {'ok' if v['ok'] else 'off' if v['ok'] is False else '?'}"
-                                                                         for k, v in s["surface"].items()) + f"; sheet {s['sheet']}")
+                                                                         for k, v in s["surface"].items())
+              + (f"; style {s['style']['similarity']} (floor {s['style']['floor']})" if s["style"].get("similarity") is not None
+                 else f"; style ? ({s['style']['note']})") + f"; sheet {s['sheet']}")
+
+
+def cmd_csd(a):
+    from .measure import csd
+    if a.action == "setup":
+        print(f"style embeddings -> {csd.setup()}")
+        return 0
+    if len(a.files) < 2:
+        raise SystemExit("csd compare <picture or video> <picture or video>...")
+    import numpy as np
+
+    from . import sheet
+    from .intake import probe
+    rows = []
+    for f in a.files:                                    # a video: four frames away from its ends, averaged
+        if Path(f).suffix.lower() in {".mp4", ".mov", ".webm", ".mkv", ".m4v", ".gif"}:
+            d = probe(Path(f))["duration"]
+            pics = sheet.video_frames(f, [d * (k + 0.5) / 4 for k in range(4)])
+        else:
+            from PIL import Image
+            pics = [np.asarray(Image.open(f).convert("RGB"))]
+        rows.append(csd._unit(csd.embed(pics).mean(0)))
+    sims = np.stack(rows) @ np.stack(rows).T
+    names = [Path(f).name[:18] for f in a.files]
+    print(" " * 19 + " ".join(f"{n[:6]:>6s}" for n in names))
+    for n, r in zip(names, sims):
+        print(f"{n:18s} " + " ".join(f"{x:6.2f}" for x in r))
+    return 0
+
+
+def cmd_samples(a):
+    from .score import samples
+    if a.action == "fetch":
+        print(json.dumps(samples.fetch(), indent=1))
+        return 0
+    m = samples.manifest()
+    gone = {e["path"] for e in samples.missing()}
+    for name, fs in m["instruments"].items():
+        have = sum(e["path"] not in gone for e in fs)
+        print(f"{name:13s} {have:3d}/{len(fs)} files, MIDI {fs[0]['midi']}-{fs[-1]['midi']}")
+    print(samples.credit())
+    return 0 if not gone else 1
 
 
 def cmd_kit(a):
@@ -125,7 +171,8 @@ def cmd_styles(a):
 
 def cmd_export(a):
     from . import export
-    print(json.dumps(export.hyperframes(Path(a.film), Path(a.out) if a.out else None, a.variant), indent=1))
+    fn = export.hyperframes if a.format == "hyperframes" else export.remotion
+    print(json.dumps(fn(Path(a.film), Path(a.out) if a.out else None, a.variant), indent=1))
 
 
 def cmd_voice(a):
@@ -266,6 +313,10 @@ def main(argv=None):
     p.add_argument("project")
     p.add_argument("stills", nargs="+")
     p.set_defaults(fn=cmd_frame_check)
+    p = sub.add_parser("csd", help="style embeddings: setup (download once), compare pictures or videos")
+    p.add_argument("action", choices=["setup", "compare"])
+    p.add_argument("files", nargs="*")
+    p.set_defaults(fn=cmd_csd)
     p = sub.add_parser("kit", help="write the style's kit from the measurements")
     p.add_argument("project")
     p.set_defaults(fn=cmd_kit)
@@ -288,8 +339,8 @@ def main(argv=None):
     p = sub.add_parser("styles", help="list your styles and the built-in ones")
     p.add_argument("query", nargs="?")
     p.set_defaults(fn=cmd_styles)
-    p = sub.add_parser("export", help="a film as a composition for another tool: hyperframes")
-    p.add_argument("format", choices=["hyperframes"])
+    p = sub.add_parser("export", help="a film as a composition for another tool: hyperframes, remotion")
+    p.add_argument("format", choices=["hyperframes", "remotion"])
     p.add_argument("film")
     p.add_argument("--out")
     p.add_argument("--variant")
@@ -313,6 +364,9 @@ def main(argv=None):
     p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
     p.add_argument("film")
     p.set_defaults(fn=cmd_score)
+    p = sub.add_parser("samples", help="the sampled instruments: fetch (download once, CC0), list")
+    p.add_argument("action", choices=["fetch", "list"])
+    p.set_defaults(fn=cmd_samples)
     p = sub.add_parser("film", help="make a film in a style: new, check, deliver")
     p.add_argument("action", choices=["new", "check", "deliver", "variants"])
     p.add_argument("target", help="the film's name (new) or folder (check, deliver)")

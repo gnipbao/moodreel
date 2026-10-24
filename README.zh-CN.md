@@ -49,7 +49,7 @@
 每套包含 `STYLE.md`（导演要遵守的不变量）、`DEMO.md`（上游 demo 片的做法）和 `style.json`。其中 23 套是 MVP 就能用代码
 画出来的扁平 2D 风格（瑞士动态排版、孔版印刷、浮世绘、蓝图、间谍片头……）；36 套需要后期能力：绘画笔触、3D、像素、
 配乐驱动、真实素材。只导入了文档，技法由 Moodreel 自己重新实现。配乐驱动现在已经有了（`moodreel score`：片子自己的节拍网格、
-段落和提示点，用确定性的合成乐器画成音乐，并把提示点时间交给画面去对齐），综艺节奏扁平、微游戏快闪、1930s 橡皮管卡通三套风格因此可以出片。像素画也有了（`kit/pixel.js`：索引帧加调色板、整像素放大、Bayer 抖动和调色板查找表；测量能从参考里读出像素倍数、原生尺寸、色数和抖动），16-bit 像素 RPG 因此可以出片。绘画笔触也有了（`kit/brush.js`：带鬃毛的笔触、边缘积色的水彩、受光的刮刀块、纸纹打断的蜡笔、带晕的墨，以及把平涂画面重画成笔触的 repaint；测量能读出可见笔触的覆盖、尺度和方向），油画厚涂、水彩、水墨、80 年代赛璐珞等七套风格因此可以出片。3D 也有了（`kit/three.js`：three.js 场景按 t 设置，渲染到自己的 WebGL 画布再合到 2D 舞台上，字可以钉在世界坐标上；`film new` 会把 three.js 复制进片子），低多边形岛屿、玻璃产品、移轴微缩、HD-2D 等十套风格因此可以出片。真实素材也有了（`moodreel media add`：素材按影片帧率一帧一张图存好，静图和数据原样进来，每一份都在 manifest 和 CREDITS 里记下来源、许可和哈希；`kit/media.js` 按影片时间取帧；`film check` 会让没有来源或许可的素材不通过），最后 15 套风格也可以出片了：风格库里的每一套现在都能做。片子也可以有旁白（`narration.json` → `moodreel voice`：台词按时间或配乐提示点放好、合成语音、用 `voice.js` 出字幕，交付时音乐在人声下压低）和不带音乐的音效（只有提示点的 score.json），还能用同一份画面代码出多个变体（film.json 里的 variants，用 `pick()` 读，`film deliver --all-variants`），或导出成 HyperFrames composition（`moodreel export hyperframes`：一条暂停的时间轴，每次 seek 都画出片子自己的那一帧）。
+段落和提示点，用确定性的合成乐器或采样乐器（立式钢琴、弦乐、拨弦、小号、圆号、大号、单簧管、马林巴、钟琴、竖琴、定音鼓）画成音乐，并把提示点时间交给画面去对齐），综艺节奏扁平、微游戏快闪、1930s 橡皮管卡通三套风格因此可以出片。像素画也有了（`kit/pixel.js`：索引帧加调色板、整像素放大、Bayer 抖动和调色板查找表；测量能从参考里读出像素倍数、原生尺寸、色数和抖动），16-bit 像素 RPG 因此可以出片。绘画笔触也有了（`kit/brush.js`：带鬃毛的笔触、边缘积色的水彩、受光的刮刀块、纸纹打断的蜡笔、带晕的墨，以及把平涂画面重画成笔触的 repaint；测量能读出可见笔触的覆盖、尺度和方向），油画厚涂、水彩、水墨、80 年代赛璐珞等七套风格因此可以出片。3D 也有了（`kit/three.js`：three.js 场景按 t 设置，渲染到自己的 WebGL 画布再合到 2D 舞台上，字可以钉在世界坐标上；`film new` 会把 three.js 复制进片子），低多边形岛屿、玻璃产品、移轴微缩、HD-2D 等十套风格因此可以出片。真实素材也有了（`moodreel media add`：素材按影片帧率一帧一张图存好，静图和数据原样进来，每一份都在 manifest 和 CREDITS 里记下来源、许可和哈希；`kit/media.js` 按影片时间取帧；`film check` 会让没有来源或许可的素材不通过），最后 15 套风格也可以出片了：风格库里的每一套现在都能做。片子也可以有旁白（`narration.json` → `moodreel voice`：台词按时间或配乐提示点放好、合成语音、用 `voice.js` 出字幕，交付时音乐在人声下压低）和不带音乐的音效（只有提示点的 score.json），还能用同一份画面代码出多个变体（film.json 里的 variants，用 `pick()` 读，`film deliver --all-variants`），或导出成 HyperFrames composition（`moodreel export hyperframes`：一条暂停的时间轴，每次 seek 都画出片子自己的那一帧）或 Remotion 工程（`moodreel export remotion`：一个 composition，每一帧都是片子自己的那一帧）。
 
 ## 试用
 
@@ -57,14 +57,17 @@
 
 - `uv run moodreel intake <项目> <参考图和视频…>`：导入参考、归一化、检查是否属于同一风格；
 - `uv run moodreel measure <项目>`：测调色板和颜色角色、材质、版式、字号和字重、运动语法、节奏，写出给导演看的 `MEASURE.md`；
-- `uv run moodreel frame-check <项目> <风格帧>`：按参考给风格帧打分；
+- `uv run moodreel frame-check <项目> <风格帧>`：按参考给风格帧打分（调色板、色外面积、明度、材质；装了风格嵌入后还比较风格本身：CSD 相似度对照参考彼此之间的一致程度）；
 - `uv run moodreel kit <项目>`：由测量结果生成风格的 kit（`tokens.js`、`motion.js` 和共用原语，见 [kit/README.md](kit/README.md)）；
 - `uv run moodreel scaffold <项目>`：只用测出的数值画出第一版风格帧，作为导演修改的起点；
 - `uv run moodreel motion-check <项目> <影片>`：用同一套测量逐条比对影片的运动语法和参考是否一致；
 - `uv run moodreel pack <项目> --slug <名> --name <名>`：校验蒸馏出的风格（11 节齐全、数值可追溯、名称不冲突）并存入 `~/.moodreel/styles`；
 - `uv run moodreel styles`：列出你的风格和内置风格；
 - `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
-- `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法。
+- `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法；
+- `uv run moodreel export hyperframes|remotion <影片>`：把片子导出成 HyperFrames composition 或 Remotion 工程。
+
+两项下载是可选的，需要时按名字下载一次：`uv run moodreel csd setup` 下载风格嵌入（CSD 模型权重，CC BY 4.0，下载 2.4 GB、保留 0.6 GB），`uv run moodreel samples fetch` 下载配乐的采样乐器（Versilian Studios Chamber Orchestra 2 的 272 MB 录音，CC0）。
 
 - `uv run moodreel sketch <项目>`：用中性图形把测出的运动语法重放成一段片子，在画 demo 片之前先检查 kit；
 

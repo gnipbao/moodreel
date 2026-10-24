@@ -18,6 +18,8 @@ moodreel frame-check <project> <project>/look/stills/t_2.5.jpg
 | grain off | grain differs (none and fine both count as clean) | `grain(g, TEXTURE.grain, frame, { ground: PALETTE.ground })` |
 | vignette off | | `vignette(g, W, H, TEXTURE.vignette)`; no vignette on dark grounds unless measured |
 | edge_sharpness off | edges crisper or softer than the references | blur, scaling a raster, or a brush where the references are vector |
+| style < floor | the frame's CSD style vector is far from the references' centre (the floor is how well the references agree with each other, less 0.05, within 0.45-0.70); `nearest_reference` names the closest | the look as a whole is off even where the numbers pass: compare with the sheet for mark-making, shape language, composition and type treatment, not colour alone; a different subject in the right style scores 0.6 and up |
+| style ? | the references were measured without style embeddings, or `moodreel csd setup` has not run here | ask the user before the one-time download (2.4 GB); without it, judge the look from the sheet |
 
 The sheet (`evidence/frame-check-NN-*.jpg`) puts the frame beside three references. A frame can pass and still miss
 the style's essence; it can fail on a number and still be right (say why at gate 2). After two rounds that don't

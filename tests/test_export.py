@@ -1,8 +1,9 @@
-"""Export to HyperFrames: the composition carries the film's size and length, packs the film's source (not its work
-folder or deliverables), and seeking its timeline draws the film's own frame."""
+"""Export to HyperFrames and Remotion: the composition carries the film's size and length, packs the film's source
+(not its work folder or deliverables), and seeking its timeline (or rendering a frame) draws the film's own frame."""
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -91,3 +92,40 @@ def test_seeking_the_timeline_draws_the_films_frame(tmp_path):
     finally:
         probe.unlink()
     assert out[0][:2] == [320, 180] and abs(out[0][2] - 80) <= 2 and abs(out[1][2] - 240) <= 2   # t / 2 of the width
+
+
+def test_the_remotion_project_carries_the_films_size_frames_and_source(tmp_path):
+    d = _film(tmp_path)
+    r = export.remotion(d, tmp_path / "rem")
+    pkg = json.loads((tmp_path / "rem" / "package.json").read_text())
+    assert pkg["dependencies"]["remotion"] == pkg["dependencies"]["@remotion/cli"] == export.REMOTION
+    root = (tmp_path / "rem" / "src" / "Root.jsx").read_text()
+    for part in ('id="Film"', "durationInFrames={24}", "fps={12}", "width={320}", "height={180}", "audio: true", "variant: null"):
+        assert part in root, part
+    assert r["frames"] == 24 and r["audio"]
+    packed = {p.name for p in (tmp_path / "rem" / "public" / "film").iterdir()}
+    assert {"main.js", "kit", "film.json", "audio.wav"} <= packed and not {"out", "clip.mp4", "build.sh"} & packed
+    assert "delayRender" in (tmp_path / "rem" / "src" / "Film.jsx").read_text()
+    export.remotion(d, tmp_path / "rem-red", "red")
+    assert 'variant: {"ground": "#c83228"}' in (tmp_path / "rem-red" / "src" / "Root.jsx").read_text()
+
+
+REMOTION_MODULES = os.environ.get("MOODREEL_REMOTION_MODULES")      # a node_modules with Remotion installed
+
+
+@pytest.mark.skipif(not REMOTION_MODULES or not (REPO / "node_modules" / "puppeteer").exists(),
+                    reason="set MOODREEL_REMOTION_MODULES to a node_modules holding remotion and @remotion/cli")
+def test_remotion_renders_the_films_frame(tmp_path):
+    d = _film(tmp_path)
+    (d / "out" / "mix.wav").unlink()
+    rem = tmp_path / "rem"
+    export.remotion(d, rem)
+    (rem / "node_modules").symlink_to(REMOTION_MODULES)
+    chrome = subprocess.run(["node", "--input-type=module", "-e", "import p from 'puppeteer'; console.log(await p.executablePath())"],
+                            cwd=REPO, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["npx", "remotion", "still", "src/index.jsx", "Film", "out/f.png", "--frame=6", f"--browser-executable={chrome}"],
+                   cwd=rem, capture_output=True, text=True, check=True, timeout=300)
+    import numpy as np
+    from PIL import Image
+    row = np.asarray(Image.open(rem / "out" / "f.png").convert("L"))[90]
+    assert abs(int((row > 128).sum()) - 80) <= 2                      # frame 6 at 12 fps: t = 0.5, a bar 80 px long

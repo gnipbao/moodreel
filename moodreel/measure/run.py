@@ -64,6 +64,10 @@ def measure(project: Path) -> dict:
            "layout": {**layout.pooled(lay), "per_picture": lay},
            "type": {**typeset.pooled(lines), "per_picture": lines}}
 
+    from . import csd
+    if csd.ready():                                       # style embeddings, when `moodreel csd setup` has run
+        out["style"] = csd.summary([rid for rid, _ in flat], csd.embed([p for _, p in flat]))
+
     motion, rhy = {}, {}
     for it in items:
         if it["kind"] != "video":
@@ -142,6 +146,13 @@ def report(intake: dict, m: dict) -> str:
               f"(ratio {typ['title_to_body']}); stroke weight: titles {typ['weight_title']}, overall {typ['weight_overall']}. "
               "Size tiers: " + ", ".join(f"{t['height']:.1%} x{t['count']}" for t in typ["tiers"]) + ". "
               "Read the words, case and typeface class from `evidence/type-lines.jpg`.", ""]
+    st = m.get("style")
+    if st:
+        ag = st["agreement"]
+        L += ["## Style embedding (CSD)", "",
+              f"{st['pictures']} pictures from {st['references']} references"
+              + (f"; they agree with each other at {ag['min']}-{ag['median']} (lowest, median; cosine, leave one out)" if ag else "")
+              + f". A style frame passes `frame-check` at a similarity of {st['floor']} or more to their centre.", ""]
     if "motion" in m:
         g = m["motion"]["grammar"]
         L += ["## Motion (measured; see each video's motion.json for every event)", ""]

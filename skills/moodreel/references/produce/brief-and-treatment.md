@@ -81,13 +81,20 @@ A music-led style times the picture to the music: the tempo grid and the cue tab
 every picture hit lands on a listed cue. `film new` gives such a film a `score.json`; write it with the treatment:
 
 - `bpm`, `meter`, `seed`; `sections` in order, each with `bars`, a chord loop (one chord per bar: `C`, `Am7`, `F#m`,
-  `Bb7`, `Gsus4`...), a `groove` (four, backbeat, halftime, oompah, none) and its `parts` (kick, snare, clap, hat,
-  bass, pad, stab, pluck, lead), as the style's §7 asks (a jingle into each round, an oom-pah under a gag);
+  `Bb7`, `Gsus4`...), a `groove` (four, backbeat, halftime, oompah, none) and its `parts`, as the style's §7 asks (a
+  jingle into each round, an oom-pah under a gag): synthesised kick, snare, clap, hat, bass, pad, stab, pluck, lead,
+  or sampled piano (stride on oompah), strings (the chord held), pizz (the chord walked), brass (trumpets and a horn on
+  the stab's beats), tuba, clarinet and glock (the lead's motif), marimba, harp (a rising arpeggio), timpani;
 - `cues`: every hit the picture lands on, by name, `bar` and `beat` (from 1; 2.5 is the off-beat after 2) and its
   `sound`: stab, hit, pop, boing, ding, whoosh, clack, riser (it ends on the cue), or stop (the band falls silent for
-  `beats`: a held stare before a gag; other cues still sound in it).
+  `beats`: a held stare before a gag; other cues still sound in it); sampled: brass, piano, timpani, roll (a timpani
+  swell that ends on the cue, `beats` long), glock, harp (a glissando that ends on the cue).
 
 `moodreel score <film>` renders it to `out/score.wav` and writes `score.js`, which the picture imports: `cue('title')`
 is when the title lands, `bar(5, 3)` the time of bar 5, beat 3. Start each move so it lands there:
-`tween(t, cue('title') - d, d, ease)`. The instruments are synthesised (a bright toy band and pitched foley); a style
-whose §7 asks for an orchestra or a piano gets its grid and cues right and its timbre only roughly.
+`tween(t, cue('title') - d, d, ease)`. Synthesised parts are a bright toy band and pitched foley; the sampled ones
+are real recordings (Versilian Studios Chamber Orchestra 2, CC0), downloaded once with `moodreel samples fetch` (ask
+the user first: 272 MB) and credited in CREDITS by `moodreel score`. A style whose §7 asks for a piano, a dance band or
+an orchestra (silent film, rubber hose, city symphony, kino montage) starts from a sampled band when they are there;
+what the samples lack (organ, banjo, xylophone, trombone smears, kazoo) the score plays with the nearest part, and the
+treatment says so.

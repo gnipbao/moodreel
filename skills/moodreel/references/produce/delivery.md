@@ -25,6 +25,13 @@ timed clip): one paused timeline whose every seek calls the film's `render(t)`, 
 show exactly the film's frames. Check and render it with `npx hyperframes check` / `render` in that folder, for a
 user who edits or ships in HyperFrames.
 
+**Export to Remotion.** `moodreel export remotion <film> [--out d] [--variant v]` writes a Remotion project (Remotion
+and React pinned in `package.json`, the film in `public/film/`, one composition `Film` at the film's size, fps and
+length): it loads the film once, holds the render until it is ready, and draws every frame with the film's
+`render(frame / fps)`. `npm install`, then `npm run render` or `npm run studio` in that folder. Remotion has its own
+licence (free for individuals and small companies, a paid licence for larger ones): say so to a user who will ship
+with it.
+
 **Variants.** Several versions of one film (another palette, seed, line of text, length; a cut-down for social)
 go in `film.json` as `"variants": {"name": {"ground": "#c83228", "duration": 6}, ...}`; the page reads them with
 `pick(key, default)` from `kit/variant.js`, so the picture code stays one. `film deliver --variant NAME` (or
