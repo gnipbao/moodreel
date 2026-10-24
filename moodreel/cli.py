@@ -196,6 +196,19 @@ def cmd_media(a):
     return 0 if r.get("ok", True) else 1
 
 
+def cmd_music(a):
+    from .measure import music
+    lyrics = music.load_lyrics(a.lyrics) if a.lyrics else None
+    if a.source.endswith(".json"):
+        data = music.from_json(a.source, lyrics, a.offset)
+    else:
+        data = music.analyse(a.source, lyrics, grid=not a.no_grid)
+    out = music.write_module(data, a.out, a.credit or "")
+    words = f", {sum(len(x['words']) for x in lyrics)} words" if lyrics else ""
+    print(f"{out}: {data['bpm']} BPM, {len(data['beats'])} beats, {len(data['downbeats'])} bars, "
+          + ", ".join(f"{len(v)} {k}" for k, v in data["onsets"].items()) + words)
+
+
 def cmd_score(a):
     from .score.score import write
     print(json.dumps(write(Path(a.film)), indent=1))
@@ -362,6 +375,15 @@ def main(argv=None):
     p.add_argument("--width", type=int)
     p.add_argument("--grade", choices=["none", "mono"])
     p.set_defaults(fn=cmd_media)
+    p = sub.add_parser("music", help="a song as data for a film to follow (beats, bars, drum hits, envelopes, the "
+                       "lyric's words as sung): music-data.js for kit/music.js")
+    p.add_argument("source", help="the song (audio or video), or an analysis made elsewhere (pdoom-video's audio.json)")
+    p.add_argument("--lyrics", help="word timings: pdoom-video's lyrics.json, lines with words, or a flat list of words")
+    p.add_argument("--offset", type=float, default=0.0, help="shift an imported analysis and its lyrics by this many s")
+    p.add_argument("--no-grid", action="store_true", help="keep drum hits off the 4/4 grid too (not pop or dance)")
+    p.add_argument("--credit", help="where the data came from, written into the module's header")
+    p.add_argument("--out", default="music-data.js")
+    p.set_defaults(fn=cmd_music)
     p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
     p.add_argument("film")
     p.set_defaults(fn=cmd_score)

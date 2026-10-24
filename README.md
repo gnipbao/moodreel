@@ -180,6 +180,15 @@ Replay a style's measured motion with neutral shapes, to check the kit before dr
 uv run moodreel sketch out/projects/my-style
 ```
 
+Make a film follow its song: the song as data (its beat grid, bars, kick, snare and hat hits, envelopes, and the
+lyric's words as sung, from any aligner), read in the film through `kit/music.js`; render with motion blur. The rules,
+learned from pdoom-video's source, are in [docs/MUSIC-SYNC.md](docs/MUSIC-SYNC.md):
+
+```bash
+uv run moodreel music song.wav --lyrics words.json --out films/my-film/music-data.js
+node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
+```
+
 ## Use it with an agent
 
 Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
@@ -244,8 +253,10 @@ own). Only the documents are imported; Moodreel re-implements the techniques.
 
 ## Acknowledgements
 
-Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/`, it uses
-none of their code.
+Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/` and the parts
+of pdoom-video adapted under its MIT license (see `NOTICE`), it uses none of their code.
+
+- [pdoom-video](https://github.com/mexicat/pdoom-video) — a music video computed from its song's data: word-aligned lyrics, drum hits and a beat grid drive every cut, slam and camera move, and sub-frame motion blur. The model for `moodreel music`, `kit/music.js` and docs/MUSIC-SYNC.md (MIT).
 
 - [FrameVelo](https://github.com/gnipbao/framevelo) — the video engine: frames kept on the GPU and encoded in hardware (a dependency, Apache-2.0).
 
