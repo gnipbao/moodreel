@@ -71,7 +71,7 @@
 
 - `uv run moodreel sketch <项目>`：用中性图形把测出的运动语法重放成一段片子，在画 demo 片之前先检查 kit；
 
-运动评测见 [bench/motion/README.md](bench/motion/README.md)；`uv run moodreel bench roundtrip` 把示例片蒸馏回来做往返对比，见 [bench/roundtrip/README.md](bench/roundtrip/README.md)。
+人工测试计划见 [docs/MANUAL-TEST.md](docs/MANUAL-TEST.md)。运动评测见 [bench/motion/README.md](bench/motion/README.md)；`uv run moodreel bench roundtrip` 把示例片蒸馏回来做往返对比，见 [bench/roundtrip/README.md](bench/roundtrip/README.md)。
 
 ## 交给 AI 导演使用
 
