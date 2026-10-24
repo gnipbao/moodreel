@@ -17,6 +17,12 @@ shot: a music video lands on its song because every motion is computed from the 
 - `kit/texture.js`: `bloom`, `halation` and `aberrate` for a finish.
 - `NOTICE`: the MIT notice for what is adapted from pdoom-video.
 - `render.mjs --from s --to s`: render part of a film.
+- `sfx.json`: a film's sound effects at seconds (a film cut to a song has its events in seconds, not bars), panned,
+  rendered by `moodreel/score/sfx.py` and mixed under the music by `film deliver` before the loudness pass. Thirteen
+  new foley sounds: slam, key, glitch, tear, stamp, crackle, boom, tick, rewind, swish, click, zap, thud.
+- `film.json` `"motion_blur": {"samples", "shutter"}`: `film deliver` renders with motion blur.
+- Fixed: a mix a little longer than the film came out of the loudness pass 0.1 s short (loudnorm's timestamps ran
+  ahead of its samples), so the film lost its last six frames at 60 fps and the fade-out began early.
 
 ## v0.1.0: the MVP (2026-10-24, pre-alpha)
 

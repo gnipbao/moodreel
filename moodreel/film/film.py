@@ -1,7 +1,9 @@
 """Films: `moodreel film new | check | deliver`.
 
-  films/<name>/film.json      the style it follows, size, frame rate, length, poster time
+  films/<name>/film.json      the style it follows, size, frame rate, length, poster time; "motion_blur": {"samples": 8,
+                              "shutter": 0.2} to render each frame as the average of sub-frames over its shutter
   films/<name>/main.js        the film, drawn as a function of time with the style's kit (copied in: self-contained)
+  films/<name>/sfx.json       sound effects at seconds, optional, mixed under the music by deliver (moodreel/score/sfx.py)
   films/<name>/TREATMENT.md   three candidate structures, the choice, shots and beats, written before drawing
   films/<name>/CREDITS        every third-party asset and its licence
   films/<name>/build.sh       one command from source to <name>.mp4
@@ -362,7 +364,9 @@ def _loudnorm(music: Path, dst: Path, duration: float) -> dict:
     m = json.loads(r.stderr[r.stderr.rindex("{"):r.stderr.rindex("}") + 1])
     af = (f"loudnorm={target}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:"
           f"measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,"
-          f"afade=t=out:st={max(0.0, duration - 1.0)}:d=1,apad")
+          # loudnorm's timestamps can run ahead of its samples (0.1 s on a 157 s song), which cut the tail and started
+          # the fade early: count them again from the samples
+          f"aresample=48000,asetpts=N/SR/TB,afade=t=out:st={max(0.0, duration - 1.0)}:d=1,apad")
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(music), "-af", af, "-t", str(duration), "-ar", "48000", str(dst)], check=True)
     return {"measured_input_lufs": float(m["input_i"])}
 
@@ -386,8 +390,10 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
         from .. import voice
         info["voice"] = voice.write(d)
     spoken = work / "voice.wav" if (work / "voice.wav").exists() and (d / "narration.json").exists() else None
+    mb = f.get("motion_blur") or {}                    # {"samples": 8, "shutter": 0.2}: each frame averaged over its shutter
+    blur = ["--samples", str(mb["samples"]), "--shutter", str(mb.get("shutter", 0.2))] if mb.get("samples", 1) > 1 else []
     subprocess.run(["node", str(RENDER), "video", str(d), "--fps", str(f["fps"]), "--size", f["size"], "--workers", str(workers),
-                    *vargs, *(["--engine", engine] if engine else []), "--out", str(video)], check=True)
+                    *vargs, *blur, *(["--engine", engine] if engine else []), "--out", str(video)], check=True)
     final = out / f"{f['name']}{suffix}.mp4"
     info["video"] = str(final)
     if spoken:                                         # music ducks under the voice, then the two are one track
@@ -403,6 +409,18 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
         else:
             shutil.copyfile(spoken, premix)
         music = premix
+    if (d / "sfx.json").exists():                      # sound effects at seconds, under the music (or alone)
+        from ..score.sfx import write as write_sfx
+        info["sfx"] = write_sfx(d, f["duration"])
+        fx = Path(info["sfx"]["wav"])
+        if music:
+            bed = work / f"bed{suffix}.wav"
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(music), "-i", str(fx), "-filter_complex",
+                            "[0:a]aresample=48000,aformat=channel_layouts=stereo[m];[1:a]aresample=48000[s];"
+                            "[m][s]amix=inputs=2:duration=first:normalize=0[out]", "-map", "[out]", str(bed)], check=True)
+            music = bed
+        else:
+            music = fx
     if music:
         mix = work / f"mix{suffix}.wav"
         info["music"] = _loudnorm(Path(music), mix, f["duration"])
