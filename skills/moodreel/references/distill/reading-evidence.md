@@ -1,7 +1,9 @@
 # Reading the evidence
 
 `moodreel measure <project>` writes `measure/*.json` and `MEASURE.md`. Read MEASURE.md first, then open the evidence
-for anything that surprises you. State what a number shows separately from what you infer it means.
+for anything that surprises you. State what a number shows separately from what you infer it means. For video
+references, "Shots read as code" says which rendering techniques and camera moves the style lives on: how to read it,
+and what reading by eye gets wrong, is in `reading-shots.md`.
 
 ## Colour (`measure/palette.json`)
 
