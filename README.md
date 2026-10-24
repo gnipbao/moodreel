@@ -85,7 +85,7 @@ references ─► measure ─► interpret ─► style frame ─► demo film �
 4. **Demo film** — rendered, then measured again with the same code and checked rule by rule against the references.
 5. **Produce** — any topic, same style: the director writes a treatment and draws the film with the kit.
 
-See [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) (Chinese) for the full design.
+See [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) (Chinese) for the full design. The manual test plan for v0.1.0 is [docs/MANUAL-TEST.md](docs/MANUAL-TEST.md) (Chinese).
 
 ## Try it
 
