@@ -9,7 +9,7 @@
   moodreel motion-check <project> <video>                 does a rendered film move the way the references do?
   moodreel pack <project> --slug S --name N               check a distilled style and add it to your library
   moodreel styles [query]                                 your styles and the built-in ones
-  moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f] [--variant V | --all-variants]
+  moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f] [--variant V | --all-variants] [--engine E]
   moodreel score <film>                                   the film's score.json as out/score.wav and score.js (cue times)
   moodreel samples fetch|list                             the sampled instruments (CC0): download once; what is there
   moodreel voice <film>                                   narration.json voiced: out/voice.wav and voice.js (line times)
@@ -38,8 +38,8 @@ STRESS = "eq=contrast=0.85,noise=alls=14:allf=t+u,fps=25"
 
 
 def render_video(page_dir: Path, out: Path, fps: float, size: str, workers: int = 3) -> None:
-    subprocess.run(["node", str(RENDER), "video", str(page_dir), "--fps", str(fps), "--size", size,
-                    "--workers", str(workers), "--out", str(out)], check=True)
+    subprocess.run(["node", str(RENDER), "video", str(page_dir), "--fps", str(fps), "--size", size,    # the bench: Chrome,
+                    "--workers", str(workers), "--engine", "chrome", "--out", str(out)], check=True)   # bit for bit
 
 
 def stress_copy(src: Path, dst: Path, w: int, h: int) -> None:
@@ -229,7 +229,8 @@ def cmd_film(a):
     else:
         names = list(film.variants(Path(a.target))) if a.all_variants else [a.variant]
         for v in names:
-            r = film.deliver(Path(a.target), Path(a.music) if a.music else None, Path(a.out) if a.out else None, variant=v)
+            r = film.deliver(Path(a.target), Path(a.music) if a.music else None, Path(a.out) if a.out else None, variant=v,
+                             engine=a.engine)
             print(json.dumps(r, indent=1))
 
 
@@ -379,6 +380,9 @@ def main(argv=None):
     p.add_argument("--out", help="deliver: where the finished film and poster go")
     p.add_argument("--variant", help="check, deliver: one of film.json's variants (window.VARIANT for the page)")
     p.add_argument("--all-variants", action="store_true", help="deliver: every variant, <name>-<variant>.mp4 each")
+    p.add_argument("--engine", choices=["auto", "framevelo", "chrome"],
+                   help="deliver: FrameVelo (fast, the GPU's hardware encoder) or Chrome (bit for bit); "
+                        "auto takes FrameVelo when installed")
     p.set_defaults(fn=cmd_film)
     sub.add_parser("render", help="the renderer: video|still|texts <dir> [--fps] [--size] [--workers] [--out]")
     p = sub.add_parser("sketch", help="replay the measured motion grammar with neutral shapes, as a film")

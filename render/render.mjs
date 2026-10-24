@@ -7,15 +7,24 @@
 //   window.READY = true;                 set once fonts and images are loaded
 //
 // Usage:
-//   node render/render.mjs video <dir> [--fps 30] [--size 1920x1080] [--workers 2] [--out <dir>/out/video.mp4]
+//   node render/render.mjs video <dir> [--fps 30] [--size 1920x1080] [--workers 2] [--engine auto|framevelo|chrome]
+//                                       [--quality draft|standard|high] [--out <dir>/out/video.mp4]
 //   node render/render.mjs still <dir> <t> [<t> ...] [--size 1920x1080] [--out <dir>/stills]
 //   node render/render.mjs texts <dir> [--step 0.1] [--size 1920x1080] [--out texts.json]   what window.TEXTS(t) reports
 //
 // --variant '<json>' (any command): the page finds the object as window.VARIANT before its scripts run (kit/variant.js
 // reads it), so one film renders as several: another palette, seed, line of text or length.
 //
-// Each worker drives a Chrome of its own and encodes one contiguous range of frames; the ranges are joined without
-// re-encoding. Any page error stops the render.
+// Two engines make video. FrameVelo (github.com/gnipbao/framevelo, a dependency) keeps every frame on the GPU: the
+// stage canvas becomes a VideoFrame for the hardware H.264 encoder (WebCodecs), muxed without a pass through Node or
+// x264; it is several times faster and uses a fraction of the CPU. It renders the film through an entry page beside
+// index.html that sets window.VARIANT, loads main.js and, once the film is READY, offers render(t) as the seek
+// FrameVelo calls for every frame. Chrome (below) screenshots each frame and encodes with x264: slower, but every
+// render is the same, bit for bit, which the benches need. --engine auto (the default, or MOODREEL_ENGINE) takes
+// FrameVelo when it is installed, on macOS (its tested platform), and Chrome otherwise. Stills and texts are Chrome's.
+//
+// Chrome: each worker drives a Chrome of its own and encodes one contiguous range of frames; the ranges are joined
+// without re-encoding. Any page error stops the render.
 //
 // Speed: Chrome paces frames to the display (vsync, 60 Hz), and a screenshot waits for the next one, which put about
 // 42 ms on every frame whatever its size or format. With that pacing off a screenshot takes 8-18 ms (1280x720 JPEG),
@@ -40,7 +49,8 @@ const TYPES = {
 
 function parse(argv) {
   const [cmd, dir, ...rest] = argv;
-  const opts = { fps: 30, size: '1920x1080', workers: 1, out: null, times: [], step: 0.1 };
+  const opts = { fps: 30, size: '1920x1080', workers: 1, out: null, times: [], step: 0.1,
+    engine: process.env.MOODREEL_ENGINE || 'auto', quality: 'high' };
   for (let i = 0; i < rest.length; i++) {
     const a = rest[i];
     if (a === '--fps') opts.fps = Number(rest[++i]);
@@ -49,12 +59,16 @@ function parse(argv) {
     else if (a === '--out') opts.out = rest[++i];
     else if (a === '--step') opts.step = Number(rest[++i]);
     else if (a === '--variant') opts.variant = JSON.parse(rest[++i]);
+    else if (a === '--engine') opts.engine = rest[++i];
+    else if (a === '--quality') opts.quality = rest[++i];
+    else if (a === '--bitrate') opts.bitrate = rest[++i];
     else opts.times.push(Number(a));
   }
   const [w, h] = opts.size.split('x').map(Number);
-  if (!['video', 'still', 'texts'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)) {
+  if (!['video', 'still', 'texts'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)
+      || !['auto', 'framevelo', 'chrome'].includes(opts.engine) || !['draft', 'standard', 'high'].includes(opts.quality)) {
     console.error('usage: render.mjs video|still|texts <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--step s] '
-      + "[--variant '{...}'] [--out path]");
+      + "[--engine auto|framevelo|chrome] [--quality draft|standard|high] [--variant '{...}'] [--out path]");
     process.exit(2);
   }
   if (cmd === 'video' && (w % 2 || h % 2)) {
@@ -162,6 +176,53 @@ async function video(launch, url, o) {
   console.log(`done ${out}: ${total} frames in ${((Date.now() - started) / 1000).toFixed(1)}s`);
 }
 
+// FrameVelo's entry page: the film's own page, with window.VARIANT set before its scripts run and Moodreel's contract
+// (DUR, render, READY) offered as FrameVelo's once the film is ready. A page error becomes a seek that throws, so the
+// render stops on it at once instead of waiting for a film that will never be ready.
+const ENTRY = (html, variant, fps) => html
+  .replace(/<script\b/i, `<script>window.VARIANT = ${JSON.stringify(variant ?? null)};</script><script`)   // before any
+  .replace(/<\/body>/i, `<script>
+(() => {
+  let failed = null;
+  addEventListener('error', e => { failed = e.error || new Error(e.message); });
+  addEventListener('unhandledrejection', e => { failed = e.reason; });
+  const offer = () => {
+    if (failed) window.__framevelo = { duration: 1, seek() { throw failed; } };
+    else if (window.READY) window.__framevelo = { duration: window.DUR, fps: ${fps}, seek: t => window.render(t) };
+    else setTimeout(offer, 20);
+  };
+  offer();
+})();
+</script></body>`);
+
+async function engineFor(o) {
+  if (o.engine === 'chrome') return null;
+  const fv = await import('framevelo').catch(() => null);
+  if (o.engine === 'framevelo' && !fv) throw new Error('--engine framevelo: FrameVelo is not installed (npm install)');
+  return o.engine === 'framevelo' || (fv && process.platform === 'darwin') ? fv : null;
+}
+
+async function videoFramevelo(fv, o) {
+  const out = path.resolve(o.out || path.join(o.dir, 'out', 'video.mp4'));
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  const entry = path.join(path.resolve(o.dir), `.framevelo-${process.pid}.html`);
+  fs.writeFileSync(entry, ENTRY(fs.readFileSync(path.join(o.dir, 'index.html'), 'utf8'), o.variant, o.fps));
+  let shown = -60;
+  try {
+    const r = await fv.render({
+      input: entry, output: out, fps: o.fps, viewport: { width: o.w, height: o.h }, width: o.w, height: o.h,
+      mode: 'canvas', selector: 'body > canvas', quality: o.quality, readyTimeoutMs: 120_000, chromePath: executablePath,
+      ...(o.bitrate ? { bitrate: fv.parseBitrate(o.bitrate) } : {}),
+      onProgress: (done, total) => { if (done - shown >= 60 || done === total) { shown = done; console.log(`framevelo: ${done}/${total}`); } },
+    });
+    for (const w of r.warnings) console.log(`framevelo: ${w}`);
+    console.log(`done ${out}: ${r.frames} frames in ${(r.wallMs / 1000).toFixed(1)}s (framevelo, `
+      + `${r.hardwareEncoder ? 'hardware' : 'software'} ${r.codec}, ${r.mode})`);
+  } finally {
+    fs.rmSync(entry, { force: true });
+  }
+}
+
 async function stills(launch, url, o) {
   const outDir = path.resolve(o.out || path.join(o.dir, 'stills'));
   fs.mkdirSync(outDir, { recursive: true });
@@ -202,7 +263,9 @@ async function launch() {
 }
 try {
   const url = `http://127.0.0.1:${server.address().port}/index.html`;
-  await ({ video, still: stills, texts })[o.cmd](launch, url, o);
+  const fv = o.cmd === 'video' ? await engineFor(o) : null;
+  if (fv) await videoFramevelo(fv, o);
+  else await ({ video, still: stills, texts })[o.cmd](launch, url, o);
 } catch (e) {
   console.error(e.message);
   process.exitCode = 1;

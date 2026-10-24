@@ -96,6 +96,9 @@ Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)
 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar)、[HyperFrames](https://github.com/heygen-com/hyperframes)。
 除了 `styles/` 中来自 lemo-opuscar 的风格文档，没有使用它们的代码。
 
+出片的视频引擎是 [FrameVelo](https://github.com/gnipbao/framevelo)（依赖，Apache-2.0）：每一帧留在 GPU 上，由硬件 H.264 编码器编码。
+示例片上比 Chrome 引擎快 1.8–4.3 倍，CPU 少用 8–36 倍；装了它且在 macOS 上时默认使用。测试基准仍用 Chrome 引擎，因为它每次渲染逐位一致。
+
 ## 许可证
 
 Moodreel 采用 [MIT](LICENSE)。`styles/` 中来自 lemo-opuscar 的风格文档同为 MIT，版权归 LemoLab（见
