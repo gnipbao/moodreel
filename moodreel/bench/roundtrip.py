@@ -41,14 +41,17 @@ def build(film: Path, work: Path, workers: int = 3) -> Path:
         shutil.rmtree(work)
     refs = work / "refs"
     run = lambda *a: subprocess.run(["node", str(RENDER), *map(str, a)], check=True, capture_output=True)  # noqa: E731
-    run("video", film, "--fps", truth["fps"], "--size", VIDEO_SIZE, "--workers", workers, "--out", refs / f"{truth['name']}.mp4")
+    # Chrome's engine: every render the same, bit for bit, so the report is too
+    run("video", film, "--fps", truth["fps"], "--size", VIDEO_SIZE, "--workers", workers, "--engine", "chrome",
+        "--out", refs / f"{truth['name']}.mp4")
     run("still", film, *truth["stills"], "--size", f"{truth['W']}x{truth['H']}", "--out", refs)
     project = work / "project"
     intake(project, sorted(refs.iterdir()), source="own")
     measure(project)
     write_kit(project)
     sketch = write_sketch(project, truth["fps"])
-    run("video", sketch, "--fps", truth["fps"], "--size", VIDEO_SIZE, "--workers", workers, "--out", work / "sketch.mp4")
+    run("video", sketch, "--fps", truth["fps"], "--size", VIDEO_SIZE, "--workers", workers, "--engine", "chrome",
+        "--out", work / "sketch.mp4")
     return project
 
 

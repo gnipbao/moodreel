@@ -367,7 +367,8 @@ def _loudnorm(music: Path, dst: Path, duration: float) -> dict:
     return {"measured_input_lufs": float(m["input_i"])}
 
 
-def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers: int = 3, variant: str | None = None) -> dict:
+def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers: int = 3, variant: str | None = None,
+            engine: str | None = None) -> dict:
     d = Path(d)
     f, vargs, suffix = _variant(d, variant)
     _vendored(d)
@@ -386,7 +387,7 @@ def deliver(d: Path, music: Path | None = None, out: Path | None = None, workers
         info["voice"] = voice.write(d)
     spoken = work / "voice.wav" if (work / "voice.wav").exists() and (d / "narration.json").exists() else None
     subprocess.run(["node", str(RENDER), "video", str(d), "--fps", str(f["fps"]), "--size", f["size"], "--workers", str(workers),
-                    *vargs, "--out", str(video)], check=True)
+                    *vargs, *(["--engine", engine] if engine else []), "--out", str(video)], check=True)
     final = out / f"{f['name']}{suffix}.mp4"
     info["video"] = str(final)
     if spoken:                                         # music ducks under the voice, then the two are one track

@@ -15,6 +15,7 @@
     "render": "node render/render.mjs"
   },
   "dependencies": {
+    "framevelo": "github:gnipbao/framevelo#db65354668dcc502155b2ee597d1c34ba4bd49cc",
     "puppeteer": "25.12.0",
     "puppeteer-core": "25.12.0",
     "three": "0.186.1"

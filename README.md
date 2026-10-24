@@ -230,7 +230,7 @@ own). Only the documents are imported; Moodreel re-implements the techniques.
 
 | Path | What it is |
 |---|---|
-| `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video (headless Chrome on puppeteer-core, one per worker, frame pacing off; ffmpeg). Example films render 1.8-3.5x faster at 1920x1080 than with screenshots paced to 60 Hz ([docs/research/render-speed.md](docs/research/render-speed.md)) |
+| `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video. Video has two engines: [FrameVelo](https://github.com/gnipbao/framevelo) (the default when installed, on macOS), which keeps each frame on the GPU and encodes it with the hardware H.264 encoder, 1.8-4.3x faster than the Chrome engine on the example films with 8-36x less CPU; and Chrome (headless Chrome on puppeteer-core, one per worker, frame pacing off, x264), whose renders are the same bit for bit, which the benches use ([docs/research/render-speed.md](docs/research/render-speed.md)) |
 | `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, sketch, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `cli.py` |
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
@@ -246,6 +246,8 @@ own). Only the documents are imported; Moodreel re-implements the techniques.
 
 Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/`, it uses
 none of their code.
+
+- [FrameVelo](https://github.com/gnipbao/framevelo) — the video engine: frames kept on the GPU and encoded in hardware (a dependency, Apache-2.0).
 
 - [REM](https://github.com/sidart10/rem) — fit eases by BIC and claim only clear winners; check a rebuild with the same measurement.
 - [motiscope](https://github.com/KumarSashank/motiscope) — localized motion energy, percentile thresholds, numbers for *when* and frames for *what*.

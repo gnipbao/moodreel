@@ -33,3 +33,27 @@ morning 用旧渲染器连渲两次，从第 25 帧起有细微差异（PSNR ≥
 `--disable-accelerated-2d-canvas`，2D 画布改在 CPU 上画，shipped 连渲三次逐位一致（和完全关掉 GPU 的结果也逐位一致），
 WebGL 仍走 GPU。代价不大：shipped 720p 2.2 → 2.8 s，first-light 1080p 9.5 → 10.3 s，swiss-programme 1080p 3.9 → 3.5 s。
 CPU 和 GPU 画出的像素本身略有不同（42–52 dB），换过来之后往返测试的数字会有一次性的小变动。
+
+## FrameVelo 引擎（2026-10-24）
+
+[FrameVelo](https://github.com/gnipbao/framevelo) 把帧留在 GPU 上：舞台画布直接变成 VideoFrame，交给 WebCodecs 的硬件
+H.264 编码器（VideoToolbox），再无损封装成 MP4，帧不经过 Node、JPEG 和 x264。`render.mjs video --engine framevelo`
+用一个入口页渲染片子：先设 `window.VARIANT`，再载入 `main.js`，片子 READY 后把 `render(t)` 交给 FrameVelo 逐帧调用；
+页面出错时 seek 直接抛错，渲染立即停止。默认 `--engine auto`：装了 FrameVelo 且在 macOS 上就用它，否则用 Chrome 引擎。
+
+六部示例片，1920×1080，Chrome 引擎 3 个 worker，含启动和封装：
+
+| 示例片 | Chrome 引擎 | FrameVelo | 快 | CPU（user） | 与 Chrome 引擎 PSNR（平均 / 最低） |
+|---|---|---|---|---|---|
+| quiz-night（288 帧） | 4.3 s | 2.3 s | 1.8× | 23.9 → 2.3 s | 42.3 / 41.3 dB |
+| tide-town（240 帧，WebGL） | 5.7 s | 2.1 s | 2.7× | 35.6 → 2.6 s | 43.8 / 42.8 dB |
+| every-style（300 帧，素材） | 7.8 s | 2.5 s | 3.1× | 44.9 → 2.7 s | 43.2 / 42.2 dB |
+| opening-night（384 帧，颗粒和模糊） | 14.5 s | 3.4 s | 4.3× | 114.9 → 3.1 s | 37.1 / 35.6 dB |
+| first-save（240 帧，像素） | 3.9 s | 2.1 s | 1.8× | 18.6 → 2.1 s | 41.7 / 39.9 dB |
+| harbour-dawn（240 帧，笔触） | 4.4 s | 2.2 s | 2.0× | 21.5 → 2.1 s | 40.2 / 39.9 dB |
+
+画面相同，逐帧对齐（每部片的最低 PSNR 都接近平均值，切换和动作处没有跌落）。opening-night 低一些：满屏的胶片颗粒在
+硬件编码器的码率下被抹平（文件 32 MB，x264 crf 14 是 92 MB），而且 GPU 和 CPU 画的颗粒叠加和半像素模糊本身略有差别；
+码率提到 80 Mbps 也只到 39.2 dB，肉眼看不出。颗粒重的片子交付时可以加 `--bitrate`。
+
+基准（运动测试片、往返测试）仍用 Chrome 引擎：GPU 上的 2D 画布不保证两次渲染逐位一致，而基准的报告要求每次都一样。

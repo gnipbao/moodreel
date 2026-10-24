@@ -40,7 +40,7 @@ A variant's `duration` and `poster` replace the film's.
 
 With a `narration.json`, `film deliver` voices it first (the subtitles read `voice.js`), brings the speech to
 −16 dBFS, sets the music 6 dB lower and ducks it further under each line, and mixes the two before the loudness pass.
-`film deliver` renders the film, normalises the music to −14 LUFS (two-pass loudnorm, a 1 s fade at the end), muxes,
+`film deliver` renders the film (with FrameVelo, the GPU's hardware encoder, when it is installed; `--engine chrome` for a render that is the same bit for bit, run to run), normalises the music to −14 LUFS (two-pass loudnorm, a 1 s fade at the end), muxes,
 and writes `<name>.mp4` and `poster.jpg` (at `film.json → poster`). With no `--music` it uses the film's own score
 (`score.json`, rendered first, so the picture reads the cue times it was written to); with neither, the film is
 silent.
