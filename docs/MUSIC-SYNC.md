@@ -95,6 +95,29 @@ stage({ width: 1920, height: 1080, duration: 30,
                            vignette(g, g.canvas.width, g.canvas.height, 0.3); grain(g, 6, Math.round(t * 60)); } });
 ```
 
+交付时打开动态模糊：film.json 里写 `"motion_blur": {"samples": 8, "shutter": 0.2}`，`film deliver` 会带上
+`--samples` 和 `--shutter`。
+
+## 音效：`sfx.json`
+
+配着现成歌曲剪的片子，事件发生在秒上，不在小节上，所以音效按秒放。片子目录里放一个 `sfx.json`，`film deliver` 会把
+它渲成 `out/sfx.wav`，压在音乐下面混好，再做 −14 LUFS 的响度归一：
+
+```json
+{"seed": 3, "gain_db": -8,
+ "cues": [{"t": 22.76, "sound": "slam", "level": 0.8},
+          {"t": 101.9, "sound": "crackle", "dur": 3.9, "level": 0.4, "pan": -0.3}]}
+```
+
+- `sound` 是合成器里的任一种拟音（`moodreel/score/synth.py` 的 `FOLEY`）：砸字 `slam`、按键 `key`、盖章 `stamp`、
+  撕纸 `tear`、电火花 `crackle`、低频爆 `boom`、`glitch`、`zap`、`swish`、`whoosh`、`riser`、`tick`、`click`、
+  `thud`、`rewind` 等。有长度的音（whoosh、riser、glitch、tear、crackle、rewind、swish）读 `dur`；`riser` 在 `t`
+  上结束，其余从 `t` 开始。`pan` 从 −1（左）到 1（右），等功率声像。
+- 时间从画面用的同一份数据里取：唱到的词（`line(...).words[i].start`）上砸字，打字的每个字母一下按键，推拉和甩镜上
+  `swish`，不要看联系表估时间。最好写一个小脚本生成 `sfx.json`，改一处重新跑。
+- `gain_db` 把整条音效压到音乐下面；单个音的大小用 `level`。调的时候在关键点前后量混音（音效比歌低 2–11 dB 时，
+  砸字和盖章贴着人声，按键和电火花听得见又不抢）。
+
 ## 许可
 
 `kit/music.js` 的冲击衰减和砸字配方、本文的规则和数值改编自 mexicat/pdoom-video，按其 MIT 许可保留版权声明，见仓库根目录的 `NOTICE`。
