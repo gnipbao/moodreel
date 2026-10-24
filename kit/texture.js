@@ -128,3 +128,46 @@ export function misregister(g, draw, layers) {
     g.restore();
   }
 }
+
+// Film light, for a stage's finish(g, t, src) (kit/stage.js), in device pixels. src is the finished frame.
+// bloom: what is bright, blurred and added back (screen); `threshold` pushes the darks out first
+export function bloom(g, src, amount = 0.5, { threshold = 2.6, radius = 6 } = {}) {
+  if (!(amount > 0)) return;
+  const W = g.canvas.width, H = g.canvas.height, key = `bloom:${W}:${H}`;
+  if (!cache.has(key)) cache.set(key, offscreen(Math.ceil(W / 4), Math.ceil(H / 4)));
+  const c = cache.get(key), q = c.getContext('2d');
+  q.setTransform(1, 0, 0, 1, 0, 0); q.globalCompositeOperation = 'copy';
+  q.filter = `contrast(${threshold}) brightness(0.8) blur(${radius}px)`; q.drawImage(src, 0, 0, c.width, c.height); q.filter = 'none';
+  g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'screen'; g.globalAlpha = Math.min(1, amount);
+  g.drawImage(c, 0, 0, W, H); g.restore();
+}
+// halation: the brightest parts bleed a red-orange haze into what is around them, as on film (none on a light frame)
+export function halation(g, src, amount = 0.25, color = '#ff5a28') {
+  if (!(amount > 0)) return;
+  const W = g.canvas.width, H = g.canvas.height, key = `halation:${W}:${H}`;
+  if (!cache.has(key)) cache.set(key, offscreen(Math.ceil(W / 8), Math.ceil(H / 8)));
+  const c = cache.get(key), q = c.getContext('2d');
+  q.setTransform(1, 0, 0, 1, 0, 0); q.globalCompositeOperation = 'copy';
+  q.filter = 'contrast(3.2) brightness(0.7) blur(5px)'; q.drawImage(src, 0, 0, c.width, c.height); q.filter = 'none';
+  q.globalCompositeOperation = 'multiply'; q.fillStyle = color; q.fillRect(0, 0, c.width, c.height);
+  g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'screen'; g.globalAlpha = Math.min(1, amount);
+  g.drawImage(c, 0, 0, W, H); g.restore();
+}
+// chromatic aberration: the red spread out from the centre and the blue pulled in, `px` apart at the frame's edge.
+// Run it first in a finish, while the frame on g is still src.
+export function aberrate(g, src, px = 1.2) {
+  if (!(px >= 0.25)) return;
+  const W = g.canvas.width, H = g.canvas.height, key = `ca:${W}:${H}`;
+  if (!cache.has(key)) cache.set(key, [offscreen(W, H), offscreen(W, H)]);
+  const s = px / (W / 2);
+  cache.get(key).forEach((c, i) => {
+    const q = c.getContext('2d'), sc = i ? 1 - s : 1 + s;
+    q.setTransform(1, 0, 0, 1, 0, 0); q.globalCompositeOperation = 'copy'; q.drawImage(src, 0, 0, W, H);
+    q.globalCompositeOperation = 'source-over'; q.drawImage(src, W / 2 * (1 - sc), H / 2 * (1 - sc), W * sc, H * sc);
+    q.globalCompositeOperation = 'multiply'; q.fillStyle = i ? '#0000ff' : '#ff0000'; q.fillRect(0, 0, W, H);
+  });
+  g.save(); g.setTransform(1, 0, 0, 1, 0, 0);
+  g.globalCompositeOperation = 'multiply'; g.fillStyle = '#00ff00'; g.fillRect(0, 0, W, H);   // the green stays put
+  g.globalCompositeOperation = 'lighter'; cache.get(key).forEach(c => g.drawImage(c, 0, 0));
+  g.restore();
+}

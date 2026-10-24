@@ -63,6 +63,7 @@
 - `uv run moodreel motion-check <项目> <影片>`：用同一套测量逐条比对影片的运动语法和参考是否一致；
 - `uv run moodreel pack <项目> --slug <名> --name <名>`：校验蒸馏出的风格（11 节齐全、数值可追溯、名称不冲突）并存入 `~/.moodreel/styles`；
 - `uv run moodreel styles`：列出你的风格和内置风格；
+- `uv run moodreel music <歌> --lyrics <逐词歌词> --out <片子>/music-data.js`：把歌变成数据（节拍网格、小节、底鼓/军鼓/镲、包络、逐词演唱时间），片子里用 `kit/music.js` 读，让切点、砸字、推拉都踩在歌上；渲染加 `--samples 8 --shutter 0.2` 出运动模糊。做法见 docs/MUSIC-SYNC.md；
 - `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
 - `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法；
 - `uv run moodreel export hyperframes|remotion <影片>`：把片子导出成 HyperFrames composition 或 Remotion 工程。
@@ -95,6 +96,10 @@ Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)
 [motiscope](https://github.com/KumarSashank/motiscope)、[MoVer](https://arxiv.org/abs/2502.13372)、
 [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar)、[HyperFrames](https://github.com/heygen-com/hyperframes)。
 除了 `styles/` 中来自 lemo-opuscar 的风格文档，没有使用它们的代码。
+
+卡点的做法学自 [pdoom-video](https://github.com/mexicat/pdoom-video)（MIT）：一支每个切点、砸字和运镜都由歌曲数据（逐词对齐的歌词、
+鼓点、节拍网格）算出、带子帧运动模糊的音乐录像。`moodreel music`、`kit/music.js` 和 docs/MUSIC-SYNC.md 以它为蓝本，
+改编的部分按其 MIT 许可保留版权声明（见 `NOTICE`）。
 
 出片的视频引擎是 [FrameVelo](https://github.com/gnipbao/framevelo)（依赖，Apache-2.0）：每一帧留在 GPU 上，由硬件 H.264 编码器编码。
 示例片上比 Chrome 引擎快 1.8–4.3 倍，CPU 少用 8–36 倍；装了它且在 macOS 上时默认使用。测试基准仍用 Chrome 引擎，因为它每次渲染逐位一致。

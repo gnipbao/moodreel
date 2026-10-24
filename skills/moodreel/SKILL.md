@@ -80,6 +80,13 @@ find the style ─► brief (one round) ─► TREATMENT.md ─► film new ─�
 4. `moodreel film check <film>` until it passes, then `moodreel film deliver <film> [--music track]`
    (`references/produce/delivery.md`).
 
+**A film that follows a song** (a music or lyric video, a cut on the beat, a remake of one): before drawing, turn the
+song into data with `moodreel music <song> [--lyrics words.json] --out <film>/music-data.js` and drive the picture from
+it through `kit/music.js`: words appear when they are sung (`sung`, `letters`), never at times read off a contact
+sheet; cuts on the beat before a line's first word; hits on the kicks and snares; cameras on `ct`. Render with
+`--samples 8 --shutter 0.2` for motion blur. Measure the result against the song (and the reference) for motion and
+sync, not just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
+
 ## Where to look
 
 | Question | Read |

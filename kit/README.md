@@ -6,10 +6,11 @@
 
 | 模块 | 内容 |
 |---|---|
-| `stage.js` | 页面契约：`stage({ width, height, duration, fonts, images, draw })` 设置 `DUR`/`render`/`READY`，按设计尺寸绘制，任意输出尺寸自动缩放；`texts(fn)` 提供文字停留检查用的 `TEXTS` |
+| `stage.js` | 页面契约：`stage({ width, height, duration, fonts, images, draw, finish })` 设置 `DUR`/`render`/`READY`，按设计尺寸绘制，任意输出尺寸自动缩放；`texts(fn)` 提供文字停留检查用的 `TEXTS`。运动模糊：渲染器 `--samples N --shutter s` 时，每帧是快门内 N 个子帧的平均，`draw` 每个子帧画一次，`finish(g, t, src)` 在平均好的画面上跑一次（颗粒、暗角、闪光） |
+| `music.js` | 跟着歌走：`music(AUDIO, LYRICS)` 读 `moodreel music` 写的 `music-data.js`，给出 `hit`（鼓点冲击）、`env`（包络）、`beatAt`/`barAt`、`ct`（踩拍的镜头时钟）、`step`、`sung`/`letters`/`span`（词在什么时候真正被唱出）、`slams`（砸字）；`pop`（字落下）。做法和数值见 docs/MUSIC-SYNC.md |
 | `eases.js` | GSAP 命名的缓动（与 `moodreel/motion/eases.py` 同一套公式，测试保证一致）和 `bezier(x1, y1, x2, y2)` |
 | `core.js` | `tween`、`value`、`keys`（分段关键帧）、`stagger`、`step`（一拍二）、带种子的 `rng`、`hash`、`noise1` |
-| `texture.js` | `paper`（纸底与斑驳）、`grain`（颗粒）、`vignette`（暗角）、`screen`（网点）、`scanlines`（扫描线）、`misregister`（套色错位）。`grain` 和 `vignette` 的参数就是 `moodreel measure` 测出的数值，内部已按测量校准 |
+| `texture.js` | `paper`（纸底与斑驳）、`grain`（颗粒）、`vignette`（暗角）、`screen`（网点）、`scanlines`（扫描线）、`misregister`（套色错位）；收尾用的 `bloom`（光晕）、`halation`（高光周围的橙红晕）、`aberrate`（色差）。`grain` 和 `vignette` 的参数就是 `moodreel measure` 测出的数值，内部已按测量校准 |
 | `text.js` | `fit`（按宽度定字号）、`wrap`（中英文换行）、`glyphs`（逐字位置，用于逐字动画） |
 | `brush.js` | 绘画笔触：`stroke`（有宽度轮廓和毛边的笔触加鬃毛痕，`reveal` 控制画到哪里）、`wash`（水彩：多遍抖动叠加，边缘积色变深）、`dab`（刮刀：斜端、明暗抖动、受光起伏）、`crayon`（蜡笔：被纸纹打断的斑点）、`ink`（墨：芯加晕）、`repaint`（把用平涂画好的画面重画成刀块或笔触，沿边缘走，按画面颜色，缓存）；以及 `spine`、`ribbon`、`wobble`、`tooth` 几何工具。参数对应 `moodreel measure` 测出的 `TEXTURE.brush`（笔触边缘间距、方向、一致度） |
 | `variant.js` | 批量变体：`pick(key, 默认值)` 读 film.json 里 `variants` 的参数（渲染器以 `window.VARIANT` 传进页面）；同一份画面代码，换调色板、种子、一句文案或片长，`moodreel film deliver --variant 名` 或 `--all-variants` 各出一条 |

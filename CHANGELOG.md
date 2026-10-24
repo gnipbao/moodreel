@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased: films that follow their song
+
+Learned from the source of [mexicat/pdoom-video](https://github.com/mexicat/pdoom-video) (MIT) while remaking it shot by
+shot: a music video lands on its song because every motion is computed from the song's data, not timed by hand. See
+[docs/MUSIC-SYNC.md](docs/MUSIC-SYNC.md).
+
+- `moodreel music`: a song as data (beat grid fitted over the whole song, bars from the backbeat, kick, snare and hat
+  hits, 100 fps envelopes, word-level lyrics from any aligner) or another tool's analysis imported, written as
+  `music-data.js`. On pdoom-video's song against its stem-separated data: 132.002 BPM (132.007), every beat within 15 ms,
+  every bar right, kicks found with recall 0.88 and precision 0.97, snares 0.89 and 0.83.
+- `kit/music.js`: drum hits, envelopes, a camera clock that surges on the beat, words looked up by text at the time they
+  are sung, the word slam, the letter pop.
+- Motion blur: `render.mjs --samples N --shutter s` and `stage({ finish })`: each frame the average of sub-frames over
+  the shutter, finish run once on the result.
+- `kit/texture.js`: `bloom`, `halation` and `aberrate` for a finish.
+- `NOTICE`: the MIT notice for what is adapted from pdoom-video.
+- `render.mjs --from s --to s`: render part of a film.
+
 ## v0.1.0: the MVP (2026-10-24, pre-alpha)
 
 The whole design in [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) is built: milestones W1-W6 and every V1 item.
