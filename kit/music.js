@@ -125,7 +125,22 @@ export function music(AUDIO, LYRICS = []) {
     const s = span(text, t, win), n = [...String(text)].length;
     return s ? i => s.start + Math.min(s.end - s.start, max * n) * i / n : i => t + i * per;
   }
-  const progress = (w, t) => clamp((t - w.start) / Math.max(0.01, w.end - w.start));
+  // how far through a word the singing is at t, 0..1; by syllables when the aligner gave them (a long last syllable
+  // doesn't drag the first ones out)
+  function progress(w, t) {
+    if (t <= w.start) return 0;
+    if (t >= w.end) return 1;
+    const syl = w.syl;
+    if (syl && syl.length > 1) {
+      for (let i = 0; i < syl.length; i++) {
+        const [a, b] = syl[i];
+        if (t < a) return i / syl.length;
+        if (t < b) return (i + (t - a) / Math.max(1e-3, b - a)) / syl.length;
+      }
+      return 1;
+    }
+    return clamp((t - w.start) / Math.max(0.01, w.end - w.start));
+  }
 
   return { bpm: AUDIO.bpm, beats: B, downbeats: DB, sections: AUDIO.sections ?? [], lines: LYRICS,
     beatAt, barAt, timeOfBeat, nearestBeat: t => timeOfBeat(Math.round(beatAt(t))),

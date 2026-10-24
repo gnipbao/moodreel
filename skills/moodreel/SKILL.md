@@ -89,6 +89,12 @@ at the seconds the picture's events happen, read from the same data (a slam on e
 deliver mixes them under the song. Measure the result against the song (and the reference) for motion and sync, not
 just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 
+**A remake** (a film matched to a reference shot by shot): measure it with `moodreel compare <reference> <remake>` after
+every pass, not only by stills; it lists the windows whose picture, detail, motion direction or speed is off. What a 2D
+canvas can't draw (ray-marched bodies, lensing, dense line fields, engraving that follows a surface) goes through
+`kit/gl.js`. When the reference's source is public under a permissive licence, its own scenes can run here through a
+compatibility layer: `docs/GPU.md`.
+
 ## Where to look
 
 | Question | Read |

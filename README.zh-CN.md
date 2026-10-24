@@ -64,6 +64,7 @@
 - `uv run moodreel pack <项目> --slug <名> --name <名>`：校验蒸馏出的风格（11 节齐全、数值可追溯、名称不冲突）并存入 `~/.moodreel/styles`；
 - `uv run moodreel styles`：列出你的风格和内置风格；
 - `uv run moodreel music <歌> --lyrics <逐词歌词> --out <片子>/music-data.js`：把歌变成数据（节拍网格、小节、底鼓/军鼓/镲、包络、逐词演唱时间），片子里用 `kit/music.js` 读，让切点、砸字、推拉都踩在歌上；渲染加 `--samples 8 --shutter 0.2` 出运动模糊。做法见 docs/MUSIC-SYNC.md；
+- `uv run moodreel compare <参考片> <复刻>`：逐镜比对复刻和参考：画面结构、细节、明暗、动作方向（光流）和速度，最差的排前面并写明问题；2D 画布画不出的东西（光线步进的生物、引力透镜、密集流线、随表面走的版画排线）用 GPU 层 `kit/gl.js`。见 docs/GPU.md；
 - `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
 - `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法；
 - `uv run moodreel export hyperframes|remotion <影片>`：把片子导出成 HyperFrames composition 或 Remotion 工程。
@@ -98,7 +99,7 @@ Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)
 除了 `styles/` 中来自 lemo-opuscar 的风格文档，没有使用它们的代码。
 
 卡点的做法学自 [pdoom-video](https://github.com/mexicat/pdoom-video)（MIT）：一支每个切点、砸字和运镜都由歌曲数据（逐词对齐的歌词、
-鼓点、节拍网格）算出、带子帧运动模糊的音乐录像。`moodreel music`、`kit/music.js` 和 docs/MUSIC-SYNC.md 以它为蓝本，
+鼓点、节拍网格）算出、带子帧运动模糊的音乐录像。`moodreel music`、`kit/music.js` 和 docs/MUSIC-SYNC.md 以它为蓝本，`kit/gl.js` 和 `kit/anim.js` 改编自它的引擎，
 改编的部分按其 MIT 许可保留版权声明（见 `NOTICE`）。
 
 出片的视频引擎是 [FrameVelo](https://github.com/gnipbao/framevelo)（依赖，Apache-2.0）：每一帧留在 GPU 上，由硬件 H.264 编码器编码。

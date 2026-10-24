@@ -1,9 +1,11 @@
 Moodreel includes material adapted from third-party projects.
 
 mexicat/pdoom-video (https://github.com/mexicat/pdoom-video)
-  Adapted in kit/music.js (the decaying hit pulses, the beat-grid helpers, the word slam) and in docs/MUSIC-SYNC.md
-  (the music-sync rules and post-processing values); the analysis method in moodreel/measure/music.py follows its
-  analysis/analyze.py. Used under the MIT License:
+  Adapted in kit/music.js (the decaying hit pulses, the beat-grid helpers, the word slam), kit/gl.js (the GPU
+  plumbing, hairline batch, GLSL library and post from its engine/gl.ts, lines.ts, glsl/common.ts and post.ts),
+  kit/anim.js (the time helpers of its engine/util.ts) and in docs/MUSIC-SYNC.md and docs/GPU.md (the rules and
+  values); the analysis method in moodreel/measure/music.py follows its analysis/analyze.py. Used under the MIT
+  License:
 
   MIT License
 
@@ -26,3 +28,6 @@ mexicat/pdoom-video (https://github.com/mexicat/pdoom-video)
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
+
+Simplex noise in kit/gl.js (Ashima Arts and Stefan Gustavson, https://github.com/ashima/webgl-noise)
+  Used under the MIT License: Copyright (C) 2011 Ashima Arts, Copyright (C) 2011-2016 Stefan Gustavson.

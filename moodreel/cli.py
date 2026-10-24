@@ -209,6 +209,12 @@ def cmd_music(a):
           + ", ".join(f"{len(v)} {k}" for k, v in data["onsets"].items()) + words)
 
 
+def cmd_compare(a):
+    from .check import compare
+    res = compare.run(a.reference, a.remake, a.shots, a.every, a.offset, a.json)
+    print(compare.report(res))
+
+
 def cmd_score(a):
     from .score.score import write
     print(json.dumps(write(Path(a.film)), indent=1))
@@ -384,6 +390,15 @@ def main(argv=None):
     p.add_argument("--credit", help="where the data came from, written into the module's header")
     p.add_argument("--out", default="music-data.js")
     p.set_defaults(fn=cmd_music)
+    p = sub.add_parser("compare", help="a remake against its reference, shot by shot: structure, detail, tone, "
+                       "motion direction and speed, worst first")
+    p.add_argument("reference")
+    p.add_argument("remake")
+    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the reference's own shots)")
+    p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
+    p.add_argument("--offset", type=float, default=0.0, help="remake time = reference time + offset")
+    p.add_argument("--json", help="write the full result here")
+    p.set_defaults(fn=cmd_compare)
     p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
     p.add_argument("film")
     p.set_defaults(fn=cmd_score)
