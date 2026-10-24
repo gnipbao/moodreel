@@ -7,9 +7,10 @@ then directs new films in that style, drawn entirely in code and rendered frame 
 
 [中文说明](README.zh-CN.md)
 
-> **Status: pre-alpha.** The whole path works end to end: references in, measurements, a kit, a packed style, a
-> film made in it, checked and delivered. Motion measurement passes its acceptance bench, and five example films
-> survive the round trip (below).
+> **Status: v0.1.0, the MVP (pre-alpha).** The whole path works end to end: references in, measurements, a kit, a
+> packed style, a film made in it, checked and delivered. Motion measurement passes its acceptance bench, and five
+> example films survive the round trip and a blind distillation (below). Not yet done: calibration on real
+> references and the human-judged evaluations; see [CHANGELOG.md](CHANGELOG.md).
 
 ## Why measure motion?
 
