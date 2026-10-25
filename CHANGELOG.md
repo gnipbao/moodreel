@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased: remakes measured shot by shot
+
+- `moodreel probe <reference> --at t1,t2 [--against <remake>]`: a shot's numbers off full-size frames, the
+  reference's beside a remake's (a video, or a film folder rendered as stills): mean colour, lit share and the box the
+  light fills, detail, whether the grain holds still, the period, phase and strength of a cell grid, and the angle,
+  length and width of a bar. `--region`, `--lit`, `--sheet` (a contact sheet, reference above remake), `--json`.
+- `moodreel compare` reads each window's grain (the least change between neighbouring frames) and says when a
+  remake's grain boils where the reference's holds still: it reads as motion going another way.
+- The skill: `references/distill/remaking.md`, the remake loop (cut to the frame, score, probe, fix the lowest
+  window) and what it fixed on a 16 s ASCII-glitch teaser: a cylinder camera fitted to measured cards, particles
+  matched on lit share, a frame of cells read for its grid and glyph ramp, a slow turn read every tenth of a second,
+  a fixed grain.
+
 ## Unreleased: a film's own score, sung
 
 - `moodreel sync` reads frame rates ffprobe prints with a trailing field (`60/1,` for a stream with side data).

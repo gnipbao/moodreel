@@ -22,6 +22,8 @@
   moodreel sketch <project>                               the measured motion replayed with neutral shapes
   moodreel bench roundtrip [--only name]                  distil the example films back and compare with their code
   moodreel bench blind make|score                         packets for a blind distillation, and the judges' scores
+  moodreel compare <reference> <remake> [--shots f]       a remake against its reference, window by window
+  moodreel probe <reference> --at t,t [--against remake]  a shot's numbers, the reference's beside the remake's
 """
 from __future__ import annotations
 
@@ -213,6 +215,16 @@ def cmd_compare(a):
     from .check import compare
     res = compare.run(a.reference, a.remake, a.shots, a.every, a.offset, a.json)
     print(compare.report(res))
+
+
+def cmd_probe(a):
+    from .check import probe
+    times = [float(x) for x in a.at.split(",")]
+    region = [int(x) for x in a.region.split(",")] if a.region else None
+    res = probe.run(a.reference, times, a.against, region, a.lit, a.sheet, a.json)
+    print(probe.report(res))
+    if a.sheet:
+        print(f"sheet -> {a.sheet}")
 
 
 def cmd_dossier(a):
@@ -446,6 +458,16 @@ def main(argv=None):
     p.add_argument("--offset", type=float, default=0.0, help="remake time = reference time + offset")
     p.add_argument("--json", help="write the full result here")
     p.set_defaults(fn=cmd_compare)
+    p = sub.add_parser("probe", help="a shot's numbers off full-size frames (colour, lit share and box, detail, still "
+                       "grain, cell grid, a bar's angle), the reference's beside a remake's")
+    p.add_argument("reference")
+    p.add_argument("--at", required=True, help="times in seconds, comma-separated")
+    p.add_argument("--against", help="the remake: a video, or a film folder (rendered as stills)")
+    p.add_argument("--region", help="x0,y0,x1,y1 in the reference's pixels (default: the whole frame)")
+    p.add_argument("--lit", type=float, default=50, help="brightness (0-255) above which a pixel counts as lit")
+    p.add_argument("--sheet", help="write the frames as a contact sheet, reference above remake")
+    p.add_argument("--json", help="write the full result here")
+    p.set_defaults(fn=cmd_probe)
     p = sub.add_parser("dossier", help="read each shot of a video as its code would be written: motion (pan, zoom, roll, "
                        "spin, parallax), linework, finish, colour, and what to build")
     p.add_argument("video")

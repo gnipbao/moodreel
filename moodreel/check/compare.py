@@ -1,13 +1,17 @@
 """`moodreel compare <reference> <remake>`: how close a remake is to its reference, window by window.
 
 A remake can match its reference frame by frame in stills and still feel wrong: too smooth, too slow, moving the other
-way. So each window (a shot of the reference, by default) is measured on five counts, both videos at the same small size:
+way. So each window (a shot of the reference, by default) is measured on five counts and its grain, both videos at
+the same small size:
 
   structure  SSIM of the luma, 0..1 (1: the same picture)
   detail     the remake's high-frequency energy over the reference's (1: as fine; under 0.8: softer, emptier)
   tone       mean luma difference, in levels of 255
   flow       optical-flow direction agreement, -1..1, cell by cell of a 4 x 4 grid where both move (1: the same way)
   speed      the remake's mean flow over the reference's (1: as fast)
+  grain      the least median change between neighbouring frames of each, in levels: a reference at 0 holds its
+             grain still, and a remake whose grain boils over it reads as motion going another way (freezing it took
+             a still shot's flow agreement from 0.0 to 0.5)
 
 and the worst windows are listed first, with what is wrong with each. The times are the reference's; --offset shifts the
 remake's (remake time = reference time + offset).
@@ -103,7 +107,9 @@ def window(ref, ours, t0: float, t1: float, offset: float = 0.0) -> dict:
         elif (mR > MOVING).any() or (mO > MOVING).any():
             agree.append(0.0)                                  # one moves, the other doesn't
     still = max(np.mean(sR), np.mean(sO)) < MOVING / 3 if sR else True
-    return {"t0": t0, "t1": t1, "frames": n,
+    grain = [round(float(np.min([np.median(np.abs(g[i + 1].astype(np.float32) - g[i])) for i in range(n - 1)])), 2)
+             for g in (gR, gO)]                                 # the least change between neighbours: grain, not codec
+    return {"t0": t0, "t1": t1, "frames": n, "grain": grain,
             "structure": round(float(np.mean([_ssim(gR[i], gO[i]) for i in idx])), 3),
             "detail": round(float(dO / max(dR, 1e-6)), 2),
             "tone": round(float(np.mean([abs(float(gR[i].mean()) - float(gO[i].mean())) for i in idx])), 1),
@@ -125,6 +131,8 @@ def problems(r: dict) -> list[str]:
         out.append("moving another way" if r["flow"] < 0.2 else "motion partly off")
     if r.get("speed") is not None and not 0.7 <= r["speed"] <= 1.4:
         out.append("too slow" if r["speed"] < 0.7 else "too fast")
+    if r.get("grain") and r["grain"][0] < 0.1 and r["grain"][1] > 0.3:
+        out.append("grain boils where the reference's holds still")
     return out
 
 

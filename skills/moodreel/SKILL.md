@@ -95,6 +95,9 @@ just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 camera through it with `moodreel pose <video> --track`; measure every pass with `moodreel compare <reference> <remake>`
 and `moodreel sync <remake> --against <reference fingerprint>`, not only by stills. Reading by eye runs darker,
 more saturated, sparser and slower than the reference, and guesses the camera: `references/distill/reading-shots.md`.
+Before redrawing a shot, read its numbers with `moodreel probe <reference> --at t1,t2 --against <remake>` (lit share
+and box, colour, detail, whether the grain holds still, the cell grid, a bar's angle) and move yours toward them; the
+loop and what it fixed: `references/distill/remaking.md`.
 What a 2D canvas can't draw (ray-marched bodies, lensing, dense line fields, engraving that follows a surface) goes
 through `kit/gl.js`. When the reference's source is public under a permissive licence, its own scenes can run here
 through a compatibility layer: `docs/GPU.md`.
@@ -108,6 +111,7 @@ through a compatibility layer: `docs/GPU.md`.
 | STYLE.md section by section: sources and wording | `references/distill/writing-style-md.md` |
 | The ledger's format and the observed / derived / inferred rule | `references/distill/ledger.md` |
 | Reading frame-check and motion-check, and what to change for each failure | `references/distill/checks.md` |
+| Remaking a film shot by shot: cut to the frame, score, probe, fix the lowest window | `references/distill/remaking.md` |
 | The kit's modules and recipes for common materials and moves | `references/primitives.md` |
 | Brief, treatment, shots, beats, not repeating the demo | `references/produce/brief-and-treatment.md` |
 | The page contract, determinism, type, texts for the reading check | `references/produce/drawing.md` |
