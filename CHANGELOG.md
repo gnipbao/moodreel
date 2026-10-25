@@ -6,6 +6,8 @@
   reference's beside a remake's (a video, or a film folder rendered as stills): mean colour, lit share and the box the
   light fills, detail, whether the grain holds still, the period, phase and strength of a cell grid, and the angle,
   length and width of a bar. `--region`, `--lit`, `--sheet` (a contact sheet, reference above remake), `--json`.
+- `moodreel probe --region` round a line of type reads its weight: the ink's box and height, the stroke width and
+  their ratio.
 - `moodreel compare` reads each window's grain (the least change between neighbouring frames) and says when a
   remake's grain boils where the reference's holds still: it reads as motion going another way.
 - The skill: `references/distill/remaking.md`, the remake loop (cut to the frame, score, probe, fix the lowest

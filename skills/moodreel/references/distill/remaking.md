@@ -2,8 +2,8 @@
 
 A remake is matched to its reference shot by shot, then measured, then fixed where it is furthest off. Drawn from
 what the eye reads, its first pass is a different film; each step below came from closing that gap on a 16 s launch
-teaser (ASCII glitch, 20 scenes, 60 fps), where three rounds took the mean window score from 0.49 to 0.59, and the
-last round the five shots it worked on from 0.38-0.60 to 0.57-0.84. Read `reading-shots.md` first for the tools that
+teaser (ASCII glitch, 20 scenes, 60 fps), where four rounds took the mean window score from 0.49 to 0.61 (median
+0.64), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. Read `reading-shots.md` first for the tools that
 read a shot as code.
 
 ## The loop
@@ -30,6 +30,27 @@ read a shot as code.
 | "a beam of cells on a dithered ground" | the whole frame is 16 px ASCII cells starting at the frame's corner: every dark cell a grey ring (p95 91 on a ground of 19), the beam white cells with a dot on a grey grid, its edge one hot pink cell with a cross, then one dark pink | the ground drawn as cells too, rings as bright as measured (0.43 to 0.84) |
 | "the slash slowly pushes in" | its angle every 0.1 s: 28.3 to 22.3 deg from vertical by a smoothstep over 13.7-15.35 s, 316 px long +6.5 px/s; the ground a clean disc with 12 px glyph cells outside it (dot, slash, cross, ring), 4 px scan lines of ±1.7 | the slash turned, not scaled; the glyph vignette and scan lines as a still texture (0.38 to 0.57) |
 | "icons on tilted tiles" | the tile 790 px centred at (485, 478); the line of text 869 px wide at x 978; the name 118 px, out of focus, at the bottom left | the layout set from the boxes (0.48 to 0.59) |
+
+## Weight, masks and focus (the fourth round)
+
+The user named what still read wrong: "some letters bold" and "a transparent mask not picked up". Both were there in
+the numbers once they were read for them.
+
+| The eye said | The numbers said | Build |
+|---|---|---|
+| the type looks right | `probe --region` round each line: the prompt is Medium (strokes 8 px at 72 px high, ours 6 at 60), "starts with" 800 not 600, the year 550, and "slop" a light mono (250) wide apart, 400 px a glyph, that only looks heavy once drawn as dots; ours had set it bold | each line set to its measured stroke and box; "slop" 0.52 to 0.67 |
+| the prompt card is a tilted card | the prompt grows a quarter from its first letter to its last and its baseline falls 0.049: a page in perspective, vanishing point near (-5000, 260); the card's lower half is soft, the heading beyond it sharp | the page drawn flat, projected by tiles through a homography (with its inverse to place the heading where it was measured), a soft copy under a sharp one cut by a gradient along the baseline (0.53 to 0.67) |
+| black between scenes | a region's mean frame by frame shows short plateaus: 25.5 for six frames between 48 and 2.4. Zoomed, the plateau is the last picture shown through line glyphs (a dot, a slash, a cross by brightness, 10 px, dim grey ink); a dim eye under 12 px cells with a grey ring in every dark cell; a black disc over a field of glyphs round the slash | a `lines` cells mode and the measured ring ramp; each mask for its measured frames ("lives on" 0.74 to 0.84) |
+
+- **Look for masks where the picture seems empty.** A transition frame that reads black or flat in a contact sheet
+  is often a picture through a glyph screen at a tenth of its light: plot a region's mean at the video's frame rate
+  and zoom into any plateau. The same screens recur through a film (here the beam, the dim eye, the end card).
+- **A soft copy under a sharp one halos** unless the soft copy is cut by the inverse of the sharp one's mask.
+- **The scorer has a sampling limit.** `compare` reads 320 x 180: a 12 px grid falls on its Nyquist rate, and a
+  1 px shift of the grid moved one window's detail from 1.2 to 2.1 (0.84 to 0.55). Align the grid with `probe`'s
+  phase, then try the neighbouring pixel phases on that window and keep the best.
+- **A still window's flow is noise**: the white end card's flow read 0.5, 0.33 and 0.0 over three renders with no
+  change to it. Don't chase it.
 
 ## Rules that came out of it
 

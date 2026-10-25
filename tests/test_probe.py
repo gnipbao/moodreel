@@ -85,3 +85,18 @@ def test_compare_names_a_grain_that_boils_over_a_still_reference():
     assert "grain boils where the reference's holds still" in compare.problems({"grain": [0.0, 0.67]})
     assert not any("grain" in p for p in compare.problems({"grain": [0.0, 0.05]}))
     assert not any("grain" in p for p in compare.problems({"grain": [0.6, 0.67]}))      # both boil: as it should
+
+
+def test_type_reads_a_heavier_line_as_a_thicker_stroke():
+    from PIL import Image, ImageDraw, ImageFont
+
+    def line(extra):                                  # the same words, made heavier by stroking their outline
+        im = Image.new("RGB", (W, H), (240, 240, 240))
+        ImageDraw.Draw(im).text((40, 150), "Make my page", fill=(20, 20, 20), font=ImageFont.load_default(size=80),
+                                stroke_width=extra, stroke_fill=(20, 20, 20))
+        return probe.numbers([np.asarray(im)], (0, 100, W, 300))["type"]
+    light, bold = line(0), line(5)
+    assert light["ink"] == "dark" and bold["stroke"] > 2 * light["stroke"]
+    assert bold["ratio"] > light["ratio"] and abs(bold["height"] - light["height"]) < 15
+    x0, y0, x1, y1 = light["box"]
+    assert 30 < x0 < 60 and 150 < y0 < 180 and 230 < y1 < 260 and x1 > 500     # the box, in frame coordinates

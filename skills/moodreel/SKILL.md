@@ -96,8 +96,9 @@ camera through it with `moodreel pose <video> --track`; measure every pass with 
 and `moodreel sync <remake> --against <reference fingerprint>`, not only by stills. Reading by eye runs darker,
 more saturated, sparser and slower than the reference, and guesses the camera: `references/distill/reading-shots.md`.
 Before redrawing a shot, read its numbers with `moodreel probe <reference> --at t1,t2 --against <remake>` (lit share
-and box, colour, detail, whether the grain holds still, the cell grid, a bar's angle) and move yours toward them; the
-loop and what it fixed: `references/distill/remaking.md`.
+and box, colour, detail, whether the grain holds still, the cell grid, a bar's angle, a line's stroke weight) and move
+yours toward them; look for pictures behind glyph screens where a transition seems empty. The loop and what it fixed:
+`references/distill/remaking.md`.
 What a 2D canvas can't draw (ray-marched bodies, lensing, dense line fields, engraving that follows a surface) goes
 through `kit/gl.js`. When the reference's source is public under a permissive licence, its own scenes can run here
 through a compatibility layer: `docs/GPU.md`.
