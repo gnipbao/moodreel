@@ -488,7 +488,7 @@ def main(argv=None):
     p.add_argument("--root", default="films", help="new: where films live")
     p.add_argument("--duration", type=float, default=15.0)
     p.add_argument("--size")
-    p.add_argument("--fps", type=int, default=30)
+    p.add_argument("--fps", type=int, help="new: frames a second (default: the style's, else 30)")
     p.add_argument("--music", help="deliver: a music track, normalised to -14 LUFS")
     p.add_argument("--out", help="deliver: where the finished film and poster go")
     p.add_argument("--variant", help="check, deliver: one of film.json's variants (window.VARIANT for the page)")

@@ -2,6 +2,12 @@
 
 ## Unreleased: a film's own score, sung
 
+- `moodreel pack` reads the demo for what films in the style need: its frame rate (`demo/film.json`), `3d` when the
+  style's kit or demo draws with kit/gl.js or kit/three.js (a new film then gets three.js), `music-led` when the demo
+  is cut to its own score (a new film then starts with one). It no longer copies the demo's renders (its delivered
+  .mp4 and out/) into the pack: `demo.mp4` is the film.
+- `moodreel film new` takes the style's frame rate unless `--fps` says otherwise, and lists the typefaces a style ships
+  in `kit/fonts` (with their OFL.txt) in the film's CREDITS.
 - `moodreel score`: a section can write its lead out (`"melody"`: notes by bar, beat, length and chord tone), and a
   note may carry a word: the timeline lists the words and lines as sung, `lyrics.json` holds them, and a score with a
   band writes `music-data.js` for kit/music.js itself, the beats, bars and drum hits exactly as written (analysing the

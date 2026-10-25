@@ -50,6 +50,22 @@ def untraced(style_md: str, ledger: str, kit_text: str) -> list[str]:
     return sorted(set(out))
 
 
+GPU = re.compile(r"""from\s+['"](?:\./|\.\./)(?:kit/)?(?:gl|three)\.js['"]""")
+
+
+def traits(project: Path) -> tuple[int, list[str]]:
+    """What the demo says about films made in the style: its frame rate (demo/film.json), and what a new film must be
+    set up with: `3d` when the style's kit or the demo draws with kit/three.js or kit/gl.js (built on it), so three.js is
+    vendored; `music-led` when the demo is cut to its own score, so a new film starts with one."""
+    project = Path(project)
+    film_json = project / "demo" / "film.json"
+    fps = int(json.loads(film_json.read_text()).get("fps", 30)) if film_json.exists() else 30
+    code = "".join(p.read_text(errors="ignore") for p in [*(project / "kit").glob("*.js"), *(project / "demo").glob("*.js")]
+                   if p.name not in ("gl.js", "three.js"))
+    needs = (["3d"] if GPU.search(code) else []) + (["music-led"] if (project / "demo" / "score.json").exists() else [])
+    return fps, needs
+
+
 def check(project: Path, slug: str, name: str, name_zh: str | None = None, strict: bool = False,
           build: bool = False) -> dict:
     project = Path(project)
@@ -101,7 +117,8 @@ def pack(project: Path, slug: str, name: str, name_zh: str | None = None, strict
     if (project / "poster.jpg").exists():
         shutil.copyfile(project / "poster.jpg", dst / "poster.jpg")
     shutil.copytree(project / "kit", dst / "kit")
-    shutil.copytree(project / "demo", dst / "demo", ignore=shutil.ignore_patterns("out", "stills", "node_modules"))
+    shutil.copytree(project / "demo", dst / "demo",                 # the source, not its renders (demo.mp4 is the film)
+                    ignore=shutil.ignore_patterns("out", "stills", "node_modules", "vendor", "*.mp4", "*.wav"))
     shutil.copyfile(project / "LEDGER.md", dst / "evidence" / "LEDGER.md")
     shutil.copytree(project / "measure", dst / "evidence" / "measure")
     own = all(r.get("source") == "own" for r in intake["refs"])
@@ -110,9 +127,10 @@ def pack(project: Path, slug: str, name: str, name_zh: str | None = None, strict
     refs = [{k: r[k] for k in ("id", "kind", "sha256", "source", "w", "h") if k in r} for r in intake["refs"]]
     (dst / "evidence" / "intake.json").write_text(json.dumps({**intake, "refs": refs}, indent=1, ensure_ascii=False))
     w, h = (int(x) for x in intake["default_size"].split("x"))
+    fps, needs = traits(project)
     meta = {"slug": slug, "name": name, "name_zh": name_zh or name, "version": 1, "size": intake["default_size"],
-            "fps": 30, "created": dt.date.today().isoformat(), "moodreel_version": __version__,
-            "phase": "mvp", "needs": [], "refs": refs, "source": {"project": "moodreel", "distilled_from": len(refs)}}
+            "fps": fps, "created": dt.date.today().isoformat(), "moodreel_version": __version__,
+            "phase": "mvp", "needs": needs, "refs": refs, "source": {"project": "moodreel", "distilled_from": len(refs)}}
     (dst / "style.json").write_text(json.dumps(meta, indent=1, ensure_ascii=False) + "\n")
     library.register({k: meta[k] for k in ("slug", "name", "name_zh", "phase", "needs", "source")} | {"size": [w, h]})
     return {**res, "path": str(dst)}

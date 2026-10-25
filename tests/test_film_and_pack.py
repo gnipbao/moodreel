@@ -80,3 +80,44 @@ def test_pack_refuses_an_incomplete_project(tmp_path, monkeypatch):
     (proj / "demo.mp4").unlink()
     r = pack.check(proj, "x-style", "X Style")
     assert not r["ok"] and any("sections" in p for p in r["problems"]) and any("demo" in p for p in r["problems"])
+
+
+def test_pack_reads_the_demo_for_frame_rate_and_needs_and_leaves_renders_out(tmp_path, monkeypatch):
+    monkeypatch.setenv("MOODREEL_HOME", str(tmp_path / "home"))
+    proj = _project(tmp_path)
+    assert pack.traits(proj) == (30, [])
+    (proj / "kit" / "signal.js").write_text("import { gpu } from './gl.js';\n")       # the style draws on the GPU
+    (proj / "demo" / "film.json").write_text(json.dumps({"name": "demo", "fps": 60}))
+    (proj / "demo" / "score.json").write_text("{}")                                   # cut to its own score
+    (proj / "demo" / "demo.mp4").write_bytes(b"x" * 10)                              # a render left in the source
+    (proj / "demo" / "out").mkdir()
+    (proj / "demo" / "out" / "score.wav").write_bytes(b"x")
+    assert pack.traits(proj) == (60, ["3d", "music-led"])
+    r = pack.pack(proj, "gpu-style", "GPU Style")
+    assert r["ok"], r
+    dst = Path(r["path"])
+    meta = json.loads((dst / "style.json").read_text())
+    assert meta["fps"] == 60 and meta["needs"] == ["3d", "music-led"]
+    assert (dst / "demo" / "film.json").exists() and not (dst / "demo" / "demo.mp4").exists() and not (dst / "demo" / "out").exists()
+
+
+def test_a_new_film_takes_the_styles_frame_rate(tmp_path, monkeypatch):
+    monkeypatch.setenv("MOODREEL_HOME", str(tmp_path / "home"))
+    proj = _project(tmp_path)
+    (proj / "demo" / "film.json").write_text(json.dumps({"name": "demo", "fps": 60}))
+    assert pack.pack(proj, "fast-style", "Fast Style")["ok"]
+    d = film.new("a", "fast-style", tmp_path / "films")
+    assert json.loads((d / "film.json").read_text())["fps"] == 60
+    d = film.new("b", "fast-style", tmp_path / "films", fps=24)
+    assert json.loads((d / "film.json").read_text())["fps"] == 24
+    assert "OFL" not in (d / "CREDITS").read_text()
+
+
+def test_a_film_lists_the_fonts_its_style_ships(tmp_path, monkeypatch):
+    monkeypatch.setenv("MOODREEL_HOME", str(tmp_path / "home"))
+    proj = _project(tmp_path)
+    (proj / "kit" / "fonts").mkdir()
+    (proj / "kit" / "fonts" / "OFL.txt").write_text("Copyright 2020 The Archivo Project Authors\n")
+    assert pack.pack(proj, "typed-style", "Typed Style")["ok"]
+    d = film.new("c", "typed-style", tmp_path / "films")
+    assert (d / "kit" / "fonts" / "OFL.txt").exists() and "kit/fonts/OFL.txt" in (d / "CREDITS").read_text()
