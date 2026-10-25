@@ -2,8 +2,8 @@
 
 A remake is matched to its reference shot by shot, then measured, then fixed where it is furthest off. Drawn from
 what the eye reads, its first pass is a different film; each step below came from closing that gap on a 16 s launch
-teaser (ASCII glitch, 20 scenes, 60 fps), where four rounds took the mean window score from 0.49 to 0.61 (median
-0.64), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. Read `reading-shots.md` first for the tools that
+teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window score from 0.49 to 0.65 (median
+0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. Read `reading-shots.md` first for the tools that
 read a shot as code.
 
 ## The loop
@@ -51,6 +51,28 @@ the numbers once they were read for them.
   phase, then try the neighbouring pixel phases on that window and keep the best.
 - **A still window's flow is noise**: the white end card's flow read 0.5, 0.33 and 0.0 over three renders with no
   change to it. Don't chase it.
+
+## Light, speed and the lines over everything (the fifth round)
+
+The user pointed at an ellipse of light on the white card and at a ring that "turns much slower than the original".
+Both were measurable; a third thing, which nobody named, was worth more than either.
+
+| The eye said | The numbers said | Build |
+|---|---|---|
+| a halo on the white card | the reference over a remake without it, both blurred to 32 x 18, fits an elliptical lens light per look (light = gain x (1 - strength x d^power), corners at half); on the card itself a flat plateau at 237-242 that only falls off at its edges, as if the card clipped before the lens darkened the frame | the lens as an elliptical gradient over the look, then a halo added after it to the page alone; the prompt 0.67 to 0.71 |
+| the ring is too slow | `probe` turn: a 3 x 3 flow grid. The streaks run +900 px/s along the bottom, -150 to -300 along the top and +450 across the middle: their speed crosses zero at y 470 while the outline's middle is at 650 | a field turning on 2:1 ellipses about a pivot above the middle, at about 1 rad/s, seen through an elliptical window (the blue ring: the same through a ring-shaped window); the ring 0.67 to 0.75 |
+| nothing | `probe` scan: a 4 px row rhythm of 5.5 levels on the year, 10 on the light prompt looks, 1.7 on the end card; ours had none | rows 2 and 3 of every 4 darkened per scene, set so the rhythm comes out at the measured level: the year 0.64 to 0.79, the sentence 0.51 to 0.67, the icons 0.59 to 0.68; the mean 0.613 to 0.646 |
+
+- **Scan lines are a texture of the whole film.** Read the 4 px rhythm in every scene, and its phase: "BUT" and
+  "Great" had a rhythm out of phase with the others, from their cells and dither; lining them added nothing but
+  busyness and cost score.
+- **Two layers that share an alpha must be added, not stacked.** Drawing a soft copy (masked by 1 - m) and a sharp
+  copy (masked by m) one over the other lets the ground through where both are partly transparent: a band of sky
+  across the card. Add them on their own canvas ('lighter'), then lay the sum down.
+- **Tiles mapped through a homography need a few pixels of overlap**, or the ground shows through their seams as a
+  row of specks along the perspective.
+- **A turning thing's centre is where its speed crosses zero**, not the middle of its outline. Read it before
+  building the turn.
 
 ## Rules that came out of it
 

@@ -18,6 +18,13 @@ it on the numbers). Each is read at each time from the reference, and from the r
   type    with --region drawn round a line of type: its ink's box and height, the stroke width and their ratio. Read on
           both, it says which line is set heavier or larger: the eye calls Medium "regular" on a light card and a light
           mono "bold" once it is drawn in dots
+  light   the region's light as 16 x 9 cells of grey (heavily blurred first): a vignette's shape and an ellipse of light
+          show here, and the grid can be drawn back as a measured ground. The report gives the corners and the middle
+  scan    the strength (levels) and phase (radians) of a 4 px row rhythm: the scan lines over a picture. Compare the
+          phases too: a rhythm out of phase with the reference's comes from cells or dither, not from scan lines
+  turn    optical flow over the next frame in a 3 x 3 grid (px/s), and where the horizontal speed crosses zero down the
+          region with how fast it grows (1/s): a disc turning about a centre, and where that centre really is. A ring
+          whose streaks turn about a point above its outline's middle is a field turning behind a window
 
 The remake may be a video or a film folder (its frames are rendered as stills). --sheet writes the frames as a contact
 sheet, the reference above the remake.
@@ -102,6 +109,39 @@ def _type(g: np.ndarray, ink: str = "auto"):
             "ratio": round(stroke / max(height, 1), 3), "box": [int(cols[0]), int(rows[0]), int(cols[-1]), int(rows[-1])]}
 
 
+def _light(g: np.ndarray) -> list[list[int]]:
+    import cv2
+    soft = cv2.GaussianBlur(g.astype(np.float32), (0, 0), max(4.0, g.shape[1] / 64))
+    return np.round(cv2.resize(soft, (16, 9), interpolation=cv2.INTER_AREA)).astype(int).tolist()
+
+
+def _scan(g: np.ndarray):
+    rows = g.mean(1)
+    if len(rows) < 40:
+        return None
+    hp = (rows - np.convolve(rows, np.ones(9) / 9, "same"))[8:-8]
+    F, fr = np.fft.rfft(hp), np.fft.rfftfreq(len(hp))
+    k = int(np.argmin(abs(fr - 0.25)))
+    j = k - 1 + int(np.argmax(np.abs(F[k - 1:k + 2])))
+    return {"level": round(float(np.abs(F[j]) / len(hp) * 2), 2), "phase": round(float(np.angle(F[j])), 1)}
+
+
+def _turn(a: np.ndarray, b: np.ndarray, y0: int = 0, fps: float = 60.0):
+    import cv2
+    ga, gb = (cv2.cvtColor(x, cv2.COLOR_RGB2GRAY) for x in (a, b))
+    fl = cv2.calcOpticalFlowFarneback(ga, gb, None, 0.5, 4, 25, 3, 5, 1.2, 0) * fps
+    h, w = fl.shape[:2]
+    grid = [[[round(float(v)) for v in fl[j * h // 3:(j + 1) * h // 3, i * w // 3:(i + 1) * w // 3].reshape(-1, 2).mean(0)]
+             for i in range(3)] for j in range(3)]
+    ys = np.arange(h) + y0
+    vx = fl[:, :, 0].mean(1)
+    moving = np.abs(fl).sum(2).mean(1) > 1
+    if moving.sum() < 10:
+        return {"grid": grid, "pivot": None, "rate": None}
+    slope, icpt = np.polyfit(ys[moving], vx[moving], 1)
+    return {"grid": grid, "pivot": round(float(-icpt / slope)) if abs(slope) > 1e-6 else None, "rate": round(float(slope), 2)}
+
+
 def numbers(frames: list[np.ndarray], region=None, lit: float = 50) -> dict:
     """The numbers of one moment: `frames[0]` is the frame, the rest (if any) its successors, for `still`."""
     import cv2
@@ -119,6 +159,10 @@ def numbers(frames: list[np.ndarray], region=None, lit: float = 50) -> dict:
            "detail": round(float(np.abs(cv2.Laplacian(small, cv2.CV_32F, ksize=3)).mean()), 2),
            "cells": {"x": _period(g.mean(0)), "y": _period(g.mean(1))},
            "bar": _bar(g)}
+    out["light"] = _light(g)
+    out["scan"] = _scan(g)
+    if len(frames) > 1:
+        out["turn"] = _turn(frames[0][y0:y1, x0:x1], frames[1][y0:y1, x0:x1], y0)
     if region:                                                     # a region drawn round a line of type: its weight
         out["type"] = _type(g)
         if out["type"]:
@@ -180,8 +224,13 @@ def report(res: dict) -> str:
         still = n.get("still", "-")
         ty = n.get("type")
         ty = f"  type {ty['height']}px high, stroke {ty['stroke']} ({ty['ratio']}) in {ty['box']}" if ty else ""
+        L = n["light"]
+        light = f"  light corners {L[0][0]} {L[0][-1]} {L[-1][0]} {L[-1][-1]}, middle {L[4][8]}"
+        sc = f"  scan {n['scan']['level']} @{n['scan']['phase']}" if n.get("scan") else ""
+        tu = n.get("turn")
+        tu = f"  turn pivot y {tu['pivot']} rate {tu['rate']}/s, rows {[[c[0] for c in r] for r in tu['grid']]}" if tu else ""
         return (f"  {name:<9} colour {n['colour']}  lit {n['lit']}% {n['box'] or ''}  detail {n['detail']}  "
-                f"still {still}  cells {cells}  bar {bar}{ty}")
+                f"still {still}  cells {cells}  bar {bar}{ty}{light}{sc}{tu}")
     out = []
     for row in res["times"]:
         out.append(f"{row['t']:g} s")

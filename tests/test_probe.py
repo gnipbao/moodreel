@@ -100,3 +100,29 @@ def test_type_reads_a_heavier_line_as_a_thicker_stroke():
     assert bold["ratio"] > light["ratio"] and abs(bold["height"] - light["height"]) < 15
     x0, y0, x1, y1 = light["box"]
     assert 30 < x0 < 60 and 150 < y0 < 180 and 230 < y1 < 260 and x1 > 500     # the box, in frame coordinates
+
+
+def test_light_shows_a_vignette_and_scan_reads_the_row_rhythm():
+    ys, xs = np.mgrid[0:H, 0:W]
+    d = np.hypot((xs - W / 2) / (W / 2), (ys - H / 2) / (H / 2))
+    f = np.repeat(np.clip(230 - 60 * d ** 2, 0, 255)[..., None], 3, axis=2).astype(np.uint8)
+    n = probe.numbers([f])
+    L = n["light"]
+    assert len(L) == 9 and len(L[0]) == 16 and L[0][0] < L[4][8] - 40 and abs(L[0][0] - L[-1][-1]) < 3
+    assert n["scan"]["level"] < 0.5                                  # no scan lines on a smooth ground
+    lined = f.copy()
+    lined[2::4] -= 10
+    lined[3::4] -= 10
+    assert 5 < probe.numbers([lined])["scan"]["level"] < 9           # rows 2 and 3 of every 4, 10 levels down
+
+
+def test_turn_finds_where_a_turning_field_stands_still():
+    rng = np.random.default_rng(3)
+    tex = cv2.GaussianBlur(rng.integers(0, 255, (H, W + 40)).astype(np.uint8), (0, 0), 2)
+    a = np.repeat(tex[:, 20:20 + W, None], 3, axis=2)
+    b = a.copy()                                                     # the top half moves left, the bottom half right
+    b[:H // 2] = np.repeat(tex[:H // 2, 24:24 + W, None], 3, axis=2)
+    b[H // 2:] = np.repeat(tex[H // 2:, 16:16 + W, None], 3, axis=2)
+    t = probe._turn(a, b)
+    assert t["grid"][0][1][0] < -150 and t["grid"][2][1][0] > 150    # px/s at 60 fps
+    assert abs(t["pivot"] - H / 2) < 40 and t["rate"] > 0
