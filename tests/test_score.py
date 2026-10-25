@@ -55,3 +55,39 @@ def test_the_picture_reads_the_same_times(tmp_path):
     js.write_text(f"import {{ bar, cue }} from '{(tmp_path / 'score.js').as_uri()}';\n"
                   "console.log(JSON.stringify([bar(3), bar(7, 2.5), cue('bell')]));\n")
     assert json.loads(subprocess.run(["node", str(js)], capture_output=True, text=True, check=True).stdout) == [4, 12.75, 9]
+
+
+SONG = {"bpm": 120, "meter": 4, "seed": 2,
+        "sections": [{"name": "in", "bars": 1, "chords": ["Am"], "groove": "none", "parts": ["pad"]},
+                     {"name": "verse", "bars": 2, "chords": ["Am", "F"], "groove": "backbeat",
+                      "parts": ["kick", "snare", "hat", "bass", "lead"],
+                      "melody": [{"bar": 1, "beat": 1, "beats": 1, "tone": 2, "word": "save"},
+                                 {"bar": 1, "beat": 2, "beats": 1, "tone": 1, "word": "your"},
+                                 {"bar": 1, "beat": 3, "beats": 2, "tone": 0, "word": "work"},
+                                 {"bar": 2, "beat": 1, "beats": 1, "tone": 0},
+                                 {"bar": 2, "beat": 2, "beats": 2, "tone": 2, "word": "please", "line": True}]},
+                     {"name": "hook", "bars": 1, "chords": ["C"], "groove": "four", "parts": ["kick", "clap"]}],
+        "cues": [{"name": "hush", "bar": 4, "beat": 3, "sound": "stop", "beats": 2}]}
+
+
+def test_a_written_melody_is_the_lyric_as_sung():
+    tl = sc.timeline(SONG)
+    assert [(w["w"], w["start"]) for w in tl["words"]] == [("save", 2.0), ("your", 2.5), ("work", 3.0), ("please", 4.5)]
+    assert [ln["text"] for ln in tl["lines"]] == ["save your work", "please"]   # a new line where a note says so
+    assert tl["words"][2]["end"] == 3.9                                         # 90 % of its two beats
+    a, _ = sc.render(SONG)
+    b, _ = sc.render({**SONG, "sections": [{**s, "melody": []} if s["name"] == "verse" else s for s in SONG["sections"]]})
+    assert not np.array_equal(a, b)                                             # the written lead replaces the drawn one
+
+
+def test_the_score_writes_its_music_as_data_exactly(tmp_path):
+    (tmp_path / "score.json").write_text(json.dumps(SONG))
+    out = sc.write(tmp_path)
+    assert out["words"] == 4 and json.loads((tmp_path / "lyrics.json").read_text())[1]["words"][0]["w"] == "please"
+    text = (tmp_path / "music-data.js").read_text()
+    audio = json.loads(text.split("export const AUDIO = ")[1].split(";\n")[0])
+    assert audio["bpm"] == 120 and audio["beats"][:3] == [0.0, 0.5, 1.0] and audio["downbeats"] == [0.0, 2.0, 4.0, 6.0]
+    assert [t for t, _ in audio["onsets"]["kick"]] == [2.0, 3.0, 4.0, 5.0, 6.0, 6.5]   # backbeat 1 and 3, then four, not in the stop
+    assert [t for t, _ in audio["onsets"]["snare"]] == [2.5, 3.5, 4.5, 5.5, 6.5]       # the hook's claps count as snares
+    assert [t for t, _ in audio["onsets"]["vocal"]] == [2.0, 2.5, 3.0, 4.5]
+    assert len(audio["features"]["rms"]) > 700 and max(audio["features"]["rms"]) == 1.0

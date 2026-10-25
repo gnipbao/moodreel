@@ -84,3 +84,25 @@ def test_the_sketch_replays_the_commonest_entrance(tmp_path):
     assert sketch._kind({"grow-y": 6, "clip-rise": 3, "rise": 1}) == "grow"
     assert sketch._kind({"slide-in": 2, "scale-pop": 1}) == "slide"
     assert sketch._kind({}) == "rise"
+
+
+def test_the_sketch_keeps_the_directors_kit(tmp_path):
+    from moodreel.pack import sketch
+    (tmp_path / "kit").mkdir()
+    (tmp_path / "measure").mkdir()
+    for f in kit.SHARED:
+        shutil.copyfile(REPO / "kit" / f, tmp_path / "kit" / f)
+    (tmp_path / "kit" / "tokens.js").write_text("// set by the director at gate 1\nexport const PALETTE = { ground: '#0A0A0B' };\n")
+    (tmp_path / "kit" / "motion.js").write_text("export const MOTION = {};\n")
+    (tmp_path / "measure" / "motion.json").write_text(json.dumps({"grammar": {"entrance": {}, "exit": {}, "shots": {}}}))
+    out = sketch.write_sketch(tmp_path)
+    assert "set by the director" in (tmp_path / "kit" / "tokens.js").read_text()
+    assert "set by the director" in (out / "kit" / "tokens.js").read_text()
+
+
+def test_a_stagger_matching_any_of_the_references_staggers_passes():
+    ref = _grammar(stagger=0.231)
+    ref["stagger"].append({"interval_s": 1.842, "order": "unordered", "count": 4})
+    for g, ok in ((0.234, True), (1.9, True), (0.6, False)):
+        c = {x["id"]: x for x in claims(ref, _grammar(stagger=g))}["stagger"]
+        assert c["result"] == ("pass" if ok else "fail") and c["reference"] == [0.231, 1.842]
