@@ -1,0 +1,314 @@
+{
+ "bpm": 128,
+ "meter": 4,
+ "offset": 0.0,
+ "seed": 11,
+ "key": "Am",
+ "sections": [
+  {
+   "name": "intro",
+   "bars": 2,
+   "chords": [
+    "Am",
+    "F"
+   ],
+   "groove": "none",
+   "parts": [
+    "pad",
+    "hat"
+   ]
+  },
+  {
+   "name": "verse",
+   "bars": 4,
+   "chords": [
+    "Am",
+    "F",
+    "C",
+    "G"
+   ],
+   "groove": "backbeat",
+   "parts": [
+    "kick",
+    "snare",
+    "hat",
+    "bass",
+    "pad",
+    "lead"
+   ],
+   "melody": [
+    {
+     "bar": 1,
+     "beat": 1,
+     "beats": 0.5,
+     "tone": 2,
+     "word": "my",
+     "oct": -1
+    },
+    {
+     "bar": 1,
+     "beat": 1.5,
+     "beats": 1,
+     "tone": 1,
+     "word": "battery\u2019s",
+     "oct": -1
+    },
+    {
+     "bar": 1,
+     "beat": 3,
+     "beats": 1.5,
+     "tone": 0,
+     "word": "low,",
+     "oct": -1
+    },
+    {
+     "bar": 2,
+     "beat": 1,
+     "beats": 0.5,
+     "tone": 2,
+     "word": "the",
+     "oct": -1,
+     "line": true
+    },
+    {
+     "bar": 2,
+     "beat": 1.5,
+     "beats": 1,
+     "tone": 1,
+     "word": "light",
+     "oct": -1
+    },
+    {
+     "bar": 2,
+     "beat": 2.5,
+     "beats": 0.5,
+     "tone": 0,
+     "word": "goes",
+     "oct": -1
+    },
+    {
+     "bar": 2,
+     "beat": 3,
+     "beats": 1.5,
+     "tone": 0,
+     "word": "dim,",
+     "oct": -1
+    },
+    {
+     "bar": 3,
+     "beat": 1,
+     "beats": 1,
+     "tone": 2,
+     "word": "save",
+     "oct": -1,
+     "line": true
+    },
+    {
+     "bar": 3,
+     "beat": 2,
+     "beats": 1,
+     "tone": 1,
+     "word": "your",
+     "oct": -1
+    },
+    {
+     "bar": 3,
+     "beat": 3,
+     "beats": 1.5,
+     "tone": 0,
+     "word": "work",
+     "oct": -1
+    },
+    {
+     "bar": 4,
+     "beat": 1,
+     "beats": 1,
+     "tone": 1,
+     "word": "before",
+     "oct": -1,
+     "line": true
+    },
+    {
+     "bar": 4,
+     "beat": 2,
+     "beats": 1,
+     "tone": 2,
+     "word": "it\u2019s",
+     "oct": -1
+    },
+    {
+     "bar": 4,
+     "beat": 3,
+     "beats": 2,
+     "tone": 0,
+     "word": "gone",
+     "oct": -1
+    }
+   ]
+  },
+  {
+   "name": "pre",
+   "bars": 2,
+   "chords": [
+    "F",
+    "G"
+   ],
+   "groove": "halftime",
+   "parts": [
+    "kick",
+    "snare",
+    "hat",
+    "bass",
+    "pad",
+    "lead"
+   ],
+   "melody": [
+    {
+     "bar": 1,
+     "beat": 1,
+     "beats": 1,
+     "tone": 2,
+     "word": "please,",
+     "oct": -1,
+     "line": true
+    },
+    {
+     "bar": 1,
+     "beat": 2,
+     "beats": 1,
+     "tone": 1,
+     "word": "more",
+     "oct": -1
+    },
+    {
+     "bar": 1,
+     "beat": 3,
+     "beats": 2,
+     "tone": 2,
+     "word": "time",
+     "oct": -1
+    }
+   ]
+  },
+  {
+   "name": "hook",
+   "bars": 4,
+   "chords": [
+    "Am",
+    "F",
+    "C",
+    "G"
+   ],
+   "groove": "four",
+   "parts": [
+    "kick",
+    "clap",
+    "hat",
+    "bass",
+    "stab",
+    "pad",
+    "lead"
+   ],
+   "melody": [
+    {
+     "bar": 1,
+     "beat": 1,
+     "beats": 1,
+     "tone": 2,
+     "word": "SAVE",
+     "oct": -1,
+     "line": true
+    },
+    {
+     "bar": 1,
+     "beat": 2,
+     "beats": 1.5,
+     "tone": 1,
+     "word": "IT",
+     "oct": -1
+    },
+    {
+     "bar": 2,
+     "beat": 1,
+     "beats": 1,
+     "tone": 2,
+     "word": "SAVE",
+     "oct": -1,
+     "line": true
+    },
+    {
+     "bar": 2,
+     "beat": 2,
+     "beats": 1.5,
+     "tone": 1,
+     "word": "IT",
+     "oct": -1
+    },
+    {
+     "bar": 3,
+     "beat": 1,
+     "beats": 1,
+     "tone": 2,
+     "word": "SAVE",
+     "oct": 0,
+     "line": true
+    },
+    {
+     "bar": 3,
+     "beat": 2,
+     "beats": 1.5,
+     "tone": 1,
+     "word": "IT",
+     "oct": 0
+    },
+    {
+     "bar": 4,
+     "beat": 1,
+     "beats": 1,
+     "tone": 2,
+     "word": "SAVE",
+     "oct": 0,
+     "line": true
+    },
+    {
+     "bar": 4,
+     "beat": 2,
+     "beats": 1.5,
+     "tone": 1,
+     "word": "IT",
+     "oct": 0
+    }
+   ]
+  },
+  {
+   "name": "end",
+   "bars": 1,
+   "chords": [
+    "Am"
+   ],
+   "groove": "none",
+   "parts": []
+  }
+ ],
+ "cues": [
+  {
+   "name": "rise",
+   "bar": 9,
+   "beat": 1,
+   "sound": "riser",
+   "beats": 4
+  },
+  {
+   "name": "stamp",
+   "bar": 8,
+   "beat": 1,
+   "sound": "hit"
+  },
+  {
+   "name": "black",
+   "bar": 13,
+   "beat": 1,
+   "sound": "hit"
+  }
+ ]
+}

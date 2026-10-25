@@ -1,0 +1,420 @@
+{
+ "colors": [
+  {
+   "hex": "#070607",
+   "lab": [
+    1.7,
+    0.3,
+    -0.4
+   ],
+   "area": 0.4817,
+   "chroma": 0.5,
+   "lightness": 1.7,
+   "hue": 306.9,
+   "border": 0.5864,
+   "presence": 1
+  },
+  {
+   "hex": "#131424",
+   "lab": [
+    6.8,
+    5.0,
+    -11.7
+   ],
+   "area": 0.1273,
+   "chroma": 12.7,
+   "lightness": 6.8,
+   "hue": 293.1,
+   "border": 0.1769,
+   "presence": 1
+  },
+  {
+   "hex": "#191a43",
+   "lab": [
+    11.8,
+    13.5,
+    -25.9
+   ],
+   "area": 0.0889,
+   "chroma": 29.2,
+   "lightness": 11.8,
+   "hue": 297.5,
+   "border": 0.0281,
+   "presence": 1
+  },
+  {
+   "hex": "#5a2b36",
+   "lab": [
+    24.3,
+    22.6,
+    3.2
+   ],
+   "area": 0.0657,
+   "chroma": 22.8,
+   "lightness": 24.3,
+   "hue": 8.1,
+   "border": 0.0381,
+   "presence": 1
+  },
+  {
+   "hex": "#c6b6bc",
+   "lab": [
+    75.5,
+    6.8,
+    -1.2
+   ],
+   "area": 0.0574,
+   "chroma": 6.9,
+   "lightness": 75.5,
+   "hue": 350.0,
+   "border": 0.0525,
+   "presence": 1
+  },
+  {
+   "hex": "#616c82",
+   "lab": [
+    45.6,
+    0.8,
+    -13.4
+   ],
+   "area": 0.0479,
+   "chroma": 13.4,
+   "lightness": 45.6,
+   "hue": 273.4,
+   "border": 0.0664,
+   "presence": 1
+  },
+  {
+   "hex": "#b86152",
+   "lab": [
+    51.1,
+    33.8,
+    24.6
+   ],
+   "area": 0.0388,
+   "chroma": 41.8,
+   "lightness": 51.1,
+   "hue": 36.0,
+   "border": 0.0053,
+   "presence": 1
+  },
+  {
+   "hex": "#a37e5c",
+   "lab": [
+    55.7,
+    9.7,
+    24.3
+   ],
+   "area": 0.0379,
+   "chroma": 26.2,
+   "lightness": 55.7,
+   "hue": 68.2,
+   "border": 0.0097,
+   "presence": 1
+  },
+  {
+   "hex": "#662c83",
+   "lab": [
+    30.1,
+    41.1,
+    -38.2
+   ],
+   "area": 0.028,
+   "chroma": 56.1,
+   "lightness": 30.1,
+   "hue": 317.1,
+   "border": 0.0131,
+   "presence": 1
+  },
+  {
+   "hex": "#bb6193",
+   "lab": [
+    53.2,
+    42.4,
+    -10.9
+   ],
+   "area": 0.0264,
+   "chroma": 43.8,
+   "lightness": 53.2,
+   "hue": 345.6,
+   "border": 0.0236,
+   "presence": 1
+  },
+  {
+   "hex": "#ac4757",
+   "lab": [
+    44.2,
+    43.1,
+    11.8
+   ],
+   "area": 0.0094,
+   "chroma": 44.7,
+   "lightness": 44.2,
+   "hue": 15.3,
+   "border": 0.0072,
+   "presence": 0
+  },
+  {
+   "hex": "#e7a569",
+   "lab": [
+    72.8,
+    18.2,
+    40.7
+   ],
+   "area": 0.0037,
+   "chroma": 44.6,
+   "lightness": 72.8,
+   "hue": 65.9,
+   "border": 0.0,
+   "presence": 0
+  },
+  {
+   "hex": "#4a5ea7",
+   "lab": [
+    41.5,
+    14.8,
+    -41.8
+   ],
+   "area": 0.0012,
+   "chroma": 44.3,
+   "lightness": 41.5,
+   "hue": 289.5,
+   "border": 0.0017,
+   "presence": 0
+  }
+ ],
+ "roles": {
+  "ground": "#070607",
+  "ink": "#c6b6bc",
+  "ink_contrast": 10.42,
+  "accent": "#662c83",
+  "accent_contrast": 2.17,
+  "secondary": [
+   "#131424",
+   "#191a43",
+   "#5a2b36",
+   "#616c82",
+   "#b86152",
+   "#a37e5c",
+   "#bb6193"
+  ]
+ },
+ "luminance_hist": [
+  0.5607,
+  0.1562,
+  0.047,
+  0.0478,
+  0.0511,
+  0.0489,
+  0.0397,
+  0.0306,
+  0.0156,
+  0.0024
+ ],
+ "structure": {
+  "hue_families": 6,
+  "chromatic_colours": 7,
+  "ground": "dark",
+  "ground_lightness": 1.7,
+  "mean_chroma": 12.8,
+  "saturated_area": 0.107,
+  "neutral_area": 0.539
+ },
+ "per_ref": {
+  "vid01": {
+   "colors": [
+    {
+     "hex": "#070607",
+     "lab": [
+      1.7,
+      0.3,
+      -0.4
+     ],
+     "area": 0.4817,
+     "chroma": 0.5,
+     "lightness": 1.7,
+     "hue": 306.9,
+     "border": 0.5864
+    },
+    {
+     "hex": "#131425",
+     "lab": [
+      6.8,
+      5.0,
+      -11.7
+     ],
+     "area": 0.1273,
+     "chroma": 12.7,
+     "lightness": 6.8,
+     "hue": 293.1,
+     "border": 0.1769
+    },
+    {
+     "hex": "#191b43",
+     "lab": [
+      11.8,
+      13.5,
+      -25.9
+     ],
+     "area": 0.0889,
+     "chroma": 29.1,
+     "lightness": 11.8,
+     "hue": 297.5,
+     "border": 0.0281
+    },
+    {
+     "hex": "#5a2b36",
+     "lab": [
+      24.3,
+      22.6,
+      3.2
+     ],
+     "area": 0.0657,
+     "chroma": 22.9,
+     "lightness": 24.3,
+     "hue": 8.1,
+     "border": 0.0381
+    },
+    {
+     "hex": "#c6b6bc",
+     "lab": [
+      75.5,
+      6.8,
+      -1.2
+     ],
+     "area": 0.0574,
+     "chroma": 6.9,
+     "lightness": 75.5,
+     "hue": 349.7,
+     "border": 0.0525
+    },
+    {
+     "hex": "#616d82",
+     "lab": [
+      45.6,
+      0.8,
+      -13.4
+     ],
+     "area": 0.0479,
+     "chroma": 13.4,
+     "lightness": 45.6,
+     "hue": 273.5,
+     "border": 0.0664
+    },
+    {
+     "hex": "#b86151",
+     "lab": [
+      51.1,
+      33.8,
+      24.6
+     ],
+     "area": 0.0388,
+     "chroma": 41.8,
+     "lightness": 51.1,
+     "hue": 36.1,
+     "border": 0.0053
+    },
+    {
+     "hex": "#a37e5c",
+     "lab": [
+      55.7,
+      9.7,
+      24.3
+     ],
+     "area": 0.0379,
+     "chroma": 26.2,
+     "lightness": 55.7,
+     "hue": 68.2,
+     "border": 0.0097
+    },
+    {
+     "hex": "#662c83",
+     "lab": [
+      30.1,
+      41.1,
+      -38.2
+     ],
+     "area": 0.028,
+     "chroma": 56.1,
+     "lightness": 30.1,
+     "hue": 317.1,
+     "border": 0.0131
+    },
+    {
+     "hex": "#bb6193",
+     "lab": [
+      53.2,
+      42.4,
+      -10.9
+     ],
+     "area": 0.0264,
+     "chroma": 43.8,
+     "lightness": 53.2,
+     "hue": 345.6,
+     "border": 0.0236
+    },
+    {
+     "hex": "#ac4757",
+     "lab": [
+      44.2,
+      43.1,
+      11.8
+     ],
+     "area": 0.0094,
+     "chroma": 44.7,
+     "lightness": 44.2,
+     "hue": 15.3,
+     "border": 0.0072
+    },
+    {
+     "hex": "#e7a569",
+     "lab": [
+      72.8,
+      18.2,
+      40.7
+     ],
+     "area": 0.0037,
+     "chroma": 44.6,
+     "lightness": 72.8,
+     "hue": 65.9,
+     "border": 0.0
+    },
+    {
+     "hex": "#4a5ea7",
+     "lab": [
+      41.5,
+      14.8,
+      -41.8
+     ],
+     "area": 0.0012,
+     "chroma": 44.4,
+     "lightness": 41.5,
+     "hue": 289.5,
+     "border": 0.0017
+    }
+   ],
+   "luminance_hist": [
+    0.5607,
+    0.1562,
+    0.047,
+    0.0478,
+    0.0511,
+    0.0489,
+    0.0397,
+    0.0306,
+    0.0156,
+    0.0024
+   ]
+  }
+ },
+ "unity": {
+  "groups": [
+   [
+    "vid01"
+   ]
+  ],
+  "unified": true,
+  "distances": []
+ },
+ "ground_from": "opening frame of vid01"
+}

@@ -1,0 +1,8 @@
+Battery Low — the Signal Plates demo
+
+Third-party assets and their licences:
+
+- Fonts in kit/fonts (unmodified, from mexicat/pdoom-video app/public/fonts/src): Archivo (Copyright 2020 The Archivo Project Authors), Cormorant Garamond Italic (Copyright 2015 The Cormorant Project Authors), IBM Plex Mono (Copyright 2017 IBM Corp., Reserved Font Name "Plex"); SIL Open Font License 1.1, kit/fonts/OFL.txt
+- three.js 0.186.1 (MIT, Copyright 2010-2026 three.js authors): kit/vendor/three/
+- kit/gl.js and kit/music.js adapt code from mexicat/pdoom-video (MIT, Copyright (c) 2026 Giacomo Magnanini); see the files' headers
+- The music, lyric and sound effects are original, synthesised by `moodreel score` and `moodreel sfx` (no samples)

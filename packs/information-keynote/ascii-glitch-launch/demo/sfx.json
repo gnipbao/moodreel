@@ -1,0 +1,637 @@
+{
+ "seed": 5,
+ "gain_db": -9,
+ "cues": [
+  {
+   "t": 0.05,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 0.0885,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 0.15,
+   "sound": "tick",
+   "level": 0.4
+  },
+  {
+   "t": 0.1654,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 0.2038,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 0.2423,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 0.2808,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 0.7,
+   "sound": "tick",
+   "level": 0.45
+  },
+  {
+   "t": 1.3,
+   "sound": "crackle",
+   "level": 0.3,
+   "dur": 0.18,
+   "pan": 0.2
+  },
+  {
+   "t": 1.6,
+   "sound": "glitch",
+   "level": 0.32,
+   "dur": 0.4
+  },
+  {
+   "t": 1.95,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 1.9778,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.0056,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.0333,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.0889,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.1167,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.1444,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.1722,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.2,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.2278,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.2556,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.2833,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.3111,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.3389,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.3944,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.4222,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.45,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.4778,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.5056,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.5611,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.5889,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.6444,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.6722,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.7,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.7278,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.7556,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.7833,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.8111,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.8667,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.8944,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 2.9222,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 3.525,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 3.5517,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 3.5783,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 3.605,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 3.6317,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 3.6583,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 3.685,
+   "sound": "key",
+   "level": 0.22,
+   "pan": -0.3
+  },
+  {
+   "t": 4.3,
+   "sound": "glitch",
+   "level": 0.32,
+   "dur": 0.2
+  },
+  {
+   "t": 6.1,
+   "sound": "glitch",
+   "level": 0.32,
+   "dur": 0.15
+  },
+  {
+   "t": 6.3,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.3222,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.3444,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.3667,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.4111,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.4333,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.4556,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.4778,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.5,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.5444,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.5667,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.5889,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.6111,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.6333,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.6556,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 6.975,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 7,
+   "sound": "glitch",
+   "level": 0.32,
+   "dur": 0.1
+  },
+  {
+   "t": 7.0083,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 7.0417,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 7.075,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 7.1083,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 7.375,
+   "sound": "clack",
+   "level": 0.5
+  },
+  {
+   "t": 7.5,
+   "sound": "clack",
+   "level": 0.5
+  },
+  {
+   "t": 7.6,
+   "sound": "tick",
+   "level": 0.18,
+   "pan": 0.4
+  },
+  {
+   "t": 7.6833,
+   "sound": "tick",
+   "level": 0.18,
+   "pan": 0.4
+  },
+  {
+   "t": 7.7667,
+   "sound": "tick",
+   "level": 0.18,
+   "pan": 0.4
+  },
+  {
+   "t": 7.85,
+   "sound": "tick",
+   "level": 0.18,
+   "pan": 0.4
+  },
+  {
+   "t": 7.9333,
+   "sound": "tick",
+   "level": 0.18,
+   "pan": 0.4
+  },
+  {
+   "t": 8,
+   "sound": "riser",
+   "level": 0.5,
+   "dur": 0.5
+  },
+  {
+   "t": 8,
+   "sound": "whoosh",
+   "level": 0.55,
+   "dur": 0.5
+  },
+  {
+   "t": 8.5,
+   "sound": "zap",
+   "level": 0.45,
+   "pan": 0.5
+  },
+  {
+   "t": 9.25,
+   "sound": "swish",
+   "level": 0.5,
+   "dur": 0.4,
+   "pan": -0.4
+  },
+  {
+   "t": 10,
+   "sound": "whoosh",
+   "level": 0.45,
+   "dur": 0.6
+  },
+  {
+   "t": 10.5,
+   "sound": "clack",
+   "level": 0.5
+  },
+  {
+   "t": 10.8,
+   "sound": "whoosh",
+   "level": 0.5,
+   "dur": 0.5
+  },
+  {
+   "t": 11.225,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.225,
+   "sound": "ding",
+   "level": 0.35
+  },
+  {
+   "t": 11.2544,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.2838,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.3132,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.3426,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.4015,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.4309,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.775,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.8,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.825,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.85,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.875,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.9,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.925,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.95,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 11.975,
+   "sound": "key",
+   "level": 0.28,
+   "pan": -0.3
+  },
+  {
+   "t": 13,
+   "sound": "glitch",
+   "level": 0.32,
+   "dur": 0.1
+  },
+  {
+   "t": 13.165,
+   "sound": "glitch",
+   "level": 0.32,
+   "dur": 0.1
+  },
+  {
+   "t": 13.165,
+   "sound": "glitch",
+   "level": 0.4,
+   "dur": 0.1
+  },
+  {
+   "t": 14,
+   "sound": "boom",
+   "level": 0.85
+  }
+ ]
+}

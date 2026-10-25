@@ -1,0 +1,13 @@
+{
+ "name": "battery-low",
+ "style": "signal-plates",
+ "style_origin": "distilled",
+ "size": "1920x1080",
+ "fps": 60,
+ "duration": 24.375,
+ "poster": 16.0,
+ "motion_blur": {
+  "samples": 8,
+  "shutter": 0.2
+ }
+}

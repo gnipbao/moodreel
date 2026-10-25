@@ -1,0 +1,11 @@
+Tidepool — the ASCII Glitch Launch demo
+
+Tidepool, its harbours, posts, people and mark are invented; every picture is drawn in code.
+
+Third-party assets and their licences:
+
+- Fonts in kit/fonts (unmodified): Inter (Copyright 2020 The Inter Project Authors), JetBrains Mono (Copyright 2020 The
+  JetBrains Mono Project Authors); SIL Open Font License 1.1, kit/fonts/OFL.txt
+- three.js r186 (MIT, Copyright 2010-2026 three.js authors): kit/vendor/three/
+- kit/gl.js adapts code from mexicat/pdoom-video (MIT, Copyright (c) 2026 Giacomo Magnanini) and simplex noise (Ashima Arts / Stefan Gustavson, MIT); see the file's header
+- The music and sound effects are original, synthesised by `moodreel score` and `moodreel sfx` (no samples)

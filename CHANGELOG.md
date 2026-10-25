@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased: the distilled packs in the repository
+
+- `packs/`: Signal Plates (graphic and type) and ASCII Glitch Launch (information and keynote), each a complete pack
+  in the layout the tools read, with a README that sorts its contents by kind (rules, evidence, the style's own
+  modules, measured tokens, shared kit, fonts, demo source); `packs/README.md` lists them by the library's categories.
+  Demo films and kit/vendor stay out (rebuilt from source; GitHub refuses files over 100 MB).
+- `scripts/packs.py export|install`: the library's packs into `packs/<category>/<slug>/` and back, registering them,
+  deleting nothing (an installed pack keeps its rendered demo.mp4).
+
 ## Unreleased: remakes measured shot by shot
 
 - `moodreel probe <reference> --at t1,t2 [--against <remake>]`: a shot's numbers off full-size frames, the

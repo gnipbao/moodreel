@@ -1,0 +1,3683 @@
+{
+ "grammar": {
+  "shots": {
+   "count": 54,
+   "length_s": {
+    "n": 54,
+    "median": 0.45,
+    "p25": 0.117,
+    "p75": 3.0
+   },
+   "lengths": [
+    22.8,
+    0.583,
+    0.033,
+    0.45,
+    2.283,
+    3.767,
+    3.05,
+    5.467,
+    2.85,
+    17.283,
+    0.25,
+    0.033,
+    0.2,
+    0.033,
+    0.35,
+    0.033,
+    0.183,
+    0.033,
+    2.033,
+    0.483,
+    3.6,
+    0.033,
+    1.367,
+    2.267,
+    7.95,
+    27.05,
+    10.45,
+    5.467,
+    3.633,
+    0.15,
+    0.25,
+    0.033,
+    0.2,
+    0.45,
+    0.233,
+    1.817,
+    0.45,
+    1.817,
+    7.583,
+    2.85,
+    1.533,
+    6.383,
+    0.117,
+    0.117,
+    0.117,
+    0.217,
+    0.117,
+    0.117,
+    6.017,
+    0.067,
+    0.083,
+    0.1,
+    0.217,
+    0.817
+   ],
+   "cuts": 48,
+   "dissolves": 5,
+   "dissolve_s": {
+    "n": 5,
+    "median": 0.05,
+    "p25": 0.033,
+    "p75": 0.283
+   },
+   "dips": 1,
+   "dip_s": {
+    "n": 1,
+    "median": 0.15,
+    "p25": 0.15,
+    "p75": 0.15
+   },
+   "dip_colors": [
+    "#3f3e3e"
+   ]
+  },
+  "stepping": {
+   "on": 1,
+   "shots": 25
+  },
+  "camera": {
+   "moving_shots": 1,
+   "moves": {
+    "panx": {
+     "count": 1,
+     "duration_s": {
+      "n": 1,
+      "median": 0.092,
+      "p25": 0.092,
+      "p75": 0.092
+     },
+     "eases": [
+      "none"
+     ],
+     "range": {
+      "n": 1,
+      "median": 37.206,
+      "p25": 37.206,
+      "p75": 37.206
+     }
+    }
+   },
+   "locked_shots": 40,
+   "unknown_shots": 9
+  },
+  "motion_density": 0.586,
+  "hold_s": {
+   "n": 201,
+   "median": 0.233,
+   "p25": 0.15,
+   "p75": 0.383
+  },
+  "entrance": {
+   "count": 213,
+   "claimed": 19,
+   "class_claimed": 27,
+   "duration_s": {
+    "n": 213,
+    "median": 0.45,
+    "p25": 0.242,
+    "p75": 0.692
+   },
+   "eases": {
+    "circ.out": 4,
+    "expo.in": 3,
+    "none": 2,
+    "bounce.out": 2,
+    "expo.out": 5,
+    "back.out(1.2)": 1,
+    "circ.inOut": 1,
+    "sine.out": 1
+   },
+   "classes": {
+    "out": 13,
+    "in": 4,
+    "linear": 2,
+    "out+oscillate": 3,
+    "inOut": 4,
+    "out+overshoot": 1
+   },
+   "guesses": {
+    "power3.inOut": 1,
+    "sine.out": 12,
+    "back.out(3)": 3,
+    "circ.in": 12,
+    "expo.in": 23,
+    "back.in(4)": 3,
+    "circ.inOut": 16,
+    "back.out(4)": 14,
+    "sine.in": 5,
+    "circ.out": 18,
+    "bounce.out": 18,
+    "power2.in": 2,
+    "expo.out": 17,
+    "back.out(1.2)": 1,
+    "power1.out": 8,
+    "expo.inOut": 9,
+    "power2.out": 4,
+    "power2.inOut": 2,
+    "none": 8,
+    "back.out(1.7)": 2,
+    "sine.inOut": 2,
+    "power3.out": 2,
+    "elastic.out(1.3,0.45)": 2,
+    "power4.inOut": 2,
+    "back.out(2.2)": 2,
+    "power4.in": 2,
+    "power1.inOut": 1,
+    "back.in(2.2)": 1,
+    "power3.in": 1,
+    "back.in(1.7)": 1
+   },
+   "vocabulary": {
+    "scale+drift-x+rise": 1,
+    "drop-in": 3,
+    "slide-in+drop-in": 8,
+    "slide-in": 14,
+    "scale-pop+slide-in+rise-in+fade": 4,
+    "rise+fade": 2,
+    "scale-pop": 10,
+    "scale-pop+sink": 5,
+    "fade": 27,
+    "scale-pop+drift-x+drop-in": 4,
+    "drift-x+sink": 8,
+    "scale-pop+drift-x": 11,
+    "rise": 7,
+    "turn": 1,
+    "slide-in+rise-in": 11,
+    "sink": 3,
+    "scale": 3,
+    "drift-x": 7,
+    "scale+slide-in": 1,
+    "drift-x+fade": 1,
+    "scale-pop+sink+fade": 2,
+    "scale-pop+drift-x+sink": 4,
+    "wipe-in": 3,
+    "scale-pop+drift-x+rise-in": 1,
+    "drift-x+drop-in": 1,
+    "drift-x+rise": 8,
+    "scale-pop+drift-x+sink+turn": 1,
+    "scale-pop+drift-x+sink+fade": 3,
+    "scale-pop+drift-x+fade": 3,
+    "scale-pop+drift-x+rise": 6,
+    "scale+drift-x+sink": 3,
+    "grow-y": 1,
+    "drift-x+sink+turn+fade": 1,
+    "sink+fade": 4,
+    "drift-x+sink+fade": 2,
+    "scale-pop+slide-in": 2,
+    "scale-pop+slide-in+rise-in": 4,
+    "scale+drift-x+sink+fade": 2,
+    "scale+sink+fade": 1,
+    "draw-on": 3,
+    "scale-pop+rise-in": 1,
+    "rise-in": 5,
+    "scale+rise": 1,
+    "slide-in+fade": 1,
+    "scale-pop+drift-x+rise+fade": 2,
+    "scale-pop+slide-in+sink": 1,
+    "drop-in+fade": 1,
+    "scale-pop+slide-in+rise": 1,
+    "scale+drift-x+rise+fade": 1,
+    "rise-in+fade": 1,
+    "scale-pop+slide-in+drop-in": 3,
+    "scale+drift-x": 2,
+    "scale-pop+slide-in+sink+fade": 1,
+    "drift-x+rise+fade": 1,
+    "slide-in+turn": 1,
+    "turn+fade": 1,
+    "scale+drift-x+fade": 1,
+    "scale-pop+rise": 2
+   },
+   "overshoot_share": 0.48,
+   "overshoot": {
+    "n": 13,
+    "median": 0.047,
+    "p25": 0.033,
+    "p75": 0.067
+   },
+   "travel_frac_of_frame": {
+    "n": 246,
+    "median": 0.128,
+    "p25": 0.046,
+    "p75": 0.342
+   },
+   "curve": {
+    "bezier": [
+     0.151,
+     1.272,
+     0.988,
+     0.924
+    ],
+    "tweens": 13,
+    "resid": 0.0191,
+    "duration": 0.325,
+    "class": "out"
+   },
+   "scale_from": {
+    "n": 87,
+    "median": 0.356,
+    "p25": 0.143,
+    "p75": 0.979
+   }
+  },
+  "exit": {
+   "count": 164,
+   "claimed": 3,
+   "class_claimed": 11,
+   "duration_s": {
+    "n": 164,
+    "median": 0.296,
+    "p25": 0.125,
+    "p75": 0.535
+   },
+   "eases": {
+    "sine.in": 1,
+    "expo.in": 1,
+    "circ.in": 1,
+    "circ.inOut": 1
+   },
+   "classes": {
+    "inOut": 2,
+    "out": 3,
+    "out+oscillate": 2,
+    "in": 4
+   },
+   "guesses": {
+    "expo.inOut": 5,
+    "sine.in": 8,
+    "power3.in": 1,
+    "power1.inOut": 6,
+    "circ.inOut": 8,
+    "circ.out": 17,
+    "expo.out": 8,
+    "bounce.out": 12,
+    "power1.out": 5,
+    "expo.in": 12,
+    "sine.inOut": 3,
+    "power4.in": 5,
+    "back.in(1.7)": 5,
+    "none": 9,
+    "power2.out": 4,
+    "power1.in": 5,
+    "back.in(4)": 6,
+    "circ.in": 17,
+    "power3.out": 2,
+    "back.out(4)": 1,
+    "power2.in": 2,
+    "back.out(2.2)": 1,
+    "back.in(1.2)": 3,
+    "sine.out": 3,
+    "power4.out": 1,
+    "power3.inOut": 1,
+    "back.in(2.2)": 1,
+    "elastic.out(1.3,0.3)": 1,
+    "back.in(3)": 2,
+    "power4.inOut": 2,
+    "elastic.out(1,0.45)": 1,
+    "back.out(1.7)": 1,
+    "elastic.out(1,0.3)": 1,
+    "back.out(3)": 1
+   },
+   "vocabulary": {
+    "scale+drift-x": 4,
+    "slide-out+turn": 1,
+    "scale": 15,
+    "scale+slide-out": 2,
+    "scale-pop": 15,
+    "scale-pop+sink": 1,
+    "drift-x+rise+fade": 3,
+    "scale+slide-out+drop-out": 2,
+    "scale-pop+rise+fade": 2,
+    "drift-x+sink+fade": 1,
+    "drift-x+fade": 2,
+    "drop-out": 1,
+    "drift-x": 6,
+    "collapse-y": 2,
+    "slide-out+drop-out": 3,
+    "scale-pop+fade": 7,
+    "slide-out": 5,
+    "rise-out": 3,
+    "wipe-out": 4,
+    "drift-x+rise": 3,
+    "scale+sink": 4,
+    "scale-pop+drift-x+sink": 2,
+    "scale-pop+rise": 4,
+    "scale+drift-x+rise": 12,
+    "scale+rise": 3,
+    "scale-pop+drop-out": 2,
+    "slide-out+rise-out": 9,
+    "scale-pop+slide-out": 3,
+    "scale-pop+drift-x+rise+fade": 1,
+    "scale-pop+rise-out": 1,
+    "scale+sink+fade": 1,
+    "scale+fade": 1,
+    "fade": 18,
+    "scale+drift-x+sink": 3,
+    "scale+drift-x+rise+fade": 1,
+    "scale-pop+sink+fade": 1,
+    "drift-x+sink": 2,
+    "scale-pop+slide-out+rise": 1,
+    "drift-x+rise+turn": 1,
+    "scale+rise-out": 1,
+    "slide-out+rise-out+turn": 1,
+    "scale-pop+drift-x+rise": 1,
+    "rise": 1,
+    "scale-pop+drift-x+fade": 1,
+    "scale+drift-x+fade": 1,
+    "scale-pop+drop-out+fade": 1,
+    "clip-slide": 1,
+    "scale-pop+slide-out+fade": 1,
+    "drop-out+fade": 1,
+    "draw-off": 1,
+    "scale+rise+fade": 1
+   },
+   "overshoot_share": 0.09,
+   "overshoot": {
+    "n": 1,
+    "median": 0.099,
+    "p25": 0.099,
+    "p75": 0.099
+   },
+   "travel_frac_of_frame": {
+    "n": 147,
+    "median": 0.178,
+    "p25": 0.074,
+    "p75": 0.342
+   },
+   "curve": {
+    "bezier": [
+     0.435,
+     -0.108,
+     0.986,
+     0.487
+    ],
+    "tweens": 4,
+    "resid": 0.0574,
+    "duration": 0.349,
+    "class": "in"
+   },
+   "scale_from": {
+    "n": 95,
+    "median": 0.986,
+    "p25": 0.941,
+    "p75": 0.997
+   }
+  },
+  "move": {
+   "count": 711,
+   "claimed": 29,
+   "class_claimed": 66,
+   "duration_s": {
+    "n": 711,
+    "median": 0.183,
+    "p25": 0.092,
+    "p75": 0.325
+   },
+   "eases": {
+    "none": 3,
+    "circ.out": 5,
+    "bounce.out": 5,
+    "circ.inOut": 1,
+    "sine.in": 1,
+    "circ.in": 1,
+    "power4.out": 1,
+    "expo.out": 5,
+    "back.out(4)": 3,
+    "power3.inOut": 3,
+    "power1.inOut": 2,
+    "power2.out": 1,
+    "power2.inOut": 2
+   },
+   "classes": {
+    "out": 24,
+    "linear": 3,
+    "inOut": 6,
+    "out+oscillate": 15,
+    "out+overshoot": 6,
+    "in": 12
+   },
+   "guesses": {
+    "none": 47,
+    "circ.inOut": 29,
+    "power1.inOut": 25,
+    "expo.inOut": 31,
+    "power2.out": 12,
+    "bounce.out": 78,
+    "circ.out": 41,
+    "back.out(3)": 24,
+    "back.in(2.2)": 11,
+    "sine.in": 23,
+    "sine.inOut": 26,
+    "expo.in": 15,
+    "power4.out": 8,
+    "back.out(4)": 29,
+    "power4.inOut": 20,
+    "back.in(4)": 13,
+    "sine.out": 19,
+    "power3.out": 8,
+    "elastic.out(1,0.45)": 5,
+    "back.out(1.7)": 11,
+    "power1.out": 24,
+    "expo.out": 30,
+    "power3.inOut": 14,
+    "power1.in": 19,
+    "back.in(3)": 3,
+    "power2.in": 8,
+    "circ.in": 39,
+    "power3.in": 8,
+    "elastic.out(1,0.3)": 2,
+    "elastic.out(1.3,0.45)": 1,
+    "power4.in": 9,
+    "power2.inOut": 12,
+    "back.out(2.2)": 19,
+    "back.out(1.2)": 6,
+    "elastic.out(1.3,0.6)": 2,
+    "back.in(1.7)": 2,
+    "elastic.out(1.3,0.3)": 3,
+    "elastic.out(1,0.6)": 1,
+    "back.in(1.2)": 1
+   },
+   "vocabulary": {
+    "scale": 69,
+    "scale-pop": 150,
+    "move-y": 58,
+    "move-x+move-y": 62,
+    "scale-pop+move-x": 47,
+    "scale-pop+move-x+move-y": 50,
+    "scale-pop+move-y": 44,
+    "scale-pop+slide-in": 8,
+    "move-x": 69,
+    "scale+move-x": 16,
+    "scale+move-x+move-y": 21,
+    "scale+move-y": 6,
+    "scale-pop+slide-in+drop-in": 2,
+    "rise-in": 10,
+    "scale+slide-in": 3,
+    "drop-in": 4,
+    "scale+slide-in+rise-in": 1,
+    "scale-pop+move-x+drop-in": 2,
+    "scale-pop+move-x+rise-in": 1,
+    "slide-in+drop-in": 9,
+    "scale+move-x+rise-in": 3,
+    "slide-in": 34,
+    "move-x+rise-in": 2,
+    "scale-pop+drop-in": 1,
+    "scale-pop+rise-in": 5,
+    "slide-in+rise-in": 19,
+    "scale+rise-in": 1,
+    "move-x+move-y+turn": 1,
+    "scale-pop+turn": 2,
+    "turn": 2,
+    "scale+slide-in+drop-in+turn": 1,
+    "move-x+turn": 1,
+    "scale-pop+slide-in+rise-in": 5,
+    "scale+slide-in+move-y": 1,
+    "scale-pop+slide-in+move-y": 1
+   },
+   "overshoot_share": 0.64,
+   "overshoot": {
+    "n": 42,
+    "median": 0.058,
+    "p25": 0.04,
+    "p75": 0.128
+   },
+   "travel_frac_of_frame": {
+    "n": 669,
+    "median": 0.104,
+    "p25": 0.04,
+    "p75": 0.287
+   },
+   "curve": {
+    "bezier": [
+     0.141,
+     0.473,
+     0.335,
+     0.977
+    ],
+    "tweens": 24,
+    "resid": 0.0376,
+    "duration": 0.263,
+    "class": "out"
+   },
+   "scale_from": {
+    "n": 440,
+    "median": 0.335,
+    "p25": 0.257,
+    "p75": 0.617
+   }
+  },
+  "stagger": [
+   {
+    "shot": 18,
+    "vocabulary": "scale-pop",
+    "count": 3,
+    "interval_s": 0.231,
+    "order": "top-to-bottom"
+   },
+   {
+    "shot": 25,
+    "vocabulary": "drift-x+rise",
+    "count": 4,
+    "interval_s": 1.842,
+    "order": "unordered"
+   }
+  ],
+  "counters": {
+   "count": 71,
+   "claimed": 1,
+   "class_claimed": 1,
+   "duration_s": {
+    "n": 71,
+    "median": 0.108,
+    "p25": 0.067,
+    "p75": 0.317
+   },
+   "eases": {
+    "circ.inOut": 1
+   },
+   "classes": {
+    "inOut": 1
+   },
+   "guesses": {
+    "expo.inOut": 19,
+    "power2.inOut": 3,
+    "power1.inOut": 22,
+    "circ.inOut": 6,
+    "sine.inOut": 5,
+    "power3.inOut": 3,
+    "circ.out": 1,
+    "expo.in": 2,
+    "power4.inOut": 8,
+    "none": 1
+   },
+   "vocabulary": {
+    "count": 68,
+    "count-in": 3
+   },
+   "overshoot_share": 0.0,
+   "overshoot": null,
+   "travel_frac_of_frame": null,
+   "formats": {
+    "#": 52,
+    "#k": 1,
+    ".#": 5,
+    "#.##": 6,
+    ",#": 1,
+    "#.#": 2,
+    "#.##-": 1,
+    "¥ # ,": 1,
+    "B#": 1,
+    "# ,": 1
+   },
+   "ranges": [
+    [
+     -6.681,
+     -0.0
+    ],
+    [
+     2.0,
+     950.0
+    ],
+    [
+     100.0,
+     1.0
+    ],
+    [
+     1.0,
+     7.0
+    ],
+    [
+     2.0,
+     60.0
+    ],
+    [
+     1.0,
+     46664.0
+    ],
+    [
+     7.0,
+     27.0
+    ],
+    [
+     9.16,
+     0.96
+    ],
+    [
+     -802.46,
+     -80100.0
+    ],
+    [
+     -0.0,
+     -8008.0
+    ],
+    [
+     117474.0,
+     7.0
+    ],
+    [
+     97.0,
+     4.0
+    ],
+    [
+     7.0,
+     0.24
+    ],
+    [
+     1.0,
+     62.0
+    ],
+    [
+     23.0,
+     1.0
+    ],
+    [
+     20.0,
+     1.0
+    ],
+    [
+     9.39,
+     0.0
+    ],
+    [
+     8.62,
+     0.04
+    ],
+    [
+     0.2,
+     290.0
+    ],
+    [
+     0.07,
+     0.04
+    ],
+    [
+     2.0,
+     637.0
+    ],
+    [
+     8.9,
+     1.0
+    ],
+    [
+     2192.0,
+     1.0
+    ],
+    [
+     7.2,
+     2.0
+    ],
+    [
+     1.0,
+     5.0
+    ],
+    [
+     7.0,
+     24755.0
+    ],
+    [
+     2.0,
+     5.0
+    ],
+    [
+     3.0,
+     0.0
+    ],
+    [
+     7.0,
+     -5.0
+    ],
+    [
+     7.0,
+     4.0
+    ],
+    [
+     8.0,
+     1.6
+    ],
+    [
+     2.0,
+     5.0
+    ],
+    [
+     2.0,
+     -21.66
+    ],
+    [
+     70.2,
+     1.0
+    ],
+    [
+     2.0,
+     86.0
+    ],
+    [
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     2.0
+    ],
+    [
+     -6.06,
+     6.08
+    ],
+    [
+     5.0,
+     614.0
+    ],
+    [
+     4.0,
+     71.0
+    ],
+    [
+     83.0,
+     1.0
+    ],
+    [
+     -20.0,
+     28.6
+    ],
+    [
+     -1.0,
+     81.0
+    ],
+    [
+     1.0,
+     196860.0
+    ],
+    [
+     1.0,
+     8.88080000000829e+26
+    ],
+    [
+     3.14,
+     9000006.0
+    ],
+    [
+     0.0,
+     900000.0
+    ],
+    [
+     19.0,
+     1000.0
+    ],
+    [
+     0.0,
+     4.0
+    ],
+    [
+     10.0,
+     18800006.0
+    ],
+    [
+     0.0,
+     808000000.0
+    ],
+    [
+     0.0,
+     4.0
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     -7.0,
+     9080000006.0
+    ],
+    [
+     0.0,
+     900.0
+    ],
+    [
+     90.0,
+     300.0
+    ],
+    [
+     6.0,
+     200.0
+    ],
+    [
+     76.0,
+     4.0
+    ],
+    [
+     7.0,
+     0.0
+    ],
+    [
+     300.0,
+     9.0
+    ],
+    [
+     900.0,
+     7.0
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     600.0,
+     0.0
+    ],
+    [
+     200.0,
+     0.0
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     90.0,
+     200.0
+    ],
+    [
+     200.0,
+     20.0
+    ],
+    [
+     4.0,
+     909.0
+    ],
+    [
+     2.0,
+     999.0
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     900.0,
+     7.0
+    ]
+   ]
+  },
+  "loops": {
+   "count": 4,
+   "period_s": {
+    "n": 4,
+    "median": 0.904,
+    "min": 0.451,
+    "max": 1.017
+   },
+   "props": {
+    "scale": {
+     "n": 3,
+     "median": 0.528,
+     "min": 0.294,
+     "max": 0.541
+    },
+    "x": {
+     "n": 2,
+     "median": 53.75,
+     "min": 15.5,
+     "max": 92.0
+    }
+   }
+  },
+  "particles": [
+   {
+    "shot": 35,
+    "count": 34,
+    "radius_px": 2.3,
+    "speed": {
+     "p10": 22.7,
+     "median": 64.9,
+     "p90": 432.1
+    },
+    "vx": [
+     -430.3,
+     -1.3
+    ],
+    "vy": [
+     -87.8,
+     47.4
+    ],
+    "direction_deg": -166.7,
+    "spread_deg": 48.9
+   }
+  ],
+  "beat": null
+ },
+ "per_video": {
+  "vid01": {
+   "source": {
+    "path": "out/projects/pdoom/refs/vid01.mp4",
+    "fps": 60.0,
+    "w": 1280,
+    "h": 720,
+    "frames": 9399,
+    "analysis_width": 640,
+    "counters_read": true
+   },
+   "shots": [
+    {
+     "start": 0,
+     "end": 1368,
+     "id": 0,
+     "t0": 0.0,
+     "t1": 22.8,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.86,
+      "gaps": 529
+     },
+     "runs_t": [
+      [
+       0.233,
+       0.383
+      ],
+      [
+       0.6,
+       1.617
+      ],
+      [
+       1.833,
+       6.317
+      ],
+      [
+       6.517,
+       7.883
+      ],
+      [
+       8.283,
+       8.917
+      ],
+      [
+       9.133,
+       9.85
+      ],
+      [
+       10.033,
+       13.2
+      ],
+      [
+       13.617,
+       14.533
+      ],
+      [
+       15.65,
+       17.333
+      ],
+      [
+       17.7,
+       18.017
+      ],
+      [
+       18.167,
+       18.5
+      ],
+      [
+       18.667,
+       19.317
+      ],
+      [
+       19.567,
+       21.483
+      ],
+      [
+       21.767,
+       22.533
+      ],
+      [
+       22.75,
+       22.8
+      ]
+     ]
+    },
+    {
+     "start": 1368,
+     "end": 1403,
+     "id": 1,
+     "t0": 22.8,
+     "t1": 23.383333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.92,
+      "gaps": 12
+     },
+     "runs_t": [
+      [
+       22.983,
+       23.383
+      ]
+     ]
+    },
+    {
+     "start": 1403,
+     "end": 1405,
+     "id": 2,
+     "t0": 23.383333333333333,
+     "t1": 23.416666666666668,
+     "camera": "moving",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 1405,
+     "end": 1432,
+     "id": 3,
+     "t0": 23.416666666666668,
+     "t1": 23.866666666666667,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       23.433,
+       23.7
+      ]
+     ]
+    },
+    {
+     "start": 1432,
+     "end": 1569,
+     "id": 4,
+     "t0": 23.866666666666667,
+     "t1": 26.15,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.95,
+      "gaps": 57
+     },
+     "runs_t": [
+      [
+       23.883,
+       24.4
+      ],
+      [
+       25.083,
+       25.117
+      ],
+      [
+       25.55,
+       26.15
+      ]
+     ]
+    },
+    {
+     "start": 1569,
+     "end": 1795,
+     "id": 5,
+     "t0": 26.15,
+     "t1": 29.916666666666668,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.76,
+      "gaps": 68
+     },
+     "runs_t": [
+      [
+       26.167,
+       26.267
+      ],
+      [
+       26.6,
+       26.633
+      ],
+      [
+       26.833,
+       27.317
+      ],
+      [
+       27.5,
+       28.183
+      ],
+      [
+       28.383,
+       28.417
+      ],
+      [
+       28.867,
+       29.917
+      ]
+     ]
+    },
+    {
+     "start": 1795,
+     "end": 1978,
+     "id": 6,
+     "t0": 29.916666666666668,
+     "t1": 32.96666666666667,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.89,
+      "gaps": 64
+     },
+     "runs_t": [
+      [
+       29.933,
+       31.617
+      ],
+      [
+       32.033,
+       32.067
+      ],
+      [
+       32.483,
+       32.517
+      ],
+      [
+       32.933,
+       32.967
+      ]
+     ]
+    },
+    {
+     "start": 1978,
+     "end": 2306,
+     "id": 7,
+     "t0": 32.96666666666667,
+     "t1": 38.43333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.84,
+      "gaps": 69
+     },
+     "runs_t": [
+      [
+       32.983,
+       35.017
+      ],
+      [
+       35.233,
+       35.283
+      ],
+      [
+       35.683,
+       35.733
+      ],
+      [
+       36.133,
+       36.233
+      ],
+      [
+       36.583,
+       36.683
+      ],
+      [
+       37.05,
+       37.117
+      ],
+      [
+       37.3,
+       37.333
+      ],
+      [
+       37.5,
+       37.533
+      ],
+      [
+       37.717,
+       38.183
+      ]
+     ]
+    },
+    {
+     "start": 2325,
+     "end": 2496,
+     "id": 8,
+     "t0": 38.75,
+     "t1": 41.6,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 1.0,
+      "gaps": 14
+     },
+     "runs_t": [
+      [
+       41.35,
+       41.6
+      ]
+     ]
+    },
+    {
+     "start": 2496,
+     "end": 3533,
+     "id": 9,
+     "t0": 41.6,
+     "t1": 58.88333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.92,
+      "gaps": 337
+     },
+     "runs_t": [
+      [
+       41.617,
+       42.267
+      ],
+      [
+       42.5,
+       42.533
+      ],
+      [
+       42.95,
+       42.983
+      ],
+      [
+       43.4,
+       43.45
+      ],
+      [
+       43.867,
+       49.35
+      ],
+      [
+       49.533,
+       49.667
+      ],
+      [
+       51.533,
+       52.25
+      ],
+      [
+       52.5,
+       52.55
+      ],
+      [
+       52.817,
+       53.0
+      ],
+      [
+       53.4,
+       53.483
+      ],
+      [
+       53.867,
+       53.9
+      ],
+      [
+       54.317,
+       54.383
+      ],
+      [
+       54.767,
+       54.833
+      ],
+      [
+       55.233,
+       55.283
+      ],
+      [
+       55.683,
+       55.75
+      ],
+      [
+       55.967,
+       56.2
+      ],
+      [
+       56.567,
+       56.667
+      ],
+      [
+       57.05,
+       57.317
+      ],
+      [
+       57.5,
+       57.567
+      ],
+      [
+       57.767,
+       57.8
+      ],
+      [
+       57.95,
+       58.15
+      ],
+      [
+       58.45,
+       58.483
+      ],
+      [
+       58.833,
+       58.867
+      ]
+     ]
+    },
+    {
+     "start": 3533,
+     "end": 3548,
+     "id": 10,
+     "t0": 58.88333333333333,
+     "t1": 59.13333333333333,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 3548,
+     "end": 3550,
+     "id": 11,
+     "t0": 59.13333333333333,
+     "t1": 59.166666666666664,
+     "camera": "moving",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 3550,
+     "end": 3562,
+     "id": 12,
+     "t0": 59.166666666666664,
+     "t1": 59.36666666666667,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       59.183,
+       59.367
+      ]
+     ]
+    },
+    {
+     "start": 3562,
+     "end": 3564,
+     "id": 13,
+     "t0": 59.36666666666667,
+     "t1": 59.4,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 3564,
+     "end": 3585,
+     "id": 14,
+     "t0": 59.4,
+     "t1": 59.75,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 1.0,
+      "gaps": 11
+     },
+     "runs_t": [
+      [
+       59.417,
+       59.75
+      ]
+     ]
+    },
+    {
+     "start": 3585,
+     "end": 3587,
+     "id": 15,
+     "t0": 59.75,
+     "t1": 59.78333333333333,
+     "camera": "moving",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 3587,
+     "end": 3598,
+     "id": 16,
+     "t0": 59.78333333333333,
+     "t1": 59.96666666666667,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       59.8,
+       59.967
+      ]
+     ]
+    },
+    {
+     "start": 3598,
+     "end": 3600,
+     "id": 17,
+     "t0": 59.96666666666667,
+     "t1": 60.0,
+     "camera": "moving",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 3600,
+     "end": 3722,
+     "id": 18,
+     "t0": 60.0,
+     "t1": 62.03333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.78,
+      "gaps": 18
+     },
+     "runs_t": [
+      [
+       60.017,
+       60.267
+      ],
+      [
+       60.583,
+       60.75
+      ],
+      [
+       60.95,
+       61.15
+      ],
+      [
+       61.65,
+       61.683
+      ]
+     ]
+    },
+    {
+     "start": 3722,
+     "end": 3751,
+     "id": 19,
+     "t0": 62.03333333333333,
+     "t1": 62.516666666666666,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       62.467,
+       62.517
+      ]
+     ]
+    },
+    {
+     "start": 3751,
+     "end": 3967,
+     "id": 20,
+     "t0": 62.516666666666666,
+     "t1": 66.11666666666666,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.72,
+      "gaps": 58
+     },
+     "runs_t": [
+      [
+       62.533,
+       64.75
+      ],
+      [
+       65.167,
+       65.2
+      ],
+      [
+       65.633,
+       65.683
+      ],
+      [
+       66.067,
+       66.117
+      ]
+     ]
+    },
+    {
+     "start": 3967,
+     "end": 3969,
+     "id": 21,
+     "t0": 66.11666666666666,
+     "t1": 66.15,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 3969,
+     "end": 4051,
+     "id": 22,
+     "t0": 66.15,
+     "t1": 67.51666666666667,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.93,
+      "gaps": 29
+     },
+     "runs_t": [
+      [
+       66.517,
+       67.1
+      ],
+      [
+       67.333,
+       67.517
+      ]
+     ]
+    },
+    {
+     "start": 4051,
+     "end": 4187,
+     "id": 23,
+     "t0": 67.51666666666667,
+     "t1": 69.78333333333333,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.96,
+      "gaps": 45
+     },
+     "runs_t": [
+      [
+       67.533,
+       67.667
+      ],
+      [
+       68.4,
+       69.167
+      ]
+     ]
+    },
+    {
+     "start": 4187,
+     "end": 4664,
+     "id": 24,
+     "t0": 69.78333333333333,
+     "t1": 77.73333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.86,
+      "gaps": 162
+     },
+     "runs_t": [
+      [
+       69.8,
+       70.15
+      ],
+      [
+       70.483,
+       71.333
+      ],
+      [
+       72.0,
+       72.233
+      ],
+      [
+       72.783,
+       73.017
+      ],
+      [
+       73.667,
+       74.45
+      ],
+      [
+       74.817,
+       75.767
+      ],
+      [
+       76.083,
+       76.633
+      ],
+      [
+       76.833,
+       77.733
+      ]
+     ]
+    },
+    {
+     "start": 4664,
+     "end": 6287,
+     "id": 25,
+     "t0": 77.73333333333333,
+     "t1": 104.78333333333333,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.92,
+      "gaps": 717
+     },
+     "runs_t": [
+      [
+       77.75,
+       79.35
+      ],
+      [
+       79.75,
+       80.383
+      ],
+      [
+       80.683,
+       84.033
+      ],
+      [
+       84.317,
+       84.467
+      ],
+      [
+       84.767,
+       87.483
+      ],
+      [
+       87.65,
+       88.217
+      ],
+      [
+       88.467,
+       88.717
+      ],
+      [
+       89.267,
+       89.4
+      ],
+      [
+       90.633,
+       90.783
+      ],
+      [
+       92.45,
+       93.4
+      ],
+      [
+       94.283,
+       94.317
+      ],
+      [
+       95.217,
+       95.267
+      ],
+      [
+       96.117,
+       96.167
+      ],
+      [
+       96.333,
+       102.083
+      ],
+      [
+       102.467,
+       103.433
+      ],
+      [
+       103.617,
+       103.867
+      ],
+      [
+       104.117,
+       104.55
+      ],
+      [
+       104.733,
+       104.783
+      ]
+     ]
+    },
+    {
+     "start": 6287,
+     "end": 6914,
+     "id": 26,
+     "t0": 104.78333333333333,
+     "t1": 115.23333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.85,
+      "gaps": 206
+     },
+     "runs_t": [
+      [
+       104.8,
+       106.017
+      ],
+      [
+       106.533,
+       106.7
+      ],
+      [
+       107.45,
+       109.167
+      ],
+      [
+       109.567,
+       110.233
+      ],
+      [
+       110.55,
+       110.833
+      ],
+      [
+       111.083,
+       111.283
+      ],
+      [
+       111.467,
+       112.183
+      ],
+      [
+       112.367,
+       115.233
+      ]
+     ]
+    },
+    {
+     "start": 6914,
+     "end": 7242,
+     "id": 27,
+     "t0": 115.23333333333333,
+     "t1": 120.7,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.78,
+      "gaps": 108
+     },
+     "runs_t": [
+      [
+       115.7,
+       116.417
+      ],
+      [
+       116.583,
+       116.7
+      ],
+      [
+       117.0,
+       119.333
+      ],
+      [
+       119.5,
+       119.533
+      ]
+     ]
+    },
+    {
+     "start": 7242,
+     "end": 7460,
+     "id": 28,
+     "t0": 120.7,
+     "t1": 124.33333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.88,
+      "gaps": 68
+     },
+     "runs_t": [
+      [
+       120.75,
+       120.817
+      ],
+      [
+       120.983,
+       121.017
+      ],
+      [
+       121.167,
+       121.233
+      ],
+      [
+       121.417,
+       121.45
+      ],
+      [
+       121.6,
+       121.733
+      ],
+      [
+       121.917,
+       122.75
+      ],
+      [
+       122.95,
+       124.333
+      ]
+     ]
+    },
+    {
+     "start": 7461,
+     "end": 7470,
+     "id": 29,
+     "t0": 124.35,
+     "t1": 124.5,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 7472,
+     "end": 7487,
+     "id": 30,
+     "t0": 124.53333333333333,
+     "t1": 124.78333333333333,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       124.55,
+       124.6
+      ]
+     ]
+    },
+    {
+     "start": 7487,
+     "end": 7489,
+     "id": 31,
+     "t0": 124.78333333333333,
+     "t1": 124.81666666666666,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 7489,
+     "end": 7501,
+     "id": 32,
+     "t0": 124.81666666666666,
+     "t1": 125.01666666666667,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 7501,
+     "end": 7528,
+     "id": 33,
+     "t0": 125.01666666666667,
+     "t1": 125.46666666666667,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.93,
+      "gaps": 15
+     },
+     "runs_t": [
+      [
+       125.033,
+       125.433
+      ]
+     ]
+    },
+    {
+     "start": 7528,
+     "end": 7542,
+     "id": 34,
+     "t0": 125.46666666666667,
+     "t1": 125.7,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       125.65,
+       125.7
+      ]
+     ]
+    },
+    {
+     "start": 7542,
+     "end": 7651,
+     "id": 35,
+     "t0": 125.7,
+     "t1": 127.51666666666667,
+     "camera": "pans",
+     "stepping": {
+      "on": 1,
+      "share": 0.95,
+      "gaps": 43
+     },
+     "runs_t": [
+      [
+       125.717,
+       126.683
+      ],
+      [
+       126.883,
+       126.917
+      ],
+      [
+       127.083,
+       127.333
+      ]
+     ]
+    },
+    {
+     "start": 7651,
+     "end": 7678,
+     "id": 36,
+     "t0": 127.51666666666667,
+     "t1": 127.96666666666667,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       127.567,
+       127.6
+      ]
+     ]
+    },
+    {
+     "start": 7678,
+     "end": 7787,
+     "id": 37,
+     "t0": 127.96666666666667,
+     "t1": 129.78333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 1.0,
+      "gaps": 9
+     },
+     "runs_t": [
+      [
+       128.183,
+       128.233
+      ],
+      [
+       128.583,
+       128.683
+      ],
+      [
+       128.867,
+       128.9
+      ],
+      [
+       129.283,
+       129.417
+      ]
+     ]
+    },
+    {
+     "start": 7788,
+     "end": 8243,
+     "id": 38,
+     "t0": 129.8,
+     "t1": 137.38333333333333,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.95,
+      "gaps": 179
+     },
+     "runs_t": [
+      [
+       129.817,
+       131.567
+      ],
+      [
+       132.183,
+       133.1
+      ],
+      [
+       133.35,
+       134.733
+      ],
+      [
+       134.967,
+       135.217
+      ],
+      [
+       137.217,
+       137.267
+      ]
+     ]
+    },
+    {
+     "start": 8243,
+     "end": 8414,
+     "id": 39,
+     "t0": 137.38333333333333,
+     "t1": 140.23333333333332,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.87,
+      "gaps": 15
+     },
+     "runs_t": [
+      [
+       137.4,
+       137.5
+      ],
+      [
+       139.133,
+       139.167
+      ],
+      [
+       139.533,
+       139.7
+      ],
+      [
+       140.0,
+       140.233
+      ]
+     ]
+    },
+    {
+     "start": 8414,
+     "end": 8506,
+     "id": 40,
+     "t0": 140.23333333333332,
+     "t1": 141.76666666666668,
+     "camera": "unknown",
+     "stepping": null,
+     "runs_t": [
+      [
+       140.3,
+       140.383
+      ]
+     ]
+    },
+    {
+     "start": 8522,
+     "end": 8905,
+     "id": 41,
+     "t0": 142.03333333333333,
+     "t1": 148.41666666666666,
+     "camera": "unknown",
+     "stepping": {
+      "on": 1,
+      "share": 0.98,
+      "gaps": 118
+     },
+     "runs_t": [
+      [
+       142.05,
+       142.15
+      ],
+      [
+       142.5,
+       142.617
+      ],
+      [
+       142.95,
+       143.067
+      ],
+      [
+       143.4,
+       143.517
+      ],
+      [
+       143.85,
+       143.983
+      ],
+      [
+       144.317,
+       144.45
+      ],
+      [
+       144.767,
+       144.917
+      ],
+      [
+       145.217,
+       145.383
+      ],
+      [
+       145.683,
+       145.85
+      ],
+      [
+       146.133,
+       146.35
+      ],
+      [
+       146.583,
+       146.817
+      ],
+      [
+       147.017,
+       147.283
+      ],
+      [
+       147.5,
+       148.417
+      ]
+     ]
+    },
+    {
+     "start": 8905,
+     "end": 8912,
+     "id": 42,
+     "t0": 148.41666666666666,
+     "t1": 148.53333333333333,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 8912,
+     "end": 8919,
+     "id": 43,
+     "t0": 148.53333333333333,
+     "t1": 148.65,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       148.617,
+       148.65
+      ]
+     ]
+    },
+    {
+     "start": 8919,
+     "end": 8926,
+     "id": 44,
+     "t0": 148.65,
+     "t1": 148.76666666666668,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 8926,
+     "end": 8939,
+     "id": 45,
+     "t0": 148.76666666666668,
+     "t1": 148.98333333333332,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       148.85,
+       148.983
+      ]
+     ]
+    },
+    {
+     "start": 8939,
+     "end": 8946,
+     "id": 46,
+     "t0": 148.98333333333332,
+     "t1": 149.1,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 8946,
+     "end": 8953,
+     "id": 47,
+     "t0": 149.1,
+     "t1": 149.21666666666667,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 8953,
+     "end": 9314,
+     "id": 48,
+     "t0": 149.21666666666667,
+     "t1": 155.23333333333332,
+     "camera": "locked",
+     "stepping": {
+      "on": 1,
+      "share": 0.94,
+      "gaps": 142
+     },
+     "runs_t": [
+      [
+       149.317,
+       149.433
+      ],
+      [
+       149.767,
+       149.933
+      ],
+      [
+       150.217,
+       151.85
+      ],
+      [
+       152.033,
+       152.667
+      ],
+      [
+       152.95,
+       153.433
+      ],
+      [
+       153.667,
+       153.917
+      ]
+     ]
+    },
+    {
+     "start": 9314,
+     "end": 9318,
+     "id": 49,
+     "t0": 155.23333333333332,
+     "t1": 155.3,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 9318,
+     "end": 9323,
+     "id": 50,
+     "t0": 155.3,
+     "t1": 155.38333333333333,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       155.317,
+       155.35
+      ]
+     ]
+    },
+    {
+     "start": 9323,
+     "end": 9329,
+     "id": 51,
+     "t0": 155.38333333333333,
+     "t1": 155.48333333333332,
+     "camera": "unknown",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 9329,
+     "end": 9342,
+     "id": 52,
+     "t0": 155.48333333333332,
+     "t1": 155.7,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": []
+    },
+    {
+     "start": 9350,
+     "end": 9399,
+     "id": 53,
+     "t0": 155.83333333333334,
+     "t1": 156.65,
+     "camera": "locked",
+     "stepping": null,
+     "runs_t": [
+      [
+       155.917,
+       155.95
+      ]
+     ]
+    }
+   ],
+   "transitions": [
+    {
+     "type": "cut",
+     "frame": 1368,
+     "t": 22.8
+    },
+    {
+     "type": "cut",
+     "frame": 1403,
+     "t": 23.383333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 1405,
+     "t": 23.416666666666668
+    },
+    {
+     "type": "cut",
+     "frame": 1432,
+     "t": 23.866666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 1569,
+     "t": 26.15
+    },
+    {
+     "type": "cut",
+     "frame": 1795,
+     "t": 29.916666666666668
+    },
+    {
+     "type": "cut",
+     "frame": 1978,
+     "t": 32.96666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 2306,
+     "t": 38.43333333333333
+    },
+    {
+     "type": "dissolve",
+     "a": 2306,
+     "b": 2325,
+     "t0": 38.43333333333333,
+     "t1": 38.75,
+     "fit": {
+      "ease": "unknown",
+      "class": "out",
+      "best": "power1.out",
+      "next": "power2.out",
+      "equivalent": [
+       "sine.out"
+      ],
+      "shaped_samples": 15,
+      "bic_gap": 2.5,
+      "evidence": 0.8,
+      "rho": 0.52,
+      "t0": 38.4417,
+      "t1": 38.7333,
+      "dur": 0.2917,
+      "from": -0.011,
+      "to": 0.965,
+      "delta": 0.975,
+      "overshoot": 0.036,
+      "pinned": null,
+      "bic": -154.0,
+      "resid": 0.0162,
+      "n": 20,
+      "checkpoints": {
+       "t10": 38.4567,
+       "t50": 38.5271,
+       "t90": 38.6412
+      },
+      "bezier": [
+       0.326,
+       0.652,
+       0.659,
+       1.0
+      ]
+     },
+     "ease": "power1.out"
+    },
+    {
+     "type": "cut",
+     "frame": 2496,
+     "t": 41.6
+    },
+    {
+     "type": "cut",
+     "frame": 3533,
+     "t": 58.88333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 3548,
+     "t": 59.13333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 3550,
+     "t": 59.166666666666664
+    },
+    {
+     "type": "cut",
+     "frame": 3562,
+     "t": 59.36666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 3564,
+     "t": 59.4
+    },
+    {
+     "type": "cut",
+     "frame": 3585,
+     "t": 59.75
+    },
+    {
+     "type": "cut",
+     "frame": 3587,
+     "t": 59.78333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 3598,
+     "t": 59.96666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 3600,
+     "t": 60.0
+    },
+    {
+     "type": "cut",
+     "frame": 3722,
+     "t": 62.03333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 3751,
+     "t": 62.516666666666666
+    },
+    {
+     "type": "cut",
+     "frame": 3967,
+     "t": 66.11666666666666
+    },
+    {
+     "type": "cut",
+     "frame": 3969,
+     "t": 66.15
+    },
+    {
+     "type": "cut",
+     "frame": 4051,
+     "t": 67.51666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 4187,
+     "t": 69.78333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 4664,
+     "t": 77.73333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 6287,
+     "t": 104.78333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 6914,
+     "t": 115.23333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 7242,
+     "t": 120.7
+    },
+    {
+     "type": "dissolve",
+     "a": 7459,
+     "b": 7461,
+     "t0": 124.31666666666666,
+     "t1": 124.35,
+     "fit": null,
+     "ease": null
+    },
+    {
+     "type": "dissolve",
+     "a": 7469,
+     "b": 7472,
+     "t0": 124.48333333333333,
+     "t1": 124.53333333333333,
+     "fit": null,
+     "ease": null
+    },
+    {
+     "type": "cut",
+     "frame": 7487,
+     "t": 124.78333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 7489,
+     "t": 124.81666666666666
+    },
+    {
+     "type": "cut",
+     "frame": 7501,
+     "t": 125.01666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 7528,
+     "t": 125.46666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 7542,
+     "t": 125.7
+    },
+    {
+     "type": "cut",
+     "frame": 7651,
+     "t": 127.51666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 7678,
+     "t": 127.96666666666667
+    },
+    {
+     "type": "dissolve",
+     "a": 7786,
+     "b": 7788,
+     "t0": 129.76666666666668,
+     "t1": 129.8,
+     "fit": null,
+     "ease": null
+    },
+    {
+     "type": "cut",
+     "frame": 8243,
+     "t": 137.38333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 8414,
+     "t": 140.23333333333332
+    },
+    {
+     "type": "dissolve",
+     "a": 8505,
+     "b": 8522,
+     "t0": 141.75,
+     "t1": 142.03333333333333,
+     "fit": {
+      "ease": "sine.in",
+      "class": "in",
+      "best": "sine.in",
+      "next": "sine.inOut",
+      "equivalent": [
+       "power1.in"
+      ],
+      "shaped_samples": 16,
+      "bic_gap": 29.7,
+      "evidence": 29.7,
+      "rho": 0.0,
+      "t0": 141.7417,
+      "t1": 142.05,
+      "dur": 0.3083,
+      "from": -0.002,
+      "to": 1.098,
+      "delta": 1.1,
+      "overshoot": 0.0,
+      "pinned": null,
+      "bic": -145.1,
+      "resid": 0.0117,
+      "n": 18,
+      "checkpoints": {
+       "t10": 141.8303,
+       "t50": 141.9473,
+       "t90": 142.0304
+      },
+      "bezier": [
+       0.361,
+       -0.0,
+       0.674,
+       0.487
+      ]
+     },
+     "ease": "sine.in"
+    },
+    {
+     "type": "cut",
+     "frame": 8905,
+     "t": 148.41666666666666
+    },
+    {
+     "type": "cut",
+     "frame": 8912,
+     "t": 148.53333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 8919,
+     "t": 148.65
+    },
+    {
+     "type": "cut",
+     "frame": 8926,
+     "t": 148.76666666666668
+    },
+    {
+     "type": "cut",
+     "frame": 8939,
+     "t": 148.98333333333332
+    },
+    {
+     "type": "cut",
+     "frame": 8946,
+     "t": 149.1
+    },
+    {
+     "type": "cut",
+     "frame": 8953,
+     "t": 149.21666666666667
+    },
+    {
+     "type": "cut",
+     "frame": 9314,
+     "t": 155.23333333333332
+    },
+    {
+     "type": "cut",
+     "frame": 9318,
+     "t": 155.3
+    },
+    {
+     "type": "cut",
+     "frame": 9323,
+     "t": 155.38333333333333
+    },
+    {
+     "type": "cut",
+     "frame": 9329,
+     "t": 155.48333333333332
+    },
+    {
+     "type": "dip",
+     "a": 9341,
+     "b": 9350,
+     "t0": 155.68333333333334,
+     "t1": 155.83333333333334,
+     "off": 58.521,
+     "color": "#3f3e3e",
+     "fade_out_ease": null,
+     "fade_in_ease": "circ.out"
+    }
+   ],
+   "camera": [
+    {
+     "shot": 35,
+     "prop": "panx",
+     "layout": true,
+     "ease": "unknown",
+     "class": null,
+     "best": "none",
+     "next": "sine.out",
+     "equivalent": [
+      "power1.inOut",
+      "sine.inOut"
+     ],
+     "shaped_samples": 5,
+     "bic_gap": 51.1,
+     "evidence": 51.1,
+     "rho": 0.0,
+     "t0": 126.85,
+     "t1": 126.9417,
+     "dur": 0.0917,
+     "from": 0.016,
+     "to": -37.19,
+     "delta": -37.206,
+     "overshoot": 0.0,
+     "pinned": null,
+     "bic": -45.5,
+     "resid": 0.0003,
+     "n": 6,
+     "checkpoints": {
+      "t10": 126.8592,
+      "t50": 126.8958,
+      "t90": 126.9325
+     },
+     "bezier": [
+      0.33,
+      0.33,
+      0.67,
+      0.67
+     ]
+    }
+   ],
+   "grammar": {
+    "shots": {
+     "count": 54,
+     "length_s": {
+      "n": 54,
+      "median": 0.45,
+      "p25": 0.117,
+      "p75": 3.0
+     },
+     "lengths": [
+      22.8,
+      0.583,
+      0.033,
+      0.45,
+      2.283,
+      3.767,
+      3.05,
+      5.467,
+      2.85,
+      17.283,
+      0.25,
+      0.033,
+      0.2,
+      0.033,
+      0.35,
+      0.033,
+      0.183,
+      0.033,
+      2.033,
+      0.483,
+      3.6,
+      0.033,
+      1.367,
+      2.267,
+      7.95,
+      27.05,
+      10.45,
+      5.467,
+      3.633,
+      0.15,
+      0.25,
+      0.033,
+      0.2,
+      0.45,
+      0.233,
+      1.817,
+      0.45,
+      1.817,
+      7.583,
+      2.85,
+      1.533,
+      6.383,
+      0.117,
+      0.117,
+      0.117,
+      0.217,
+      0.117,
+      0.117,
+      6.017,
+      0.067,
+      0.083,
+      0.1,
+      0.217,
+      0.817
+     ],
+     "cuts": 48,
+     "dissolves": 5,
+     "dissolve_s": {
+      "n": 5,
+      "median": 0.05,
+      "p25": 0.033,
+      "p75": 0.283
+     },
+     "dips": 1,
+     "dip_s": {
+      "n": 1,
+      "median": 0.15,
+      "p25": 0.15,
+      "p75": 0.15
+     },
+     "dip_colors": [
+      "#3f3e3e"
+     ]
+    },
+    "stepping": {
+     "on": 1,
+     "shots": 25
+    },
+    "camera": {
+     "moving_shots": 1,
+     "moves": {
+      "panx": {
+       "count": 1,
+       "duration_s": {
+        "n": 1,
+        "median": 0.092,
+        "p25": 0.092,
+        "p75": 0.092
+       },
+       "eases": [
+        "none"
+       ],
+       "range": {
+        "n": 1,
+        "median": 37.206,
+        "p25": 37.206,
+        "p75": 37.206
+       }
+      }
+     },
+     "locked_shots": 40,
+     "unknown_shots": 9
+    },
+    "motion_density": 0.586,
+    "hold_s": {
+     "n": 201,
+     "median": 0.233,
+     "p25": 0.15,
+     "p75": 0.383
+    },
+    "entrance": {
+     "count": 213,
+     "claimed": 19,
+     "class_claimed": 27,
+     "duration_s": {
+      "n": 213,
+      "median": 0.45,
+      "p25": 0.242,
+      "p75": 0.692
+     },
+     "eases": {
+      "circ.out": 4,
+      "expo.in": 3,
+      "none": 2,
+      "bounce.out": 2,
+      "expo.out": 5,
+      "back.out(1.2)": 1,
+      "circ.inOut": 1,
+      "sine.out": 1
+     },
+     "classes": {
+      "out": 13,
+      "in": 4,
+      "linear": 2,
+      "out+oscillate": 3,
+      "inOut": 4,
+      "out+overshoot": 1
+     },
+     "guesses": {
+      "power3.inOut": 1,
+      "sine.out": 12,
+      "back.out(3)": 3,
+      "circ.in": 12,
+      "expo.in": 23,
+      "back.in(4)": 3,
+      "circ.inOut": 16,
+      "back.out(4)": 14,
+      "sine.in": 5,
+      "circ.out": 18,
+      "bounce.out": 18,
+      "power2.in": 2,
+      "expo.out": 17,
+      "back.out(1.2)": 1,
+      "power1.out": 8,
+      "expo.inOut": 9,
+      "power2.out": 4,
+      "power2.inOut": 2,
+      "none": 8,
+      "back.out(1.7)": 2,
+      "sine.inOut": 2,
+      "power3.out": 2,
+      "elastic.out(1.3,0.45)": 2,
+      "power4.inOut": 2,
+      "back.out(2.2)": 2,
+      "power4.in": 2,
+      "power1.inOut": 1,
+      "back.in(2.2)": 1,
+      "power3.in": 1,
+      "back.in(1.7)": 1
+     },
+     "vocabulary": {
+      "scale+drift-x+rise": 1,
+      "drop-in": 3,
+      "slide-in+drop-in": 8,
+      "slide-in": 14,
+      "scale-pop+slide-in+rise-in+fade": 4,
+      "rise+fade": 2,
+      "scale-pop": 10,
+      "scale-pop+sink": 5,
+      "fade": 27,
+      "scale-pop+drift-x+drop-in": 4,
+      "drift-x+sink": 8,
+      "scale-pop+drift-x": 11,
+      "rise": 7,
+      "turn": 1,
+      "slide-in+rise-in": 11,
+      "sink": 3,
+      "scale": 3,
+      "drift-x": 7,
+      "scale+slide-in": 1,
+      "drift-x+fade": 1,
+      "scale-pop+sink+fade": 2,
+      "scale-pop+drift-x+sink": 4,
+      "wipe-in": 3,
+      "scale-pop+drift-x+rise-in": 1,
+      "drift-x+drop-in": 1,
+      "drift-x+rise": 8,
+      "scale-pop+drift-x+sink+turn": 1,
+      "scale-pop+drift-x+sink+fade": 3,
+      "scale-pop+drift-x+fade": 3,
+      "scale-pop+drift-x+rise": 6,
+      "scale+drift-x+sink": 3,
+      "grow-y": 1,
+      "drift-x+sink+turn+fade": 1,
+      "sink+fade": 4,
+      "drift-x+sink+fade": 2,
+      "scale-pop+slide-in": 2,
+      "scale-pop+slide-in+rise-in": 4,
+      "scale+drift-x+sink+fade": 2,
+      "scale+sink+fade": 1,
+      "draw-on": 3,
+      "scale-pop+rise-in": 1,
+      "rise-in": 5,
+      "scale+rise": 1,
+      "slide-in+fade": 1,
+      "scale-pop+drift-x+rise+fade": 2,
+      "scale-pop+slide-in+sink": 1,
+      "drop-in+fade": 1,
+      "scale-pop+slide-in+rise": 1,
+      "scale+drift-x+rise+fade": 1,
+      "rise-in+fade": 1,
+      "scale-pop+slide-in+drop-in": 3,
+      "scale+drift-x": 2,
+      "scale-pop+slide-in+sink+fade": 1,
+      "drift-x+rise+fade": 1,
+      "slide-in+turn": 1,
+      "turn+fade": 1,
+      "scale+drift-x+fade": 1,
+      "scale-pop+rise": 2
+     },
+     "overshoot_share": 0.48,
+     "overshoot": {
+      "n": 13,
+      "median": 0.047,
+      "p25": 0.033,
+      "p75": 0.067
+     },
+     "travel_frac_of_frame": {
+      "n": 246,
+      "median": 0.128,
+      "p25": 0.046,
+      "p75": 0.342
+     },
+     "curve": {
+      "bezier": [
+       0.151,
+       1.272,
+       0.988,
+       0.924
+      ],
+      "tweens": 13,
+      "resid": 0.0191,
+      "duration": 0.325,
+      "class": "out"
+     },
+     "scale_from": {
+      "n": 87,
+      "median": 0.356,
+      "p25": 0.143,
+      "p75": 0.979
+     }
+    },
+    "exit": {
+     "count": 164,
+     "claimed": 3,
+     "class_claimed": 11,
+     "duration_s": {
+      "n": 164,
+      "median": 0.296,
+      "p25": 0.125,
+      "p75": 0.535
+     },
+     "eases": {
+      "sine.in": 1,
+      "expo.in": 1,
+      "circ.in": 1,
+      "circ.inOut": 1
+     },
+     "classes": {
+      "inOut": 2,
+      "out": 3,
+      "out+oscillate": 2,
+      "in": 4
+     },
+     "guesses": {
+      "expo.inOut": 5,
+      "sine.in": 8,
+      "power3.in": 1,
+      "power1.inOut": 6,
+      "circ.inOut": 8,
+      "circ.out": 17,
+      "expo.out": 8,
+      "bounce.out": 12,
+      "power1.out": 5,
+      "expo.in": 12,
+      "sine.inOut": 3,
+      "power4.in": 5,
+      "back.in(1.7)": 5,
+      "none": 9,
+      "power2.out": 4,
+      "power1.in": 5,
+      "back.in(4)": 6,
+      "circ.in": 17,
+      "power3.out": 2,
+      "back.out(4)": 1,
+      "power2.in": 2,
+      "back.out(2.2)": 1,
+      "back.in(1.2)": 3,
+      "sine.out": 3,
+      "power4.out": 1,
+      "power3.inOut": 1,
+      "back.in(2.2)": 1,
+      "elastic.out(1.3,0.3)": 1,
+      "back.in(3)": 2,
+      "power4.inOut": 2,
+      "elastic.out(1,0.45)": 1,
+      "back.out(1.7)": 1,
+      "elastic.out(1,0.3)": 1,
+      "back.out(3)": 1
+     },
+     "vocabulary": {
+      "scale+drift-x": 4,
+      "slide-out+turn": 1,
+      "scale": 15,
+      "scale+slide-out": 2,
+      "scale-pop": 15,
+      "scale-pop+sink": 1,
+      "drift-x+rise+fade": 3,
+      "scale+slide-out+drop-out": 2,
+      "scale-pop+rise+fade": 2,
+      "drift-x+sink+fade": 1,
+      "drift-x+fade": 2,
+      "drop-out": 1,
+      "drift-x": 6,
+      "collapse-y": 2,
+      "slide-out+drop-out": 3,
+      "scale-pop+fade": 7,
+      "slide-out": 5,
+      "rise-out": 3,
+      "wipe-out": 4,
+      "drift-x+rise": 3,
+      "scale+sink": 4,
+      "scale-pop+drift-x+sink": 2,
+      "scale-pop+rise": 4,
+      "scale+drift-x+rise": 12,
+      "scale+rise": 3,
+      "scale-pop+drop-out": 2,
+      "slide-out+rise-out": 9,
+      "scale-pop+slide-out": 3,
+      "scale-pop+drift-x+rise+fade": 1,
+      "scale-pop+rise-out": 1,
+      "scale+sink+fade": 1,
+      "scale+fade": 1,
+      "fade": 18,
+      "scale+drift-x+sink": 3,
+      "scale+drift-x+rise+fade": 1,
+      "scale-pop+sink+fade": 1,
+      "drift-x+sink": 2,
+      "scale-pop+slide-out+rise": 1,
+      "drift-x+rise+turn": 1,
+      "scale+rise-out": 1,
+      "slide-out+rise-out+turn": 1,
+      "scale-pop+drift-x+rise": 1,
+      "rise": 1,
+      "scale-pop+drift-x+fade": 1,
+      "scale+drift-x+fade": 1,
+      "scale-pop+drop-out+fade": 1,
+      "clip-slide": 1,
+      "scale-pop+slide-out+fade": 1,
+      "drop-out+fade": 1,
+      "draw-off": 1,
+      "scale+rise+fade": 1
+     },
+     "overshoot_share": 0.09,
+     "overshoot": {
+      "n": 1,
+      "median": 0.099,
+      "p25": 0.099,
+      "p75": 0.099
+     },
+     "travel_frac_of_frame": {
+      "n": 147,
+      "median": 0.178,
+      "p25": 0.074,
+      "p75": 0.342
+     },
+     "curve": {
+      "bezier": [
+       0.435,
+       -0.108,
+       0.986,
+       0.487
+      ],
+      "tweens": 4,
+      "resid": 0.0574,
+      "duration": 0.349,
+      "class": "in"
+     },
+     "scale_from": {
+      "n": 95,
+      "median": 0.986,
+      "p25": 0.941,
+      "p75": 0.997
+     }
+    },
+    "move": {
+     "count": 711,
+     "claimed": 29,
+     "class_claimed": 66,
+     "duration_s": {
+      "n": 711,
+      "median": 0.183,
+      "p25": 0.092,
+      "p75": 0.325
+     },
+     "eases": {
+      "none": 3,
+      "circ.out": 5,
+      "bounce.out": 5,
+      "circ.inOut": 1,
+      "sine.in": 1,
+      "circ.in": 1,
+      "power4.out": 1,
+      "expo.out": 5,
+      "back.out(4)": 3,
+      "power3.inOut": 3,
+      "power1.inOut": 2,
+      "power2.out": 1,
+      "power2.inOut": 2
+     },
+     "classes": {
+      "out": 24,
+      "linear": 3,
+      "inOut": 6,
+      "out+oscillate": 15,
+      "out+overshoot": 6,
+      "in": 12
+     },
+     "guesses": {
+      "none": 47,
+      "circ.inOut": 29,
+      "power1.inOut": 25,
+      "expo.inOut": 31,
+      "power2.out": 12,
+      "bounce.out": 78,
+      "circ.out": 41,
+      "back.out(3)": 24,
+      "back.in(2.2)": 11,
+      "sine.in": 23,
+      "sine.inOut": 26,
+      "expo.in": 15,
+      "power4.out": 8,
+      "back.out(4)": 29,
+      "power4.inOut": 20,
+      "back.in(4)": 13,
+      "sine.out": 19,
+      "power3.out": 8,
+      "elastic.out(1,0.45)": 5,
+      "back.out(1.7)": 11,
+      "power1.out": 24,
+      "expo.out": 30,
+      "power3.inOut": 14,
+      "power1.in": 19,
+      "back.in(3)": 3,
+      "power2.in": 8,
+      "circ.in": 39,
+      "power3.in": 8,
+      "elastic.out(1,0.3)": 2,
+      "elastic.out(1.3,0.45)": 1,
+      "power4.in": 9,
+      "power2.inOut": 12,
+      "back.out(2.2)": 19,
+      "back.out(1.2)": 6,
+      "elastic.out(1.3,0.6)": 2,
+      "back.in(1.7)": 2,
+      "elastic.out(1.3,0.3)": 3,
+      "elastic.out(1,0.6)": 1,
+      "back.in(1.2)": 1
+     },
+     "vocabulary": {
+      "scale": 69,
+      "scale-pop": 150,
+      "move-y": 58,
+      "move-x+move-y": 62,
+      "scale-pop+move-x": 47,
+      "scale-pop+move-x+move-y": 50,
+      "scale-pop+move-y": 44,
+      "scale-pop+slide-in": 8,
+      "move-x": 69,
+      "scale+move-x": 16,
+      "scale+move-x+move-y": 21,
+      "scale+move-y": 6,
+      "scale-pop+slide-in+drop-in": 2,
+      "rise-in": 10,
+      "scale+slide-in": 3,
+      "drop-in": 4,
+      "scale+slide-in+rise-in": 1,
+      "scale-pop+move-x+drop-in": 2,
+      "scale-pop+move-x+rise-in": 1,
+      "slide-in+drop-in": 9,
+      "scale+move-x+rise-in": 3,
+      "slide-in": 34,
+      "move-x+rise-in": 2,
+      "scale-pop+drop-in": 1,
+      "scale-pop+rise-in": 5,
+      "slide-in+rise-in": 19,
+      "scale+rise-in": 1,
+      "move-x+move-y+turn": 1,
+      "scale-pop+turn": 2,
+      "turn": 2,
+      "scale+slide-in+drop-in+turn": 1,
+      "move-x+turn": 1,
+      "scale-pop+slide-in+rise-in": 5,
+      "scale+slide-in+move-y": 1,
+      "scale-pop+slide-in+move-y": 1
+     },
+     "overshoot_share": 0.64,
+     "overshoot": {
+      "n": 42,
+      "median": 0.058,
+      "p25": 0.04,
+      "p75": 0.128
+     },
+     "travel_frac_of_frame": {
+      "n": 669,
+      "median": 0.104,
+      "p25": 0.04,
+      "p75": 0.287
+     },
+     "curve": {
+      "bezier": [
+       0.141,
+       0.473,
+       0.335,
+       0.977
+      ],
+      "tweens": 24,
+      "resid": 0.0376,
+      "duration": 0.263,
+      "class": "out"
+     },
+     "scale_from": {
+      "n": 440,
+      "median": 0.335,
+      "p25": 0.257,
+      "p75": 0.617
+     }
+    },
+    "stagger": [
+     {
+      "shot": 18,
+      "vocabulary": "scale-pop",
+      "count": 3,
+      "interval_s": 0.231,
+      "order": "top-to-bottom"
+     },
+     {
+      "shot": 25,
+      "vocabulary": "drift-x+rise",
+      "count": 4,
+      "interval_s": 1.842,
+      "order": "unordered"
+     }
+    ],
+    "counters": {
+     "count": 71,
+     "claimed": 1,
+     "class_claimed": 1,
+     "duration_s": {
+      "n": 71,
+      "median": 0.108,
+      "p25": 0.067,
+      "p75": 0.317
+     },
+     "eases": {
+      "circ.inOut": 1
+     },
+     "classes": {
+      "inOut": 1
+     },
+     "guesses": {
+      "expo.inOut": 19,
+      "power2.inOut": 3,
+      "power1.inOut": 22,
+      "circ.inOut": 6,
+      "sine.inOut": 5,
+      "power3.inOut": 3,
+      "circ.out": 1,
+      "expo.in": 2,
+      "power4.inOut": 8,
+      "none": 1
+     },
+     "vocabulary": {
+      "count": 68,
+      "count-in": 3
+     },
+     "overshoot_share": 0.0,
+     "overshoot": null,
+     "travel_frac_of_frame": null,
+     "formats": {
+      "#": 52,
+      "#k": 1,
+      ".#": 5,
+      "#.##": 6,
+      ",#": 1,
+      "#.#": 2,
+      "#.##-": 1,
+      "¥ # ,": 1,
+      "B#": 1,
+      "# ,": 1
+     },
+     "ranges": [
+      [
+       -6.681,
+       -0.0
+      ],
+      [
+       2.0,
+       950.0
+      ],
+      [
+       100.0,
+       1.0
+      ],
+      [
+       1.0,
+       7.0
+      ],
+      [
+       2.0,
+       60.0
+      ],
+      [
+       1.0,
+       46664.0
+      ],
+      [
+       7.0,
+       27.0
+      ],
+      [
+       9.16,
+       0.96
+      ],
+      [
+       -802.46,
+       -80100.0
+      ],
+      [
+       -0.0,
+       -8008.0
+      ],
+      [
+       117474.0,
+       7.0
+      ],
+      [
+       97.0,
+       4.0
+      ],
+      [
+       7.0,
+       0.24
+      ],
+      [
+       1.0,
+       62.0
+      ],
+      [
+       23.0,
+       1.0
+      ],
+      [
+       20.0,
+       1.0
+      ],
+      [
+       9.39,
+       0.0
+      ],
+      [
+       8.62,
+       0.04
+      ],
+      [
+       0.2,
+       290.0
+      ],
+      [
+       0.07,
+       0.04
+      ],
+      [
+       2.0,
+       637.0
+      ],
+      [
+       8.9,
+       1.0
+      ],
+      [
+       2192.0,
+       1.0
+      ],
+      [
+       7.2,
+       2.0
+      ],
+      [
+       1.0,
+       5.0
+      ],
+      [
+       7.0,
+       24755.0
+      ],
+      [
+       2.0,
+       5.0
+      ],
+      [
+       3.0,
+       0.0
+      ],
+      [
+       7.0,
+       -5.0
+      ],
+      [
+       7.0,
+       4.0
+      ],
+      [
+       8.0,
+       1.6
+      ],
+      [
+       2.0,
+       5.0
+      ],
+      [
+       2.0,
+       -21.66
+      ],
+      [
+       70.2,
+       1.0
+      ],
+      [
+       2.0,
+       86.0
+      ],
+      [
+       1.0,
+       0.0
+      ],
+      [
+       0.0,
+       2.0
+      ],
+      [
+       -6.06,
+       6.08
+      ],
+      [
+       5.0,
+       614.0
+      ],
+      [
+       4.0,
+       71.0
+      ],
+      [
+       83.0,
+       1.0
+      ],
+      [
+       -20.0,
+       28.6
+      ],
+      [
+       -1.0,
+       81.0
+      ],
+      [
+       1.0,
+       196860.0
+      ],
+      [
+       1.0,
+       8.88080000000829e+26
+      ],
+      [
+       3.14,
+       9000006.0
+      ],
+      [
+       0.0,
+       900000.0
+      ],
+      [
+       19.0,
+       1000.0
+      ],
+      [
+       0.0,
+       4.0
+      ],
+      [
+       10.0,
+       18800006.0
+      ],
+      [
+       0.0,
+       808000000.0
+      ],
+      [
+       0.0,
+       4.0
+      ],
+      [
+       0.0,
+       7.0
+      ],
+      [
+       -7.0,
+       9080000006.0
+      ],
+      [
+       0.0,
+       900.0
+      ],
+      [
+       90.0,
+       300.0
+      ],
+      [
+       6.0,
+       200.0
+      ],
+      [
+       76.0,
+       4.0
+      ],
+      [
+       7.0,
+       0.0
+      ],
+      [
+       300.0,
+       9.0
+      ],
+      [
+       900.0,
+       7.0
+      ],
+      [
+       0.0,
+       7.0
+      ],
+      [
+       600.0,
+       0.0
+      ],
+      [
+       200.0,
+       0.0
+      ],
+      [
+       0.0,
+       7.0
+      ],
+      [
+       90.0,
+       200.0
+      ],
+      [
+       200.0,
+       20.0
+      ],
+      [
+       4.0,
+       909.0
+      ],
+      [
+       2.0,
+       999.0
+      ],
+      [
+       0.0,
+       7.0
+      ],
+      [
+       900.0,
+       7.0
+      ]
+     ]
+    },
+    "loops": {
+     "count": 4,
+     "period_s": {
+      "n": 4,
+      "median": 0.904,
+      "min": 0.451,
+      "max": 1.017
+     },
+     "props": {
+      "scale": {
+       "n": 3,
+       "median": 0.528,
+       "min": 0.294,
+       "max": 0.541
+      },
+      "x": {
+       "n": 2,
+       "median": 53.75,
+       "min": 15.5,
+       "max": 92.0
+      }
+     }
+    },
+    "particles": [
+     {
+      "shot": 35,
+      "count": 34,
+      "radius_px": 2.3,
+      "speed": {
+       "p10": 22.7,
+       "median": 64.9,
+       "p90": 432.1
+      },
+      "vx": [
+       -430.3,
+       -1.3
+      ],
+      "vy": [
+       -87.8,
+       47.4
+      ],
+      "direction_deg": -166.7,
+      "spread_deg": 48.9
+     }
+    ],
+    "beat": null
+   }
+  }
+ }
+}
