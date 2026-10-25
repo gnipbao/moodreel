@@ -2,6 +2,7 @@
 
 ## Unreleased: a film's own score, sung
 
+- `moodreel sync` reads frame rates ffprobe prints with a trailing field (`60/1,` for a stream with side data).
 - `moodreel pack` reads the demo for what films in the style need: its frame rate (`demo/film.json`), `3d` when the
   style's kit or demo draws with kit/gl.js or kit/three.js (a new film then gets three.js), `music-led` when the demo
   is cut to its own score (a new film then starts with one). It no longer copies the demo's renders (its delivered

@@ -139,3 +139,7 @@ def test_a_camera_is_tracked_through_a_shot(tmp_path):
     assert np.median(errs) < 0.12                                          # within 3 % of the distance, most frames
     js = pose.camera_module(res)
     assert "export function cameraAt" in js and js.count("[") > 50
+
+
+def test_the_frame_rate_reads_whatever_ffprobe_appends():
+    assert sync._rate("60/1\n") == 60 and sync._rate("60/1,\n") == 60 and abs(sync._rate("30000/1001") - 29.97) < 0.01

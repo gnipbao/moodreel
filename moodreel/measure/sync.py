@@ -32,11 +32,16 @@ W, H = 640, 360           # flow needs this much: at 320 x 180 a shake of a few 
 TO1920 = 1920 / W
 
 
-def _fps(path) -> float:
-    out = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate", "-of",
-                          "csv=p=0", str(path)], capture_output=True, text=True, check=True).stdout.strip()
+def _rate(text: str) -> float:
+    """ffprobe's r_frame_rate as a number: '60/1', '30000/1001', or '60/1,' when the stream carries side data."""
+    out = text.strip().splitlines()[0].split(",")[0].strip()
     a, b = out.split("/") if "/" in out else (out, "1")
     return float(a) / float(b)
+
+
+def _fps(path) -> float:
+    return _rate(subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
+                                 "-of", "csv=p=0", str(path)], capture_output=True, text=True, check=True).stdout)
 
 
 def picture(video, fps: float | None = None) -> dict:
