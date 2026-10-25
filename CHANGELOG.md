@@ -6,6 +6,9 @@
   reference's beside a remake's (a video, or a film folder rendered as stills): mean colour, lit share and the box the
   light fills, detail, whether the grain holds still, the period, phase and strength of a cell grid, and the angle,
   length and width of a bar. `--region`, `--lit`, `--sheet` (a contact sheet, reference above remake), `--json`.
+- `moodreel probe` also reads the light as 16 x 9 cells of grey (a vignette, an ellipse of light, a ground to draw
+  back), the strength and phase of a 4 px scan-line rhythm, and a 3 x 3 optical-flow grid with where a turn's
+  horizontal speed crosses zero.
 - `moodreel probe --region` round a line of type reads its weight: the ink's box and height, the stroke width and
   their ratio.
 - `moodreel compare` reads each window's grain (the least change between neighbouring frames) and says when a
