@@ -2,6 +2,10 @@
 
 ## Unreleased: the distilled packs in the repository
 
+- `styles/README.md` is the one index of every style: the distilled packs are listed in their categories beside
+  the imported lemo-opuscar styles (which stay where they are), with a Source column. Both
+  `scripts/import_lemo_styles.py` and `scripts/packs.py export` write it; `packs/` folders take the library's eleven
+  categories.
 - `packs/`: Signal Plates (graphic and type) and ASCII Glitch Launch (information and keynote), each a complete pack
   in the layout the tools read, with a README that sorts its contents by kind (rules, evidence, the style's own
   modules, measured tokens, shared kit, fonts, demo source); `packs/README.md` lists them by the library's categories.

@@ -53,7 +53,8 @@
 
 [`packs/`](packs/README.md) 存放在本仓库蒸馏出的完整风格包（STYLE.md、DECISIONS.md、来源账本和测量、带本风格自有模块的
 kit、演示片源码），按同样的分类存放：信号图版（图形与排版）和字符故障发布片（信息与发布）。`python scripts/packs.py install`
-装进你的风格库，`export` 把风格库里的包导回来；演示片由源码重建（`sh demo/build.sh`）。
+装进你的风格库，`export` 把风格库里的包导回来（并刷新总索引）；演示片由源码重建（`sh demo/build.sh`）。
+[`styles/README.md`](styles/README.md) 是全部风格的总索引：导入的和蒸馏的按分类列在一起，并注明来源。
 
 ## 试用
 

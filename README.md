@@ -259,8 +259,10 @@ own). Only the documents are imported; Moodreel re-implements the techniques.
 
 [`packs/`](packs/README.md) keeps the styles distilled here as complete packs (STYLE.md, DECISIONS.md, the ledger and
 measurements, the kit with the style's own modules, the demo's source), sorted by the same categories: Signal Plates
-(graphic and type) and ASCII Glitch Launch (information and keynote). `python scripts/packs.py install` puts them in
-your library; `export` brings the library's packs back. Demo films are rebuilt from their source (`sh demo/build.sh`).
+(graphic and type) and ASCII Glitch Launch (information and keynote). [`styles/README.md`](styles/README.md) is the
+one index of every style: it lists them beside the imported ones, each with its source. `python scripts/packs.py
+install` puts them in your library; `export` brings the library's packs back (and refreshes that index). Demo films
+are rebuilt from their source (`sh demo/build.sh`).
 
 ## Repository
 
