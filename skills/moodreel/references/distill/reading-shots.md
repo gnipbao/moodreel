@@ -22,7 +22,11 @@ and type projected through the camera. All of that can be read off the video bef
   what the picture does after each kind of musical event (beat, downbeat, kick, snare, hat, sung word, line), how big,
   how late, how fast it decays and how far above chance; where cuts, surges, punches and flashes land; and, against
   another fingerprint, what a remake misses or adds.
-- `moodreel compare <reference> <remake>`: the score after every pass.
+- `moodreel compare <reference> <remake>`: the score after every pass, window by window, with what is wrong with each.
+- `moodreel probe <reference> --at t1,t2 [--against <remake>] [--region x0,y0,x1,y1] [--sheet out.jpg]`: a shot's
+  numbers off full-size frames, the reference's beside the remake's: colour, lit share and box, detail, whether the
+  grain holds still, the period and phase of a cell grid, a bar's angle, length and width. The loop that uses it:
+  `remaking.md`.
 
 ## What the hints mean (calibrated against the source of one film)
 
