@@ -15,6 +15,9 @@ it on the numbers). Each is read at each time from the reference, and from the r
           its phase: where a grid of cells starts (in a GPU pass y counts from the bottom: offset by the height mod P)
   bar     the angle from vertical, length and width of the darkest shape (the brightest on a dark frame): a slash, a
           beam, a tube; read each tenth of a second, it gives a turn's curve
+  type    with --region drawn round a line of type: its ink's box and height, the stroke width and their ratio. Read on
+          both, it says which line is set heavier or larger: the eye calls Medium "regular" on a light card and a light
+          mono "bold" once it is drawn in dots
 
 The remake may be a video or a film folder (its frames are rendered as stills). --sheet writes the frames as a contact
 sheet, the reference above the remake.
@@ -79,6 +82,26 @@ def _bar(g: np.ndarray):
             "length": round(length), "width": round(len(xs) / max(length, 1), 1)}
 
 
+def _type(g: np.ndarray, ink: str = "auto"):
+    """The type in a region: its ink's height (top of the tallest letter to the bottom of the lowest), the stroke width
+    (twice the distance to the ink's edge along its middle) and their ratio, which tells a weight from its neighbours
+    (Inter at the same size: 300 0.07, 400 0.09, 500 0.10, 600 0.12, 700 0.14 of the cap-to-descender height)."""
+    from scipy import ndimage
+    light = g.mean() > 128 if ink == "auto" else ink == "dark"
+    m = g < 0.5 * (g.min() + np.median(g)) if light else g > 0.5 * (g.max() + np.median(g))
+    m = ndimage.binary_opening(m, iterations=1)
+    if m.sum() < 30:
+        return None
+    rows = np.flatnonzero(m.sum(1) >= max(2, 0.01 * m.shape[1] * m.mean()))
+    d = ndimage.distance_transform_edt(m)
+    ridge = (d >= 1) & (d == ndimage.maximum_filter(d, size=3))
+    stroke = float(2 * np.median(d[ridge]))
+    height = int(rows.max() - rows.min() + 1)
+    cols = np.flatnonzero(m.any(0))
+    return {"ink": "dark" if light else "light", "height": height, "stroke": round(stroke, 1),
+            "ratio": round(stroke / max(height, 1), 3), "box": [int(cols[0]), int(rows[0]), int(cols[-1]), int(rows[-1])]}
+
+
 def numbers(frames: list[np.ndarray], region=None, lit: float = 50) -> dict:
     """The numbers of one moment: `frames[0]` is the frame, the rest (if any) its successors, for `still`."""
     import cv2
@@ -96,6 +119,11 @@ def numbers(frames: list[np.ndarray], region=None, lit: float = 50) -> dict:
            "detail": round(float(np.abs(cv2.Laplacian(small, cv2.CV_32F, ksize=3)).mean()), 2),
            "cells": {"x": _period(g.mean(0)), "y": _period(g.mean(1))},
            "bar": _bar(g)}
+    if region:                                                     # a region drawn round a line of type: its weight
+        out["type"] = _type(g)
+        if out["type"]:
+            b = out["type"]["box"]
+            out["type"]["box"] = [b[0] + x0, b[1] + y0, b[2] + x0, b[3] + y0]
     if len(frames) > 1:
         seq = np.stack([x[y0:y1, x0:x1].astype(np.float32).mean(2) for x in frames])
         # the least change between neighbours: an encoder settling after a cut moves a frame or two, a grain every one
@@ -150,8 +178,10 @@ def report(res: dict) -> str:
         bar = n.get("bar")
         bar = f"{bar['angle']}deg {bar['length']}x{bar['width']} at {bar['centre']}" if bar else "-"
         still = n.get("still", "-")
+        ty = n.get("type")
+        ty = f"  type {ty['height']}px high, stroke {ty['stroke']} ({ty['ratio']}) in {ty['box']}" if ty else ""
         return (f"  {name:<9} colour {n['colour']}  lit {n['lit']}% {n['box'] or ''}  detail {n['detail']}  "
-                f"still {still}  cells {cells}  bar {bar}")
+                f"still {still}  cells {cells}  bar {bar}{ty}")
     out = []
     for row in res["times"]:
         out.append(f"{row['t']:g} s")

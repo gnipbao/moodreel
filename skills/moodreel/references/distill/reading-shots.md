@@ -25,7 +25,8 @@ and type projected through the camera. All of that can be read off the video bef
 - `moodreel compare <reference> <remake>`: the score after every pass, window by window, with what is wrong with each.
 - `moodreel probe <reference> --at t1,t2 [--against <remake>] [--region x0,y0,x1,y1] [--sheet out.jpg]`: a shot's
   numbers off full-size frames, the reference's beside the remake's: colour, lit share and box, detail, whether the
-  grain holds still, the period and phase of a cell grid, a bar's angle, length and width. The loop that uses it:
+  grain holds still, the period and phase of a cell grid, a bar's angle, length and width, and with a region round a
+  line of type its stroke and box (its weight). The loop that uses it:
   `remaking.md`.
 
 ## What the hints mean (calibrated against the source of one film)
