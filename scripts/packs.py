@@ -6,10 +6,12 @@
 A pack keeps the layout the tools read (STYLE.md, DECISIONS.md, style.json, styleframe.jpg, evidence/, kit/, demo/),
 so a copy installs as it is. Left out of the repository: demo.mp4 (rebuilt by `sh demo/build.sh`; GitHub refuses files
 over 100 MB) and kit/vendor/ (three.js, from `npm install`). Each pack gets a README.md that sorts its contents by
-kind, and packs/README.md lists the packs by category (the categories of styles/README.md).
+kind; packs/README.md lists the packs by category (the eleven of styles/index.json), and styles/README.md, the
+one index of every style, lists them beside the imported ones.
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 import shutil
@@ -20,8 +22,14 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 from moodreel import library  # noqa: E402
 
+_spec = importlib.util.spec_from_file_location("import_lemo_styles", REPO / "scripts" / "import_lemo_styles.py")
+lemo = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(lemo)
+
 PACKS = Path(os.environ.get("MOODREEL_PACKS", REPO / "packs"))           # the repository's packs/ (a test points it elsewhere)
-CATEGORIES = {"graphic-type": "Graphic & Type · 图形与排版", "information-keynote": "Information & Keynote · 信息与发布"}
+# the library's categories (styles/index.json), by folder name: "graphic-type" -> "Graphic & Type · 图形与排版"
+CATEGORIES = dict(sorted({lemo.slugify(s["category"]): f"{s['category']} · {s['category_zh']}"
+                          for s in json.loads((REPO / "styles" / "index.json").read_text())["styles"] if "category" in s}.items()))
 DEFAULT = {"signal-plates": "graphic-type", "ascii-glitch-launch": "information-keynote"}   # until style.json says
 SKIP = {"demo.mp4", "vendor", ".DS_Store", "out", "stills"}
 SHARED = {p.name for p in (REPO / "kit").glob("*.js")}                      # the kit every film gets
@@ -112,6 +120,8 @@ def export(slugs: list[str]) -> None:
     packs = sorted(((p.parent.parent.name, json.loads(p.read_text())) for p in PACKS.glob("*/*/style.json")),
                    key=lambda x: x[1]["name"])
     (PACKS / "README.md").write_text(index_readme(packs))
+    if PACKS == REPO / "packs":                                     # and the one index of every style, by category
+        lemo.write_readme(REPO / "styles", PACKS)
 
 
 def install(slugs: list[str]) -> None:

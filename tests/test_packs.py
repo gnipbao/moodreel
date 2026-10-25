@@ -66,3 +66,17 @@ def test_install_registers_and_never_deletes_a_rendered_demo(monkeypatch, tmp_pa
     assert (installed / "STYLE.md").read_text() == "# s, revised" and not (installed / "README.md").exists()
     entry = json.loads((lib / "index.json").read_text())["styles"][0]
     assert entry["slug"] == "ascii-glitch-launch" and entry["size"] == [1920, 1080]
+
+
+def test_the_style_index_lists_distilled_packs_in_their_categories(monkeypatch, tmp_path):
+    mod = _load(monkeypatch, tmp_path)
+    rows = [{"slug": "ascii-crt", "name": "ASCII / CRT Terminal", "name_zh": "ASCII / CRT 终端", "category": "Graphic & Type",
+             "category_zh": "图形与排版", "phase": "mvp", "needs": []}]
+    packs = [{"slug": "signal-plates", "name": "Signal Plates", "name_zh": "信号图版", "category": "graphic-type",
+              "phase": "mvp", "needs": ["3d"], "folder": "packs/graphic-type/signal-plates"}]
+    md = mod.lemo.index_md(rows, "3961ddb3", packs)
+    section = md.split("## Graphic & Type · 图形与排版")[1]
+    assert "| [`ascii-crt`](ascii-crt/STYLE.md) | mvp | — | lemo-opuscar |" in section
+    assert "[`signal-plates`](../packs/graphic-type/signal-plates/README.md) | mvp | 3d 3D | distilled here · 本仓库蒸馏 |" in section
+    assert "distilled here: 1" in md and mod.CATEGORIES["graphic-type"] == "Graphic & Type · 图形与排版"
+    assert len(mod.CATEGORIES) == 11
