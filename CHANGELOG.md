@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased: beat-sync fingerprints and tracked cameras
+
+Both checked against the source of pdoom-video, whose plates' own post settings and cameras were recorded frame by
+frame as the ground truth ([docs/research/VISION-TO-CODE.md](docs/research/VISION-TO-CODE.md) §5-6).
+
+- `moodreel sync <video>`: what the picture does after each kind of musical event (beat, downbeat, kick, snare, hat,
+  vocal, sung word, line): its cuts, motion energy, zoom rate, shake and flashes, averaged around the events with the
+  peak, latency, half-life and z against chance; where cuts, surges, punches and flashes land and how far a cut leads a
+  line. Written as a recipe with `kit/music.js` settings. `--against` lists what a remake misses, adds, sizes or times
+  differently, with a similarity. On the source: 16 of 17 visible plate changes, shake to a frame at 0.94 of its size;
+  a remake built from the source's plates scores 0.969, one drawn from stills 0.716, for the reasons it names.
+- `moodreel pose <video> --track t0,t1 --at t --points ...`: the camera through a whole shot, tracking the rectangle
+  read on one frame (LK with a forward-backward check, RANSAC homography, reseeding) and solving each frame;
+  `--module cam.js` exports `cameraAt(t)`. On the source: pitch within 3.5 deg, yaw 4.2, roll 1.0, distance 0.8 % with
+  the lens fixed.
+- `moodreel pose --up wall|floor` gives the camera in the rectangle's world (position, forward, up, pitch, yaw, roll as
+  three.js's `rotateZ`); `--fov shape` solves the lens from the rectangle's known aspect.
+- A blind rebuild of one plate with the tracked camera: motion direction 0.15 to 0.48, structure 0.41 to 0.48; the
+  score holds at 0.69 because detail (0.68x) is now what's missing.
+- skills: `reading-shots.md` gains the sync and tracking steps and what they can't read.
+
 ## Unreleased: reading shots as code
 
 Learned by setting a remake drawn from stills beside the source code of the same film
