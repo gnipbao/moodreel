@@ -1,0 +1,22 @@
+{
+ "refs": [
+  {
+   "id": "vid01",
+   "kind": "video",
+   "sha256": "c5b257e2c9bc6513fa314e630f5415a84d3173bc404f042fc2f75a355010211e",
+   "source": "web",
+   "w": 1920,
+   "h": 1080
+  }
+ ],
+ "default_size": "1920x1080",
+ "unity": {
+  "groups": [
+   [
+    "vid01"
+   ]
+  ],
+  "unified": true,
+  "distances": []
+ }
+}

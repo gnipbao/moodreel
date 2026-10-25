@@ -1,0 +1,1736 @@
+{
+ "vid01": {
+  "pooled": {
+   "shots": 11,
+   "techniques": {
+    "line-heavy": 0.36,
+    "hatching": 0.09,
+    "3d camera": 0.27,
+    "spin": 0.0,
+    "roll": 0.0,
+    "push in": 0.09,
+    "pull out": 0.0,
+    "pan": 0.09,
+    "surges": 0.73,
+    "bloom": 0.64,
+    "fringe": 0.0
+   },
+   "speed": 196.0,
+   "linework": {
+    "lines": 0.059,
+    "width": 3.347,
+    "hatched": 0.024,
+    "orientations": 3.497,
+    "freq": 0.14
+   },
+   "finish": {
+    "glow": 0.25,
+    "fringe": -0.002,
+    "grain": 3.51
+   },
+   "colour": {
+    "luma": 56.167,
+    "highlights": 0.017,
+    "saturated": 0.032
+   }
+  },
+  "shots": [
+   {
+    "name": "0_0",
+    "t0": 0.0,
+    "t1": 0.567,
+    "motion": {
+     "moving": true,
+     "speed": 49.5,
+     "pan": [
+      -0.1,
+      0.1
+     ],
+     "travel": [
+      -0.0,
+      0.0
+     ],
+     "zoom": -0.0,
+     "zoom_total": -0.0,
+     "roll": -0.0,
+     "spin": -1.2,
+     "unexplained": 1.0,
+     "surges": 20.06,
+     "perspective": 0.017,
+     "profile": [
+      4.0,
+      0.0,
+      4.0,
+      1.0,
+      8.0,
+      210.0,
+      84.0,
+      85.0
+     ],
+     "track": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      [
+       -0.0,
+       -0.0,
+       -0.0,
+       -0.0
+      ],
+      [
+       -0.0,
+       0.0,
+       -0.0,
+       -0.0
+      ],
+      [
+       -0.0,
+       0.0,
+       -0.0,
+       0.0
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0044,
+     "width": 21.7367,
+     "orientations": 2.7783,
+     "hatched": 0.0,
+     "freq": 0.1143,
+     "line_px": 3011
+    },
+    "finish": {
+     "glow": 0.753,
+     "fringe": 0.0,
+     "grain": 9.0833
+    },
+    "colour": {
+     "luma": 214.3167,
+     "highlights": 0.011,
+     "saturated": 0.0
+    },
+    "hints": [
+     "motion comes in surges (peaks 20.06x the median): moves start and land on events, hold between",
+     "bright light blooms (0.75 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "0_6",
+    "t0": 0.567,
+    "t1": 1.633,
+    "motion": {
+     "moving": true,
+     "speed": 204.9,
+     "pan": [
+      26.3,
+      9.5
+     ],
+     "travel": [
+      21.0,
+      -19.0
+     ],
+     "zoom": -0.9,
+     "zoom_total": -9.3,
+     "roll": -2.1,
+     "spin": -3.6,
+     "unexplained": 0.87,
+     "surges": 4.25,
+     "perspective": 0.052,
+     "profile": [
+      108.0,
+      110.0,
+      114.0,
+      115.0,
+      118.0,
+      117.0,
+      124.0,
+      192.0,
+      71.0,
+      14.0,
+      606.0,
+      708.0,
+      147.0,
+      343.0,
+      185.0
+     ],
+     "track": [
+      [
+       46.0,
+       24.0,
+       -1.1,
+       -9.9
+      ],
+      [
+       31.0,
+       61.0,
+       -0.3,
+       -14.5
+      ],
+      [
+       43.0,
+       11.0,
+       -1.7,
+       -11.3
+      ],
+      [
+       38.0,
+       10.0,
+       -0.9,
+       -11.9
+      ],
+      [
+       22.0,
+       20.0,
+       -0.7,
+       -14.7
+      ],
+      [
+       37.0,
+       -10.0,
+       -0.9,
+       -11.9
+      ],
+      [
+       17.0,
+       -10.0,
+       2.6,
+       -13.3
+      ],
+      [
+       26.0,
+       109.0,
+       -45.4,
+       13.3
+      ],
+      [
+       0.0,
+       1.0,
+       -0.0,
+       0.0
+      ],
+      [
+       -0.0,
+       -0.0,
+       -0.1,
+       -0.0
+      ],
+      [
+       -78.0,
+       285.0,
+       -40.5,
+       9.8
+      ],
+      [
+       87.0,
+       -810.0,
+       -107.2,
+       45.7
+      ],
+      [
+       -0.0,
+       0.0,
+       -0.1,
+       0.0
+      ],
+      [
+       -3.0,
+       0.0,
+       -3.3,
+       -0.2
+      ],
+      [
+       46.0,
+       23.0,
+       52.9,
+       -2.1
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0591,
+     "width": 3.3467,
+     "orientations": 3.4967,
+     "hatched": 0.0241,
+     "freq": 0.1283,
+     "line_px": 40825
+    },
+    "finish": {
+     "glow": 0.2596,
+     "fringe": -0.0183,
+     "grain": 3.006
+    },
+    "colour": {
+     "luma": 65.2167,
+     "highlights": 0.0685,
+     "saturated": 0.1051
+    },
+    "hints": [
+     "a line-heavy picture (5.9% of the frame is line, 3.3467 px wide, about 40,825 px of line): draw it on the GPU (kit/gl.js lines, or lines a shader draws), not as a few canvas strokes; the source drew 10^4-10^5 segments a frame",
+     "motion comes in surges (peaks 4.25x the median): moves start and land on events, hold between",
+     "bright light blooms (0.26 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "1_6",
+    "t0": 1.633,
+    "t1": 2.667,
+    "motion": {
+     "moving": true,
+     "speed": 288.3,
+     "pan": [
+      -0.2,
+      -1.4
+     ],
+     "travel": [
+      21.0,
+      -5.0
+     ],
+     "zoom": 0.4,
+     "zoom_total": 6.8,
+     "roll": 0.1,
+     "spin": -0.3,
+     "unexplained": 0.94,
+     "surges": 2.64,
+     "perspective": 0.092,
+     "profile": [
+      109.0,
+      169.0,
+      451.0,
+      207.0,
+      203.0,
+      444.0,
+      404.0,
+      67.0,
+      187.0,
+      503.0,
+      751.0,
+      75.0,
+      155.0,
+      561.0,
+      38.0
+     ],
+     "track": [
+      [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      [
+       53.0,
+       -2.0,
+       48.9,
+       -0.2
+      ],
+      [
+       -9.0,
+       -11.0,
+       1.2,
+       0.9
+      ],
+      [
+       -0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ],
+      [
+       41.0,
+       5.0,
+       45.2,
+       -0.7
+      ],
+      [
+       -33.0,
+       207.0,
+       -47.4,
+       8.6
+      ],
+      [
+       5.0,
+       -7.0,
+       -0.7,
+       0.1
+      ],
+      [
+       -3.0,
+       -1.0,
+       0.2,
+       0.1
+      ],
+      [
+       -1.0,
+       1.0,
+       -0.1,
+       0.1
+      ],
+      [
+       278.0,
+       -223.0,
+       47.3,
+       -15.5
+      ],
+      [
+       -1.0,
+       -19.0,
+       0.4,
+       0.9
+      ],
+      [
+       -2.0,
+       -2.0,
+       0.8,
+       -0.0
+      ],
+      [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ],
+      [
+       -15.0,
+       -16.0,
+       2.1,
+       1.2
+      ],
+      [
+       1.0,
+       -1.0,
+       0.4,
+       0.1
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0188,
+     "width": 7.1033,
+     "orientations": 3.3,
+     "hatched": 0.0331,
+     "freq": 0.0852,
+     "line_px": 12985
+    },
+    "finish": {
+     "glow": 0.6373,
+     "fringe": -0.0233,
+     "grain": 0.5675
+    },
+    "colour": {
+     "luma": 77.7167,
+     "highlights": 0.0599,
+     "saturated": 0.0006
+    },
+    "hints": [
+     "a camera moving through a scene (a perspective fit explains 9% more of the moving lines than a flat one): build it in 3D (kit/three.js, or a ray-marched kit/gl.js pass), not as 2D layers",
+     "motion comes in surges (peaks 2.64x the median): moves start and land on events, hold between",
+     "bright light blooms (0.64 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "2_7",
+    "t0": 2.667,
+    "t1": 4.7,
+    "motion": {
+     "moving": true,
+     "speed": 241.4,
+     "pan": [
+      -146.2,
+      7.2
+     ],
+     "travel": [
+      -330.0,
+      40.0
+     ],
+     "zoom": 19.5,
+     "zoom_total": 46.1,
+     "roll": -0.1,
+     "spin": -6.1,
+     "unexplained": 0.63,
+     "surges": 2.29,
+     "perspective": 0.105,
+     "profile": [
+      560.0,
+      222.0,
+      540.0,
+      18.0,
+      16.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      271.0,
+      379.0,
+      458.0,
+      501.0,
+      701.0,
+      454.0,
+      450.0,
+      447.0,
+      488.0,
+      394.0,
+      305.0,
+      246.0,
+      189.0,
+      140.0,
+      93.0,
+      64.0,
+      39.0,
+      23.0
+     ],
+     "track": [
+      [
+       -308.0,
+       275.0,
+       -52.7,
+       4.4
+      ],
+      [
+       46.0,
+       7.0,
+       48.7,
+       -0.7
+      ],
+      [
+       -1.0,
+       -2.0,
+       -0.7,
+       0.1
+      ],
+      [
+       -0.0,
+       -0.0,
+       0.0,
+       -0.0
+      ],
+      [
+       -0.0,
+       0.0,
+       0.0,
+       -0.0
+      ],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      [
+       -49.0,
+       -41.0,
+       6.7,
+       1.1
+      ],
+      [
+       -47.0,
+       239.0,
+       35.9,
+       2.9
+      ],
+      [
+       -5.0,
+       -522.0,
+       -43.2,
+       16.9
+      ],
+      [
+       -272.0,
+       471.0,
+       77.8,
+       -17.7
+      ],
+      [
+       -683.0,
+       12.0,
+       87.5,
+       1.3
+      ],
+      [
+       -632.0,
+       31.0,
+       78.2,
+       -3.4
+      ],
+      [
+       -576.0,
+       28.0,
+       70.1,
+       -3.1
+      ],
+      [
+       -508.0,
+       27.0,
+       59.8,
+       -1.6
+      ],
+      [
+       -439.0,
+       11.0,
+       49.8,
+       -0.5
+      ],
+      [
+       -380.0,
+       21.0,
+       42.0,
+       -1.3
+      ],
+      [
+       -309.0,
+       11.0,
+       32.5,
+       -0.4
+      ],
+      [
+       -234.0,
+       5.0,
+       23.6,
+       0.1
+      ],
+      [
+       -198.0,
+       8.0,
+       19.5,
+       -0.2
+      ],
+      [
+       -146.0,
+       5.0,
+       13.5,
+       -0.0
+      ],
+      [
+       -103.0,
+       2.0,
+       12.1,
+       -0.1
+      ],
+      [
+       -72.0,
+       1.0,
+       6.1,
+       -0.1
+      ],
+      [
+       -29.0,
+       1.0,
+       1.0,
+       -0.1
+      ],
+      [
+       -8.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0819,
+     "width": 7.31,
+     "orientations": 3.57,
+     "hatched": 0.0233,
+     "freq": 0.1277,
+     "line_px": 56639
+    },
+    "finish": {
+     "glow": 0.609,
+     "fringe": 0.0083,
+     "grain": 8.205
+    },
+    "colour": {
+     "luma": 152.5,
+     "highlights": 0.0166,
+     "saturated": 0.0136
+    },
+    "hints": [
+     "a camera moving through a scene (a perspective fit explains 10% more of the moving lines than a flat one): build it in 3D (kit/three.js, or a ray-marched kit/gl.js pass), not as 2D layers",
+     "push in at 19.5 %/s (+46.1% over the shot)",
+     "pan -146.2 x, +7.2 y px/s (travel -330, +40 px)",
+     "bright light blooms (0.61 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "4_7",
+    "t0": 4.7,
+    "t1": 5.733,
+    "motion": {
+     "moving": true,
+     "speed": 442.1,
+     "pan": [
+      0.3,
+      -32.3
+     ],
+     "travel": [
+      185.0,
+      -123.0
+     ],
+     "zoom": 0.0,
+     "zoom_total": -15.0,
+     "roll": -0.0,
+     "spin": -2.1,
+     "unexplained": 0.95,
+     "surges": 2.45,
+     "perspective": 0.022,
+     "profile": [
+      1072.0,
+      941.0,
+      1009.0,
+      1027.0,
+      101.0,
+      7.0,
+      6.0,
+      20.0,
+      10.0,
+      693.0,
+      397.0,
+      15.0,
+      436.0,
+      456.0
+     ],
+     "track": [
+      [
+       1202.0,
+       -226.0,
+       18.3,
+       -0.9
+      ],
+      [
+       897.0,
+       -530.0,
+       0.2,
+       0.4
+      ],
+      [
+       891.0,
+       -529.0,
+       -2.5,
+       1.4
+      ],
+      [
+       1.0,
+       -50.0,
+       -175.1,
+       -11.8
+      ],
+      [
+       -10.0,
+       -14.0,
+       -14.0,
+       0.0
+      ],
+      null,
+      null,
+      [
+       1.0,
+       -0.0,
+       0.1,
+       0.0
+      ],
+      [
+       -0.0,
+       -0.0,
+       -0.0,
+       -0.0
+      ],
+      [
+       -372.0,
+       -449.0,
+       -110.3,
+       -21.6
+      ],
+      [
+       -1.0,
+       3.0,
+       0.5,
+       -0.8
+      ],
+      [
+       -0.0,
+       1.0,
+       0.0,
+       -0.0
+      ],
+      [
+       163.0,
+       -55.0,
+       39.8,
+       -12.4
+      ],
+      [
+       -1.0,
+       9.0,
+       -0.2,
+       0.5
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0824,
+     "width": 3.2833,
+     "orientations": 3.4117,
+     "hatched": 0.0332,
+     "freq": 0.14,
+     "line_px": 56936
+    },
+    "finish": {
+     "glow": 0.3975,
+     "fringe": -0.0683,
+     "grain": 3.35
+    },
+    "colour": {
+     "luma": 56.1667,
+     "highlights": 0.0169,
+     "saturated": 0.1215
+    },
+    "hints": [
+     "a line-heavy picture (8.2% of the frame is line, 3.2833 px wide, about 56,936 px of line): draw it on the GPU (kit/gl.js lines, or lines a shader draws), not as a few canvas strokes; the source drew 10^4-10^5 segments a frame",
+     "bright light blooms (0.40 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "5_7",
+    "t0": 5.733,
+    "t1": 6.767,
+    "motion": {
+     "moving": true,
+     "speed": 196.0,
+     "pan": [
+      -1.6,
+      0.0
+     ],
+     "travel": [
+      62.0,
+      58.0
+     ],
+     "zoom": 1.3,
+     "zoom_total": -6.9,
+     "roll": -0.0,
+     "spin": 0.0,
+     "unexplained": 1.12,
+     "surges": 4.35,
+     "perspective": 0.018,
+     "profile": [
+      348.0,
+      111.0,
+      115.0,
+      150.0,
+      198.0,
+      56.0,
+      578.0,
+      384.0,
+      6.0,
+      6.0,
+      12.0,
+      6.0,
+      682.0,
+      283.0,
+      6.0
+     ],
+     "track": [
+      [
+       -2.0,
+       2.0,
+       1.3,
+       -0.0
+      ],
+      [
+       -83.0,
+       1.0,
+       6.9,
+       -0.1
+      ],
+      [
+       -52.0,
+       -3.0,
+       6.3,
+       0.0
+      ],
+      [
+       -1.0,
+       -1.0,
+       3.9,
+       0.1
+      ],
+      [
+       29.0,
+       3.0,
+       32.2,
+       -0.2
+      ],
+      [
+       62.0,
+       -0.0,
+       -0.2,
+       -0.0
+      ],
+      [
+       -5.0,
+       13.0,
+       -1.1,
+       -1.0
+      ],
+      [
+       -6.0,
+       -9.0,
+       1.7,
+       -0.6
+      ],
+      null,
+      null,
+      [
+       -2.0,
+       -0.0,
+       0.3,
+       0.0
+      ],
+      null,
+      [
+       983.0,
+       859.0,
+       -158.5,
+       0.8
+      ],
+      [
+       1.0,
+       0.0,
+       0.1,
+       -0.0
+      ],
+      null
+     ]
+    },
+    "linework": {
+     "lines": 0.0677,
+     "width": 2.87,
+     "orientations": 3.5883,
+     "hatched": 0.0826,
+     "freq": 0.14,
+     "line_px": 46773
+    },
+    "finish": {
+     "glow": 0.1798,
+     "fringe": -0.1267,
+     "grain": 4.52
+    },
+    "colour": {
+     "luma": 38.0167,
+     "highlights": 0.0067,
+     "saturated": 0.1055
+    },
+    "hints": [
+     "a line-heavy picture (6.8% of the frame is line, 2.87 px wide, about 46,773 px of line): draw it on the GPU (kit/gl.js lines, or lines a shader draws), not as a few canvas strokes; the source drew 10^4-10^5 segments a frame",
+     "motion comes in surges (peaks 4.35x the median): moves start and land on events, hold between"
+    ]
+   },
+   {
+    "name": "6_8",
+    "t0": 6.767,
+    "t1": 9.833,
+    "motion": {
+     "moving": true,
+     "speed": 119.1,
+     "pan": [
+      -0.4,
+      -0.2
+     ],
+     "travel": [
+      -29.0,
+      -53.0
+     ],
+     "zoom": 0.0,
+     "zoom_total": 0.9,
+     "roll": 0.0,
+     "spin": 0.2,
+     "unexplained": 1.03,
+     "surges": 1548.14,
+     "perspective": 0.014,
+     "profile": [
+      167.0,
+      484.0,
+      449.0,
+      486.0,
+      295.0,
+      349.0,
+      410.0,
+      207.0,
+      175.0,
+      113.0,
+      329.0,
+      545.0,
+      141.0,
+      137.0,
+      168.0,
+      101.0,
+      1.0,
+      1.0,
+      592.0,
+      8.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      198.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "track": [
+      [
+       1.0,
+       -0.0,
+       0.0,
+       -0.0
+      ],
+      [
+       -1.0,
+       -0.0,
+       -0.0,
+       -0.0
+      ],
+      [
+       -0.0,
+       -1.0,
+       0.0,
+       0.2
+      ],
+      [
+       1.0,
+       4.0,
+       0.3,
+       -0.4
+      ],
+      [
+       -5.0,
+       -1.0,
+       0.5,
+       0.3
+      ],
+      [
+       -2.0,
+       1.0,
+       -0.0,
+       0.1
+      ],
+      [
+       3.0,
+       -3.0,
+       -0.5,
+       0.1
+      ],
+      [
+       1.0,
+       1.0,
+       0.2,
+       0.1
+      ],
+      [
+       -2.0,
+       0.0,
+       0.3,
+       -0.0
+      ],
+      [
+       -14.0,
+       35.0,
+       38.8,
+       0.6
+      ],
+      [
+       1.0,
+       -3.0,
+       -0.2,
+       0.2
+      ],
+      [
+       4.0,
+       -5.0,
+       -1.2,
+       -0.3
+      ],
+      [
+       -6.0,
+       2.0,
+       2.3,
+       -1.0
+      ],
+      [
+       -7.0,
+       3.0,
+       2.4,
+       -0.6
+      ],
+      [
+       -2.0,
+       -7.0,
+       -1.4,
+       -0.6
+      ],
+      [
+       2.0,
+       -1.0,
+       -0.5,
+       0.8
+      ],
+      null,
+      null,
+      [
+       -410.0,
+       -826.0,
+       -28.1,
+       -12.4
+      ],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      [
+       0.0,
+       -0.0,
+       0.1,
+       0.1
+      ],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "linework": {
+     "lines": 0.1845,
+     "width": 4.715,
+     "orientations": 3.8583,
+     "hatched": 0.0763,
+     "freq": 0.1392,
+     "line_px": 127504
+    },
+    "finish": {
+     "glow": 0.1948,
+     "fringe": -0.002,
+     "grain": 3.455
+    },
+    "colour": {
+     "luma": 30.35,
+     "highlights": 0.0077,
+     "saturated": 0.0449
+    },
+    "hints": [
+     "motion comes in surges (peaks 1548.14x the median): moves start and land on events, hold between",
+     "bright light blooms (0.19 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "9_8",
+    "t0": 9.833,
+    "t1": 11.7,
+    "motion": {
+     "moving": true,
+     "speed": 247.5,
+     "pan": [
+      -0.5,
+      -0.6
+     ],
+     "travel": [
+      -118.0,
+      62.0
+     ],
+     "zoom": 0.7,
+     "zoom_total": 16.5,
+     "roll": -0.8,
+     "spin": -16.5,
+     "unexplained": 0.85,
+     "surges": 2.62,
+     "perspective": 0.042,
+     "profile": [
+      0.0,
+      307.0,
+      265.0,
+      263.0,
+      260.0,
+      237.0,
+      233.0,
+      523.0,
+      706.0,
+      536.0,
+      567.0,
+      677.0,
+      695.0,
+      564.0,
+      455.0,
+      173.0,
+      82.0,
+      78.0,
+      3.0,
+      3.0,
+      2.0,
+      3.0,
+      2.0,
+      2.0,
+      2.0,
+      1.0,
+      47.0
+     ],
+     "track": [
+      null,
+      [
+       155.0,
+       -12.0,
+       15.4,
+       -19.6
+      ],
+      [
+       2.0,
+       0.0,
+       -0.3,
+       -0.3
+      ],
+      [
+       -4.0,
+       2.0,
+       0.1,
+       -1.1
+      ],
+      [
+       -0.0,
+       -2.0,
+       0.9,
+       -0.2
+      ],
+      [
+       3.0,
+       -2.0,
+       2.5,
+       -0.7
+      ],
+      [
+       2.0,
+       -4.0,
+       1.7,
+       -0.9
+      ],
+      [
+       -154.0,
+       181.0,
+       55.6,
+       -7.4
+      ],
+      [
+       -81.0,
+       766.0,
+       -42.3,
+       -6.8
+      ],
+      [
+       -380.0,
+       -32.0,
+       -6.6,
+       -33.5
+      ],
+      [
+       -407.0,
+       -1.0,
+       29.8,
+       -31.7
+      ],
+      [
+       -439.0,
+       22.0,
+       69.6,
+       -29.9
+      ],
+      [
+       -471.0,
+       23.0,
+       102.0,
+       -30.2
+      ],
+      [
+       -2.0,
+       1.0,
+       0.4,
+       -0.0
+      ],
+      [
+       -1.0,
+       -1.0,
+       1.4,
+       0.0
+      ],
+      [
+       1.0,
+       -1.0,
+       0.3,
+       0.0
+      ],
+      [
+       7.0,
+       -5.0,
+       -0.2,
+       -0.1
+      ],
+      [
+       3.0,
+       -1.0,
+       -0.4,
+       0.1
+      ],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      [
+       0.0,
+       1.0,
+       -0.1,
+       -0.1
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0887,
+     "width": 3.8233,
+     "orientations": 3.2433,
+     "hatched": 0.1691,
+     "freq": 0.1395,
+     "line_px": 61351
+    },
+    "finish": {
+     "glow": 0.1776,
+     "fringe": 0.0967,
+     "grain": 3.51
+    },
+    "colour": {
+     "luma": 15.1333,
+     "highlights": 0.001,
+     "saturated": 0.0672
+    },
+    "hints": [
+     "a line-heavy picture (8.9% of the frame is line, 3.8233 px wide, about 61,351 px of line): draw it on the GPU (kit/gl.js lines, or lines a shader draws), not as a few canvas strokes; the source drew 10^4-10^5 segments a frame",
+     "hatching: 17% of the frame is dense parallel lines: engraving, line width carrying the shade (kit/gl.js hatch, engrave), the lines following the surface where they curve",
+     "motion comes in surges (peaks 2.62x the median): moves start and land on events, hold between"
+    ]
+   },
+   {
+    "name": "11_7",
+    "t0": 11.7,
+    "t1": 12.767,
+    "motion": {
+     "moving": true,
+     "speed": 144.0,
+     "pan": [
+      0.0,
+      0.1
+     ],
+     "travel": [
+      -0.0,
+      -0.0
+     ],
+     "zoom": 0.0,
+     "zoom_total": -0.0,
+     "roll": 0.0,
+     "spin": -0.4,
+     "unexplained": 1.01,
+     "surges": 5.76,
+     "perspective": 0.009,
+     "profile": [
+      66.0,
+      1.0,
+      61.0,
+      563.0,
+      0.0,
+      146.0,
+      32.0,
+      0.0,
+      382.0,
+      134.0,
+      0.0,
+      299.0,
+      96.0,
+      0.0,
+      379.0
+     ],
+     "track": [
+      [
+       0.0,
+       1.0,
+       0.0,
+       0.1
+      ],
+      null,
+      [
+       0.0,
+       -1.0,
+       -0.1,
+       -0.1
+      ],
+      [
+       -0.0,
+       0.0,
+       -0.1,
+       0.0
+      ],
+      null,
+      [
+       -0.0,
+       0.0,
+       -0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      null,
+      [
+       -1.0,
+       0.0,
+       -0.1,
+       0.0
+      ],
+      [
+       0.0,
+       1.0,
+       0.1,
+       0.0
+      ],
+      null,
+      [
+       -2.0,
+       -1.0,
+       -0.3,
+       -0.1
+      ],
+      [
+       0.0,
+       -0.0,
+       0.1,
+       -0.0
+      ],
+      null,
+      [
+       1.0,
+       -1.0,
+       0.1,
+       -0.1
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0242,
+     "width": 2.87,
+     "orientations": 3.8867,
+     "hatched": 0.0108,
+     "freq": 0.1553,
+     "line_px": 16689
+    },
+    "finish": {
+     "glow": 0.2498,
+     "fringe": -0.0017,
+     "grain": 4.0083
+    },
+    "colour": {
+     "luma": 40.3667,
+     "highlights": 0.0332,
+     "saturated": 0.032
+    },
+    "hints": [
+     "motion comes in surges (peaks 5.76x the median): moves start and land on events, hold between",
+     "bright light blooms (0.25 of the highlight's level 6-24 px around it): colour past 1 and a bloom pass, not a canvas shadow"
+    ]
+   },
+   {
+    "name": "12_8",
+    "t0": 12.767,
+    "t1": 14.267,
+    "motion": {
+     "moving": true,
+     "speed": 130.5,
+     "pan": [
+      4.6,
+      -2.4
+     ],
+     "travel": [
+      -69.0,
+      -26.0
+     ],
+     "zoom": 0.5,
+     "zoom_total": -18.1,
+     "roll": -1.0,
+     "spin": -2.4,
+     "unexplained": 0.78,
+     "surges": 43.33,
+     "perspective": 0.096,
+     "profile": [
+      144.0,
+      0.0,
+      229.0,
+      135.0,
+      676.0,
+      444.0,
+      9.0,
+      2.0,
+      3.0,
+      3.0,
+      4.0,
+      3.0,
+      6.0,
+      4.0,
+      6.0,
+      11.0,
+      12.0,
+      10.0,
+      9.0,
+      11.0,
+      11.0,
+      1141.0
+     ],
+     "track": [
+      [
+       -0.0,
+       -2.0,
+       -0.0,
+       -0.2
+      ],
+      null,
+      [
+       -0.0,
+       0.0,
+       -0.1,
+       0.0
+      ],
+      [
+       -0.0,
+       -1.0,
+       -0.2,
+       -0.0
+      ],
+      [
+       -624.0,
+       313.0,
+       -83.4,
+       -36.2
+      ],
+      [
+       253.0,
+       321.0,
+       -43.2,
+       24.9
+      ],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      [
+       5.0,
+       -5.0,
+       0.9,
+       -2.3
+      ],
+      [
+       6.0,
+       -7.0,
+       3.1,
+       -2.4
+      ],
+      [
+       5.0,
+       -6.0,
+       3.7,
+       -1.2
+      ],
+      [
+       4.0,
+       -3.0,
+       3.0,
+       -3.2
+      ],
+      [
+       5.0,
+       -3.0,
+       3.6,
+       -3.2
+      ],
+      [
+       5.0,
+       -2.0,
+       2.6,
+       -0.9
+      ],
+      [
+       -686.0,
+       -996.0,
+       -189.3,
+       5.3
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0059,
+     "width": 2.87,
+     "orientations": 3.265,
+     "hatched": 0.004,
+     "freq": 0.1492,
+     "line_px": 4094
+    },
+    "finish": {
+     "glow": 0.067,
+     "fringe": 0.07,
+     "grain": 1.3117
+    },
+    "colour": {
+     "luma": 10.3167,
+     "highlights": 0.0084,
+     "saturated": 0.0012
+    },
+    "hints": [
+     "a camera moving through a scene (a perspective fit explains 10% more of the moving lines than a flat one): build it in 3D (kit/three.js, or a ray-marched kit/gl.js pass), not as 2D layers",
+     "motion comes in surges (peaks 43.33x the median): moves start and land on events, hold between"
+    ]
+   },
+   {
+    "name": "14_3",
+    "t0": 14.267,
+    "t1": 15.767,
+    "motion": {
+     "moving": true,
+     "speed": 3.0,
+     "pan": [
+      -0.0,
+      -0.0
+     ],
+     "travel": [
+      -0.0,
+      -0.0
+     ],
+     "zoom": 0.0,
+     "zoom_total": 0.0,
+     "roll": -0.0,
+     "spin": -1.1,
+     "unexplained": 1.04,
+     "surges": 2.48,
+     "perspective": null,
+     "profile": [
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      52.0
+     ],
+     "track": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      [
+       -0.0,
+       -0.0,
+       0.0,
+       -0.0
+      ]
+     ]
+    },
+    "linework": {
+     "lines": 0.0005,
+     "width": 2.87,
+     "orientations": 3.5383,
+     "hatched": 0.0,
+     "freq": 0.1565,
+     "line_px": 369
+    },
+    "finish": {
+     "glow": 0.0395,
+     "fringe": 0.0,
+     "grain": 8.34
+    },
+    "colour": {
+     "luma": 244.7167,
+     "highlights": 0.963,
+     "saturated": 0.0
+    },
+    "hints": []
+   }
+  ]
+ }
+}

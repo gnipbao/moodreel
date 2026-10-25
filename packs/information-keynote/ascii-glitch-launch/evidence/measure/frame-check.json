@@ -1,0 +1,60 @@
+{
+ "limits": {
+  "coverage": 0.8,
+  "off_palette": 0.05,
+  "lightness_emd": 0.15
+ },
+ "stills": [
+  {
+   "still": "out/projects/ascii-glitch/look/stills/t_4.5.jpg",
+   "pass": false,
+   "coverage": 0.808,
+   "missing_colours": [
+    "#c6b6bc",
+    "#616c82",
+    "#b86152",
+    "#a37e5c"
+   ],
+   "off_palette": 0.083,
+   "extra_colours": [
+    "#e0e0e0",
+    "#9a9d9d",
+    "#47474d"
+   ],
+   "lightness_emd": 0.067,
+   "surface": {
+    "grain": {
+     "value": 3.98,
+     "refs": [
+      0.0,
+      5.01
+     ],
+     "ok": true
+    },
+    "vignette": {
+     "value": 0.0,
+     "refs": [
+      0.0,
+      0.305
+     ],
+     "ok": true
+    },
+    "edge_sharpness": {
+     "value": 0.381,
+     "refs": [
+      0.258,
+      0.454
+     ],
+     "ok": true
+    }
+   },
+   "style": {
+    "similarity": 0.539,
+    "floor": 0.45,
+    "nearest_reference": "vid01",
+    "ok": true
+   },
+   "sheet": "out/projects/ascii-glitch/evidence/frame-check-01-t_4.5.jpg"
+  }
+ ]
+}

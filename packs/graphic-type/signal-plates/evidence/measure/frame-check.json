@@ -1,0 +1,53 @@
+{
+ "limits": {
+  "coverage": 0.8,
+  "off_palette": 0.05,
+  "lightness_emd": 0.15
+ },
+ "stills": [
+  {
+   "still": "out/projects/pdoom/look/stills/t_2.5.jpg",
+   "pass": false,
+   "coverage": 1.0,
+   "missing_colours": [],
+   "off_palette": 0.02,
+   "extra_colours": [
+    "#d55734"
+   ],
+   "lightness_emd": 0.014,
+   "surface": {
+    "grain": {
+     "value": 3.12,
+     "refs": [
+      0.11,
+      1.31
+     ],
+     "ok": false
+    },
+    "vignette": {
+     "value": 0.372,
+     "refs": [
+      0.0,
+      0.746
+     ],
+     "ok": true
+    },
+    "edge_sharpness": {
+     "value": 0.387,
+     "refs": [
+      0.359,
+      0.433
+     ],
+     "ok": true
+    }
+   },
+   "style": {
+    "similarity": 0.704,
+    "floor": 0.45,
+    "nearest_reference": "vid01",
+    "ok": true
+   },
+   "sheet": "out/projects/pdoom/evidence/frame-check-01-t_2.5.jpg"
+  }
+ ]
+}

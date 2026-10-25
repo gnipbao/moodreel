@@ -1,0 +1,19 @@
+{
+ "vid01": {
+  "audio": true,
+  "bpm": 120.2,
+  "clarity": 1.0,
+  "beats": 32,
+  "loudness_rms_db": -15.2,
+  "cuts_on_beat": {
+   "events": 67,
+   "share": 0.19,
+   "chance": 0.16
+  },
+  "arrivals_on_beat": {
+   "events": 15,
+   "share": 0.0,
+   "chance": 0.16
+  }
+ }
+}

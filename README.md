@@ -257,6 +257,11 @@ exported as a HyperFrames composition (`moodreel export hyperframes`: a paused t
 film's own frame) or a Remotion project (`moodreel export remotion`: one composition whose every frame is the film's
 own). Only the documents are imported; Moodreel re-implements the techniques.
 
+[`packs/`](packs/README.md) keeps the styles distilled here as complete packs (STYLE.md, DECISIONS.md, the ledger and
+measurements, the kit with the style's own modules, the demo's source), sorted by the same categories: Signal Plates
+(graphic and type) and ASCII Glitch Launch (information and keynote). `python scripts/packs.py install` puts them in
+your library; `export` brings the library's packs back. Demo films are rebuilt from their source (`sh demo/build.sh`).
+
 ## Repository
 
 | Path | What it is |
@@ -266,6 +271,7 @@ own). Only the documents are imported; Moodreel re-implements the techniques.
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
 | `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
+| `packs/` | The styles distilled here, as complete packs by category ([packs/README.md](packs/README.md)); `scripts/packs.py` moves them between the repository and your library |
 | `examples/` | Example films made in library styles: five with the values their code uses, for the round trip, and six showing score, pixel, brush, 3D, footage and a sampled band ([examples/README.md](examples/README.md)) |
 | `bench/motion/` | The motion test films (pages and truth) and the latest report |
 | `bench/roundtrip/` | The round trip's latest report ([bench/roundtrip/README.md](bench/roundtrip/README.md)) |

@@ -1,0 +1,9 @@
+{
+ "name": "tidepool",
+ "style": "ascii-glitch-launch",
+ "style_origin": "distilled",
+ "size": "1920x1080",
+ "fps": 60,
+ "duration": 16.0,
+ "poster": 0.95
+}

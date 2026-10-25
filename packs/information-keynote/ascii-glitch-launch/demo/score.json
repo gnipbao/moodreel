@@ -1,0 +1,21 @@
+{
+ "bpm": 120,
+ "meter": 4,
+ "offset": 0.0,
+ "seed": 21,
+ "key": "Em",
+ "sections": [
+  {"name": "open", "bars": 1, "chords": ["Em"], "groove": "none", "parts": ["hat", "pad", "pluck"]},
+  {"name": "build", "bars": 1, "chords": ["C"], "groove": "four", "parts": ["kick", "hat", "bass", "pluck"]},
+  {"name": "verse", "bars": 2, "chords": ["Em", "C"], "groove": "backbeat", "parts": ["kick", "snare", "hat", "bass", "pad", "pluck"]},
+  {"name": "drop", "bars": 2, "chords": ["G", "D"], "groove": "four", "parts": ["kick", "clap", "hat", "bass", "pad", "lead", "stab"]},
+  {"name": "name", "bars": 1, "chords": ["Em"], "groove": "four", "parts": ["kick", "hat", "bass", "pad"]},
+  {"name": "end", "bars": 1, "chords": ["Em"], "groove": "none", "parts": ["pad"]}
+ ],
+ "cues": [
+  {"name": "drop", "bar": 5, "beat": 1, "sound": "hit"},
+  {"name": "flash", "bar": 6, "beat": 2, "sound": "stab"},
+  {"name": "stop", "bar": 7, "beat": 3, "sound": "stop", "beats": 2},
+  {"name": "mark", "bar": 8, "beat": 1, "sound": "hit"}
+ ]
+}

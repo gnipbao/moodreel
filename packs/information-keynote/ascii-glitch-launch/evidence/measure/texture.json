@@ -1,0 +1,268 @@
+{
+ "grain": 0.52,
+ "grain_range": [
+  0.0,
+  5.01
+ ],
+ "vignette": 0.0,
+ "vignette_range": [
+  0.0,
+  0.305
+ ],
+ "mottle": 1.29,
+ "mottle_range": [
+  0.44,
+  3.43
+ ],
+ "edge_sharpness": 0.31,
+ "edge_sharpness_range": [
+  0.258,
+  0.454
+ ],
+ "edge_density": 0.027,
+ "edge_density_range": [
+  0.002,
+  0.069
+ ],
+ "flat_share": 0.646,
+ "flat_share_range": [
+  0.14,
+  0.983
+ ],
+ "halftone": {
+  "share": 0.25,
+  "period_px": 7.73,
+  "angle": 28.9
+ },
+ "scanlines": {
+  "share": 0.25,
+  "period_px": 2.67
+ },
+ "pixel": {
+  "share": 0.25,
+  "scale_of_width": 0.00104,
+  "native_width": 960,
+  "palette_size": 314,
+  "dither": false,
+  "dither_share": 0.0,
+  "palette": [
+   "#020202",
+   "#020212",
+   "#1a020a",
+   "#020a1e",
+   "#2e0212",
+   "#1a021a",
+   "#02122e",
+   "#021a3e",
+   "#3e060e",
+   "#0e0a0a",
+   "#0e0222",
+   "#0e1636",
+   "#2a0e1e",
+   "#260202",
+   "#1e0a26",
+   "#4a0a1a",
+   "#5a0a1a",
+   "#360602",
+   "#0a1e4a",
+   "#1a0a36",
+   "#2e1232",
+   "#0e1222",
+   "#3a0e1a",
+   "#02022a",
+   "#1a1a42",
+   "#260e0e",
+   "#320222",
+   "#021212",
+   "#1a0646",
+   "#22229a",
+   "#1a162e",
+   "#4a123e"
+  ]
+ },
+ "brush": {
+  "share": 0.25,
+  "edge_spacing_px": 22.8,
+  "coherence": 0.63,
+  "direction_deg": 11.6,
+  "agreement": 0.14,
+  "coverage": 0.94
+ },
+ "summary": {
+  "grain": "none",
+  "vignette": "none",
+  "mottle": "paper",
+  "edges": "soft",
+  "halftone": true,
+  "scanlines": true,
+  "pixel": true,
+  "brush": true
+ },
+ "per_picture": [
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.856,
+   "grain": 0.52,
+   "vignette": 0.305,
+   "vignette_levels": 8.4,
+   "mottle": 3.43,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.258,
+   "edge_density": 0.0099,
+   "summary": {
+    "grain": "none",
+    "vignette": "strong",
+    "mottle": "blotchy",
+    "edges": "soft",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.14,
+   "grain": 5.01,
+   "vignette": null,
+   "mottle": null,
+   "halftone": null,
+   "scanlines": {
+    "amplitude": 5.02,
+    "period_px": 2.67
+   },
+   "edge_sharpness": 0.272,
+   "edge_density": 0.0439,
+   "brush": {
+    "coverage": 0.94,
+    "edge_spacing_px": 22.8,
+    "coherence": 0.63,
+    "direction_deg": 11.6,
+    "agreement": 0.14,
+    "edge_pieces": 952
+   },
+   "summary": {
+    "grain": "visible",
+    "vignette": null,
+    "mottle": null,
+    "edges": "soft",
+    "halftone": false,
+    "scanlines": true,
+    "pixel": false,
+    "brush": true
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.437,
+   "grain": null,
+   "vignette": 0.0,
+   "vignette_levels": 1.5,
+   "mottle": 1.29,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.348,
+   "edge_density": 0.0689,
+   "pixel": {
+    "scale": 2,
+    "native": [
+     960,
+     540
+    ],
+    "phase": [
+     0,
+     0
+    ],
+    "edges_on_grid": 0.85,
+    "palette_size": 314,
+    "palette": [
+     "#020202",
+     "#020212",
+     "#1a020a",
+     "#020a1e",
+     "#2e0212",
+     "#1a021a",
+     "#02122e",
+     "#021a3e",
+     "#3e060e",
+     "#0e0a0a",
+     "#0e0222",
+     "#0e1636",
+     "#2a0e1e",
+     "#260202",
+     "#1e0a26",
+     "#4a0a1a",
+     "#5a0a1a",
+     "#360602",
+     "#0a1e4a",
+     "#1a0a36",
+     "#2e1232",
+     "#0e1222",
+     "#3a0e1a",
+     "#02022a",
+     "#1a1a42",
+     "#260e0e",
+     "#320222",
+     "#021212",
+     "#1a0646",
+     "#22229a",
+     "#1a162e",
+     "#4a123e"
+    ],
+    "dither_share": 0.0,
+    "dither": false,
+    "picture_width": 1920
+   },
+   "note": "pixel art: grain, halftone and scanlines not read (the dither and the cells would pass for them)",
+   "summary": {
+    "grain": null,
+    "vignette": "none",
+    "mottle": "paper",
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": true,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.983,
+   "grain": 0.0,
+   "vignette": 0.0,
+   "vignette_levels": 0.1,
+   "mottle": 0.44,
+   "halftone": {
+    "amplitude": 5.5,
+    "period_px": 7.73,
+    "angle": 28.9
+   },
+   "scanlines": null,
+   "edge_sharpness": 0.454,
+   "edge_density": 0.0016,
+   "summary": {
+    "grain": "none",
+    "vignette": "none",
+    "mottle": "none",
+    "edges": "crisp",
+    "halftone": true,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  }
+ ]
+}

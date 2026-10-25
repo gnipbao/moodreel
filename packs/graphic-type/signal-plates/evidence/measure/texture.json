@@ -1,0 +1,148 @@
+{
+ "grain": 0.335,
+ "grain_range": [
+  0.11,
+  1.31
+ ],
+ "vignette": 0.666,
+ "vignette_range": [
+  0.0,
+  0.746
+ ],
+ "mottle": 3.355,
+ "mottle_range": [
+  1.28,
+  3.96
+ ],
+ "edge_sharpness": 0.395,
+ "edge_sharpness_range": [
+  0.359,
+  0.433
+ ],
+ "edge_density": 0.028,
+ "edge_density_range": [
+  0.004,
+  0.085
+ ],
+ "flat_share": 0.661,
+ "flat_share_range": [
+  0.284,
+  0.971
+ ],
+ "halftone": null,
+ "scanlines": null,
+ "pixel": null,
+ "brush": null,
+ "summary": {
+  "grain": "none",
+  "vignette": "strong",
+  "mottle": "blotchy",
+  "edges": "crisp",
+  "halftone": false,
+  "scanlines": false,
+  "pixel": false,
+  "brush": false
+ },
+ "per_picture": [
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.284,
+   "grain": 1.31,
+   "vignette": 0.746,
+   "vignette_levels": 17.3,
+   "mottle": 3.96,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.359,
+   "edge_density": 0.0848,
+   "summary": {
+    "grain": "fine",
+    "vignette": "strong",
+    "mottle": "blotchy",
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.533,
+   "grain": 0.42,
+   "vignette": 0.743,
+   "vignette_levels": 24.4,
+   "mottle": 3.95,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.365,
+   "edge_density": 0.032,
+   "summary": {
+    "grain": "none",
+    "vignette": "strong",
+    "mottle": "blotchy",
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.789,
+   "grain": 0.25,
+   "vignette": 0.59,
+   "vignette_levels": 7.5,
+   "mottle": 2.76,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.426,
+   "edge_density": 0.0246,
+   "summary": {
+    "grain": "none",
+    "vignette": "strong",
+    "mottle": "paper",
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.971,
+   "grain": 0.11,
+   "vignette": 0.0,
+   "vignette_levels": 0.2,
+   "mottle": 1.28,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.433,
+   "edge_density": 0.0038,
+   "summary": {
+    "grain": "none",
+    "vignette": "none",
+    "mottle": "paper",
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  }
+ ]
+}
