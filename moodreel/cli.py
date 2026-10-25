@@ -228,7 +228,38 @@ def cmd_pose(a):
         print(pose.grid(a.image, a.grid))
         return
     aspect = None if a.aspect == "solve" else float(a.aspect)
-    print(pose.report(pose.run(a.image, pose.parse_points(a.points) if a.points else None, aspect, a.fov)))
+    fov = a.fov if a.fov != "shape" else "shape"
+    fov = float(fov) if fov not in (None, "shape") else fov
+    if a.track:
+        if not a.points or a.at is None:
+            raise SystemExit("--track needs --at (the frame the corners are read on) and --points")
+        t0, t1 = (float(x) for x in a.track.split(","))
+        res = pose.track(a.image, a.at, pose.parse_points(a.points), t0, t1, aspect or 1.0,
+                         fov if fov is not None else 35.0, a.up or "wall")
+        if a.module:
+            Path(a.module).write_text(pose.camera_module(res))
+        fr = res["frames"]
+        print(f"{a.image}: {len(fr)} frames tracked ({res['covered']:.0%} of {t0}-{t1} s)"
+              + (f", camera written to {a.module}" if a.module else ""))
+        for r in fr[:: max(1, len(fr) // 8)]:
+            print(f"  {r['t']:.3f} s: pitch {r['cam_pitch']}, yaw {r['cam_yaw']}, roll {r['cam_roll']}, position {r['position']}")
+        return
+    print(pose.report(pose.run(a.image, pose.parse_points(a.points) if a.points else None, aspect, fov, a.up)))
+
+
+def cmd_sync(a):
+    from .measure import sync
+    fp = sync.run(a.video, a.music, a.json)
+    print(f"{a.video}: {fp['cuts']} cuts at {fp['fps']:g} fps, {fp['bpm']} BPM")
+    for line in fp["recipe"]:
+        print(f"- {line}")
+    if any(v is not None for v in fp["kit_music"].values()):
+        print("kit/music.js: " + ", ".join(f"{k} {v}" for k, v in fp["kit_music"].items() if v is not None))
+    if a.against:
+        d = sync.difference(json.loads(Path(a.against).read_text()), fp)
+        print(f"against {a.against}: similarity {d['similarity']}")
+        for line in d["differences"]:
+            print(f"- {line}")
 
 
 def cmd_score(a):
@@ -422,13 +453,28 @@ def main(argv=None):
     p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
     p.add_argument("--out", help="a folder for DOSSIER.md, dossier.json and each shot's keyframes and flow arrows")
     p.set_defaults(fn=cmd_dossier)
-    p = sub.add_parser("pose", help="the 3D camera from a rectangle in a frame: pitch, yaw, roll, distance, field of view")
-    p.add_argument("image")
+    p = sub.add_parser("pose", help="the 3D camera from a rectangle in a frame (pitch, yaw, roll, distance, field of view), "
+                       "or tracked through a shot")
+    p.add_argument("image", help="a frame, or a video with --track")
     p.add_argument("--points", help="the rectangle's corners in order round it: x1,y1,x2,y2,x3,y3,x4,y4 (default: found)")
     p.add_argument("--aspect", default="1", help="the rectangle's width per unit height, or 'solve'")
-    p.add_argument("--fov", type=float, help="the vertical field of view in degrees, when known (a film keeps its lens)")
+    p.add_argument("--fov", help="the vertical field of view in degrees, when known (a film keeps its lens); 'shape' to solve it "
+                   "from the rectangle's aspect, frame by frame (a zoom)")
+    p.add_argument("--up", choices=["wall", "floor"], help="which way the rectangle stands: the camera is also given in its world, "
+                   "Y up (a stack's direction in the rectangle's own plane: a wall)")
+    p.add_argument("--track", help="t0,t1: follow the rectangle through this stretch of a video and solve the camera every frame")
+    p.add_argument("--at", type=float, help="with --track: the time the corners were read at")
+    p.add_argument("--module", help="with --track: write the camera as a JS module (cameraAt(t)) here")
     p.add_argument("--grid", help="instead: write the frame with a labelled coordinate grid here, to read corners off it")
     p.set_defaults(fn=cmd_pose)
+    p = sub.add_parser("sync", help="the beat-sync fingerprint: what the picture does on each kind of musical event (cuts, "
+                       "surges, shake, slams on beats, kicks, snares and sung words)")
+    p.add_argument("video")
+    p.add_argument("--music", help="the song's data: a music-data.js (moodreel music) or pdoom-video's audio.json (with "
+                   "lyrics.json beside it); default: analyse the video's own sound")
+    p.add_argument("--json", help="write the whole fingerprint here (signals included)")
+    p.add_argument("--against", help="a reference's fingerprint (--json of an earlier run): what this video does differently")
+    p.set_defaults(fn=cmd_sync)
     p = sub.add_parser("score", help="render a film's score.json: out/score.wav and score.js")
     p.add_argument("film")
     p.set_defaults(fn=cmd_score)

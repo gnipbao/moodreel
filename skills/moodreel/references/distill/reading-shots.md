@@ -13,8 +13,15 @@ and type projected through the camera. All of that can be read off the video bef
   deg/s, surges, the frame-by-frame track), linework (share of line, width, hatching, orientations), finish (glow,
   colour fringe, grain) and colour (luma, highlights, saturated share), with keyframes, flow arrows and a track chart,
   and technique hints. `moodreel measure` runs it on every video reference: MEASURE.md "Shots read as code".
-- `moodreel pose <frame> --points x1,y1,...,x4,y4 [--aspect a] [--fov deg]` (or `--grid` to read coordinates off a
-  frame): the 3D camera from a rectangle in the picture: pitch, yaw, roll, distance, field of view.
+- `moodreel pose <frame> --points x1,y1,...,x4,y4 [--aspect a] [--fov deg|shape] [--up wall|floor]` (or `--grid` to
+  read coordinates off a frame): the 3D camera from a rectangle in the picture: pitch, yaw, roll, distance, field of
+  view, and with `--up` where the camera stands in the rectangle's world.
+- `moodreel pose <video> --track t0,t1 --at t --points ... --fov deg --up wall|floor --module cam.js`: the camera
+  through a whole shot. The rectangle read at `--at` is tracked frame by frame; `cam.js` exports `cameraAt(t)`.
+- `moodreel sync <video> [--music music-data.js] [--against other.json] [--json out.json]`: the beat-sync fingerprint,
+  what the picture does after each kind of musical event (beat, downbeat, kick, snare, hat, sung word, line), how big,
+  how late, how fast it decays and how far above chance; where cuts, surges, punches and flashes land; and, against
+  another fingerprint, what a remake misses or adds.
 - `moodreel compare <reference> <remake>`: the score after every pass.
 
 ## What the hints mean (calibrated against the source of one film)
@@ -44,19 +51,38 @@ doesn't register).
 | repeated objects receding into the dark | 3D instances with fog | stacked 2D layers |
 | a word written by a moving point | single-stroke fonts drawn along their length | a fill revealed by a mask |
 
+## Sync and camera (checked against the source's own numbers)
+
+- The fingerprint found 16 of 17 visible plate changes, read shake to a frame at 0.94 of its size, and placed the sung
+  word's motion burst at +33 ms. A remake built from the source's plates scored 0.969 against the original; one drawn
+  from stills 0.716, and the differences named why: punches on the kicks the original doesn't have, and none of its
+  motion bursts on the sung words. What it can't read: a global punch under about 1 % (it mixes with the scene's own
+  zoom), and a slam's settle, which reads at about half its size.
+- The tracked camera came within 3.5 deg of pitch, 4.2 of yaw, 1.0 of roll and 0.8 % of distance over a shot that swung
+  32 deg, with the lens fixed. Solving the lens on every frame put the distance 40 % off.
+- Rebuilding a plate with the tracked camera tripled its agreement of motion direction (0.15 to 0.48). Once the camera
+  is right, the gap left is detail.
+
 ## How to rebuild a shot
 
 1. Run the dossier on the reference. Read the hints, the numbers and the flow arrows before choosing a technique.
-2. A 3D shot: read the camera at two or three keyframes with `moodreel pose` (four corners of something rectangular).
-   Read the field of view once from the clearest frame and give it for the others; solve the rectangle's aspect
-   there too. Measure spacings the same way (project a neighbour through the read camera) rather than by eye.
-3. Write the camera from those poses and the frame-by-frame track, landing moves on beats and events. A window's
-   median hides a move made in a few frames.
+   Run `moodreel sync` on the reference for the music: its recipe gives `kit/music.js` the sizes, latencies and
+   half-lives of each response. Don't add moves the fingerprint doesn't show (a punch on every kick is a guess).
+2. A 3D shot: read the four corners of something rectangular on the clearest frame, with the lens (`--fov shape`
+   solves it there from the rectangle's known aspect) and the aspect. Say whether the rectangle stands (`--up wall`)
+   or lies (`--up floor`): if the scene's long direction runs within the rectangle's plane, it stands. Keep the lens
+   fixed for the rest of the shot unless the picture visibly zooms.
+3. Track it through the shot (`--track`, `--module`) and drive the scene camera from `cameraAt(t)`. Where one
+   rectangle leaves the frame, read the next and join the tracks, choosing signs (a turn left or right) by continuity.
+   Labels in the picture can be off by one from the objects they count (a HUD's layer number was the index plus one).
+   Measure spacings and views through the camera, not by eye: a "side view" was a top-down view at -65 deg. A
+   window's median hides a move made in a few frames; work from the frame-by-frame track.
 4. Match the totals the eye gets wrong: luma, accent area, amount of line, glow, against the dossier's numbers.
 5. Give the shot its detail: a source plate ran about 1,100 lines with several layers (diagram, type, HUD, spark,
    annotations); the small labels and ticks are what makes a frame read as "fine".
-6. Render, run `compare` and the dossier on the remake, diff the two dossiers window by window, fix the biggest gap.
-   Stop when the score stops rising, and keep the best pass.
+6. Render, run `compare` and the dossier on the remake, diff the two dossiers window by window, and
+   `moodreel sync <remake> --against reference.json` for the sync; fix the biggest gap. Stop when the score stops
+   rising, and keep the best pass.
 
 ## For a style
 

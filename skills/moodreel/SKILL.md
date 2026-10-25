@@ -90,8 +90,10 @@ deliver mixes them under the song. Measure the result against the song (and the 
 just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 
 **A remake** (a film matched to a reference shot by shot): read each shot before drawing it with `moodreel dossier`
-(motion, linework, finish, colour, and which technique it needs) and, for a 3D shot, read the camera with `moodreel
-pose`; measure every pass with `moodreel compare <reference> <remake>`, not only by stills. Reading by eye runs darker,
+(motion, linework, finish, colour, and which technique it needs), read the reference's beat-sync fingerprint with
+`moodreel sync` (what the picture does on each kind of musical event, to the millisecond), and, for a 3D shot, track the
+camera through it with `moodreel pose <video> --track`; measure every pass with `moodreel compare <reference> <remake>`
+and `moodreel sync <remake> --against <reference fingerprint>`, not only by stills. Reading by eye runs darker,
 more saturated, sparser and slower than the reference, and guesses the camera: `references/distill/reading-shots.md`.
 What a 2D canvas can't draw (ray-marched bodies, lensing, dense line fields, engraving that follows a surface) goes
 through `kit/gl.js`. When the reference's source is public under a permissive licence, its own scenes can run here

@@ -198,6 +198,19 @@ bodies, lensing, dense line fields, engraving that follows a surface) goes throu
 uv run moodreel compare reference.mp4 remake.mp4
 ```
 
+Read what the reference does on each beat, kick and sung word, and the camera through a 3D shot, before building
+them: `moodreel sync` gives the beat-sync fingerprint (how big each response is, how late and how fast it decays, and
+with `--against`, what a remake misses); `moodreel pose --track` follows a rectangle through the shot and writes the
+camera as `cameraAt(t)`. Both were checked against pdoom-video's source: [docs/research/VISION-TO-CODE.md](docs/research/VISION-TO-CODE.md):
+
+```bash
+uv run moodreel sync reference.mp4 --music films/my-film/music-data.js --json ref-sync.json
+```
+
+```bash
+uv run moodreel pose reference.mp4 --track 12.0,13.5 --at 12.4 --points 272,378,978,180,948,462,340,672 --fov 35 --up wall --module cam.js
+```
+
 ## Use it with an agent
 
 Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
