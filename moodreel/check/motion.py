@@ -58,11 +58,11 @@ def claims(ref: dict, got: dict) -> list[dict]:
     if re_ and rx and rx < re_:
         ge, gx = _med(got.get("entrance")), _med(got.get("exit"))
         add("exit_shorter", "exits shorter than entrances", [rx, re_], [gx, ge], None if ge is None or gx is None else gx < ge)
-    if ref.get("stagger"):
-        ri = sorted(s["interval_s"] for s in ref["stagger"])[len(ref["stagger"]) // 2]
+    if ref.get("stagger"):                         # the references may stagger different groups differently: any one
+        ri = sorted({s["interval_s"] for s in ref["stagger"]})
         gi = [s["interval_s"] for s in got.get("stagger") or []]
-        add("stagger", f"a stagger within ±{TOL['stagger']:.0%} of the interval", ri, gi or None,
-            None if not gi else any(abs(x - ri) <= TOL["stagger"] * ri for x in gi))
+        add("stagger", f"a stagger within ±{TOL['stagger']:.0%} of one of the intervals", ri[0] if len(ri) == 1 else ri,
+            gi or None, None if not gi else any(abs(x - r) <= TOL["stagger"] * r for x in gi for r in ri))
     rh, gh = _med(ref, "hold_s"), _med(got, "hold_s")
     add("hold", f"median hold at least {TOL['hold']:.0%} of the reference's", rh, gh,
         None if rh is None or gh is None else gh >= TOL["hold"] * rh)

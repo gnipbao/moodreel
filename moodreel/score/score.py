@@ -12,6 +12,12 @@ picture hit lands on a listed cue. `score.json` holds both, and the music's arra
 With no sections (or sections with "parts": []) a score is the film's sound effects alone, its cues placed in bars
 and beats of the tempo all the same.
 
+A section may write its lead out instead of drawing one: "melody": [{"bar": 1, "beat": 1, "beats": 0.5, "tone": 2,
+"word": "save"}, ...], bars counted within the section, `tone` an index into the bar's chord tones an octave up (or
+"note", a MIDI number), "oct" to move it. Notes carrying a "word" are the lyric as sung: the timeline lists them
+(`words`, and `lines`, a new line after a rest of a beat or more, or where a note says "line": true), and `write` puts
+them in lyrics.json for `moodreel music --lyrics`, so the picture lights each word on its note.
+
 Bars and beats count from 1 (beat 2.5 is the off-beat after 2); one chord per bar, cycling. Grooves: four (a kick on
 every beat), backbeat (kick 1 and 3, snare 2 and 4), halftime (kick 1, snare 3), oompah (bass on 1 and 3, a chord
 stab on 2 and 4), none. Parts: kick, snare, clap, hat, bass, pad, stab, pluck (an arpeggio in eighths), lead (a
@@ -27,7 +33,9 @@ timpani (the root on each downbeat). Sampled cue sounds: brass, piano (a chord),
 roll that ends on its cue, `beats` long), glock (the chord's top note) and harp (a glissando that ends on its cue).
 
 `render` gives the audio and the timeline; `write` puts `out/score.wav` and `score.js` (the timeline as a module the
-picture imports: SCORE, bar(n, beat), cue(name)) in the film folder. The same seed draws the same music.
+picture imports: SCORE, bar(n, beat), cue(name)) in the film folder, and for a score with a band, `music-data.js` for
+kit/music.js: the beats, bars and drum hits exactly as written (an analysis of the rendered audio would only estimate
+them) and the lyric as sung. The same seed draws the same music.
 """
 from __future__ import annotations
 
@@ -82,8 +90,60 @@ def timeline(score: dict) -> dict:
         n += s["bars"]
     cues = [{"name": c["name"], "t": round(bar_t(c["bar"], c.get("beat", 1)), 4), "sound": c.get("sound", "hit"),
              **({"beats": c["beats"]} if "beats" in c else {})} for c in score.get("cues", [])]
+    words = []
+    for s, sec in zip(score["sections"], sections):
+        for m in s.get("melody") or []:
+            if m.get("word"):
+                t0 = bar_t(sec["bar"] + m["bar"] - 1, m.get("beat", 1))
+                words.append({"w": m["word"], "start": round(t0, 4), "end": round(t0 + 0.9 * m.get("beats", 1) * beat_s, 4),
+                              "line": bool(m.get("line"))})
+    words.sort(key=lambda w: w["start"])
+    lines = []
+    for i, w in enumerate(words):
+        if not lines or w["line"] or w["start"] - words[i - 1]["end"] >= 0.9 * beat_s:
+            lines.append([])
+        lines[-1].append({k: w[k] for k in ("w", "start", "end")})
+    lines = [{"text": " ".join(w["w"] for w in ln), "start": ln[0]["start"], "end": ln[-1]["end"], "words": ln} for ln in lines]
     return {"bpm": score["bpm"], "meter": meter, "offset": offset, "beat_s": round(beat_s, 6), "bars": n - 1,
-            "duration": round(bar_t(n), 4), "sections": sections, "cues": sorted(cues, key=lambda c: c["t"])}
+            "duration": round(bar_t(n), 4), "sections": sections, "cues": sorted(cues, key=lambda c: c["t"]),
+            "words": [w for ln in lines for w in ln["words"]], "lines": lines}
+
+
+def music_data(score: dict, tl: dict, audio: np.ndarray | None = None) -> dict:
+    """The score as kit/music.js reads it (moodreel music's shape): beats and bars from the grid, the drum hits where
+    the grooves put them (claps count as snares), none while a stop cue holds the band, the sung words as vocal hits,
+    and the loudness envelope of the rendered audio."""
+    beat_s, meter, offset = tl["beat_s"], tl["meter"], tl["offset"]
+    hits = {"kick": [], "snare": [], "hat": []}
+    for s, sec in zip(score["sections"], tl["sections"]):
+        parts, groove = set(s.get("parts") or []), s.get("groove", "backbeat")
+        for b in range(s["bars"]):
+            for k in range(meter):
+                t = sec["start"] + (b * meter + k) * beat_s
+                if "kick" in parts and (groove == "four" or (groove == "backbeat" and k % 2 == 0) or (groove == "halftime" and k == 0)):
+                    hits["kick"].append([t, 1.0])
+                if ("snare" in parts and ((groove in ("backbeat", "four") and k % 2 == 1) or (groove == "halftime" and k == 2))) \
+                        or ("clap" in parts and k % 2 == 1 and groove != "halftime"):
+                    hits["snare"].append([t, 1.0 if "snare" in parts else 0.8])
+                if "hat" in parts and groove != "oompah":
+                    hits["hat"] += [[t, 0.6], [t + beat_s / 2, 1.0]]
+                elif "hat" in parts and k % 2 == 1:
+                    hits["hat"].append([t, 1.0])
+    stops = [(c["t"], c["t"] + c.get("beats", 1) * beat_s) for c in tl["cues"] if c["sound"] == "stop"]
+    keep = lambda t: not any(a <= t < b for a, b in stops)  # noqa: E731
+    n = tl["bars"] * meter
+    data = {"duration": tl["duration"], "bpm": tl["bpm"], "fps": 100,
+            "beats": [round(offset + i * beat_s, 4) for i in range(n)],
+            "downbeats": [round(offset + i * beat_s, 4) for i in range(0, n, meter)],
+            "sections": [{"name": x["name"], "start": x["start"], "end": x["end"]} for x in tl["sections"]],
+            "onsets": {k: [[round(t, 4), v] for t, v in sorted(h) if keep(t)] for k, h in hits.items()},
+            "features": {}, "lyrics": tl["lines"]}
+    data["onsets"]["vocal"] = [[w["start"], 0.8] for w in tl["words"]]
+    if audio is not None and len(audio):
+        hop = S.SR // 100
+        rms = np.sqrt(np.convolve(audio.astype(np.float64) ** 2, np.ones(hop) / hop, mode="same")[::hop])
+        data["features"]["rms"] = [round(float(x), 3) for x in np.clip(rms / (np.percentile(rms, 99) + 1e-9), 0, 1)]
+    return data
 
 
 def _place(buf: np.ndarray, x: np.ndarray, t: float) -> None:
@@ -139,7 +199,13 @@ def _section(buf, s, start, beat_s, meter, rng):
         _sampled(buf, parts, groove, name, t0, beat_s, meter, lead_motif, b)
         if "pad" in parts:
             _place(buf, S.pad(tones, meter * beat_s, rng, LEVEL["pad"]), t0)
-        if "lead" in parts:                                # the same two-bar motif over every pair of bars
+        if "lead" in parts and s.get("melody"):           # the lead as written
+            for m in s["melody"]:
+                if m["bar"] - 1 == b:
+                    k = m.get("tone", 0)
+                    note = m["note"] if "note" in m else tones[k % len(tones)] + 12 * (1 + m.get("oct", 0) + k // len(tones))
+                    _place(buf, S.lead(note, 0.9 * m.get("beats", 1) * beat_s, rng, LEVEL["lead"]), t0 + (m.get("beat", 1) - 1) * beat_s)
+        elif "lead" in parts:                              # the same two-bar motif over every pair of bars
             t, end = t0, t0 + meter * beat_s
             for deg, dur in lead_motif[(b % 2) * 4:(b % 2) * 4 + 4]:
                 if t >= end:
@@ -310,9 +376,14 @@ def write(film: Path) -> dict:
     wav = film / "out" / "score.wav"
     wavfile.write(wav, S.SR, (np.clip(audio, -1, 1) * 32767).astype(np.int16))
     (film / "score.js").write_text(JS.format(score=json.dumps(tl, indent=1)))
+    if tl["lines"]:                                        # the lyric as sung, for `moodreel music --lyrics`
+        (film / "lyrics.json").write_text(json.dumps(tl["lines"], indent=1))
+    if any(s.get("parts") for s in score["sections"]):     # the music as data, exactly as written
+        from ..measure.music import write_module
+        write_module(music_data(score, tl, audio), film / "music-data.js", "the film's own score, from score.json")
     credits = film / "CREDITS"
     if uses_samples(score) and credits.exists() and samples.credit() not in credits.read_text():
         text = credits.read_text()
         credits.write_text(text + ("" if text.endswith("\n") else "\n") + f"- {samples.credit()}\n")
     return {"wav": str(wav), "js": str(film / "score.js"), **{k: tl[k] for k in ("bpm", "bars", "duration")},
-            "cues": len(tl["cues"])}
+            "cues": len(tl["cues"]), "words": len(tl["words"])}

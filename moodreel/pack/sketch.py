@@ -138,7 +138,8 @@ def _kind(vocabulary: dict | None) -> str:
 
 def write_sketch(project: Path, fps: int = 24) -> Path:
     project = Path(project)
-    write_kit(project)
+    if not (project / "kit" / "tokens.js").exists():       # never overwrite the director's kit
+        write_kit(project)
     grammar = json.loads((project / "measure" / "motion.json").read_text())["grammar"]
     if "videos" in grammar:
         vid = grammar["videos"][0]

@@ -162,8 +162,10 @@ vec3 shoulder(vec3 x) {
   return mix(y, vec3(1.0), smoothstep(2.0, 12.0, over) * 0.85);
 }`;
 
+// edge: what shows where shake or zoom pulls the picture in from outside the frame (0 stretches the border, as a small
+// shake wants; 1 is black, for a whip pan that carries the picture out of frame)
 export const POST = { exposure: 1, bloom: 0.55, bloomThreshold: 0.85, bloomKnee: 0.5, bloomRadius: 0.75, halation: 0.25,
-  ca: 1.2, grain: 0, vignette: 0.35, fade: 0, flash: 0, invert: 0, shake: [0, 0], zoom: 1, time: 0 };
+  ca: 1.2, grain: 0, vignette: 0.35, fade: 0, flash: 0, invert: 0, shake: [0, 0], zoom: 1, time: 0, edge: 0 };
 
 const LINE_VERT = /* glsl */ `
 precision highp float;
@@ -373,7 +375,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
         }`, { src: { value: null }, prev: { value: null }, texel: { value: new THREE.Vector2() }, radius: { value: 1 } }),
       final: pass(/* glsl */ `
         uniform sampler2D src, bloomTex, haloTex;
-        uniform float exposure, bloom, halation, ca, grain, vignette, fade, flash, time, zoom, invert;
+        uniform float exposure, bloom, halation, ca, grain, vignette, fade, flash, time, zoom, invert, edge;
         uniform vec2 shake, res;
         ${SHOULDER}
         void main() {
@@ -383,6 +385,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
           vec3 col = vec3(texture(src, uv + off).r, texture(src, uv).g, texture(src, uv - off).b);
           col += texture(bloomTex, uv).rgb * bloom;
           col += vec3(1.0, 0.18, 0.04) * luma(texture(haloTex, uv).rgb) * halation;
+          col *= mix(1.0, step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0), edge);
           col = shoulder(col * exposure);
           col = mix(col, vec3(0.8515) - col * 0.84, invert);
           col += C_BONE * flash;
@@ -393,7 +396,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
           s += (g1 * 0.6 + g2 * 0.4) * grain * (0.55 + 1.2 * lm * (1.0 - lm));
           fragColor = vec4(sat(s + (hash12(gl_FragCoord.xy * 1.37 + time) - 0.5) / 255.0), 1.0);
         }`, Object.fromEntries([...['src', 'bloomTex', 'haloTex'].map(k => [k, { value: null }]),
-        ...['exposure', 'bloom', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert'].map(k => [k, { value: 0 }]),
+        ...['exposure', 'bloom', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert', 'edge'].map(k => [k, { value: 0 }]),
         ['shake', { value: new THREE.Vector2() }], ['res', { value: new THREE.Vector2(width, height) }]])),
     };
     P.pre.u.src.value = src; P.pre.u.texel.value.set(1 / width, 1 / height);
@@ -413,7 +416,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
     }
     const f = P.final.u;
     f.src.value = src; f.bloomTex.value = ups[0].texture; f.haloTex.value = ups[3].texture;
-    for (const k of ['exposure', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert']) f[k].value = p[k];
+    for (const k of ['exposure', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert', 'edge']) f[k].value = p[k];
     f.bloom.value = p.bloom / 3;                        // the pyramid sums about three levels' worth
     f.shake.value.set(p.shake[0], p.shake[1]);
     P.final.render(out);

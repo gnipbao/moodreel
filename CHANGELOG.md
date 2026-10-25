@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased: a film's own score, sung
+
+- `moodreel score`: a section can write its lead out (`"melody"`: notes by bar, beat, length and chord tone), and a
+  note may carry a word: the timeline lists the words and lines as sung, `lyrics.json` holds them, and a score with a
+  band writes `music-data.js` for kit/music.js itself, the beats, bars and drum hits exactly as written (analysing the
+  rendered synth track read it at half tempo, a beat off).
+- `moodreel sketch` no longer rewrites the project's kit: tokens and motion set by the director at gate 1 stay.
+- `moodreel motion-check`: when the references stagger different groups differently, a film's stagger passes if it
+  matches any of them (it used to be compared with the upper one only).
+- `kit/gl.js` post: `edge: 1` shows black where a shake or whip pulls the picture in from outside the frame, instead
+  of stretching its border across it.
+
 ## Unreleased: beat-sync fingerprints and tracked cameras
 
 Both checked against the source of pdoom-video, whose plates' own post settings and cameras were recorded frame by
