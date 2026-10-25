@@ -142,7 +142,7 @@ def _style(name: str) -> dict:
 
 
 def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.0, size: str | None = None,
-        fps: int = 30) -> Path:
+        fps: int | None = None) -> Path:
     s = _style(style)
     d = Path(root) / name
     if d.exists():
@@ -167,6 +167,7 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
             "export const exit = (t, at) => tween(t, at, MOTION.exit.duration, MOTION.exit.ease);\n")
     st = json.loads((sdir / "style.json").read_text()) if (sdir / "style.json").exists() else {}
     size = size or st.get("size") or "1920x1080"
+    fps = fps or st.get("fps") or 30                  # the style's own frame rate unless the film asks for another
     (d / "film.json").write_text(json.dumps({"name": name, "style": s["slug"], "style_origin": s["origin"], "size": size,
                                              "fps": fps, "duration": duration, "poster": round(duration * 0.6, 2)}, indent=1))
     (d / "index.html").write_text('<!doctype html><html><head><meta charset="utf-8"><title>' + name +
@@ -175,6 +176,9 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
     (d / "TREATMENT.md").write_text(TREATMENT.format(name=name, style=f"{s.get('name')} ({s['slug']}, {_shown(sdir)})"))
     (d / "CREDITS").write_text(f"{name}\n\nThird-party assets (fonts, images, music, samples) and their licences:\n\n")
     (d / "build.sh").write_text(BUILD.format(music=""))
+    if (d / "kit" / "fonts" / "OFL.txt").exists():   # a style that ships its typefaces: their licence goes in the credits
+        with open(d / "CREDITS", "a") as cr:
+            cr.write("- Fonts in kit/fonts: SIL Open Font License 1.1; copyright lines and licence in kit/fonts/OFL.txt\n")
     if "3d" in (st.get("needs") or []):               # three.js for kit/three.js, with its licence and a credit
         from ..pack.kit import vendor_three
         with open(d / "CREDITS", "a") as cr:
