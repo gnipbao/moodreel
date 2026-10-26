@@ -23,6 +23,10 @@ and type projected through the camera. All of that can be read off the video bef
   how late, how fast it decays and how far above chance; where cuts, surges, punches and flashes land; and, against
   another fingerprint, what a remake misses or adds.
 - `moodreel compare <reference> <remake>`: the score after every pass, window by window, with what is wrong with each.
+- `moodreel camera <reference> [--against <remake>] [--shots f] [--js camera-data.js]`: the camera, window by window,
+  read off the picture: its travel, push and roll, the turn and tilt they mean at a field of view, the remake's beside
+  them with what is off, and the reference's track as a film module for `kit/follow.js`. Blind to a crane that keeps
+  its subject in frame and to dark frames full of moving pieces: key those by hand.
 - `moodreel probe <reference> --at t1,t2 [--against <remake>] [--region x0,y0,x1,y1] [--sheet out.jpg]`: a shot's
   numbers off full-size frames, the reference's beside the remake's: colour, lit share and box, detail, whether the
   grain holds still, the period and phase of a cell grid, a bar's angle, length and width, and with a region round a

@@ -69,7 +69,7 @@ kit、演示片源码），按同样的分类存放：信号图版（图形与�
 - `uv run moodreel pack <项目> --slug <名> --name <名>`：校验蒸馏出的风格（11 节齐全、数值可追溯、名称不冲突）并存入 `~/.moodreel/styles`；
 - `uv run moodreel styles`：列出你的风格和内置风格；
 - `uv run moodreel music <歌> --lyrics <逐词歌词> --out <片子>/music-data.js`：把歌变成数据（节拍网格、小节、底鼓/军鼓/镲、包络、逐词演唱时间），片子里用 `kit/music.js` 读，让切点、砸字、推拉都踩在歌上；渲染加 `--samples 8 --shutter 0.2` 出运动模糊。做法见 docs/MUSIC-SYNC.md；
-- `uv run moodreel compare <参考片> <复刻>`：逐镜比对复刻和参考：画面结构、细节、明暗、动作方向（光流）和速度，最差的排前面并写明问题；`--against <上一轮的 --json>` 给出每个窗口和均分的变化，`--sheet <图>` 把参考和复刻在每个窗口中点并排成一张联系表（最差的在前）；2D 画布画不出的东西（光线步进的生物、引力透镜、密集流线、随表面走的版画排线）用 GPU 层 `kit/gl.js`。见 docs/GPU.md；
+- `uv run moodreel compare <参考片> <复刻>`：逐镜比对复刻和参考：画面结构、细节、明暗、动作方向（光流）和速度，最差的排前面并写明问题；`--against <上一轮的 --json>` 给出每个窗口和均分的变化，`--sheet <图>` 把参考和复刻在每个窗口中点并排成一张联系表（最差的在前）；`uv run moodreel camera <参考片> --against <复刻>` 逐窗口读出两边的镜头运动（摇、推拉、滚转），指出哪里不对，并把参考片的镜头轨迹写成 `camera-data.js`，让 `kit/follow.js` 按它移动复刻的镜头；2D 画布画不出的东西（光线步进的生物、引力透镜、密集流线、随表面走的版画排线）用 GPU 层 `kit/gl.js`。见 docs/GPU.md；
 - `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
 - `uv run moodreel motion <视频> --out <目录>`：只测一段视频的运动语法；
 - `uv run moodreel export hyperframes|remotion <影片>`：把片子导出成 HyperFrames composition 或 Remotion 工程。

@@ -5,7 +5,8 @@ what the eye reads, its first pass is a different film; each step below came fro
 teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window score from 0.49 to 0.65 (median
 0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. A second film, a 64 s one-take 3D
 voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
-0.53 to 0.59 (mean of 36 windows) in seven passes; what it added is in "One take in 3D" below. Read `reading-shots.md`
+0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named; what it
+added is in "One take in 3D" and "The camera, measured" below. Read `reading-shots.md`
 first for the tools that read a shot as code.
 
 ## The loop
@@ -112,6 +113,47 @@ Nothing in the first film's rules was wrong here; these were new.
   Add albedo x 0.22 as a daytime fill on walls and roofs.
 - **Make the story's numbers true and let one schedule drive both.** 128 clones build 128 houses: each clone goes to
   its house, and the house rises when the clone arrives, so the town grows at the march's pace.
+
+## The camera, measured (the second round of the 3D film)
+
+The maker looked at the first round and named four things: the logo in the first frame not aligned, every camera move
+wrong, the keyboard not like the reference's, too few hops. The stills had matched; the motion had not. Each one was
+measurable, and the camera most of all.
+
+| The eye said | The numbers said | Build |
+|---|---|---|
+| every camera move is wrong | `moodreel camera <reference> --against <remake>`, window by window: the reference pushes in 34 %/s over the keyboard where ours held still, turns right 17 degrees where ours turned left, pulls out 65 %/s over the crowd, rolls 74 degrees through a whip | the reference's track as `camera-data.js`, and the camera moved by it (`kit/follow.js`) between a few anchors; windows moving as the reference's from about none to 18 of 36, the flow agreement's median 0.20 to 0.33, the mean 0.586 to 0.607 |
+| the logo isn't aligned | the reference's mark on a 30 px grid (not 40), 16 x 10 cells from (196, 126): a 12 x 8 body, an arm a side on rows 4-5, four legs on rows 8-9; the name 697 px wide on baseline 268, the subtitle on 354; the conversation's lines 5 and 7 px off | the stand-in on the same grid and footprint with a face of its own, the name set to the measured width by letter spacing (a stand-in name of another length), the lines moved; typing 0.88 to 0.90, the reply 0.87 to 0.94 |
+| the keyboard is wrong | a tenkeyless layout with keys of their real widths (shift, enter, space, the arrow and page clusters with their gap), sculpted caps with legends; one key 1/2.3 of the critter's width (ours 1/3.4, a grid of equal squares); the glow leaking up the caps' sides | the layout built from rows of key widths, tapered caps, an atlas of legends, the glow on the caps' lower part; each glass cap a diorama of its own (village, forest, lake, fields, maze, desert, town) |
+| too few hops | the critter's lowest point, normalised by its size, frame by frame: nine hop tops in 8-14.4 s, about every half second with rests, three high ones; ours five | the hops as [start, end, from, to, height] with rests between; eight read back |
+
+How the camera was rebuilt, and what the measurement can't see:
+
+- **Read the picture's motion, then turn it into the camera's.** The picture moving x px right (at 1920 wide) is the
+  camera turning left by atan(x / f), f = 540 / tan(fov / 2); growing is moving along the view. `moodreel camera`
+  prints both, per window, beside the remake's, and names what is off ("pans the other way", "pushes in where the
+  reference pulls out", "doesn't roll"). Re-measure after every change; it is the camera's `--against`.
+- **Drive the camera by the track, anchor it sparsely.** `follow(MOTION, anchors, end, { own })` adds the measured turn
+  and push to a smooth path through anchors. Every anchor adds its own turn on top (the difference it must make up):
+  print what each adds before rendering, and put anchors where the measured path already goes. One that fought it
+  (a 165-degree turn, a 244-unit jump) turned the window's pan the other way.
+- **Let the measurement place the world.** The measured path swept the camera west after the bank, so the sunset went
+  west too, through a notch cut in the mountains for it; the night was turned to look west across the town. Cheaper
+  than fighting the reference's moves, and it keeps them.
+- **Integrate the push along the path.** A push moves the camera along its view at that moment; after a long pull-back
+  a pan turns where the camera stands, not where it began (computed in one go from the start, the camera orbited
+  its first position).
+- **Don't sum the measured roll.** A motion-blurred whip reads as a turn it never undoes; summed, the roll reached 96
+  degrees by the end with the reference's horizon level. Roll comes from the anchors.
+- **What the fit can't see, key by hand.** A crane or a sideways move whose tilt keeps the subject in frame nets out
+  (the reference rose over the crowd, the fit read it still); a dark frame full of falling pieces reads as the pieces
+  (the pour read "still" while the camera pushed in and tilted down). Look at those windows' frames and key them.
+- **The remake's fit has the same blind spot.** Ours read "still" over the keyboard where the camera turned 17
+  degrees: the critter held in the centre, the keys blurred out by the depth of field. Keep the background sharp
+  enough for the fit, and for the eye.
+- **A camera move needs the set laid out for it.** The reference's camera turns right as its critter hops right and
+  toward it; laid out otherwise, the measured turn looked away from the subject. Put the subject's path along the
+  measured look and its distance where the push leaves it.
 
 ## Rules that came out of it
 

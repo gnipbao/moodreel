@@ -191,7 +191,9 @@ node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
 
 Match a remake to its reference shot by shot, not just in stills: `moodreel compare` measures each of the reference's
 shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
-`--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle. What a 2D canvas can't draw (ray-marched
+`--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle;
+`moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) off both pictures,
+names what is off, and writes the reference's track for `kit/follow.js` to move the remake's camera by. What a 2D canvas can't draw (ray-marched
 bodies, lensing, dense line fields, engraving that follows a surface) goes through `kit/gl.js`, the GPU layer. See
 [docs/GPU.md](docs/GPU.md):
 
