@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased: the camera, measured
+
+- `moodreel camera <reference> [--against <remake>] [--shots f] [--js camera-data.js]`: a film's camera read off its
+  picture window by window (travel, push, roll, and the turn and tilt they mean at a field of view), a remake's beside
+  it with what is off ("pans the other way", "pushes in where the reference pulls out", "doesn't roll"), and the
+  reference's track as a film module.
+- `kit/follow.js`: `follow(MOTION, anchors, end, { own })` moves a remake's camera by that track between a few anchors
+  (push integrated along the view, roll from the anchors, hand-keyed spans where the fit reads the subject).
+- `remaking.md`, "The camera, measured": the second round of the 3D remake (mean 0.586 to 0.607, windows moving as the
+  reference's to 18 of 36): the logo on the reference's grid, a real keyboard layout, the hops counted, the camera
+  driven by the reference's track and anchored where its path already goes.
+
 ## Unreleased: a 3D one-take remake
 
 - `moodreel compare --against <last pass's --json>`: each window's score change and the mean's, so a change is kept

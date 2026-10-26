@@ -92,7 +92,9 @@ just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 **A remake** (a film matched to a reference shot by shot): read each shot before drawing it with `moodreel dossier`
 (motion, linework, finish, colour, and which technique it needs), read the reference's beat-sync fingerprint with
 `moodreel sync` (what the picture does on each kind of musical event, to the millisecond), and, for a 3D shot, track the
-camera through it with `moodreel pose <video> --track`; measure every pass with `moodreel compare <reference> <remake>`
+camera through it with `moodreel pose <video> --track`, and read every window's camera move (pan, push, roll) with
+`moodreel camera <reference> --against <remake>`, which writes the reference's track for `kit/follow.js` to move the
+remake's camera by; measure every pass with `moodreel compare <reference> <remake>`
 and `moodreel sync <remake> --against <reference fingerprint>`, not only by stills. Reading by eye runs darker,
 more saturated, sparser and slower than the reference, and guesses the camera: `references/distill/reading-shots.md`.
 Before redrawing a shot, read its numbers with `moodreel probe <reference> --at t1,t2 --against <remake>` (lit share

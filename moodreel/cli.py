@@ -25,6 +25,7 @@
   moodreel compare <reference> <remake> [--shots f]       a remake against its reference, window by window
                    [--against last.json] [--sheet f.jpg]  each window's change since the last pass; a contact sheet
   moodreel probe <reference> --at t,t [--against remake]  a shot's numbers, the reference's beside the remake's
+  moodreel camera <reference> [--against remake] [--js f] the camera, window by window: pan, push, roll; a track for kit/follow.js
 """
 from __future__ import annotations
 
@@ -216,6 +217,11 @@ def cmd_compare(a):
     from .check import compare
     res = compare.run(a.reference, a.remake, a.shots, a.every, a.offset, a.json, a.against, a.sheet)
     print(compare.report(res))
+
+
+def cmd_camera(a):
+    from .check import camera
+    print(camera.report(camera.run(a.reference, a.shots, a.every, a.against, a.js, a.json, a.fov)))
 
 
 def cmd_probe(a):
@@ -461,6 +467,16 @@ def main(argv=None):
     p.add_argument("--against", help="a previous pass's --json: each window's score change and the mean's")
     p.add_argument("--sheet", help="write the reference beside the remake at each window's middle, worst first (.jpg)")
     p.set_defaults(fn=cmd_compare)
+    p = sub.add_parser("camera", help="a film's camera read off its picture, window by window (pan, push, roll and the "
+                       "turn they mean), a remake's beside it, and the track as camera-data.js for kit/follow.js")
+    p.add_argument("reference")
+    p.add_argument("--against", help="a remake: its camera beside the reference's, and what is off")
+    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the reference's own shots)")
+    p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
+    p.add_argument("--js", help="write the reference's track here (camera-data.js)")
+    p.add_argument("--json", help="write the full result here")
+    p.add_argument("--fov", type=float, default=36.0, help="the remake's field of view, for the turn and tilt (deg)")
+    p.set_defaults(fn=cmd_camera)
     p = sub.add_parser("probe", help="a shot's numbers off full-size frames (colour, lit share and box, detail, still "
                        "grain, cell grid, a bar's angle), the reference's beside a remake's")
     p.add_argument("reference")
