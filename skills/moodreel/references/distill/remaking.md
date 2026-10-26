@@ -3,8 +3,10 @@
 A remake is matched to its reference shot by shot, then measured, then fixed where it is furthest off. Drawn from
 what the eye reads, its first pass is a different film; each step below came from closing that gap on a 16 s launch
 teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window score from 0.49 to 0.65 (median
-0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. Read `reading-shots.md` first for the tools that
-read a shot as code.
+0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. A second film, a 64 s one-take 3D
+voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
+0.53 to 0.59 (mean of 36 windows) in seven passes; what it added is in "One take in 3D" below. Read `reading-shots.md`
+first for the tools that read a shot as code.
 
 ## The loop
 
@@ -18,8 +20,11 @@ read a shot as code.
    for each window you fix (a film folder renders its stills, a video is read directly). Change the drawing so the
    numbers move toward the reference's, probe again, and render the film only when they agree. Two or three probes
    settle a shot; renders and contact sheets alone don't.
-4. **Render, score, compare with the last pass** window by window, and keep a change only if its window rose. Make a
-   side-by-side video (reference above remake, the reference's audio) for the user's eyes.
+4. **Render, score, compare with the last pass** window by window, and keep a change only if its window rose:
+   `moodreel compare ... --json pass2.json --against pass1.json --sheet pairs.jpg` prints each window's change and the
+   mean's, and lays the reference beside the remake at each window's middle, worst first (read the sheet before
+   probing: the scores say where, the sheet says what). Make a side-by-side video (reference above remake, the
+   reference's audio) for the user's eyes.
 
 ## What to measure, and what it fixed
 
@@ -73,6 +78,40 @@ Both were measurable; a third thing, which nobody named, was worth more than eit
   row of specks along the perspective.
 - **A turning thing's centre is where its speed crosses zero**, not the middle of its outline. Read it before
   building the turn.
+
+## One take in 3D (the second film)
+
+A continuous camera through three sets (a desk, a world, the desk at night), lit by a time of day, the world grown by
+shaders: three.js scenes into an HDR target with depth, depth of field gathered from the depth, the 2D layers on top.
+Nothing in the first film's rules was wrong here; these were new.
+
+| The eye said | The numbers said | Build |
+|---|---|---|
+| the critter lands, then hops over the keyboard | the reference's critter fills 17-20 % of the width on open desk, nothing between it and a low camera, the dim monitor a dark band behind; ours filled 45 %, behind the keyboard | the landing moved beside the keyboard and the camera back to the distance the width gives (width / (share x 2 tan(fov/2) x aspect)); assemble 0.31 to 0.60, the hop 0.43 to 0.68 |
+| the desk goes blue while the voxels pour | lit share 57 %, mean (47, 46, 59), corners 70 / middle 87; ours 24 %, a hot pool | a broad directional "screen light" over the desk instead of a spotlight |
+| it falls through the sky | the reference: a teal sea far below, a pink horizon a quarter down, the critter below the horizon; ours showed the land a second early | a set of its own (sea, dawn dome, clouds), the camera above the critter looking down at it; the white 0.45 to 0.78, the fall 0.27 to 0.55 |
+| the town goes up | at 36.6 s the reference has five houses; ours had thirty | the clones march slower (each house is built when its clone arrives); the aerial 0.36 to 0.54 |
+| the night | the reference (31, 49, 61), teal; ours (48, 44, 35), warm from a town light | the warm fill down to a third, the moon and sky bluer |
+
+- **A one-take film has phases, not cuts.** `compare` finds only its hard cuts (two here). Write the windows from
+  frames labelled with their own time every 0.5-2 s (a tiled `fps=0.5` sheet shows t = 1, 3, 5 ..., not 0, 2, 4).
+- **Where the camera stands decides most windows.** The big gains were the camera and the subject put where the
+  reference has them (size in frame gives distance), not materials. Read the reference's layout first: what fills
+  the frame, what is between the camera and the subject, what is behind it.
+- **A key moves its neighbours' windows.** A keyframed path bends around every key: one settling key took a
+  neighbouring window from 0.54 to 0.48. Score every camera change with `--against` and keep it only where the sum
+  rose. A look target that jumps from a near subject to the horizon overshoots the frames before it: hold the key.
+- **Look at the frames between the keys.** A camera between two keys passed through houses (black frames at 49,
+  51 and 53 s); keep it above the ground at least.
+- **The shadow pass ignores a material's vertex code.** Instances grown in `onBeforeCompile` cast their full-size
+  shadows unless `customDepthMaterial` grows them too: the river came out as tiles of shadow from the grass that
+  covered it before it was cut, the valley darkened by mountains that had not risen.
+- **Shrinking to zero on one axis leaves a footprint.** Houses not yet built showed as coloured rectangles: collapse
+  an instance that has not started to a point.
+- **Walls read grey under a hemisphere light.** Sideways faces get half the sky; the reference's walls are white.
+  Add albedo x 0.22 as a daytime fill on walls and roofs.
+- **Make the story's numbers true and let one schedule drive both.** 128 clones build 128 houses: each clone goes to
+  its house, and the house rises when the clone arrives, so the town grows at the march's pace.
 
 ## Rules that came out of it
 
