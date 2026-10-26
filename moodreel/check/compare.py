@@ -15,6 +15,10 @@ the same small size:
 
 and the worst windows are listed first, with what is wrong with each. The times are the reference's; --offset shifts the
 remake's (remake time = reference time + offset).
+
+Between passes: --against <last pass's --json> adds each window's change and the mean's, so a change is kept only where
+its window rose; --sheet <file.jpg> puts the reference beside the remake at each window's middle, worst first, named
+and scored, the picture to read before probing (the scores say where, the sheet says what).
 """
 from __future__ import annotations
 
@@ -160,23 +164,72 @@ def compare(ref, ours, shots=None, every=None, offset=0.0) -> dict:
             "worst": [r["window"] for r in sorted(rows, key=lambda r: r["score"])[:5]]}
 
 
+def against(res: dict, prev: dict) -> dict:
+    """Each window's score change from a previous pass (matched by name and times), and the mean's."""
+    before = {(r["window"], r["t0"], r["t1"]): r["score"] for r in prev.get("windows", [])}
+    for r in res["windows"]:
+        b = before.get((r["window"], r["t0"], r["t1"]))
+        r["change"] = None if b is None else round(r["score"] - b, 3)
+    mean = lambda rows: round(float(np.mean([r["score"] for r in rows])), 3) if rows else None  # noqa: E731
+    res["mean"] = {"before": mean(prev.get("windows", [])), "now": mean(res["windows"])}
+    return res
+
+
 def report(res: dict) -> str:
-    lines = [f'{"window":>8} {"t0":>7} {"t1":>7} {"struct":>6} {"detail":>6} {"tone":>5} {"flow":>5} {"speed":>5} {"score":>5}  problems']
+    w = max([8, *(len(r["window"]) for r in res["windows"])])
+    vs = any("change" in r for r in res["windows"])
+    lines = [f'{"window":>{w}} {"t0":>7} {"t1":>7} {"struct":>6} {"detail":>6} {"tone":>5} {"flow":>5} {"speed":>5} {"score":>5}'
+             + (f' {"change":>6}' if vs else "") + '  problems']
     fmt = lambda v: "-" if v is None else v  # noqa: E731
     for r in res["windows"]:
-        lines.append(f'{r["window"]:>8} {r["t0"]:7.2f} {r["t1"]:7.2f} {fmt(r.get("structure")):>6} {fmt(r.get("detail")):>6} '
-                     f'{fmt(r.get("tone")):>5} {fmt(r.get("flow")):>5} {fmt(r.get("speed")):>5} {r["score"]:>5}  '
-                     + ", ".join(r["problems"]))
+        ch = r.get("change")
+        lines.append(f'{r["window"]:>{w}} {r["t0"]:7.2f} {r["t1"]:7.2f} {fmt(r.get("structure")):>6} {fmt(r.get("detail")):>6} '
+                     f'{fmt(r.get("tone")):>5} {fmt(r.get("flow")):>5} {fmt(r.get("speed")):>5} {r["score"]:>5}'
+                     + (f' {"-" if ch is None else f"{ch:+.3f}":>6}' if vs else "") + '  ' + ", ".join(r["problems"]))
     m = res["median"]
     lines.append(f"median: structure {m['structure']}, detail {m['detail']}, tone {m['tone']}, flow {m['flow']}, "
                  f"speed {m['speed']}, score {m['score']}")
+    if res.get("mean"):
+        lines.append(f"mean score: {res['mean']['before']} -> {res['mean']['now']}")
     lines.append("worst first: " + ", ".join(res["worst"]))
     return "\n".join(lines)
 
 
-def run(ref, ours, shots_path=None, every=None, offset=0.0, out=None) -> dict:
+def sheet(res: dict, out, offset: float = 0.0, cols: int = 2, size=(480, 270)) -> Path:
+    """The reference (left) beside the remake (right) at each window's middle, worst first, with its name and score."""
+    from PIL import Image, ImageDraw
+    w, h = size
+    rows = sorted(res["windows"], key=lambda r: r["score"])
+    tiles = []
+    for r in rows:
+        t = (r["t0"] + r["t1"]) / 2
+        pair = Image.new("RGB", (w * 2, h))
+        for k, (path, at) in enumerate(((res["reference"], t), (res["remake"], t + offset))):
+            f = _frames(path, at, at + 0.04, w, h, 25)
+            if len(f):
+                pair.paste(Image.fromarray(f[0][:, :, ::-1]), (k * w, 0))
+        d = ImageDraw.Draw(pair)
+        label = f'{r["window"]}  {t:.2f}s  {r["score"]:.2f}'
+        d.rectangle((0, 0, 8 + 7 * len(label), 20), fill=(0, 0, 0))
+        d.text((5, 4), label, fill=(255, 230, 0))
+        d.line((w, 0, w, h), fill=(0, 0, 0), width=2)
+        tiles.append(pair)
+    n = max(1, -(-len(tiles) // cols))
+    board = Image.new("RGB", (w * 2 * cols, h * n), (0, 0, 0))
+    for i, p in enumerate(tiles):
+        board.paste(p, ((i % cols) * w * 2, (i // cols) * h))
+    out = Path(out)
+    board.save(out, quality=88)
+    return out
+
+
+def run(ref, ours, shots_path=None, every=None, offset=0.0, out=None, prev=None, pairs=None) -> dict:
     shots = json.loads(Path(shots_path).read_text()) if shots_path else None
     res = compare(ref, ours, shots, every, offset)
+    if prev:
+        against(res, json.loads(Path(prev).read_text()))
     if out:
         Path(out).write_text(json.dumps(res, indent=1))
+    if pairs:
+        sheet(res, pairs, offset)
     return res

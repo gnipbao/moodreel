@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased: a 3D one-take remake
+
+- `moodreel compare --against <last pass's --json>`: each window's score change and the mean's, so a change is kept
+  only where its window rose; `--sheet <file.jpg>`: the reference beside the remake at each window's middle, worst
+  first, named and scored. The report's window column widens to the longest name.
+- `skills/moodreel/references/distill/remaking.md`: "One take in 3D", from remaking a 64 s voxel-world film (mean
+  window score 0.53 to 0.59 in seven passes): phases instead of cuts, the camera and subject placed by the size in
+  frame, keys that move their neighbours' windows, frames between keys, growth shaders and the shadow pass
+  (`customDepthMaterial`), footprints of instances not yet grown, a daytime fill for walls, one schedule for a story's
+  counts.
+
 ## Unreleased: the distilled packs in the repository
 
 - `styles/README.md` is the one index of every style: the distilled packs are listed in their categories beside
