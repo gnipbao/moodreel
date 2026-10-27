@@ -386,6 +386,36 @@ of 36; the aerial build 0.65 to 0.68, the town rising 0.55 to 0.62, the swoop 0.
 director's notes 77 to 75; its likeness 0.418 to 0.416. The low flight is still off (0.57 to 0.49, unpaced: its camera
 is the anchors' alone) and so are the march, the desk hop and the night grass.
 
+## The desk hop, the night hill, colour in the light (the tenth round of the 3D film)
+
+The maker named the desk hop and the night grass first, and the trees' and the houses' colour still weak beside the
+reference's.
+
+- **A lock needs subjects that pin it.** Over the desk hop the reference's boxes hold only the critter (the keyboard,
+  the monitor and the plant absent till 9.15 s); solving onto that, the lock lifted the camera 10 units and slid the
+  critter back to keep the absent keyboard out. Start the lock where the boxes constrain it, and key the simple framing
+  before it by hand.
+- **Streaks are a camera move.** The horizontal streaks over the reference's desk were the camera circling the critter
+  on a long lens from the side along the gap; the keyboard comes in under it only as it comes round to the front.
+- **Light what the reference lights.** A fill from the camera's direction lit the keyboard and the desk round the
+  critter, which the reference leaves dark; a narrow spot on the critter lights its face and nothing else.
+- **A night shot is a slope, a brow and a line.** The reference looks down a rounded hill whose brow arcs across the
+  frame, critters sitting along it, the lit town beyond, low lanterns along the river leading in; ours stood low on a
+  flat rise under tall lamp posts (Jev: eye level and "a field of repeated things" against its high, leading line).
+- **Colour is in the light as much as in the paint.** The forest's greens were deep and its render olive: the sky
+  light's ground colour was olive and lit every side face. A bright blue sky fill greyed every colour and flattened
+  the light; the reference's sun carries it, its shadows deep and saturated. Measure colour by place, not only by hue:
+  "red roof" pixels in a town full of critters were critters.
+- **When the judges disagree, look.** Keyed to the reading, the night grass drew no director's notes and Jev's
+  likeness rose (0.45 to 0.47), while compare scored it lower (0.49 to 0.44: its picture moved faster than the
+  reference's); without the hero's lock compare rose back and Jev fell to 0.38. Keep the version the frames side by
+  side agree with, and say what the other judge saw.
+
+Over the round (passes p42 to p44): the desk hop 0.48 to 0.68 (Jev 0.25 to 0.29), the night lamps 0.58 to 0.59 (Jev
+0.29 to 0.36), the night grass read as the reference's by the director; compare 0.649 over all, Jev's likeness 0.416
+to 0.417, its notes 75 to 74. The keyboard after the hop went down (0.64 to 0.59), and the low flight, the march and
+the swoop are still the weakest.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
