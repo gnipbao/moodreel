@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased: the renderer's share, measured
+
+- `remaking.md`, "The renderer's share, measured": the 3D remake's forest window rebuilt in Blender EEVEE from the
+  film's own data (same layout, camera, critter): tone error 21 to 8, compare 0.66 to 0.68, structure and Jev's
+  likeness unchanged; the renderer owns the colour, not the picture.
+
 ## Unreleased: a lens that carried on
 
 - `remaking.md`, "A lens that carried on": the eleventh round of the 3D remake (a re-keyed span ends where it found the
