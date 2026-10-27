@@ -24,6 +24,7 @@
   moodreel bench blind make|score                         packets for a blind distillation, and the judges' scores
   moodreel compare <reference> <remake> [--shots f]       a remake against its reference, window by window
                    [--against last.json] [--sheet f.jpg]  each window's change since the last pass; a contact sheet
+                   [--motion window,window]               where those windows' pictures move, when and which way
   moodreel probe <reference> --at t,t [--against remake]  a shot's numbers, the reference's beside the remake's
   moodreel camera <reference> [--against remake] [--js f] the camera, window by window: pan, push, roll; a track for kit/follow.js
   moodreel triage <compare.json> [--camera f] [--allow-text-upload]  opt-in Jev: what to fix first, and how
@@ -222,6 +223,12 @@ def cmd_compare(a):
     from .check import compare
     res = compare.run(a.reference, a.remake, a.shots, a.every, a.offset, a.json, a.against, a.sheet)
     print(compare.report(res))
+    rows = {r["window"]: r for r in res["windows"]}
+    for name in (a.motion.split(",") if a.motion else []):
+        if name.strip() not in rows:
+            raise SystemExit(f"compare: no window {name.strip()!r} (windows: {', '.join(rows)})")
+        r = rows[name.strip()]
+        print("\n" + compare.motion_report(r["window"], compare.motion(a.reference, a.remake, r["t0"], r["t1"], a.offset)))
 
 
 def cmd_camera(a):
@@ -536,6 +543,8 @@ def main(argv=None):
     p.add_argument("--json", help="write the full result here")
     p.add_argument("--against", help="a previous pass's --json: each window's score change and the mean's")
     p.add_argument("--sheet", help="write the reference beside the remake at each window's middle, worst first (.jpg)")
+    p.add_argument("--motion", help="windows by name, comma-separated: where their pictures move, when and which way "
+                   "(speed every 0.2 s and each cell's mean flow, the reference's beside the remake's)")
     p.set_defaults(fn=cmd_compare)
     p = sub.add_parser("camera", help="a film's camera read off its picture, window by window (pan, push, roll and the "
                        "turn they mean), a remake's beside it, and the track as camera-data.js for kit/follow.js")

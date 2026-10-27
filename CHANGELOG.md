@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased: speed, window by window
+
+- `moodreel compare --motion <window>[,<window>]`: where those windows' pictures move, when and which way. It shows the
+  speed every 0.2 s and each 4 x 4 cell's mean flow, the reference's beside the remake's. An orbit shows its far cells
+  running one way and its near ones the other; a dive shows its near cells climbing. A camera fit can read either as
+  still, or as the move it should have been.
+- `remaking.md`, "Speed, window by window": the thirteenth round. The 3D remake's off-speed windows were retimed by
+  where the camera is, not only how fast it goes (the march dove where the reference rises: 2.55 to 1.57; the crowd is
+  an orbit, not a tilt: 0.55 to 0.81). Also: a lock that lets go throws the camera, a paced camera stops where its
+  measurement drops out, and a lock couples the windows it spans. `compare` 0.657 to 0.673, Jev 0.418 to 0.420.
+
 ## Unreleased: Blender's look in WebGL
 
 - `kit/gl.js`: `post({ agx: 1 })`, Blender's AgX tone curve (three.js's implementation) in place of the film shoulder.

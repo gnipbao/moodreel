@@ -16,6 +16,12 @@ the same small size:
 and the worst windows are listed first, with what is wrong with each. The times are the reference's; --offset shifts the
 remake's (remake time = reference time + offset).
 
+--motion <window>[,<window>] then reads where a window's picture moves, when and which way: the speed every 0.2 s,
+the reference's beside the remake's, and each cell's mean flow. `speed` and `flow` are the picture's motion, camera and
+content together; a camera that circles its subject moves the far cells one way and the near ones the other, and one
+that dives toward the ground climbs in its near cells' speed, which a camera fit (`moodreel camera`) can read as still
+or as the same move.
+
 Between passes: --against <last pass's --json> adds each window's change and the mean's, so a change is kept only where
 its window rose; --sheet <file.jpg> puts the reference beside the remake at each window's middle, worst first, named
 and scored, the picture to read before probing (the scores say where, the sheet says what).
@@ -89,6 +95,12 @@ def _cells(flow, n=4):
                      for j in range(n) for i in range(n)])
 
 
+def _flow_cells(g) -> list:
+    """Every other pair of grey frames: (the pair's first frame, its 4 x 4 cells' mean flow, [16, 2])."""
+    import cv2
+    return [(i, _cells(cv2.calcOpticalFlowFarneback(g[i], g[i + 1], None, 0.5, 3, 15, 3, 5, 1.2, 0))) for i in range(0, len(g) - 1, 2)]
+
+
 def window(ref, ours, t0: float, t1: float, offset: float = 0.0) -> dict:
     import cv2
     R, Q = _frames(ref, t0, t1), _frames(ours, t0 + offset, t1 + offset)
@@ -100,9 +112,7 @@ def window(ref, ours, t0: float, t1: float, offset: float = 0.0) -> dict:
     idx = range(0, n, 3)
     dR, dO = np.mean([_detail(gR[i]) for i in idx]), np.mean([_detail(gO[i]) for i in idx])
     agree, sR, sO = [], [], []
-    for i in range(0, n - 1, 2):
-        fR = _cells(cv2.calcOpticalFlowFarneback(gR[i], gR[i + 1], None, 0.5, 3, 15, 3, 5, 1.2, 0))
-        fO = _cells(cv2.calcOpticalFlowFarneback(gO[i], gO[i + 1], None, 0.5, 3, 15, 3, 5, 1.2, 0))
+    for (_, fR), (_, fO) in zip(_flow_cells(gR), _flow_cells(gO)):
         mR, mO = np.linalg.norm(fR, axis=1), np.linalg.norm(fO, axis=1)
         sR.append(mR.mean()), sO.append(mO.mean())
         both = (mR > MOVING) & (mO > MOVING)
@@ -119,6 +129,39 @@ def window(ref, ours, t0: float, t1: float, offset: float = 0.0) -> dict:
             "tone": round(float(np.mean([abs(float(gR[i].mean()) - float(gO[i].mean())) for i in idx])), 1),
             "flow": None if still or not agree else round(float(np.mean(agree)), 2),
             "speed": None if still else round(float(np.mean(sO) / max(np.mean(sR), 1e-6)), 2)}
+
+
+def motion(ref, ours, t0: float, t1: float, offset: float = 0.0, step: float = 0.2) -> dict:
+    """Where a window's picture moves, when and which way, for the reference and the remake: the speed as `speed`
+    measures it (the cells' mean flow, px a frame at 320 x 180 and 30 fps) every `step` s, and each 4 x 4 cell's mean
+    flow over the window ([row][column] = [x right, y down])."""
+    import cv2
+    out = {"t0": t0, "t1": t1, "step": step}
+    nb = max(1, int(np.ceil((t1 - t0) / step - 1e-6)))
+    for key, path, off in (("reference", ref, 0.0), ("remake", ours, offset)):
+        fl = _flow_cells([cv2.cvtColor(x, cv2.COLOR_BGR2GRAY) for x in _frames(path, t0 + off, t1 + off)])
+        bins: dict[int, list[float]] = {}
+        for i, c in fl:
+            bins.setdefault(min(nb - 1, int(i / FPS / step + 1e-6)), []).append(float(np.linalg.norm(c, axis=1).mean()))
+        out[key] = {"speed": [round(float(np.mean(bins[k])), 2) if k in bins else None for k in range(nb)],
+                    "cells": np.round(np.mean([c for _, c in fl], 0), 2).reshape(4, 4, 2).tolist() if fl else None}
+    return out
+
+
+def motion_report(name: str, m: dict) -> str:
+    f = lambda v: "   -" if v is None else f"{v:4.1f}"  # noqa: E731
+    n = len(m["reference"]["speed"])
+    lines = [f"{name} {m['t0']:.2f}-{m['t1']:.2f}: speed every {m['step']} s (px a frame at 320 wide)",
+             "  t          " + " ".join(f"{m['t0'] + k * m['step']:4.1f}"[-4:] for k in range(n))]
+    for key in ("reference", "remake"):
+        lines.append(f"  {key:<10} " + " ".join(f(v) for v in m[key]["speed"]))
+    lines.append("  each cell's mean flow (x right, y down), top row first: reference | remake")
+    R, O = m["reference"]["cells"], m["remake"]["cells"]
+    if R and O:
+        cell = lambda c: f"{c[0]:+4.1f},{c[1]:+4.1f}"  # noqa: E731
+        for j in range(4):
+            lines.append("   " + " ".join(cell(R[j][i]) for i in range(4)) + "  |  " + " ".join(cell(O[j][i]) for i in range(4)))
+    return "\n".join(lines)
 
 
 def problems(r: dict) -> list[str]:

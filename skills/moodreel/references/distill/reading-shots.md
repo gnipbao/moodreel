@@ -23,6 +23,9 @@ and type projected through the camera. All of that can be read off the video bef
   how late, how fast it decays and how far above chance; where cuts, surges, punches and flashes land; and, against
   another fingerprint, what a remake misses or adds.
 - `moodreel compare <reference> <remake>`: the score after every pass, window by window, with what is wrong with each.
+  `--motion <window>` shows where a window's picture moves, when and which way: the speed every 0.2 s and each cell's
+  mean flow, the reference's beside the remake's. Read it when a window's speed or flow is off: an orbit runs its far
+  and near cells opposite ways, and a dive climbs in its near cells, where the camera fit can read either as still.
 - `moodreel camera <reference> [--against <remake>] [--shots f] [--js camera-data.js]`: the camera, window by window,
   read off the picture: its travel, push and roll, the turn and tilt they mean at a field of view, the move's shape
   (its speed by thirds: speeds up, slows down, in and out, one pace), the remake's beside them with what is off, and
