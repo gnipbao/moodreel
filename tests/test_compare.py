@@ -64,3 +64,14 @@ def test_sheet_puts_the_reference_beside_the_remake_worst_first(tmp_path):
     # worst first: the first pair is "bad" (t 0.75, the wipe three quarters across), the second "good" (t 0.25)
     assert mean(60, 100)[2] > mean(60, 100)[0]                         # wiped: red inverted to cyan
     assert mean(320 + 60, 320 + 100)[0] > mean(320 + 60, 320 + 100)[2]  # not yet wiped
+
+
+@needs_ffmpeg
+def test_windows_measured_in_parallel_match_one_by_one(tmp_path):
+    ref, ours = tmp_path / "ref.mp4", tmp_path / "ours.mp4"
+    _video(ref, (200, 30, 30))
+    _video(ours, (30, 30, 200))
+    shots = [[0.0, 0.5, "a"], [0.5, 1.0, "b"]]
+    one = compare.compare(ref, ours, shots, workers=1)
+    many = compare.compare(ref, ours, shots, workers=2)
+    assert [r["score"] for r in one["windows"]] == [r["score"] for r in many["windows"]]

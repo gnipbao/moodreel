@@ -193,12 +193,16 @@ Match a remake to its reference shot by shot, not just in stills: `moodreel comp
 shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
 `--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle;
 `moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) off both pictures,
-names what is off, and writes the reference's track for `kit/follow.js` to move the remake's camera by. What a 2D canvas can't draw (ray-marched
+names what is off, and writes the reference's track for `kit/follow.js` to move the remake's camera by;
+`moodreel pass` runs a whole pass (render, parallel scoring, camera, contact sheet) in one command, and with
+`--jev --allow-text-upload` asks Jev (TypeSafe's typed-judgment API, `TYPESAFE_API_KEY`; opt-in, numbers only) to
+rank which windows to fix first and how. What a 2D canvas can't draw (ray-marched
 bodies, lensing, dense line fields, engraving that follows a surface) goes through `kit/gl.js`, the GPU layer. See
 [docs/GPU.md](docs/GPU.md):
 
 ```bash
 uv run moodreel compare reference.mp4 remake.mp4 --shots scenes.json --json pass2.json --against pass1.json --sheet pairs.jpg
+uv run moodreel pass reference.mp4 films/my-remake --shots scenes.json --name p2 --against passes/p1 --jev --allow-text-upload
 ```
 
 Read what the reference does on each beat, kick and sung word, and the camera through a 3D shot, before building

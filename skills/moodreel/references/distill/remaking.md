@@ -6,8 +6,9 @@ teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window
 0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. A second film, a 64 s one-take 3D
 voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
 0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named, and a third
-round rebuilt the landing, the building and the desk to the reference; what it added is in "One take in 3D", "The
-camera, measured" and "The set laid out for the camera" below. Read `reading-shots.md`
+round rebuilt the landing, the building and the desk to the reference, and a fourth the night (0.614); what it added
+is in "One take in 3D", "The camera, measured", "The set laid out for the camera" and "The night, and judging
+faster" below. Read `reading-shots.md`
 first for the tools that read a shot as code.
 
 ## The loop
@@ -22,7 +23,12 @@ first for the tools that read a shot as code.
    for each window you fix (a film folder renders its stills, a video is read directly). Change the drawing so the
    numbers move toward the reference's, probe again, and render the film only when they agree. Two or three probes
    settle a shot; renders and contact sheets alone don't.
-4. **Render, score, compare with the last pass** window by window, and keep a change only if its window rose:
+4. **Render, score, compare with the last pass** in one command: `moodreel pass <reference> <film> --shots scenes.json
+   --name p21 --against passes/p20` renders, scores every window in parallel, reads the camera and writes a contact
+   sheet (under two minutes for a 64 s film). With `--jev --allow-text-upload` (opt-in, `TYPESAFE_API_KEY`), Jev
+   ranks the windows and names the kind of fix each needs (camera, framing, light, motion, detail) in about four
+   seconds: it reads numbers only, so look at the top windows' pictures before changing them. Keep a change only if
+   its window rose:
    `moodreel compare ... --json pass2.json --against pass1.json --sheet pairs.jpg` prints each window's change and the
    mean's, and lays the reference beside the remake at each window's middle, worst first (read the sheet before
    probing: the scores say where, the sheet says what). Make a side-by-side video (reference above remake, the
@@ -180,6 +186,26 @@ pictures did. The third round was about what stands in front of the camera.
   "still" though the camera turns 17 degrees. There, judge the pictures side by side; don't chase the number.
 - **Build things the way the reference builds them.** Dropping finished houses into place read as wrong although
   each house matched. Scaffold, walls, roof and the critters on it are the shot.
+
+## The night, and judging faster (the fourth round of the 3D film)
+
+The maker asked for the two weakest windows, the lights coming on and the night grass, and then said the loop was
+too slow: could Jev (their typed-judgment API) speed up the judging and make it more accurate?
+
+| The eye said | The reference showed | Build |
+|---|---|---|
+| the night windows are wrong | both from a grassy rise on the river bank just north of the town: lights on from over the rise, the lamp line receding on the right and lighting lamp by lamp, the lit town beyond; then down on the ridge, one critter close, a few small ones across the slope | the rise added (gentle: steeper, its 1-unit columns showed as terraces of grass), the lamp line carried past the town onto it, one critter in eight sent up at dusk, the hero a few steps in front of the camera; night grass 0.30 to 0.55, lights on 0.39 to 0.51 |
+| the loop is too slow | a pass was five commands and minutes of reading 36 windows of numbers and sheets | `moodreel pass` (render, parallel scoring, camera, sheet; scoring 90 s to 16 s) and opt-in `moodreel triage` / `pass --jev`: Jev ranks the windows and names the fix in 4 s |
+
+- **A shot's setting is part of its camera.** Both night shots failed on where the camera stood (inside the town,
+  then behind a crest), not on how it moved. Find the place the reference films from, then build it.
+- **Look down on a crowd.** A camera at critter height among them filled the frame with backs; the reference looks
+  down from above a crest, with only the hero close.
+- **Ask Jev relative questions.** Asked whether each window "would be accepted as the same shot", Jev said no to 34
+  of 36: a code-drawn remake differs everywhere. Given the film's medians and quartiles and asked how each window
+  sits among the others, it ranked them from 0.22 to 0.93 and named fixes that matched what the eye had found.
+- **Jev judges numbers, not pictures.** It points at the windows to look at and the kind of fix; the pictures
+  decide what to change. Its answers are cached per request, so re-running a pass costs only the changed windows.
 
 ## Rules that came out of it
 
