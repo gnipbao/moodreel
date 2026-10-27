@@ -8,7 +8,7 @@
 |---|---|
 | `stage.js` | 页面契约：`stage({ width, height, duration, fonts, faces, images, prepare, draw, finish })` 设置 `DUR`/`render`/`READY`，按设计尺寸绘制，任意输出尺寸自动缩放；`faces` 按字族名注册字体文件，`prepare` 在字体和图片就绪后、第一帧之前跑一次（要量字的东西在这里建）；`texts(fn)` 提供文字停留检查用的 `TEXTS`。运动模糊：渲染器 `--samples N --shutter s` 时，每帧是快门内 N 个子帧的平均，`draw` 每个子帧画一次，`finish(g, t, src)` 在平均好的画面上跑一次（颗粒、暗角、闪光） |
 | `music.js` | 跟着歌走：`music(AUDIO, LYRICS)` 读 `moodreel music` 写的 `music-data.js`，给出 `hit`（鼓点冲击）、`env`（包络）、`beatAt`/`barAt`、`ct`（踩拍的镜头时钟）、`step`、`sung`/`letters`/`span`（词在什么时候真正被唱出）、`slams`（砸字）；`pop`（字落下）。做法和数值见 docs/MUSIC-SYNC.md |
-| `gl.js` | GPU 层：`gpu(w, h)` 给出全屏着色器 pass（`pass`，HDR 半浮点目标 `rt`，多输出 G-buffer）、Canvas 图层当纹理（`layer`）、每帧成千上万根抗锯齿发丝线（`lines`，2D 像素或带相机的 3D）、混合模式合成（`comp`）和胶片后期（`post`：辉光金字塔、晕光、色差、色调肩部、饱和度、暗角、抖动和推近）；GLSL 库里有哈希、simplex 噪声、fbm、curl、2D/3D 距离场、平滑并集、版画排线和热度色阶。光线步进的生物、引力透镜、流线场都靠它。做法见 docs/GPU.md |
+| `gl.js` | GPU 层：`gpu(w, h)` 给出全屏着色器 pass（`pass`，HDR 半浮点目标 `rt`，多输出 G-buffer）、Canvas 图层当纹理（`layer`）、每帧成千上万根抗锯齿发丝线（`lines`，2D 像素或带相机的 3D）、混合模式合成（`comp`）和胶片后期（`post`：辉光金字塔、晕光、色差、色调肩部或 `agx: 1` 换成 Blender 的 AgX 色调曲线、饱和度、暗角、抖动和推近）；GLSL 库里有哈希、simplex 噪声、fbm、curl、2D/3D 距离场、平滑并集、版画排线和热度色阶。光线步进的生物、引力透镜、流线场都靠它。做法见 docs/GPU.md |
 | `anim.js` | 按事件驱动的时间工具：`prog`（缓动进度）、`pulse`（命中后衰减）、`springStep`（弹簧阶跃）、`keys`（关键帧）、`frameIdx`（整帧不变的种子，抖动不在运动模糊里重影）、`hash`、`noise1`、`path`（按弧长走折线） |
 | `outline.js` | 从 TrueType 文件读字形轮廓：`outline(buffer).charToGlyph(ch).getPath(x, y, size).commands`、`path2D`；简单和复合字形，cmap 4 和 12；用来把字拆成笔画、填粒子、让火花描字 |
 | `eases.js` | GSAP 命名的缓动（与 `moodreel/motion/eases.py` 同一套公式，测试保证一致）和 `bezier(x1, y1, x2, y2)` |
