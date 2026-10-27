@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased: a lens that carried on
+
+- `remaking.md`, "A lens that carried on": the eleventh round of the 3D remake (a re-keyed span ends where it found the
+  camera; diff a round against the last one; measure before believing an impression). The keyboard and the close-up
+  back (0.59 to 0.62, 0.55 to 0.60), compare 0.651.
+
 ## Unreleased: the desk hop, the night hill, colour in the light
 
 - `remaking.md`, "The desk hop, the night hill, colour in the light": the tenth round of the 3D remake (a lock needs
