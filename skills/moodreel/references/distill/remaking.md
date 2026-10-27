@@ -6,9 +6,11 @@ teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window
 0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. A second film, a 64 s one-take 3D
 voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
 0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named, and a third
-round rebuilt the landing, the building and the desk to the reference, a fourth the night (0.614), and a fifth locked
-camera and critter to where Jev's vision saw them in the reference (0.637); what it added is in "One take in 3D", "The
-camera, measured", "The set laid out for the camera", "The night, and judging faster" and "Jev looks" below. Read `reading-shots.md`
+round rebuilt the landing, the building and the desk to the reference, a fourth the night (0.614), a fifth locked
+camera and critter to where Jev's vision saw them in the reference (0.637), and a sixth rebuilt the opening, the dive,
+the fall, the meadow and the trees (Jev's likeness 0.393); what it added is in "One take in 3D", "The camera,
+measured", "The set laid out for the camera", "The night, and judging faster", "Jev looks" and "The opening, the dive,
+the fall, the meadow" below. Read `reading-shots.md`
 first for the tools that read a shot as code.
 
 ## The loop
@@ -244,6 +246,46 @@ Over p21 to p27: compare's mean 0.614 to 0.637, Jev's likeness 0.332 to 0.383, i
   to one side" gave the critter's face and turn through the film; a partial turn is about 17 degrees.
 - **Colour inside the box.** The critter read (198, 33, 3) inside Jev's box in the reference and (253, 108, 41) in
   the remake; a deeper, more saturated base brought it to (207-221, 41-47, 19-22).
+
+## The opening, the dive, the fall, the meadow (the sixth round of the 3D film)
+
+The maker named the moments: the logo turns and becomes cubes at 5 s; at 7 s it lands between the keyboard and the
+computer; at 18 s the keyboard is brighter, a few keys light, and it jumps from the space bar; it flips on the way down
+and lands on a hill, not a plain, filmed from elsewhere; the trees are not real enough; the modelling is rough; and over
+the town, lock to the houses and the crowd.
+
+| The eye said | The reference showed | Build | Moved |
+|---|---|---|---|
+| turns, cubes | the logo's cells become cubes from the bottom row up and the block turns a third round on the screen; the cubes pour down the screen and land formed by 7.0 s | cubes 2 x 2 x 12 a cell, darker toward their edges (the grid), little glow so faces shade | assemble 0.61 to 0.72 |
+| lands between keyboard and computer | a small critter alone on a blue-grey desk, no keys before it | landing behind the keyboard; filmed along the gap from the side (the only 28-unit view without keys); the landing lit blue-grey | (desk hop fell: see below) |
+| keys light, from the space bar | keys lit from below a few at a time, round the critter, each just before it turns to glass; onto the space bar, up, over and down into it, legs up | per-key glow in the 0.65 s before its turn, a ring from the critter; the last hops to the space bar with a forward flip; the light warm white, its mean colour measured | keys glow 0.63 to 0.67, dive 0.62 to 0.64 |
+| flips, falls, lands on a hill | out of the dive upside down, turned over, swaying; green land far below, a horizon a third down; a rounded crest, short grass, a longer lens | the flip; a meadow, not a sea; the drop tuned by the window's measured speed; a crest; a smooth meadow over the columns; turf thrown at the landing | fall 0.52 to 0.64 (Jev 0.23 to 0.48), sunrise 0.67 to 0.71 (Jev 0.48 to 0.58) |
+| trees, rough models | conifers of small cubes in stacked tiers, ragged, four greens; round trees of light greens; the crowd a 4 x 8 block that bends into arcs, salmon in the sun | trees from 0.42-unit cubes; the crowd's slots as arcs; the clones' and the hero's colours measured in the world | march 0.48 to 0.53, clones row Jev 0.41 to 0.46 |
+
+Over p27 to p31: compare 0.637 to 0.635, Jev's likeness 0.383 to 0.393, its disagreeing checks 3 to 1.
+
+- **Lock only what is laid out like the reference.** Locked to Jev's boxes of the town, its nearest house, the river and
+  the crowd, the swoop lost its motion (0.31 times the reference's: the lock held the town still while the reference's
+  camera flies) and Jev rated the march, the building and dusk further off. The town and the crowd stood elsewhere than
+  the reference's; a camera cannot fix that. Rebuild the layout (here the crowd's arcs), then lock. The tracks stay:
+  they say where the layout is wrong.
+- **A scattered subject is a cloud, not a solid.** A river's or a town's hull fills the frame; their box is the box of
+  their points inside it (`{ cloud: points }` in `kit/lock.js`).
+- **What the camera must not show places it.** The landing between the keyboard and the monitor, filmed a fifth of the
+  frame wide with no keys before it, has one camera: along the gap. Jev's "not seen" and the critter's measured size
+  settle it, not the eye.
+- **One object, one colour per light.** The same critter reads (198, 33, 3) under the desk's light and (110-150, 23-42,
+  2-4) in the sun, its clones (211, 127, 79) from above at noon: measure each inside Jev's boxes and set each scene's.
+- **A falling camera zooms the ground.** From 70 units the meadow below zoomed fourfold and the window read 2.2 times
+  the reference's motion; from 38, 0.6 times. Tune the drop by the measured speed.
+- **A meadow of 1-unit columns is terraced.** A dome of columns shows rings of steps; a smooth surface a third of a unit
+  over them, and everything standing on it, is the reference's meadow.
+- **Keep the remake under version control.** One slip (a write that truncated the file it was reading) emptied the
+  film's main script; it was rebuilt from earlier reads and checked against the lock's report, number for number. Give
+  the film folder a git history, or snapshot it before every pass.
+- Still off: the desk hop (0.63 to 0.53: the critter's size against the keyboard does not allow the reference's
+  framing on both sides of it), the white flash (0.79 to 0.62), sunset and the night grass (the town and its
+  crowd stand elsewhere).
 
 ## Rules that came out of it
 

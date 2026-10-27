@@ -21,7 +21,7 @@ def _run(tmp_path, body: str) -> dict:
         shutil.copyfile(REPO / "kit" / f, kit / f)
     vendor_three(kit)
     script = tmp_path / "t.mjs"
-    script.write_text(f"import {{ lock, visible, moveCam }} from '{(kit / 'lock.js').as_uri()}';\n{body}")
+    script.write_text(f"import {{ lock, visible, visibleOf, moveCam }} from '{(kit / 'lock.js').as_uri()}';\n{body}")
     return json.loads(subprocess.run(["node", str(script)], capture_output=True, text=True, check=True).stdout)
 
 
@@ -64,3 +64,17 @@ console.log(JSON.stringify({
     assert out["floor"]["inFrame"] and l == pytest.approx(0) and r == pytest.approx(1) and b == pytest.approx(1)
     assert 0.5 < t < 0.55                                                  # the horizon, a little below the middle
     assert out["aside"]["inFrame"] is False and out["aside"]["box"][0] > 1
+
+
+@needs_three
+def test_a_scattered_subject_is_boxed_by_its_points_in_the_frame(tmp_path):
+    out = _run(tmp_path, """
+const c = { p: [0, 10, 20], l: [0, 0, 0], fov: 40, roll: 0 };
+// a river bending across the frame and far out of it: as a solid its hull would fill the frame; as a cloud, only its
+// points in the frame count
+const river = { cloud: Array.from({ length: 81 }, (_, i) => { const z = -40 + i; return [8 * Math.sin(z / 6), 0, z]; }) };
+console.log(JSON.stringify({ cloud: visibleOf(c, river), solid: visibleOf(c, river.cloud) }));
+""")
+    cl, so = out["cloud"]["box"], out["solid"]["box"]
+    assert out["cloud"]["inFrame"] and 0 <= cl[0] < cl[2] <= 1 and 0 <= cl[1] < cl[3] <= 1
+    assert (cl[2] - cl[0]) * (cl[3] - cl[1]) <= (so[2] - so[0]) * (so[3] - so[1]) + 1e-9
