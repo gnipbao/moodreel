@@ -24,9 +24,11 @@ and type projected through the camera. All of that can be read off the video bef
   another fingerprint, what a remake misses or adds.
 - `moodreel compare <reference> <remake>`: the score after every pass, window by window, with what is wrong with each.
 - `moodreel camera <reference> [--against <remake>] [--shots f] [--js camera-data.js]`: the camera, window by window,
-  read off the picture: its travel, push and roll, the turn and tilt they mean at a field of view, the remake's beside
-  them with what is off, and the reference's track as a film module for `kit/follow.js`. Blind to a crane that keeps
-  its subject in frame and to dark frames full of moving pieces: key those by hand.
+  read off the picture: its travel, push and roll, the turn and tilt they mean at a field of view, the move's shape
+  (its speed by thirds: speeds up, slows down, in and out, one pace), the remake's beside them with what is off, and
+  the reference's track as a film module for `kit/follow.js` (`pace: true` moves the remake's camera along its anchors
+  at the reference's speed). Blind to a crane that keeps its subject in frame and to dark frames full of moving pieces:
+  key those by hand.
 - `moodreel pass <reference> <film> --shots f --name pN [--against passes/pM] [--jev --allow-text-upload]`: one pass
   in one command: render, every window scored in parallel, the camera, a contact sheet, and opt-in the Jev ranking.
 - `moodreel look <reference> <remake> --shots f --spec look.json [--allow-image-upload]`: opt-in Jev vision. Frames of

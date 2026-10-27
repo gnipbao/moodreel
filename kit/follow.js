@@ -9,9 +9,14 @@
 //     [46.4, { p: [50, 12, -40] }], [48, { f: 2, roll: 0.3 }]], 55, { own: [[18, 20.75]] });
 //   draw: const c = cam(t); camera.position.set(...c.p); camera.lookAt(...c.l); camera.rotateZ(c.roll); camera.fov = c.fov;
 //
-// An anchor [t, { p, l, fov, roll, f, focus, ease }]: with p and l it sets where the camera stands and looks at t; with
-// p alone, where it stands; fov, roll and f (depth-of-field blur) carry on from the last anchor that set them; focus
-// (the sharp distance) is the anchor's own, the look distance when it has none.
+// An anchor [t, { p, l, fov, roll, f, focus, ease, speed }]: with p and l it sets where the camera stands and looks at
+// t; with p alone, where it stands; fov, roll and f (depth-of-field blur) carry on from the last anchor that set them;
+// focus (the sharp distance) is the anchor's own, the look distance when it has none. ease stops the camera there;
+// speed sets how fast it passes the anchor against the smooth path's pace (0 is ease; 1.5 rushes through): a move that
+// speeds into a reveal arrives with speed above 1 from an anchor that eases, one that slows into a hold arrives below
+// 1. speed [in, out] arrives and leaves at different paces: [0.3, 1.7] bursts away (a camera thrown back by a stomp),
+// [1.4, 0.2] rushes in and stops. Without them anchors are joined at one even pace, which reads as a machine's (a
+// director's reading names the shape: moodreel direct, skills/moodreel/references/distill/directing.md).
 // Between anchors the camera turns, tilts and pushes as measured, plus the smooth difference that meets each anchor.
 // From remaking a 64 s one-take 3D film (skills/moodreel/references/distill/remaking.md, "The camera, measured"):
 //   - the picture moving x px right is the camera turning left by x / f, f = 540 / tan(fov / 2) at 1920 x 1080
@@ -24,6 +29,12 @@
 //     anchors give those
 //   - own: spans where the measurement reads the subject, not the camera (a dark frame full of falling pieces, a
 //     critter the camera tracks): there the anchors are plain keyframes
+//   - pace: between anchors the camera covers its path in step with the reference's measured speed (its picture's
+//     travel, a push of 1 %/s counted as 9.6 px/s): it stalls where the reference holds and rushes where it rushes, so
+//     each move takes the reference's shape (speeding into a reveal, slowing into a hold) without guessing a speed per
+//     anchor. Anchors joined at one even pace swamp the measured turns: the moves read as a machine's. pace: [[t0, t1],
+//     ...] paces only there: where the picture's motion is not the camera's (a sun flaring, a dark frame), pacing by it
+//     drags the camera wrong
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const lerp = (a, b, u) => a + (b - a) * u;
 const wrap = a => Math.atan2(Math.sin(a), Math.cos(a));
@@ -31,7 +42,8 @@ const D2R = Math.PI / 180;
 const aim = (p, l) => { const d = l.map((v, k) => v - p[k]), n = Math.hypot(...d); return { yaw: Math.atan2(d[0], -d[2]), pitch: Math.asin(d[1] / n), d: n }; };
 const dirOf = (yaw, pitch) => [Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch)];
 
-// cubic through [t, { v: [...], ease }] keys with Catmull-Rom tangents; a key with ease (and the ends) stops there
+// cubic through [t, { v: [...], ease, speed }] keys with Catmull-Rom tangents, scaled by a key's speed (one number, or
+// [in, out]: the tangent arriving and the one leaving); a key with ease (and the ends) stops there
 export function hermite(keys, t, get) {
   if (t <= keys[0][0]) return get(keys[0][1]);
   const n = keys.length;
@@ -40,12 +52,13 @@ export function hermite(keys, t, get) {
   while (keys[i + 1][0] < t) i++;
   const [t0, k0] = keys[i], [t1, k1] = keys[i + 1], h = t1 - t0, u = (t - t0) / h;
   const v0 = get(k0), v1 = get(k1);
-  const tan = j => {
+  const tan = (j, side) => {
     if (j === 0 || j === n - 1 || keys[j][1].ease) return v0.map(() => 0);
-    const a = get(keys[j - 1][1]), b = get(keys[j + 1][1]), dt = keys[j + 1][0] - keys[j - 1][0];
-    return a.map((x, q) => (b[q] - x) / dt);
+    const a = get(keys[j - 1][1]), b = get(keys[j + 1][1]), dt = keys[j + 1][0] - keys[j - 1][0], sp = keys[j][1].speed ?? 1;
+    const k = Array.isArray(sp) ? sp[side] : sp;
+    return a.map((x, q) => k * (b[q] - x) / dt);
   };
-  const m0 = tan(i), m1 = tan(i + 1);
+  const m0 = tan(i, 1), m1 = tan(i + 1, 0);
   const h00 = 2 * u ** 3 - 3 * u * u + 1, h10 = u ** 3 - 2 * u * u + u, h01 = -2 * u ** 3 + 3 * u * u, h11 = u ** 3 - u * u;
   return v0.map((x, q) => h00 * x + h10 * h * m0[q] + h01 * v1[q] + h11 * h * m1[q]);
 }
@@ -58,8 +71,25 @@ function sums(MOTION, own) {
   return t => { const x = clamp(t * F, 0, c.length - 1.001), i = Math.floor(x), u = x - i; return c[i].map((v, k) => lerp(v, c[i + 1][k], u)); };
 }
 
-export function follow(MOTION, anchors, end, { own = [] } = {}) {
-  const F = MOTION.fps, cum = sums(MOTION, own), t0 = anchors[0][0];
+// the reference's speed summed over time (zero inside `own`, plus a floor so the path never stops dead), and a clock
+// that runs between two anchor times at that speed
+function pacer(MOTION, own, spans) {
+  const F = MOTION.fps, inOwn = t => own.some(([a, b]) => t >= a && t < b), on = t => !spans || spans.some(([a, b]) => t >= a && t < b);
+  const sp = MOTION.rows.map((r, i) => (inOwn((i + 0.5) / F) || !on((i + 0.5) / F) ? 0 : Math.hypot(r[0], r[1], 9.6 * r[2])));
+  const floor = 0.15 * (sp.reduce((a, b) => a + b, 0) / Math.max(1, sp.filter(v => v > 0).length) || 1), c = [0];
+  sp.forEach(v => c.push(c[c.length - 1] + (v + floor) / F));
+  const S = t => { const x = clamp(t * F, 0, c.length - 1.001), i = Math.floor(x); return lerp(c[i], c[i + 1], x - i); };
+  return (keys, t) => {
+    if (t <= keys[0][0] || t >= keys[keys.length - 1][0]) return t;
+    let i = 0;
+    while (keys[i + 1][0] < t) i++;
+    const a = keys[i][0], b = keys[i + 1][0], sa = S(a), sb = S(b);
+    return sb > sa ? a + (b - a) * (S(t) - sa) / (sb - sa) : t;
+  };
+}
+
+export function follow(MOTION, anchors, end, { own = [], pace = false } = {}) {
+  const F = MOTION.fps, cum = sums(MOTION, own), t0 = anchors[0][0], warp = pace ? pacer(MOTION, own, Array.isArray(pace) ? pace : null) : (k, t) => t;
   const fpx = fov => 540 / Math.tan(fov * D2R / 2);
   const M = (t, fov) => { const c = cum(t); return [-c[0] / fpx(fov), c[1] / fpx(fov), c[2]]; };
   const carry = key => { let v = null; return anchors.map(([, a]) => (v = a[key] ?? v)); };
@@ -75,10 +105,10 @@ export function follow(MOTION, anchors, end, { own = [] } = {}) {
       last = yaw;
       prev = [yaw, w.pitch - m[1], Math.log(w.d) + m[2]];
     }
-    return [t, { ease: a.ease, v: [...prev, fovs[i], rolls[i], fs[i], focs[i]] }];
+    return [t, { ease: a.ease, speed: a.speed, v: [...prev, fovs[i], rolls[i], fs[i], focs[i]] }];
   });
   const orient = t => {
-    const [yr, pr, ld, fov, roll, f, focus] = hermite(aims, t, k => k.v), m = M(t, fov), d = Math.exp(ld - m[2]);
+    const [yr, pr, ld, fov, roll, f, focus] = hermite(aims, warp(aims, t), k => k.v), m = M(t, fov), d = Math.exp(ld - m[2]);
     return { yaw: yr + m[0], pitch: clamp(pr + m[1], -1.5, 1.5), d, mz: m[2], fov, roll, f, focus: focus || d };
   };
   // the push: how far the measured growth has moved the camera along its view, step by step (the anchors' own look
@@ -89,9 +119,9 @@ export function follow(MOTION, anchors, end, { own = [] } = {}) {
     O.push(O[i - 1].map((v, k) => v + dir[k] * step));
   }
   const off = t => { const x = clamp((t - t0) * F, 0, N - 1.001), i = Math.floor(x), u = x - i; return O[i].map((v, k) => lerp(v, O[i + 1][k], u)); };
-  const places = anchors.filter(([, a]) => a.p).map(([t, a]) => [t, { ease: a.ease, v: a.p.map((v, k) => v - off(t)[k]) }]);
+  const places = anchors.filter(([, a]) => a.p).map(([t, a]) => [t, { ease: a.ease, speed: a.speed, v: a.p.map((v, k) => v - off(t)[k]) }]);
   return t => {
-    const o = orient(t), dir = dirOf(o.yaw, o.pitch), base = hermite(places, t, k => k.v), q = off(t);
+    const o = orient(t), dir = dirOf(o.yaw, o.pitch), base = hermite(places, warp(places, t), k => k.v), q = off(t);
     const p = base.map((v, k) => v + q[k]);
     return { p, l: p.map((v, k) => v + dir[k] * o.d), fov: o.fov, roll: o.roll, f: o.f, focus: o.focus };
   };

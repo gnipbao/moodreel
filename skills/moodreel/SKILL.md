@@ -92,9 +92,9 @@ just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 **A remake** (a film matched to a reference shot by shot): read each shot before drawing it with `moodreel dossier`
 (motion, linework, finish, colour, and which technique it needs), read the reference's beat-sync fingerprint with
 `moodreel sync` (what the picture does on each kind of musical event, to the millisecond), and, for a 3D shot, track the
-camera through it with `moodreel pose <video> --track`, and read every window's camera move (pan, push, roll) with
-`moodreel camera <reference> --against <remake>`, which writes the reference's track for `kit/follow.js` to move the
-remake's camera by; run each pass in one command with `moodreel pass <reference> <film> --shots scenes.json --name pN`
+camera through it with `moodreel pose <video> --track`, and read every window's camera move (pan, push, roll, and its
+shape: speeding up, slowing down, one pace) with `moodreel camera <reference> --against <remake>`, which writes the
+reference's track for `kit/follow.js` to move (and, with `pace`, to pace) the remake's camera by; run each pass in one command with `moodreel pass <reference> <film> --shots scenes.json --name pN`
 (render, parallel scoring, camera, contact sheet; `--jev --allow-text-upload` adds the opt-in Jev ranking of what to
 fix first, `--vision --spec look.json --allow-image-upload` has Jev look at frames of both films, `moodreel look`);
 for pixel-level placement box the reference's subjects with `moodreel track --js track-data.js` and solve the remake's

@@ -64,7 +64,10 @@ keyed at the reading's beats, the lock only where the layout already agrees (the
 reference's speed). Over the round: compare 0.635 to 0.645, Jev's likeness 0.393 to 0.406; sunset 0.47 to 0.70, night
 grass 0.49 to 0.58, crowd (Jev) 0.37 to 0.52. Jev's director's notes went from 83 to 79; most of those left are about
 motion's shape: the reference speeds up, slows into holds and flies low, where the remake's camera glides at one pace
-between anchors. That is the next round's work: ease curves per move, not positions.
+between anchors. That is ease curves per move, not positions. Check a reading's ease against the measured shape
+(`moodreel camera --against` reads speed by thirds; three frames can mislead), pace the camera by the reference's
+speed (`follow(..., { pace: true })`), and give a `speed` per anchor (or `[in, out]`) only where the measurement is
+blind: a burst after a stomp, a stop at a tick.
 
 ## Limits
 

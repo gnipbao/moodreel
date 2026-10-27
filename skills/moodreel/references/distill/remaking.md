@@ -352,6 +352,40 @@ river 0.55 to 0.70, flowers 0.66 to 0.71, crowd 0.52 to 0.58, lights on 0.64 to 
 the clones row now reading as the reference's; what remains in the build is the critter walking toward the camera
 after the stomp (the reference's "walks"), and elsewhere still motion's shape (speeds up, slows into holds).
 
+## Colour, scenes in the keys, moves with a shape (the ninth round of the 3D film)
+
+The maker named the trees' and the houses' colours paler than the reference's, the 3D models first, the hero set apart
+from its clones (it should not be), every key a small staged scene as the reference's, and the speed curves.
+
+- **Measure colour where it is, as saturation and value.** The reference's forest read (22, 79, 22), saturation 0.82,
+  value 0.31; the remake's (102, 118, 52), 0.56, 0.46: olive. Its roofs (148, 47, 8) at 0.94 against 0.65, its river
+  (34, 104, 131) against a cyan (54, 188, 233). The cause was the whole frame, not the trees: a halation that tints
+  every green with the frame's brightness, a sky fill that greys the shadows, a fill on the houses' sides. Lower those
+  first (here halation 0.08 to 0.025 in the world, the sky fill 2.1 to 1.45), then deepen the colours that are still
+  pale, then a little saturation in the post (`post({ saturation })`, kit/gl.js).
+- **One character, one material.** The hero and its 128 clones are the same critter: one colour, the light makes the
+  difference (deep orange in a side light, salmon on tops in the high sun, as the reference's).
+- **A key is a staged scene.** Each cap: a switch, a slab, a ground of its own (grass, sand, snow, water, terracotta,
+  marble, dark rock) shaped in cubes fourteen to the key (terraces, a pond, an island, a river, a crater) and set
+  with things big enough to read (round crowns of three cubes, houses with roofs, crop rows, a pyramid, a castle). A
+  green tile with a tree on it reads as a pattern; a ground, a shape and a centrepiece read as a world.
+- **A move's shape is measured, then paced.** Jev's ease from three frames barely moved when the anchors' speeds were
+  set (9 notes to 10), and twice the measured picture said the opposite of Jev (lights on speeds up; Jev read it
+  slowing). `moodreel camera` now reads each window's shape off the picture, its speed by thirds, and names a remake's
+  that differs; `follow(..., { pace: true })` covers the path between anchors in step with the reference's measured
+  speed, so the camera waits where the reference holds and rushes where it rushes. Pace only where the picture's
+  motion is the camera's: paced through the whip, the sunset and dusk (the sun's glare, the light changing) and the
+  night keyboard (dark frames), those fell (sunset 0.68 to 0.61, night keyboard 0.57 to 0.43); `pace: [[t0, t1], ...]`
+  keeps it to the spans where it helped. Hand speeds stay for what the measurement cannot see: a camera thrown back by
+  the stomp `[0.3, 1.7]`, slowing into the wide hold 0.25; a push that rushes in and stops at the tick `[1.4, 0.3]`.
+- **Act the reading's verbs.** Jev read the reference's critter as walking after the stomp; it now walks toward the
+  camera while the camera holds, before the push.
+
+Over the round (passes p38 to p41): compare 0.648 to 0.649; the move shapes that agree with the reference's 20 to 22
+of 36; the aerial build 0.65 to 0.68, the town rising 0.55 to 0.62, the swoop 0.47 to 0.51, white 0.62 to 0.71; Jev's
+director's notes 77 to 75; its likeness 0.418 to 0.416. The low flight is still off (0.57 to 0.49, unpaced: its camera
+is the anchors' alone) and so are the march, the desk hop and the night grass.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it

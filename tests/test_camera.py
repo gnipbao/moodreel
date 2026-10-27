@@ -120,3 +120,54 @@ console.log(JSON.stringify({{ free2: yaw(free(2)), pinned3: pinned(3), own2: yaw
     assert out["free2"] == pytest.approx(-600 / f, abs=0.02)
     assert out["pinned3"]["p"] == pytest.approx([5, 0, 0], abs=1e-6) and out["pinned3"]["l"] == pytest.approx([5, 0, -10], abs=1e-6)
     assert out["own2"] == pytest.approx(0, abs=1e-9)
+
+
+@needs_node
+def test_an_anchors_speed_shapes_the_move_through_it(tmp_path):
+    # three anchors a unit apart on x: the camera passes the middle one at the smooth path's pace (1 unit/s), twice it
+    # (speed 2: rushing into a reveal), or stopped (speed 0: a hold)
+    script = tmp_path / "speed.mjs"
+    script.write_text(f"""import {{ follow }} from '{(REPO / 'kit' / 'follow.js').as_uri()}';
+const M = {{ fps: 15, rows: Array.from({{ length: 60 }}, () => [0, 0, 0, 0]) }};
+const path = speed => follow(M, [[0, {{ p: [0, 0, 0], l: [0, 0, -10] }}], [1, {{ p: [1, 0, 0], l: [1, 0, -10], speed }}],
+  [2, {{ p: [2, 0, 0], l: [2, 0, -10] }}]], 3);
+const v = c => (c(1.001).p[0] - c(0.999).p[0]) / 0.002;
+const side = (c, d) => (c(1 + d) .p[0] - c(1).p[0]) / d;
+const burst = path([0, 2]);                                       // arrives stopped, leaves at twice the pace
+console.log(JSON.stringify({{ even: v(path(undefined)), rush: v(path(2)), hold: v(path(0)), at: path(2)(1).p,
+  burstIn: side(burst, -0.001), burstOut: side(burst, 0.001) }}));
+""")
+    out = json.loads(subprocess.run(["node", str(script)], capture_output=True, text=True, check=True).stdout)
+    assert out["even"] == pytest.approx(1, abs=0.01) and out["rush"] == pytest.approx(2, abs=0.01)
+    assert out["hold"] == pytest.approx(0, abs=0.01) and out["at"] == pytest.approx([1, 0, 0], abs=1e-6)   # still meets it
+    assert out["burstIn"] == pytest.approx(0, abs=0.01) and out["burstOut"] == pytest.approx(2, abs=0.01)
+
+
+def test_a_moves_shape_is_read_from_its_speed_by_thirds():
+    rise = [[300 * k / 29, 0, 0, 0] for k in range(30)]            # a pan gathering pace: into a reveal
+    fall = rise[::-1]                                               # slowing into a hold
+    even = [[200, 0, 0, 0]] * 30
+    push = [[0, 0, 20 * (1 - k / 29), 0] for k in range(30)]        # a push in that settles (9.6 px/s per %/s)
+    assert camera.shape(rise)["shape"] == "speeds up" and camera.shape(fall)["shape"] == "slows down"
+    assert camera.shape(even)["shape"] == "one pace" and camera.shape(push)["shape"] == "slows down"
+    assert camera.shape([[10, 0, 0, 0]] * 30)["shape"] == "still"
+    t = camera.totals(fall)
+    off = camera.verdict(t, camera.totals(even), camera.shape(fall), camera.shape(even))
+    assert off == ["keeps one pace where the reference slows into its end"]
+
+
+@needs_node
+def test_paced_the_camera_moves_when_the_reference_moves(tmp_path):
+    # the reference holds still for a second, then moves: paced, the path between two anchors waits, then goes
+    script = tmp_path / "pace.mjs"
+    script.write_text(f"""import {{ follow }} from '{(REPO / 'kit' / 'follow.js').as_uri()}';
+const rows = Array.from({{ length: 45 }}, (_, i) => i < 15 ? [0, 0, 0, 0] : [0, 0, 20, 0]);   // still, then pushing in
+const a = [[0, {{ p: [0, 0, 0], l: [0, 0, -10] }}], [2, {{ p: [4, 0, 0], l: [4, 0, -10] }}]];
+const even = follow({{ fps: 15, rows: rows.map(() => [0, 0, 0, 0]) }}, a, 3), paced = follow({{ fps: 15, rows }}, a, 3, {{ pace: true }});
+const spanned = follow({{ fps: 15, rows }}, a, 3, {{ pace: [[2, 3]] }});   // paced only after the anchors: even between them
+console.log(JSON.stringify({{ even1: even(1).p[0], paced1: paced(1).p[0], paced2: paced(2).p[0], spanned1: spanned(1).p[0] }}));
+""")
+    out = json.loads(subprocess.run(["node", str(script)], capture_output=True, text=True, check=True).stdout)
+    assert out["even1"] == pytest.approx(2, abs=0.01)
+    assert out["paced1"] < 0.6 and out["paced2"] == pytest.approx(4, abs=0.3)   # waits while the reference holds
+    assert out["spanned1"] == pytest.approx(2, abs=0.05)
