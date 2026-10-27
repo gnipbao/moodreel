@@ -540,6 +540,49 @@ six of them within 0.07 of it, the pour (1.91) and the march (1.57) well outside
   Smoothing the lock's camera cost the assemble 0.09. The pour was left as it was; it needs staging again, not
   retiming.
 
+## The 3D film, in sum (thirteen rounds)
+
+The test ended at `compare` 0.673 and Jev 0.420 after thirteen rounds, from 0.53 and 0.33. Each round was one round of
+the user's notes on the side-by-side.
+
+| round | compare | Jev | what moved it |
+|---|---|---|---|
+| 1 | 0.53 to 0.586 | | the three sets built, the subject sized and placed as the reference's |
+| 2 | 0.607 | | the camera driven by the reference's measured track (`moodreel camera`, `kit/follow.js`) |
+| 3 | 0.608 | | the landing, the debris, the town built house by house |
+| 4 | 0.614 | 0.33 | the night set; the pass in one command, Jev ranking what to fix |
+| 5 | 0.637 | 0.38 | Jev's tracks and the locks (`kit/lock.js`); the name and the logo as the reference has them |
+| 6 | 0.635 | 0.39 | the moments the user named; a lock on the town measured and dropped |
+| 7 | 0.645 | 0.41 | the director's reading (`moodreel direct`); the town in rows along the river |
+| 8 | 0.648 | 0.42 | detail; the making acted with the camera |
+| 9 | 0.649 | 0.42 | colour, the keys as scenes, moves with a shape (`speed`, `pace`) |
+| 10 | 0.649 | 0.42 | the desk hop keyed by hand (0.48 to 0.68) |
+| 11 | 0.651 | 0.42 | a lens that carried on past its key |
+| 12 | 0.657 | 0.42 | Blender's look in WebGL, and the shader cache behind four rounds of olive trees |
+| 13 | 0.673 | 0.42 | speed, window by window |
+
+At the end the score's parts are structure 0.40 (0.32 over the world), detail 0.82, flow 0.69 and speed 0.75. The
+terminal's windows, drawn flat, score 0.92 and 0.96; the world's, 0.66.
+
+- **The camera made most of the gain; materials and the renderer made little.** The big steps were the subject placed
+  and sized as the reference's (round 1), the reference's measured camera (round 2), the director's reading (round 7)
+  and each picture moving at the reference's speed (round 13). A slower renderer owned the colour, not the picture
+  (Blender: tone 21 to 8, structure unchanged, 4.2 s a frame).
+- **The ceiling is the layout.** Structure compares where things are: a world built by rules puts its houses, trees and
+  river elsewhere than the reference's, and over the world it stayed between 0.27 and 0.33 from round 4 on. Raising
+  it means rebuilding the reference's layout piece by piece, at several times a round's cost, for a small change to
+  the eye.
+- **Late rounds are won by finding a fault, not by tuning.** From round 8 each round moved the mean by under 0.01, and
+  Jev stayed between 0.415 and 0.42, except where a fault was found: a lens carried past its key (round 11), a shader
+  cache that gave every voxel variant the terrain's shader (round 12), a lock that threw the camera when it let go,
+  and a dropout in the measurement (round 13). When two rounds in a row move the mean by under 0.005, look for a fault
+  with the measures (`compare --motion`, the film's camera as filmed, a render of the same scene in another renderer)
+  or stop.
+- **Two speeds of loop.** A quick pass (render and compare, about two minutes) to try a change; the full pass with Jev
+  (looks, notes) to close a round. Tune with the quick pass; judge with the full one.
+- **Left as it is:** the pour (the desk's lock couples it to the pull back and the assemble; it needs staging again),
+  dusk (its composition is the reference's mirrored), and the layout of the town and the crowd.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
