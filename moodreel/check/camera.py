@@ -9,6 +9,12 @@ Per window this reports the travel, the push and the roll, and the camera turn a
 with --against, the remake's beside them and what is off. --js writes the reference's track as a film module
 (camera-data.js) for kit/follow.js, which moves a remake's camera by it between a few anchors.
 
+A move also has a shape: the picture's speed in the window's first, middle and last third (px/s at 1920, a push of 1 %/s
+counted as the 9.6 px/s it moves the frame's edges) says whether it speeds into its end (a reveal), slows into it (a
+hold), speeds up and settles, or keeps one pace. A remake whose camera glides between anchors at one pace reads as a
+machine's beside a reference that rushes and settles; the verdict names it ("keeps one pace where the reference slows
+into its end"), and kit/follow.js's anchor speed shapes it.
+
 What the fit cannot see: a crane or a sideways move whose tilt keeps the subject in frame (little net motion), and a
 dark frame full of falling pieces or a subject the camera tracks (the fit locks onto them: "still" though the camera
 moves). Look at those windows; key them by hand. The remake's own fit reads "still" for the same reason when its
@@ -59,8 +65,33 @@ def turn(tot: dict, fov: float = 36.0) -> tuple[float, float]:
     return round(math.degrees(math.atan(-tot["x"] / f)), 1), round(math.degrees(math.atan(tot["y"] / f)), 1)
 
 
-def verdict(r: dict, m: dict) -> list[str]:
-    """What is off between the reference's window (r) and the remake's (m), both from totals()."""
+def shape(track) -> dict:
+    """The move's speed in its first, middle and last third (px/s) and what that makes it."""
+    a = np.array([x if x else [0, 0, 0, 0] for x in (track or [])], float)
+    if len(a) < 6:
+        return {"thirds": [0.0, 0.0, 0.0], "shape": "still"}
+    s = np.hypot(np.hypot(a[:, 0], a[:, 1]), 9.6 * a[:, 2])
+    th = [float(np.mean(p)) for p in np.array_split(s, 3)]
+    first, mid, last = th
+    if max(th) < 60:
+        k = "still"
+    elif last > 1.6 * first and last >= 0.9 * mid:
+        k = "speeds up"
+    elif first > 1.6 * last and first >= 0.9 * mid:
+        k = "slows down"
+    elif mid > 1.5 * max(first, last):
+        k = "in and out"
+    else:
+        k = "one pace"
+    return {"thirds": [round(x) for x in th], "shape": k}
+
+
+SHAPED = {"speeds up": "speeds into its end", "slows down": "slows into its end", "in and out": "speeds up and settles"}
+
+
+def verdict(r: dict, m: dict, rs: dict | None = None, ms: dict | None = None) -> list[str]:
+    """What is off between the reference's window (r) and the remake's (m), both from totals(); with their shapes
+    (rs, ms from shape()), a move whose speed curve differs."""
     out = []
     big = lambda v, lim: abs(v) >= lim  # noqa: E731
     if big(r["x"], 150) and (abs(m["x"]) < abs(r["x"]) * 0.3 or np.sign(m["x"]) != np.sign(r["x"])):
@@ -74,6 +105,9 @@ def verdict(r: dict, m: dict) -> list[str]:
         out.append("doesn't roll")
     if not out and (big(m["x"], 300) and not big(r["x"], 100) or big(m["push"], 25) and not big(r["push"], 8)):
         out.append("moves where the reference holds still")
+    if rs and ms and rs["shape"] in SHAPED and ms["shape"] != rs["shape"] and ms["shape"] != "still":
+        what = "keeps one pace" if ms["shape"] == "one pace" else SHAPED.get(ms["shape"], ms["shape"])
+        out.append(f"{what} where the reference {SHAPED[rs['shape']]}")
     return out
 
 
@@ -112,14 +146,15 @@ def write_js(rows: list[list[float]], path, source: str = "") -> Path:
 def report(res: dict) -> str:
     vs = res.get("remake") is not None
     w = max([8, *(len(r["window"]) for r in res["windows"])])
-    head = f'{"window":>{w}} {"t0":>6} {"t1":>6} | reference: travel x    y  push%  roll  turn  tilt'
-    lines = [head + (" | remake: travel x    y  push%  roll  off" if vs else "")]
+    head = f'{"window":>{w}} {"t0":>6} {"t1":>6} | reference: travel x    y  push%  roll  turn  tilt  shape'
+    lines = [head + (" | remake: travel x    y  push%  roll  shape       off" if vs else "")]
     for r in res["windows"]:
         a = r["ref"]
-        line = f'{r["window"]:>{w}} {r["t0"]:6.2f} {r["t1"]:6.2f} | {a["x"]:+15.0f} {a["y"]:+5.0f} {a["push"]:+6.1f} {a["roll"]:+5.1f} {r["turn"][0]:+5.1f} {r["turn"][1]:+5.1f}'
+        line = (f'{r["window"]:>{w}} {r["t0"]:6.2f} {r["t1"]:6.2f} | {a["x"]:+15.0f} {a["y"]:+5.0f} {a["push"]:+6.1f} {a["roll"]:+5.1f} '
+                f'{r["turn"][0]:+5.1f} {r["turn"][1]:+5.1f}  {a.get("shape", ""):<10}')
         if vs:
             m = r["rem"]
-            line += f' | {m["x"]:+12.0f} {m["y"]:+5.0f} {m["push"]:+6.1f} {m["roll"]:+5.1f}  ' + ", ".join(r["off"])
+            line += f' | {m["x"]:+12.0f} {m["y"]:+5.0f} {m["push"]:+6.1f} {m["roll"]:+5.1f}  {m.get("shape", ""):<10}  ' + ", ".join(r["off"])
         lines.append(line)
     if vs:
         n = sum(1 for r in res["windows"] if r["off"])
@@ -135,11 +170,11 @@ def run(reference, shots=None, every=None, against=None, js=None, out=None, fov:
     rem = read(against, wins) if against else None
     res = {"reference": str(reference), "remake": str(against) if against else None, "fov": fov, "windows": []}
     for i, r in enumerate(ref):
-        a = totals(r["track"])
-        row = {"window": r["window"], "t0": r["t0"], "t1": r["t1"], "ref": a, "turn": turn(a, fov)}
+        a, rs = totals(r["track"]), shape(r["track"])
+        row = {"window": r["window"], "t0": r["t0"], "t1": r["t1"], "ref": a | rs, "turn": turn(a, fov)}
         if rem:
-            m = totals(rem[i]["track"])
-            row |= {"rem": m, "off": verdict(a, m)}
+            m, ms = totals(rem[i]["track"]), shape(rem[i]["track"])
+            row |= {"rem": m | ms, "off": verdict(a, m, rs, ms)}
         res["windows"].append(row)
     if js:
         write_js(track_rows(ref, duration(reference)), js, Path(reference).name)

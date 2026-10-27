@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased: moves with a shape
+
+- `kit/follow.js`: an anchor's `speed` (0 holds, above 1 rushes through) or `speed: [in, out]` (a burst away, a stop
+  dead); `follow(..., { pace: true })` covers the path between anchors in step with the reference's measured speed,
+  so each move takes the reference's shape instead of one even pace between anchors.
+- `moodreel camera`: each window's shape, its speed by thirds (speeds up, slows down, in and out, one pace); with
+  `--against`, a move whose shape differs is named ("keeps one pace where the reference slows into its end").
+- `kit/gl.js`: `post({ saturation })`, colour against grey after the tone shoulder.
+- `remaking.md`, "Colour, scenes in the keys, moves with a shape": the ninth round of the 3D remake (colour measured as
+  saturation and value; one character, one material; a key as a staged scene; a move's shape measured, then paced;
+  compare 0.649, move shapes agreeing 22 of 36).
+
 ## Unreleased: detail, and the making acted
 
 - `remaking.md`, "Detail, and the making acted": the eighth round of the 3D remake. Detail as the reference's grain at

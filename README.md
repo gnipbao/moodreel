@@ -192,8 +192,9 @@ node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
 Match a remake to its reference shot by shot, not just in stills: `moodreel compare` measures each of the reference's
 shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
 `--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle;
-`moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) off both pictures,
-names what is off, and writes the reference's track for `kit/follow.js` to move the remake's camera by;
+`moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) and its shape
+(speeding up, slowing down, one pace) off both pictures, names what is off, and writes the reference's track for
+`kit/follow.js` to move the remake's camera by (with `pace`, at the reference's speed between anchors);
 `moodreel pass` runs a whole pass (render, parallel scoring, camera, contact sheet) in one command, and with
 `--jev --allow-text-upload` asks Jev (TypeSafe's typed-judgment API, `TYPESAFE_API_KEY`; opt-in, numbers only) to
 rank which windows to fix first and how; `moodreel look` (and `pass --vision --allow-image-upload`) has Jev look at
