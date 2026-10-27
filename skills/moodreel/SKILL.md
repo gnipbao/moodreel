@@ -96,7 +96,9 @@ camera through it with `moodreel pose <video> --track`, and read every window's 
 `moodreel camera <reference> --against <remake>`, which writes the reference's track for `kit/follow.js` to move the
 remake's camera by; run each pass in one command with `moodreel pass <reference> <film> --shots scenes.json --name pN`
 (render, parallel scoring, camera, contact sheet; `--jev --allow-text-upload` adds the opt-in Jev ranking of what to
-fix first); measure every pass with `moodreel compare <reference> <remake>`
+fix first, `--vision --spec look.json --allow-image-upload` has Jev look at frames of both films, `moodreel look`);
+for pixel-level placement box the reference's subjects with `moodreel track --js track-data.js` and solve the remake's
+camera and subjects onto them with `kit/lock.js`; measure every pass with `moodreel compare <reference> <remake>`
 and `moodreel sync <remake> --against <reference fingerprint>`, not only by stills. Reading by eye runs darker,
 more saturated, sparser and slower than the reference, and guesses the camera: `references/distill/reading-shots.md`.
 Before redrawing a shot, read its numbers with `moodreel probe <reference> --at t1,t2 --against <remake>` (lit share

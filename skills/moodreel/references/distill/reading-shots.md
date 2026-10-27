@@ -29,6 +29,12 @@ and type projected through the camera. All of that can be read off the video bef
   its subject in frame and to dark frames full of moving pieces: key those by hand.
 - `moodreel pass <reference> <film> --shots f --name pN [--against passes/pM] [--jev --allow-text-upload]`: one pass
   in one command: render, every window scored in parallel, the camera, a contact sheet, and opt-in the Jev ranking.
+- `moodreel look <reference> <remake> --shots f --spec look.json [--allow-image-upload]`: opt-in Jev vision. Frames of
+  both films, three moments a window: where each subject of the spec sits in the remake against the reference (px,
+  size), the checks that disagree (legends, a face, a title), how alike, worst first. The reference's answers are
+  cached by the frame.
+- `moodreel track <video> --spec look.json --subjects a,b --checks face [--every 0.125] --js track-data.js
+  [--allow-image-upload]`: Jev boxes each subject frame by frame (and answers the checks), for `kit/lock.js`.
 - `moodreel triage <compare.json> [--camera camera.json] [--allow-text-upload]`: opt-in. Jev (TypeSafe,
   `TYPESAFE_API_KEY`) judges every window's measures against the rest of the film and ranks what to fix first, with
   the kind of fix; numbers only, never frames; without the flag it writes the transfer preview and stops.

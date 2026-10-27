@@ -6,9 +6,9 @@ teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window
 0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. A second film, a 64 s one-take 3D
 voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
 0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named, and a third
-round rebuilt the landing, the building and the desk to the reference, and a fourth the night (0.614); what it added
-is in "One take in 3D", "The camera, measured", "The set laid out for the camera" and "The night, and judging
-faster" below. Read `reading-shots.md`
+round rebuilt the landing, the building and the desk to the reference, a fourth the night (0.614), and a fifth locked
+camera and critter to where Jev's vision saw them in the reference (0.637); what it added is in "One take in 3D", "The
+camera, measured", "The set laid out for the camera", "The night, and judging faster" and "Jev looks" below. Read `reading-shots.md`
 first for the tools that read a shot as code.
 
 ## The loop
@@ -27,8 +27,10 @@ first for the tools that read a shot as code.
    --name p21 --against passes/p20` renders, scores every window in parallel, reads the camera and writes a contact
    sheet (under two minutes for a 64 s film). With `--jev --allow-text-upload` (opt-in, `TYPESAFE_API_KEY`), Jev
    ranks the windows and names the kind of fix each needs (camera, framing, light, motion, detail) in about four
-   seconds: it reads numbers only, so look at the top windows' pictures before changing them. Keep a change only if
-   its window rose:
+   seconds: it reads numbers only, so look at the top windows' pictures before changing them. With `--vision
+   --spec look.json --allow-image-upload` Jev also looks at frames of both films (`moodreel look`): where each named
+   subject sits in the remake against the reference, in px, the checks that disagree (legends on the keys, the
+   critter's face, the title's name) and how alike each pair is. Keep a change only if its window rose:
    `moodreel compare ... --json pass2.json --against pass1.json --sheet pairs.jpg` prints each window's change and the
    mean's, and lays the reference beside the remake at each window's middle, worst first (read the sheet before
    probing: the scores say where, the sheet says what). Make a side-by-side video (reference above remake, the
@@ -207,6 +209,42 @@ too slow: could Jev (their typed-judgment API) speed up the judging and make it 
 - **Jev judges numbers, not pictures.** It points at the windows to look at and the kind of fix; the pictures
   decide what to change. Its answers are cached per request, so re-running a pass costs only the changed windows.
 
+## Jev looks: the subjects where the reference has them (the fifth round of the 3D film)
+
+The maker said the keys had no digits, the product had been renamed, and asked for pixel-level accuracy before speed,
+with Jev's new vision reading the frames (the film made with its makers' leave, so frames may be sent).
+
+| The eye said | Jev saw | Build |
+|---|---|---|
+| no digits on the keys | legends on the reference's keys 0.84-0.88, the remake's 0.05-0.30 | the legends were drawn but hidden: caps and legends both transparent, neither writing depth, the caps drew last. A render order (legends after caps) |
+| the name changed | "reference claude (1.00), remake other (1.00)" | the name, the model line and the logo as the reference has them, the logo cell for cell off its frame (12 x 8, one-by-two eyes, the grid a shade darker, a faint glow), no bloom on the flat terminal's type: typing 0.58 to 0.85 in Jev's likeness |
+| (pixel-level) | the critter 100-300 px from the reference's in most desk windows; its face slits most of the time and ^ ^ when it stands happy; facing the camera | `moodreel track` boxes the critter, keyboard, plant, monitor, space bar and Esc in the reference 8 times a second, with its face and its heading; `kit/lock.js` solves camera and critter onto those boxes: the critter 99 to 21 px, the plant 512 to 26, the keyboard 102 to 37 (RMS of the box sides, px at 1080); the face and heading read off the track |
+
+Over p21 to p27: compare's mean 0.614 to 0.637, Jev's likeness 0.332 to 0.383, its disagreeing checks 17 to 3.
+
+- **Box the reference's subjects, then solve the remake onto them.** `moodreel track --spec look.json --js
+  track-data.js` gives every subject's box through time; `kit/lock.js` moves the camera (5 numbers) and the subjects
+  that may move (along their axes) as little as it takes to put them there, one moment at a time. The report (`node
+  render/render.mjs report <film>`) prints each subject's error before and after; read it before rendering.
+- **Compare what the frame shows.** A box of a keyboard's corners, half out of the frame, read as filling it; compare
+  the visible part (clipped at the near plane, its hull clipped to the frame), and push out of the frame what Jev does
+  not see in the reference: the monitor and keyboard behind the critter at 8.5 s went.
+- **A critter stands on something.** Moved freely it matched its box to 9 px, then floated off the keys and, once, 12
+  units under the desk. On its surface (x and z; height only in the air) it matches to 15-20 px and stays standing.
+- **A lock must not add motion.** Corrections smoothed over 0.12 s made the camera swim (2.7 times the reference's
+  motion in the keyboard of worlds); over 0.3 s, with each moment held near the one before, it holds. Where camera and
+  critter could trade places, a moment solved alone picked either, and the critter flew 31 units in a second.
+- **Boxes don't see a mirror.** The keyboard of worlds matched box for box from the front left; the reference films it
+  from the front right. Two keys (the space bar and Esc) give the turn; use them where the remake's keyboard agrees
+  with the reference's (before the three-quarter view this wider keyboard's Esc is further out, and chasing it turned
+  the camera onto the desk).
+- **Lay the base camera near the reference's first.** A lock fine-tunes; from a base 30 units off (a measured pull-out
+  run free) it found a camera looking down at the desk. Key the base off the reference's frames, then lock.
+- **Ask Jev about the eyes and the heading, frame by frame.** "Slits or ^ ^" and "toward the camera, partly or wholly
+  to one side" gave the critter's face and turn through the film; a partial turn is about 17 degrees.
+- **Colour inside the box.** The critter read (198, 33, 3) inside Jev's box in the reference and (253, 108, 41) in
+  the remake; a deeper, more saturated base brought it to (207-221, 41-47, 19-22).
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
@@ -224,5 +262,8 @@ too slow: could Jev (their typed-judgment API) speed up the judging and make it 
   squares; when two cameras fit equally, pick the one whose foreshortening matches the nearest object's taper.
 - **White needs exposure.** A post with a tone shoulder greys a white ground: lift exposure until the centre reads
   as the reference's (249 here), and check the corners separately.
-- **Stand-ins, not copies.** Brands, logos, posts and footage become code-drawn stand-ins of the same size, colour and
-  layout; the reference's audio is used for timing and the side-by-side review only.
+- **Names and characters as the reference has them, when the maker may use them.** A remake made with its makers'
+  leave keeps the product's name, its logo cell for cell and its character: a renamed title reads as another film,
+  and Jev says so ("reference claude (1.00), remake other (1.00)"). Without that leave, brands, logos, posts and
+  footage become code-drawn stand-ins of the same size, colour and layout. The reference's audio is for timing and the
+  side-by-side review only.

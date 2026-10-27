@@ -27,7 +27,9 @@
   moodreel probe <reference> --at t,t [--against remake]  a shot's numbers, the reference's beside the remake's
   moodreel camera <reference> [--against remake] [--js f] the camera, window by window: pan, push, roll; a track for kit/follow.js
   moodreel triage <compare.json> [--camera f] [--allow-text-upload]  opt-in Jev: what to fix first, and how
-  moodreel pass <reference> <film> --shots f --name p [--jev]  render, score, camera (and triage) in one go
+  moodreel pass <reference> <film> --shots f --name p [--jev] [--vision]  render, score, camera (and Jev) in one go
+  moodreel look <reference> <remake> --shots f [--spec f] [--allow-image-upload]  opt-in Jev vision: frames compared
+  moodreel track <video> --spec f [--every s] [--js f] [--allow-image-upload]  opt-in Jev vision: subjects on screen
 """
 from __future__ import annotations
 
@@ -230,10 +232,46 @@ def cmd_pass(a):
     from .check import remake_pass, triage
     try:
         r = remake_pass.run(a.reference, a.film, a.shots, a.name, a.out, a.music, a.against, not a.no_render,
-                            not a.no_sheet, a.jev, a.allow_text_upload, a.model, a.key_file)
+                            not a.no_sheet, a.jev, a.allow_text_upload, a.model, a.key_file, a.vision, a.spec,
+                            a.allow_image_upload, a.samples)
     except triage.TriageError as e:
         raise SystemExit(f"pass: {e}")
     print(remake_pass.report(r))
+
+
+def cmd_look(a):
+    from .check import look, triage
+    try:
+        res = look.run(a.reference, a.remake, a.shots, a.spec, a.samples, a.allow_image_upload, a.json, a.cache, a.model,
+                       a.key_file, a.workers)
+    except triage.TriageError as e:
+        raise SystemExit(f"look: {e}")
+    print(look.report(res, a.top))
+
+
+def cmd_track(a):
+    from .check import look, triage
+    try:
+        res = look.track(a.video, look.load_spec(a.spec), a.subjects.split(",") if a.subjects else None,
+                         checks=a.checks.split(",") if a.checks else (), every=a.every,
+                         start=a.start, end=a.end, allow=a.allow_image_upload,
+                         cache=a.cache or Path(a.video).parent / "jev-cache", model=a.model, key_file=a.key_file,
+                         workers=a.workers)
+    except triage.TriageError as e:
+        raise SystemExit(f"track: {e}")
+    if res["status"] == "preview":
+        print(f"Jev track not sent: {res['not_cached']} of {res['requests']} frames need a call. Read {res['preview']}; "
+              "add --allow-image-upload to send them.")
+        return
+    if a.json:
+        Path(a.json).write_text(json.dumps(res, indent=1))
+    if a.js:
+        look.write_js(res, a.js)
+    for s, rows in res["subjects"].items():
+        seen = [r for r in rows if r[1] >= 0.5]
+        print(f"{s}: seen in {len(seen)} of {len(rows)} frames")
+    for e in res["errors"]:
+        print(f"failed: {e['t']} s: {e['error']}")
 
 
 def cmd_triage(a):
@@ -511,9 +549,47 @@ def main(argv=None):
     p.add_argument("--no-sheet", action="store_true", help="skip the contact sheet")
     p.add_argument("--jev", action="store_true", help="opt-in: rank what to fix with Jev (needs --allow-text-upload to send)")
     p.add_argument("--allow-text-upload", action="store_true")
+    p.add_argument("--vision", action="store_true", help="opt-in: Jev looks at frames of both films (moodreel look; "
+                   "needs --allow-image-upload to send)")
+    p.add_argument("--spec", help="what Jev looks for, and where (see moodreel look)")
+    p.add_argument("--allow-image-upload", action="store_true")
+    p.add_argument("--samples", type=int, default=3, help="moments per window Jev looks at")
     p.add_argument("--model")
     p.add_argument("--key-file")
     p.set_defaults(fn=cmd_pass)
+    p = sub.add_parser("look", help="opt-in: Jev (TypeSafe) looks at frames of a reference and its remake, window by "
+                       "window: where each subject sits, checks that disagree, how alike; worst first")
+    p.add_argument("reference")
+    p.add_argument("remake")
+    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--spec", help="subjects, checks and which windows ask what (JSON; default: the main subject)")
+    p.add_argument("--samples", type=int, default=3, help="moments per window")
+    p.add_argument("--allow-image-upload", action="store_true",
+                   help="send the frames (JPEG, 1280 x 720) to TypeSafe/Jev; without it only the transfer preview is written")
+    p.add_argument("--json", help="write the result here")
+    p.add_argument("--cache", help="where answers are cached (default: jev-cache beside the remake)")
+    p.add_argument("--model", default="jev-1.14.0")
+    p.add_argument("--key-file", help="a private file with the key, when TYPESAFE_API_KEY is not set")
+    p.add_argument("--workers", type=int, default=8)
+    p.add_argument("--top", type=int, default=12, help="how many windows to list")
+    p.set_defaults(fn=cmd_look)
+    p = sub.add_parser("track", help="opt-in: Jev finds each subject of the spec on screen, frame after frame, in one "
+                       "film: [t, seen, cx, cy, w, h] (track.json, --js for a film to frame by)")
+    p.add_argument("video")
+    p.add_argument("--spec", help="the subjects (JSON, as for moodreel look)")
+    p.add_argument("--subjects", help="only these, comma-separated")
+    p.add_argument("--checks", help="checks of the spec to answer frame by frame too, comma-separated")
+    p.add_argument("--every", type=float, default=0.25, help="seconds between frames")
+    p.add_argument("--start", type=float, default=0.0)
+    p.add_argument("--end", type=float)
+    p.add_argument("--allow-image-upload", action="store_true")
+    p.add_argument("--json", help="write the track here")
+    p.add_argument("--js", help="write it as an ES module (export const TRACK)")
+    p.add_argument("--cache")
+    p.add_argument("--model", default="jev-1.14.0")
+    p.add_argument("--key-file")
+    p.add_argument("--workers", type=int, default=8)
+    p.set_defaults(fn=cmd_track)
     p = sub.add_parser("triage", help="opt-in: Jev (TypeSafe) judges every window's measures at once and ranks what to "
                        "fix first and how (camera, framing, light, motion, detail); numbers only, never frames")
     p.add_argument("compare", help="a pass's `moodreel compare --json` result")

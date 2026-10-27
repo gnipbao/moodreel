@@ -11,6 +11,7 @@
 //                                       [--quality draft|standard|high] [--from s] [--to s] [--out <dir>/out/video.mp4]
 //   node render/render.mjs still <dir> <t> [<t> ...] [--size 1920x1080] [--out <dir>/stills]
 //   node render/render.mjs texts <dir> [--step 0.1] [--size 1920x1080] [--out texts.json]   what window.TEXTS(t) reports
+//   node render/render.mjs report <dir> [--out report.json]   what window.REPORT() returns: a film's own diagnostics
 //
 // --variant '<json>' (any command): the page finds the object as window.VARIANT before its scripts run (kit/variant.js
 // reads it), so one film renders as several: another palette, seed, line of text or length.
@@ -73,10 +74,10 @@ function parse(argv) {
     else opts.times.push(Number(a));
   }
   const [w, h] = opts.size.split('x').map(Number);
-  if (!['video', 'still', 'texts'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)
+  if (!['video', 'still', 'texts', 'report'].includes(cmd) || !dir || !(w > 0 && h > 0) || !(opts.fps > 0)
       || (opts.samples != null && !(opts.samples >= 1)) || (opts.shutter != null && !(opts.shutter > 0 && opts.shutter <= 1))
       || !['auto', 'framevelo', 'chrome'].includes(opts.engine) || !['draft', 'standard', 'high'].includes(opts.quality)) {
-    console.error('usage: render.mjs video|still|texts <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--step s] '
+    console.error('usage: render.mjs video|still|texts|report <dir> [t ...] [--fps 30] [--size WxH] [--workers N] [--step s] '
       + "[--engine auto|framevelo|chrome] [--quality draft|standard|high] [--variant '{...}'] [--samples N] [--shutter s] [--out path]");
     process.exit(2);
   }
@@ -262,6 +263,17 @@ async function texts(launch, url, o) {
   else console.log(json);
 }
 
+// a film's own diagnostics, from the page's optional window.REPORT() (kit/lock.js: how far each subject is from the
+// reference's box, before and after the lock)
+async function report(launch, url, o) {
+  const ctx = await openPage(await launch(), url, o.w, o.h);
+  const r = await ctx.page.evaluate(() => (typeof window.REPORT === 'function' ? window.REPORT() : null));
+  if (r === null) throw new Error('the page has no window.REPORT()');
+  const json = JSON.stringify(r, null, 1);
+  if (o.out) fs.writeFileSync(o.out, json);
+  else console.log(json);
+}
+
 const o = parse(process.argv.slice(2));
 VARIANT = o.variant ?? null;
 BLUR = o.samples > 1 ? { samples: Math.round(o.samples), shutter: o.shutter ?? 0.2, fps: o.fps } : null;
@@ -279,7 +291,7 @@ try {
   const url = `http://127.0.0.1:${server.address().port}/index.html`;
   const fv = o.cmd === 'video' ? await engineFor(o) : null;
   if (fv) await videoFramevelo(fv, o);
-  else await ({ video, still: stills, texts })[o.cmd](launch, url, o);
+  else await ({ video, still: stills, texts, report })[o.cmd](launch, url, o);
 } catch (e) {
   console.error(e.message);
   process.exitCode = 1;

@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased: Jev looks, and the remake is locked to what it sees
+
+- `moodreel look <reference> <remake> --shots f --spec look.json [--allow-image-upload]` (and `pass --vision`): opt-in
+  Jev vision (jev-1.14.0, TypeSafe-Danger-Zone-Images). Frames of both films at three moments a window: each named
+  subject's place and size in the remake against the reference (px), the checks that disagree (legends, a face, a
+  title), how alike the pair is; the reference's answers cached by frame. Frames go as 1280 x 720 JPEG only with the
+  flag; otherwise only `image-transfer-preview.json` is written.
+- `moodreel track <video> --spec f --subjects a,b --checks c [--every s] [--js f]`: each subject boxed frame by frame,
+  and the checks answered (a face, a heading), as `TRACK` and `CHECKS` for a film.
+- `kit/lock.js`: the remake's camera and moving subjects solved onto the reference's boxes (visible parts, absent
+  subjects pushed out of frame, a subject on its surface, smoothed and held moment to moment so it adds no motion).
+- `render.mjs report <film>`: a film's own diagnostics (`window.REPORT()`), the lock's errors before and after.
+- `remaking.md`, "Jev looks": the fifth round of the 3D remake (compare 0.614 to 0.637, Jev's likeness 0.332 to 0.383,
+  disagreeing checks 17 to 3; names and the logo as the reference's when the maker may use them).
+
 ## Unreleased: judging faster, with Jev as an option
 
 - `moodreel pass <reference> <film> --shots f --name pN [--against passes/pM] [--jev --allow-text-upload]`: one pass of
