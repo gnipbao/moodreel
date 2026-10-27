@@ -75,3 +75,32 @@ def test_windows_measured_in_parallel_match_one_by_one(tmp_path):
     one = compare.compare(ref, ours, shots, workers=1)
     many = compare.compare(ref, ours, shots, workers=2)
     assert [r["score"] for r in one["windows"]] == [r["score"] for r in many["windows"]]
+
+
+def _pan(path, dx, n=30):
+    """A textured ground sliding dx px a frame (+ right), 160 x 90 at 30 fps."""
+    rng = np.random.default_rng(3)
+    tex = (rng.random((90, 400)) * 255).astype(np.uint8)
+    tex = np.asarray(Image.fromarray(tex).resize((800, 90)))           # coarse enough for the flow to follow
+    p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "gray", "-s", "160x90", "-r", "30",
+                          "-i", "-", "-c:v", "libx264", "-crf", "12", "-pix_fmt", "yuv420p", str(path)], stdin=subprocess.PIPE)
+    for i in range(n):
+        x0 = 320 - dx * i
+        p.stdin.write(np.ascontiguousarray(tex[:, x0:x0 + 160]).tobytes())
+    p.stdin.close()
+    p.wait()
+
+
+@needs_ffmpeg
+def test_motion_reads_when_and_which_way_each_picture_moves(tmp_path):
+    ref, ours = tmp_path / "ref.mp4", tmp_path / "ours.mp4"
+    _pan(ref, 2)                                                       # sliding right
+    _pan(ours, -4)                                                     # left, twice as fast
+    m = compare.motion(ref, ours, 0.0, 0.9)
+    assert len(m["reference"]["speed"]) == 5                           # every 0.2 s over 0.9 s
+    r, o = (np.nanmean([v for v in m[k]["speed"] if v is not None]) for k in ("reference", "remake"))
+    assert 1.6 < o / r < 2.4                                           # the remake twice as fast
+    R, O = np.array(m["reference"]["cells"]), np.array(m["remake"]["cells"])
+    assert (R[..., 0] > 0).all() and (O[..., 0] < 0).all()             # every cell: right in one, left in the other
+    text = compare.motion_report("pan", m)
+    assert "reference" in text and "remake" in text and text.count("  |  ") == 4   # a row of cells each

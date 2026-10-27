@@ -191,7 +191,9 @@ node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
 
 Match a remake to its reference shot by shot, not just in stills: `moodreel compare` measures each of the reference's
 shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
-`--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle;
+`--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle, and
+`--motion <window>` reads where a window's picture moves, when and which way (its speed every 0.2 s and each cell's
+mean flow, the reference's beside the remake's);
 `moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) and its shape
 (speeding up, slowing down, one pace) off both pictures, names what is off, and writes the reference's track for
 `kit/follow.js` to move the remake's camera by (with `pace`, at the reference's speed between anchors);

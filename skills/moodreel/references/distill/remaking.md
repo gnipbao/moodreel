@@ -496,6 +496,50 @@ gave the detail back.
   The film still renders in about a minute (FrameVelo 72 s for the 64 s against 55 s before, the sky map, occlusion
   and contrast included; Blender took 4.2 s a frame).
 
+## Speed, window by window (the thirteenth round of the 3D film)
+
+Eleven windows moved at under 0.7 or over 1.4 times the reference's picture speed. Each was read with
+`moodreel compare --motion <window>`, which shows when and which way each picture moves (the speed every 0.2 s and each
+4 x 4 cell's mean flow), and with the film's own camera as filmed, locks included (a `{"cams": [t, ...]}` variant of
+its `REPORT`). Five rounds of a quick pass (render and compare, about two minutes) took `compare` from 0.657 to 0.673
+and Jev from 0.418 to 0.420, the best of the thirteen rounds. Eight windows are still outside 0.7 to 1.4 (from eleven):
+six of them within 0.07 of it, the pour (1.91) and the march (1.57) well outside.
+
+| window | speed before | after | score before | after |
+|---|---|---|---|---|
+| march | 2.55 | 1.57 | 0.454 | 0.640 |
+| crowd | 0.55 | 0.81 | 0.552 | 0.715 |
+| swoop | 1.64 | 1.28 | 0.532 | 0.637 |
+| night grass | 1.94 | 1.41 | 0.440 | 0.517 |
+| low fly | 0.55 | 0.88 | 0.546 | 0.605 |
+| town grows | 1.11 | 1.07 | 0.656 | 0.686 |
+| bank and whip | 0.93 | 1.21 | 0.677 | 0.652 |
+| aerial build | 0.89 | 0.79 | 0.678 | 0.644 |
+| pour | 1.91 | 1.91 | 0.516 | 0.516 |
+
+- **A picture's speed is set by where the camera is as much as by how fast it goes.** The march and the swoop dove
+  toward the ground where the reference rises and pulls out: the near cells' speed climbed to 7 and 8 px a frame
+  against its 2 to 4, and the camera fit read the dive as the same move. Rising and pulling back brought both near the
+  reference's speed. The low flight was the other way round: high above the town, it moved at a fifth of the
+  reference's speed for its first half second. Flying at the eaves between the rows from the first frame gave 0.88.
+- **Read the direction cell by cell.** The crowd's camera fit said "still"; its cells said the far forest runs right
+  and the near slope left, an orbit, slowing. The remake had tilted down onto the crowd. Circling it the same way took
+  speed 0.55 to 0.81 and flow agreement 0.35 to 0.76. Dusk's cells show the same orbit to the left where the remake
+  turns right: its composition is mirrored, and its speed can't be fixed without staging it again.
+- **A lock that lets go throws the camera.** Night grass's critter lock released at 52.2 s and the camera jumped 4
+  units in 0.3 s back to its anchor (a spike of 2.8 px a frame against 0.5). Put the anchor at the end of a lock's span
+  where the lock holds the camera.
+- **A paced camera stops where the measurement does.** Paced, the camera covers each stretch at the reference's
+  measured camera speed. Two rows of the river's measurement had dropped to 9 px/s between 96 and 134, so the camera
+  all but stopped there while the reference's picture kept moving. Fill a dropout from its neighbours. Where the
+  measurement reads the subject rather than the camera (the water being cut), pacing slows the camera however true the
+  anchors are.
+- **A lock couples the shots it spans.** Through the pour, the desk's lock swung the camera 60 degrees a second to keep
+  the monitor where the reference's is, and then whipped round to the critter. Every change of the pour's anchors moved
+  one window up and its neighbour down by the same amount: the pull back gained 0.05 when the assemble lost 0.05.
+  Smoothing the lock's camera cost the assemble 0.09. The pour was left as it was; it needs staging again, not
+  retiming.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
