@@ -455,8 +455,11 @@ grass tip's brightness, half a stop of exposure).
   and "brighter or darker" went; the forest read green and the river deep where WebGL's read olive and cyan. The
   structure did not move, nor the director's notes (composition, action, where the eye goes): those are the layout
   and the camera, which no renderer changes.
-- **Iterate fast, finish slow.** At 3 s a frame the world alone (34 s) is about 1.7 hours; a pass in WebGL is
-  minutes. Lay out and move the camera in the fast renderer; render the world in the slow one for the colour.
+- **Iterate fast, finish slow, or bring the look back.** The whole world part (the town, 128 critters, the night) ran
+  at 4.2 s a frame in EEVEE: about 2.4 hours a render against WebGL's minutes, too slow for the loop and stopped two
+  thirds through (the overlay spliced over it from two renders of the film's own 2D layer, over black and over grey,
+  which give its alpha exactly). A slow renderer is a colour reference: render a window in it, and bring what it does
+  to the fast one (its tone curve, its occlusion, its sky light), measured window by window against it.
 
 ## Rules that came out of it
 
