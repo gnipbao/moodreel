@@ -5,8 +5,9 @@ what the eye reads, its first pass is a different film; each step below came fro
 teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window score from 0.49 to 0.65 (median
 0.69), and the third round the five shots it worked on from 0.38-0.60 to 0.57-0.84. A second film, a 64 s one-take 3D
 voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
-0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named; what it
-added is in "One take in 3D" and "The camera, measured" below. Read `reading-shots.md`
+0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named, and a third
+round rebuilt the landing, the building and the desk to the reference; what it added is in "One take in 3D", "The
+camera, measured" and "The set laid out for the camera" below. Read `reading-shots.md`
 first for the tools that read a shot as code.
 
 ## The loop
@@ -154,6 +155,31 @@ How the camera was rebuilt, and what the measurement can't see:
 - **A camera move needs the set laid out for it.** The reference's camera turns right as its critter hops right and
   toward it; laid out otherwise, the measured turn looked away from the subject. Put the subject's path along the
   measured look and its distance where the push leaves it.
+
+## The set laid out for the camera (the third round of the 3D film)
+
+The maker named the shots still off: the keyboard's camera, the night grass, the lights coming on, the swoop. Then:
+"the landing is on a hillside, and the building's details don't match". The score hardly moved (0.607 to 0.608); the
+pictures did. The third round was about what stands in front of the camera.
+
+| The eye said | The reference showed | Build |
+|---|---|---|
+| the landing is on a hill | a grassy dome against the sunrise, a few puffs of cloud high up; the stomp throws turf, earth and flowers; then the critter walks down the slope | the valley floor raised into a dome (columns of fractional height, steps hidden under the grass), a burst of 160 cubes from round its feet, a dozen small clouds high and wide (a dense low layer read as a ceiling) |
+| the building doesn't match | a road and lamps first; each house a white scaffold, walls rising from the ground, critters on the roof as stepped tiles go on; doors, timber bands, chimneys | the scaffold as the house's twelve edges, taken down after (a per-voxel take-down time, in the shadow pass too); walls grown from the ground, windows appearing as the wall reaches them; a stepped roof of four courses; the clone rides up the rising walls and stands on the roof, then hops down to the door |
+| the keyboard's camera | the critter lands on the desk in front of the keyboard (a dark band behind it); the measured pull-back and rise reveal the keys as it jumps over them; then it hops back across them toward the camera | that layout, the camera from the measured track, each hop landed on the camera's view at the distance that gives the critter the reference's size there |
+
+- **Lay the subject along the measured camera.** Work out where the measured path looks at each landing time, and put
+  the subject there, at the distance its size in the reference gives. Moving the camera to the subject puts your turns
+  back on top of the reference's.
+- **A change of aim between anchors is not a push.** Anchors that look at different distances made the path move the
+  camera forward between them; it flew past its subject at 24 s. Only the measured growth moves the camera
+  (`kit/follow.js`).
+- **Ask what the reference's camera reveals.** A pull-back with a tilt up while the subject jumps away is a reveal:
+  the keyboard comes into the foreground. Read the move, then place the set so it reveals the same thing.
+- **The fit can't read a tracked subject on a dark ground**, the remake's or the reference's: the desk windows read
+  "still" though the camera turns 17 degrees. There, judge the pictures side by side; don't chase the number.
+- **Build things the way the reference builds them.** Dropping finished houses into place read as wrong although
+  each house matched. Scaffold, walls, roof and the critters on it are the shot.
 
 ## Rules that came out of it
 
