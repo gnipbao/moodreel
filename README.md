@@ -196,13 +196,17 @@ shots for picture, detail, tone, motion direction and speed, worst first; betwee
 names what is off, and writes the reference's track for `kit/follow.js` to move the remake's camera by;
 `moodreel pass` runs a whole pass (render, parallel scoring, camera, contact sheet) in one command, and with
 `--jev --allow-text-upload` asks Jev (TypeSafe's typed-judgment API, `TYPESAFE_API_KEY`; opt-in, numbers only) to
-rank which windows to fix first and how. What a 2D canvas can't draw (ray-marched
+rank which windows to fix first and how; `moodreel look` (and `pass --vision --allow-image-upload`) has Jev look at
+frames of both films: where each named subject sits, the checks that disagree, how alike; `moodreel track` boxes the
+reference's subjects through time, and `kit/lock.js` solves the remake's camera and subjects onto those boxes. What a 2D canvas can't draw (ray-marched
 bodies, lensing, dense line fields, engraving that follows a surface) goes through `kit/gl.js`, the GPU layer. See
 [docs/GPU.md](docs/GPU.md):
 
 ```bash
 uv run moodreel compare reference.mp4 remake.mp4 --shots scenes.json --json pass2.json --against pass1.json --sheet pairs.jpg
 uv run moodreel pass reference.mp4 films/my-remake --shots scenes.json --name p2 --against passes/p1 --jev --allow-text-upload
+uv run moodreel track reference.mp4 --spec look.json --subjects critter,keyboard --checks face --every 0.125 --js films/my-remake/track-data.js --allow-image-upload
+uv run moodreel pass reference.mp4 films/my-remake --shots scenes.json --name p3 --against passes/p2 --vision --spec look.json --allow-image-upload
 ```
 
 Read what the reference does on each beat, kick and sung word, and the camera through a 3D shot, before building

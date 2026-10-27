@@ -150,16 +150,16 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         raise TriageError("Jev redirected; the key was not forwarded")
 
 
-def call(req: dict, key: str, attempts: int = 3, opener=None) -> dict:
+def call(req: dict, key: str, attempts: int = 3, opener=None, headers: dict | None = None, timeout: float = 40) -> dict:
     body = json.dumps(req).encode()
     if key in body.decode():
         raise TriageError("the key appears in the request; refusing to send it")
     opener = opener or urllib.request.build_opener(_NoRedirect())
     for i in range(attempts):
         r = urllib.request.Request(ENDPOINT, data=body, method="POST",
-                                   headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"})
+                                   headers={"Authorization": "Bearer " + key, "Content-Type": "application/json", **(headers or {})})
         try:
-            with opener.open(r, timeout=40) as resp:
+            with opener.open(r, timeout=timeout) as resp:
                 return json.loads(resp.read(2_000_000))
         except urllib.error.HTTPError as e:
             code = e.code
