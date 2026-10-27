@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased: the desk hop, the night hill, colour in the light
+
+- `remaking.md`, "The desk hop, the night hill, colour in the light": the tenth round of the 3D remake (a lock needs
+  subjects that pin it; streaks are a camera move; light what the reference lights; a night shot as a slope, a brow
+  and a line; colour is in the light; when the judges disagree, look). The desk hop 0.48 to 0.68.
+
 ## Unreleased: moves with a shape
 
 - `kit/follow.js`: an anchor's `speed` (0 holds, above 1 rushes through) or `speed: [in, out]` (a burst away, a stop
