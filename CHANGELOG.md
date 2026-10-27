@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased: the opening, the dive, the fall, the meadow
+
+- `kit/lock.js`: a scattered subject (a river, a town, a crowd) as `{ cloud: points }`, boxed by its points inside the
+  frame; `visibleOf(camera, subject)`.
+- `remaking.md`, "The opening, the dive, the fall, the meadow": the sixth round of the 3D remake (Jev's likeness 0.393,
+  disagreeing checks 1; a lock only helps subjects laid out like the reference's; one colour per light; a falling
+  camera zooms the ground; keep the film under version control).
+
 ## Unreleased: Jev looks, and the remake is locked to what it sees
 
 - `moodreel look <reference> <remake> --shots f --spec look.json [--allow-image-upload]` (and `pass --vision`): opt-in

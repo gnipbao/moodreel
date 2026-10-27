@@ -19,6 +19,9 @@
 // remake's camera keeps its own fast motion (follow.js: the measured pans and pushes); the lock moves only where it
 // stands and aims.
 //
+// A subject that is not one convex thing (a river, a town, a crowd) is given as { cloud: points }: its box is the box of
+// those of its points that land inside the frame.
+//
 //   import { TRACK } from './track-data.js';
 //   import { lock } from './kit/lock.js';
 //   const L = lock(t => shot(t).cam, TRACK, {
@@ -76,6 +79,23 @@ export function visible(c, pts, aspect = 16 / 9) {
   const P = front.map(p => { V.set(p[0], p[1], p[2]).applyMatrix4(C3.projectionMatrix); return [(V.x + 1) / 2, (1 - V.y) / 2]; });
   const h = hull(P), cut = clipToFrame(h);
   return cut.length >= 3 ? { box: bbox(cut), inFrame: true } : { box: bbox(h), inFrame: false };
+}
+// a scattered subject: the box of its points inside the frame (none: as a solid, so it can be pulled back in)
+function visibleCloud(c, pts, aspect) {
+  const inFrame = [];
+  for (const p of pts) {
+    V.set(p[0], p[1], p[2]).applyMatrix4(C3.matrixWorldInverse);
+    if (V.z > -NEAR) continue;
+    V.applyMatrix4(C3.projectionMatrix);
+    const x = (V.x + 1) / 2, y = (1 - V.y) / 2;
+    if (x >= 0 && x <= 1 && y >= 0 && y <= 1) inFrame.push([x, y]);
+  }
+  return inFrame.length >= 2 ? { box: bbox(inFrame), inFrame: true } : visible(c, pts, aspect);
+}
+export function visibleOf(c, sub, aspect = 16 / 9) {
+  if (!sub.cloud) return visible(c, sub, aspect);
+  visible(c, sub.cloud.slice(0, 1), aspect);                 // sets up the camera
+  return visibleCloud(c, sub.cloud, aspect);
 }
 // box against box, side by side, in fractions of the frame's height (x scaled by the aspect)
 export function boxError(v, obs, aspect = 16 / 9) {
@@ -141,7 +161,7 @@ export function lock(cam, TRACK, { set = {}, moving = {} }, { spans, weight = {}
       if (!subjects.some(([, o]) => o.seen >= minSeen)) continue;
       const c = cam(t), a = aim(c.p, c.l), sp = 0.1 * a.d, sa = 0.05;
       const zero = mov.map(([, f]) => f(t, [0, 0, 0]));
-      const scale = zero.map(p => 0.1 * Math.hypot(...centroid(p).map((v, k) => v - c.p[k])));
+      const scale = zero.map(p => 0.1 * Math.hypot(...centroid(p.cloud || p).map((v, k) => v - c.p[k])));
       // parameters: the camera's five, then each moving subject's axes
       const unpack = x => {
         let k = 5;
@@ -156,7 +176,7 @@ export function lock(cam, TRACK, { set = {}, moving = {} }, { spans, weight = {}
       const res = x => {
         const { cc, d } = unpack(x), r = [];
         for (const [name, o] of subjects) {
-          const v = visible(cc, pointsOf(name, d), aspect);
+          const v = visibleOf(cc, pointsOf(name, d), aspect);
           if (o.seen >= minSeen) for (const e of boxError(v, o.box, aspect)) r.push(e * o.w);
           else if (o.seen < absent) r.push(presence(v, aspect) * away * (weight[name] ?? 1));
         }
@@ -171,9 +191,9 @@ export function lock(cam, TRACK, { set = {}, moving = {} }, { spans, weight = {}
       const none = mov.map(() => [0, 0, 0]);
       for (const [name, o] of subjects) {
         if (o.seen >= minSeen) {
-          add(rep.before, name, px(boxError(visible(c, pointsOf(name, none), aspect), o.box, aspect)));
-          add(rep.after, name, px(boxError(visible(cc, pointsOf(name, d), aspect), o.box, aspect)));
-        } else if (o.seen < absent) add(rep.shown, name, presence(visible(cc, pointsOf(name, d), aspect), aspect) > 0.02 ? 1 : 0);
+          add(rep.before, name, px(boxError(visibleOf(c, pointsOf(name, none), aspect), o.box, aspect)));
+          add(rep.after, name, px(boxError(visibleOf(cc, pointsOf(name, d), aspect), o.box, aspect)));
+        } else if (o.seen < absent) add(rep.shown, name, presence(visibleOf(cc, pointsOf(name, d), aspect), aspect) > 0.02 ? 1 : 0);
       }
       rep.samples++;
     }
