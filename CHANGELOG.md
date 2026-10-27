@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased: Blender's look in WebGL
+
+- `kit/gl.js`: `post({ agx: 1 })`, Blender's AgX tone curve (three.js's implementation) in place of the film shoulder.
+- `remaking.md`, "Blender's look in WebGL": the twelfth round. The 3D remake's world brought to its Blender render window
+  by window (mean dE 20.0 to 6.4): AgX, the sky as environment light with a ground bounce, ambient occlusion from depth,
+  and a shader-cache key per voxel variant (three.js caches a shader by the text of `onBeforeCompile`: the trees and
+  walls had run the terrain's shader for four rounds). Matching the colour cost detail against the reference (`compare`
+  0.651 to 0.640); local contrast after the look gave it back (0.657, the best of the twelve rounds; dE 7.1).
+
 ## Unreleased: the renderer's share, measured
 
 - `remaking.md`, "The renderer's share, measured": the 3D remake's forest window rebuilt in Blender EEVEE from the

@@ -162,12 +162,30 @@ vec3 shoulder(vec3 x) {
   return mix(y, vec3(1.0), smoothstep(2.0, 12.0, over) * 0.85);
 }`;
 
+// AgX, the tone curve Blender renders with (three.js's own implementation, MIT): highlights roll off and desaturate as
+// film does, mid tones keep their colour; a remake of a film rendered in Blender matches its colour with it
+const AGX = /* glsl */ `
+const mat3 AGX_TO2020 = mat3(vec3(0.6274, 0.0691, 0.0164), vec3(0.3293, 0.9195, 0.0880), vec3(0.0433, 0.0113, 0.8956));
+const mat3 AGX_FROM2020 = mat3(vec3(1.6605, -0.1246, -0.0182), vec3(-0.5876, 1.1329, -0.1006), vec3(-0.0728, -0.0083, 1.1187));
+vec3 agxContrast(vec3 x) { vec3 x2 = x * x, x4 = x2 * x2;
+  return 15.5 * x4 * x2 - 40.14 * x4 * x + 31.96 * x4 - 6.868 * x2 * x + 0.4298 * x2 + 0.1191 * x - 0.00232; }
+vec3 agxTone(vec3 color) {
+  const mat3 inset = mat3(vec3(0.856627153315983, 0.137318972929847, 0.11189821299995),
+    vec3(0.0951212405381588, 0.761241990602591, 0.0767994186031903), vec3(0.0482516061458583, 0.101439036467562, 0.811302368396859));
+  const mat3 outset = mat3(vec3(1.1271005818144368, -0.1413297634984383, -0.14132976349843826),
+    vec3(-0.11060664309660323, 1.157823702216272, -0.11060664309660294), vec3(-0.016493938717834573, -0.016493938717834257, 1.2519364065950405));
+  color = inset * (AGX_TO2020 * color);
+  color = clamp((log2(max(color, 1e-10)) + 12.47393) / 16.5, 0.0, 1.0);
+  color = outset * agxContrast(color);
+  return clamp(AGX_FROM2020 * pow(max(vec3(0.0), color), vec3(2.2)), 0.0, 1.0);
+}`;
+
 // edge: what shows where shake or zoom pulls the picture in from outside the frame (0 stretches the border, as a small
 // shake wants; 1 is black, for a whip pan that carries the picture out of frame)
 // saturation: colour against grey after the tone shoulder (1 leaves it; a sunlit world whose sky light greys its greens
 // wants a little more)
 export const POST = { exposure: 1, bloom: 0.55, bloomThreshold: 0.85, bloomKnee: 0.5, bloomRadius: 0.75, halation: 0.25,
-  ca: 1.2, grain: 0, vignette: 0.35, fade: 0, flash: 0, invert: 0, shake: [0, 0], zoom: 1, time: 0, edge: 0, saturation: 1 };
+  ca: 1.2, grain: 0, vignette: 0.35, fade: 0, flash: 0, invert: 0, shake: [0, 0], zoom: 1, time: 0, edge: 0, saturation: 1, agx: 0 };
 
 const LINE_VERT = /* glsl */ `
 precision highp float;
@@ -377,9 +395,10 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
         }`, { src: { value: null }, prev: { value: null }, texel: { value: new THREE.Vector2() }, radius: { value: 1 } }),
       final: pass(/* glsl */ `
         uniform sampler2D src, bloomTex, haloTex;
-        uniform float exposure, bloom, halation, ca, grain, vignette, fade, flash, time, zoom, invert, edge, saturation;
+        uniform float exposure, bloom, halation, ca, grain, vignette, fade, flash, time, zoom, invert, edge, saturation, agx;
         uniform vec2 shake, res;
         ${SHOULDER}
+        ${AGX}
         void main() {
           vec2 uv = (vUv - 0.5) / zoom + 0.5 - shake / res, dc = uv - 0.5;
           float r2 = dot(dc * vec2(res.x / res.y, 1.0), dc * vec2(res.x / res.y, 1.0));
@@ -388,7 +407,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
           col += texture(bloomTex, uv).rgb * bloom;
           col += vec3(1.0, 0.18, 0.04) * luma(texture(haloTex, uv).rgb) * halation;
           col *= mix(1.0, step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0), edge);
-          col = shoulder(col * exposure);
+          col = agx > 0.5 ? agxTone(col * exposure) : shoulder(col * exposure);   // agx: 0 the film shoulder, 1 Blender's curve
           col = max(mix(vec3(luma(col)), col, saturation), 0.0);
           col = mix(col, vec3(0.8515) - col * 0.84, invert);
           col += C_BONE * flash;
@@ -399,7 +418,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
           s += (g1 * 0.6 + g2 * 0.4) * grain * (0.55 + 1.2 * lm * (1.0 - lm));
           fragColor = vec4(sat(s + (hash12(gl_FragCoord.xy * 1.37 + time) - 0.5) / 255.0), 1.0);
         }`, Object.fromEntries([...['src', 'bloomTex', 'haloTex'].map(k => [k, { value: null }]),
-        ...['exposure', 'bloom', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert', 'edge', 'saturation'].map(k => [k, { value: 0 }]),
+        ...['exposure', 'bloom', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert', 'edge', 'saturation', 'agx'].map(k => [k, { value: 0 }]),
         ['shake', { value: new THREE.Vector2() }], ['res', { value: new THREE.Vector2(width, height) }]])),
     };
     P.pre.u.src.value = src; P.pre.u.texel.value.set(1 / width, 1 / height);
@@ -419,7 +438,7 @@ export function gpu(width = 1920, height = 1080, { palette = {} } = {}) {
     }
     const f = P.final.u;
     f.src.value = src; f.bloomTex.value = ups[0].texture; f.haloTex.value = ups[3].texture;
-    for (const k of ['exposure', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert', 'edge', 'saturation']) f[k].value = p[k];
+    for (const k of ['exposure', 'halation', 'ca', 'grain', 'vignette', 'fade', 'flash', 'time', 'zoom', 'invert', 'edge', 'saturation', 'agx']) f[k].value = p[k];
     f.bloom.value = p.bloom / 3;                        // the pyramid sums about three levels' worth
     f.shake.value.set(p.shake[0], p.shake[1]);
     P.final.render(out);

@@ -461,6 +461,41 @@ grass tip's brightness, half a stop of exposure).
   which give its alpha exactly). A slow renderer is a colour reference: render a window in it, and bring what it does
   to the fast one (its tone curve, its occlusion, its sky light), measured window by window against it.
 
+## Blender's look in WebGL (the twelfth round of the 3D film)
+
+The slow renderer as a reference, not the renderer: the Blender frames of the world (the same scene and camera as
+the WebGL film's, so the two line up pixel for pixel) set the target, and WebGL was brought to them window by window
+(the film's `blender/colour_check.py`: per window the mean colour difference, dE in Lab, the bias in lightness and
+chroma, the contrast ratio, the overlay masked out). The mean dE went 20.0 to 6.4 at WebGL's speed; against the
+reference, `compare` went 0.651 to 0.640 with that, then to 0.657 (the best of the twelve rounds) once local contrast
+gave the detail back.
+
+| step | mean dE | what it did |
+|---|---|---|
+| the film as it was | 20.0 | brighter early, darker in the town, more saturated, 1.37 times the contrast |
+| AgX in the post (`post({ agx: 1 })`, kit/gl.js; three.js's curve, Blender's) | 12.7 | the contrast and the neon greens |
+| the sky as environment light (a prefiltered map of the dome each frame) and a ground bounce | 10.9 | the shaded sides lit by the sky; greens kept by the bounce Blender traces |
+| ambient occlusion from depth | 10.7 | creases and contact |
+| a shader-cache key per voxel variant | 6.5 | the trees olive and the walls grey since the voxel trees went in |
+| exposure and occlusion trimmed | 6.4 | the contrast ratio 0.93: softer than Blender's |
+| local contrast (the difference from a small blur, 0.7, added back) | 7.1 | the contrast ratio 0.99; against the reference detail back (forest 0.63 to 0.78, low fly 0.59 to 0.81), `compare` 0.640 to 0.657 |
+
+- **three.js caches a shader by the text of `onBeforeCompile`.** Every `voxels()` built its shader in a closure whose
+  text was the same, so every variant ran the first one compiled: the trees and the walls ran the terrain's, which
+  mixes earth into every side face. They read olive and grey for four rounds while their colours were deepened again
+  and again. Give a material built in a closure `customProgramCacheKey` naming its variant. When a colour will not
+  move however its paint changes, render the object unlit, then with a plain material: if those are right, the shader
+  is wrong, not the light.
+- **Compare renders of one scene before comparing to the reference.** Against the reference every difference mixes
+  layout, camera and look; against another render of the same scene only the look is left, so each step is measured.
+- **Then check the reference again: a matched colour can cost detail.** AgX's curve and the sky's fill flatten the
+  light between a cube's faces; the Blender frames kept more of it, the WebGL ones lost it. The colour was closer to
+  Blender's and `compare` fell (0.651 to 0.640), most where detail fell (the forest 0.78 to 0.63).
+  Watch the contrast ratio next to dE: below about 0.95 the picture reads soft, and a local contrast pass after the
+  look brings it back at a small cost in dE. Too much over a smooth sky oversharpens (the sunset's detail 0.66 to 1.37).
+  The film still renders in about a minute (FrameVelo 72 s for the 64 s against 55 s before, the sky map, occlusion
+  and contrast included; Blender took 4.2 s a frame).
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
