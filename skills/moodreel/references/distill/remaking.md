@@ -308,6 +308,50 @@ build. Compare 0.635 to 0.645, Jev's likeness 0.393 to 0.406.
 - **Motion has a shape.** Most of Jev's remaining notes are about it: accelerations into reveals, decelerations into
   holds. Anchors joined by one smooth curve glide at one pace.
 
+## Detail, and the making acted (the eighth round of the 3D film)
+
+The maker asked for the landing's mound ("the slope did not come out; there is not that much grass"), trees and keys as
+fine as the reference's, and the critter's making acted out with the camera. Side by side, the reference's detail is a
+grain of its own at every scale, and its making is a string of beats; the remake had neither.
+
+- **Detail is the reference's grain, at its size.** Its turf is spikes about a tenth of a unit tall, a few hundred to
+  the square unit, dark at the foot and sunlit at the tip; the remake's blades, three to five times taller and sparse,
+  read as weeds and hid the ground's shape. Draw the grain where the camera comes close (instanced tufts) and carry it
+  further off in the surface's shader (a speckle that fades out before it would shimmer).
+- **A shape reads through its surface and what stands behind it.** The mound showed once its turf was fine (the
+  texture shrinks over its curve) and the floor behind its crest was smooth and lower in haze; a valley floor of
+  1-unit columns read as terraced plateaus at the crest's height. One smooth lawn over the whole floor, a third of a
+  unit over the columns.
+- **What is made should be cut into what is there.** The river is cut into the lawn when it is carved: an earth scar
+  runs out from the critter's feet and the water follows it, as the reference's; a ribbon of water appearing over an
+  open channel shows a timer.
+- **Where a thing stands is part of its detail.** The reference's forest climbs a terraced slope that rises over the
+  crest; the remake's, as dense, stood on the floor beyond the crest, which hid it. A rise of green-topped earth steps
+  behind where the critter divides, and the forest grown on it in a breath as the critter jumps. Its trees read as
+  voxel trees by greens that differ cube by cube (a checker of light and dark), not one green to a tier.
+- **Keys read by their light.** A dark room, the legends lit from below, amber leaking at every key's foot, the lens
+  open so the keys before and behind the critter melt; the glass caps' dioramas on a slab of sand over a red switch,
+  in themes (a lake round an island, a pyramid, a castle, a hedge maze, a snowy hamlet, fields in rows); white filling
+  each cap as it turns, kept low, or the whole board blooms.
+- **Every making is a beat the subject acts and the camera answers** (`directing.md`). The remake's critter walked away
+  with its back turned through the whole build. The reference's stays on the crest, turned as Jev read it (`facing`),
+  and hops: a jump and a stomp, and the camera pulls up and back fast as the mountains rise, easing into a wide hold; a
+  skip at the tick and a push back in; a push toward the river; a jump as the forest rises, the camera turning with it;
+  two hops along the crest, where it divides (it is the first of the crowd, not one more beside it). Each hop has a
+  crouch before it and a squash after it, and the camera is keyed at the same beats.
+- **An interface keeps the reference's clock.** Each task starts and is ticked at the reference's times (read off its
+  frames), counts its own seconds and tokens from zero, bursts when ticked and is struck through; nothing is in hand
+  before the first or between tasks, and the panel is shorter then.
+- **Each grain at its own scale, by night too.** Dark fine turf has less edge than the tall blades it replaced: the
+  night windows read softer (night grass 0.58 to 0.49) until the night's blades were made longer, their tips catching
+  the moon; and lit legends Jev reads sharply (0.92) where the reference's melt into its lens (0.20) made the desk hop
+  busier (0.53 to 0.48). Check `detail` per window after a change of grain.
+
+Over the round (passes p35 to p37): compare 0.645 to 0.648, Jev's likeness 0.406 to 0.418; mountains 0.72 to 0.78,
+river 0.55 to 0.70, flowers 0.66 to 0.71, crowd 0.52 to 0.58, lights on 0.64 to 0.69. Jev's director's notes 79 to 77,
+the clones row now reading as the reference's; what remains in the build is the critter walking toward the camera
+after the stomp (the reference's "walks"), and elsewhere still motion's shape (speeds up, slows into holds).
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it

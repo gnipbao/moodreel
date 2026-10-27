@@ -39,7 +39,7 @@ The reference (`帮我造一个世界`, 64 s, one take) read as a director:
 | desk hop, keys | it explores, the keyboard wakes | low, close, following hops; keys light a few at a time round it |
 | keyboard of worlds, dive | each key a world; it chooses one | a three-quarter view; it jumps from the space bar, the camera pushes in after it |
 | fall, landing | arrival | it tumbles over a meadow; lands on a crest; a longer lens, the sun behind |
-| building | the world grows | wide, eye level, orbiting the critter as mountains, river and forest rise |
+| building | it makes the world | it stomps, and the camera pulls up and back fast as the mountains rise, easing into a wide hold; it skips at the tick as the camera pushes back in; it turns and pushes, and the river is cut from its feet out; it jumps, and the forest rises on the slope behind as the camera turns to it |
 | crowd, march, town | 128 of it, at work | one long crane: above the arcs, along the line to the river, up over the houses rising; slows into the valley |
 | whip, sunset | the day ends | a fast whip over the town that slows into a view down the river: the river a line to the sun (Jev: leading line 0.98, slowing down) |
 | dusk, lights on | time passes | one slow pan as the light turns from orange to blue; the town's lights come on in an extreme wide from high (0.96) |
@@ -54,6 +54,10 @@ Its motion grammar (what a style distilled from it should keep):
   town packed as a block reads as a pattern, not a place.
 - **Light changes inside a move.** Dusk is one pan, not a series of shots.
 - **Each shot has one place for the eye**, and the next shot's starts near it.
+- **Every making is acted.** The subject does something the moment a thing appears (a stomp, a push, a jump) and the
+  camera answers it (pulls back to show what rose, pushes in on the tick, turns to what grows). A thing that appears
+  while the subject walks past with its back turned reads as a timer, not as its doing; read which way the subject
+  faces (Jev's `facing` check) and keep it.
 
 Building to the reading: the town laid in rows along the river (not a block), the sun set down the river, the camera
 keyed at the reading's beats, the lock only where the layout already agrees (the aerial build: 0.54 to 0.68 at the
