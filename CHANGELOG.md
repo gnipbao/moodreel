@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased: detail, and the making acted
+
+- `remaking.md`, "Detail, and the making acted": the eighth round of the 3D remake. Detail as the reference's grain at
+  its size (turf tufts, a lawn's speckle, trees in contrasting cubes, keys read by their light), what is made cut into
+  what is there, every making a beat the subject acts and the camera answers, an interface on the reference's clock
+  (compare 0.648, Jev's likeness 0.418, director's notes 77).
+- `directing.md`: "Every making is acted" added to the motion grammar.
+
 ## Unreleased: a director's reading
 
 - `moodreel direct <reference> --shots f [--against <remake>] [--md f] [--allow-image-upload]`: opt-in Jev vision. Each
