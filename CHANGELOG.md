@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased: a director's reading
+
+- `moodreel direct <reference> --shots f [--against <remake>] [--md f] [--allow-image-upload]`: opt-in Jev vision. Each
+  window read as a director and a motion designer would: shot size, angle, composition, light, where the eye goes;
+  from its start, middle and end frames, the camera's move, speed and ease, the subject's action, a reveal. Against a
+  remake: the notes where it reads differently.
+- `skills/moodreel/references/distill/directing.md`: reading a film as its director and its motion designer before
+  remaking or distilling it; the 3D film's reading and its motion grammar.
+- `remaking.md`, "The director's reading": the seventh round (compare 0.645, Jev's likeness 0.406).
+
 ## Unreleased: the opening, the dive, the fall, the meadow
 
 - `kit/lock.js`: a scattered subject (a river, a town, a crowd) as `{ cloud: points }`, boxed by its points inside the

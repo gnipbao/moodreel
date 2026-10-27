@@ -198,7 +198,9 @@ names what is off, and writes the reference's track for `kit/follow.js` to move 
 `--jev --allow-text-upload` asks Jev (TypeSafe's typed-judgment API, `TYPESAFE_API_KEY`; opt-in, numbers only) to
 rank which windows to fix first and how; `moodreel look` (and `pass --vision --allow-image-upload`) has Jev look at
 frames of both films: where each named subject sits, the checks that disagree, how alike; `moodreel track` boxes the
-reference's subjects through time, and `kit/lock.js` solves the remake's camera and subjects onto those boxes. What a 2D canvas can't draw (ray-marched
+reference's subjects through time, and `kit/lock.js` solves the remake's camera and subjects onto those boxes;
+`moodreel direct` reads each window as a director and a motion designer would (shot size, angle, composition, where the
+eye goes, how the camera moves and eases) and, against a remake, gives the director's notes. What a 2D canvas can't draw (ray-marched
 bodies, lensing, dense line fields, engraving that follows a surface) goes through `kit/gl.js`, the GPU layer. See
 [docs/GPU.md](docs/GPU.md):
 

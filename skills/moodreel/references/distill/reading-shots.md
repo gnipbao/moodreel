@@ -35,6 +35,10 @@ and type projected through the camera. All of that can be read off the video bef
   cached by the frame.
 - `moodreel track <video> --spec look.json --subjects a,b --checks face [--every 0.125] --js track-data.js
   [--allow-image-upload]`: Jev boxes each subject frame by frame (and answers the checks), for `kit/lock.js`.
+- `moodreel direct <reference> --shots f [--against <remake>] [--md direction.md] [--allow-image-upload]`: opt-in Jev
+  vision. A director's and a motion designer's reading per window: shot size, angle, composition, light, where the eye
+  goes; from three frames, the camera's move, speed and ease, the subject's action, a reveal. `--against`: the notes
+  where the remake reads differently. See `directing.md`.
 - `moodreel triage <compare.json> [--camera camera.json] [--allow-text-upload]`: opt-in. Jev (TypeSafe,
   `TYPESAFE_API_KEY`) judges every window's measures against the rest of the film and ranks what to fix first, with
   the kind of fix; numbers only, never frames; without the flag it writes the transfer preview and stops.

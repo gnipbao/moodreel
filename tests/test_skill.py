@@ -25,6 +25,6 @@ def test_every_command_the_skill_uses_exists():
     used = set(re.findall(r"moodreel ([a-z][a-z-]+)", text)) - {"measure:", "pack:", "s"}
     parser_cmds = {"intake", "measure", "frame-check", "kit", "scaffold", "motion-check", "pack", "styles", "film", "render",
                    "motion", "bench", "sketch", "score", "media", "voice", "export", "csd", "samples", "music", "compare",
-                   "dossier", "pose", "sync", "probe", "camera", "triage", "pass", "look", "track"}
+                   "dossier", "pose", "sync", "probe", "camera", "triage", "pass", "look", "track", "direct"}
     assert used <= parser_cmds | {"film"}, used - parser_cmds
     assert cli.main(["styles", "swiss"]) is None
