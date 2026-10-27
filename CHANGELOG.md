@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased: the set laid out for the camera
+
+- `kit/follow.js`: only the reference's measured growth moves the camera; two anchors that aim at different distances
+  no longer push it forward between them (it flew past its subject).
+- `remaking.md`, "The set laid out for the camera": the third round of the 3D remake (a landing hill, houses built
+  as the reference builds them, the subject laid along the measured camera, what the fit can't read).
+
 ## Unreleased: the camera, measured
 
 - `moodreel camera <reference> [--against <remake>] [--shots f] [--js camera-data.js]`: a film's camera read off its

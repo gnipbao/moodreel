@@ -16,7 +16,8 @@
 // From remaking a 64 s one-take 3D film (skills/moodreel/references/distill/remaking.md, "The camera, measured"):
 //   - the picture moving x px right is the camera turning left by x / f, f = 540 / tan(fov / 2) at 1920 x 1080
 //   - the picture growing is the camera moving along its view at that moment, integrated along the path (after a long
-//     pull-back a pan turns where the camera now stands, not where it began)
+//     pull-back a pan turns where the camera now stands, not where it began); two anchors that aim at different
+//     distances move nothing (a camera that flew forward between them passed its subject)
 //   - roll comes from the anchors alone: summed, the measured roll drifts (a motion-blurred whip reads as a turn it
 //     never undoes, 96 degrees by the end of one film)
 //   - a crane or a sideways move shows as little in the fit (the tilt that keeps the subject in frame cancels it):
@@ -78,13 +79,14 @@ export function follow(MOTION, anchors, end, { own = [] } = {}) {
   });
   const orient = t => {
     const [yr, pr, ld, fov, roll, f, focus] = hermite(aims, t, k => k.v), m = M(t, fov), d = Math.exp(ld - m[2]);
-    return { yaw: yr + m[0], pitch: clamp(pr + m[1], -1.5, 1.5), d, fov, roll, f, focus: focus || d };
+    return { yaw: yr + m[0], pitch: clamp(pr + m[1], -1.5, 1.5), d, mz: m[2], fov, roll, f, focus: focus || d };
   };
-  // the push: how far the camera has moved along its view since the first anchor, step by step
+  // the push: how far the measured growth has moved the camera along its view, step by step (the anchors' own look
+  // distances are where they aim, not a move: a change between them moves nothing)
   const N = Math.ceil((end - t0) * F) + 2, O = [[0, 0, 0]];
   for (let i = 1; i < N; i++) {
-    const a = orient(t0 + (i - 1) / F), b = orient(t0 + i / F), dir = dirOf(b.yaw, b.pitch);
-    O.push(O[i - 1].map((v, k) => v + dir[k] * (a.d - b.d)));
+    const a = orient(t0 + (i - 1) / F), b = orient(t0 + i / F), dir = dirOf(b.yaw, b.pitch), step = a.d * (1 - Math.exp(-(b.mz - a.mz)));
+    O.push(O[i - 1].map((v, k) => v + dir[k] * step));
   }
   const off = t => { const x = clamp((t - t0) * F, 0, N - 1.001), i = Math.floor(x), u = x - i; return O[i].map((v, k) => lerp(v, O[i + 1][k], u)); };
   const places = anchors.filter(([, a]) => a.p).map(([t, a]) => [t, { ease: a.ease, v: a.p.map((v, k) => v - off(t)[k]) }]);
