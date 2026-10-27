@@ -30,6 +30,7 @@
   moodreel pass <reference> <film> --shots f --name p [--jev] [--vision]  render, score, camera (and Jev) in one go
   moodreel look <reference> <remake> --shots f [--spec f] [--allow-image-upload]  opt-in Jev vision: frames compared
   moodreel track <video> --spec f [--every s] [--js f] [--allow-image-upload]  opt-in Jev vision: subjects on screen
+  moodreel direct <reference> --shots f [--against remake] [--md f] [--allow-image-upload]  opt-in Jev: a director's reading
 """
 from __future__ import annotations
 
@@ -272,6 +273,16 @@ def cmd_track(a):
         print(f"{s}: seen in {len(seen)} of {len(rows)} frames")
     for e in res["errors"]:
         print(f"failed: {e['t']} s: {e['error']}")
+
+
+def cmd_direct(a):
+    from .check import direct, triage
+    try:
+        res = direct.run(a.reference, a.shots, a.against, a.allow_image_upload, a.json, a.md, a.cache, a.model, a.key_file,
+                         a.workers)
+    except triage.TriageError as e:
+        raise SystemExit(f"direct: {e}")
+    print(direct.report(res))
 
 
 def cmd_triage(a):
@@ -573,6 +584,20 @@ def main(argv=None):
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--top", type=int, default=12, help="how many windows to list")
     p.set_defaults(fn=cmd_look)
+    p = sub.add_parser("direct", help="opt-in: Jev reads each window as a director and a motion designer would - shot size, "
+                       "angle, composition, light, where the eye goes, how the camera moves and eases, what the subject "
+                       "does; --against a remake: where it reads differently")
+    p.add_argument("reference")
+    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--against", help="a remake: the same questions, and the notes where it differs")
+    p.add_argument("--allow-image-upload", action="store_true")
+    p.add_argument("--json", help="write the reading here")
+    p.add_argument("--md", help="write it as a director's notes (Markdown)")
+    p.add_argument("--cache")
+    p.add_argument("--model", default="jev-1.14.0")
+    p.add_argument("--key-file")
+    p.add_argument("--workers", type=int, default=8)
+    p.set_defaults(fn=cmd_direct)
     p = sub.add_parser("track", help="opt-in: Jev finds each subject of the spec on screen, frame after frame, in one "
                        "film: [t, seen, cx, cy, w, h] (track.json, --js for a film to frame by)")
     p.add_argument("video")

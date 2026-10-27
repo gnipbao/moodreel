@@ -7,14 +7,17 @@ teaser (ASCII glitch, 20 scenes, 60 fps), where five rounds took the mean window
 voxel world (a critter leaves a terminal, builds mountains, a river, a town of 128 houses, then lights it), went from
 0.53 to 0.59 (mean of 36 windows) in seven passes, then to 0.61 in a second round on what its maker named, and a third
 round rebuilt the landing, the building and the desk to the reference, a fourth the night (0.614), a fifth locked
-camera and critter to where Jev's vision saw them in the reference (0.637), and a sixth rebuilt the opening, the dive,
-the fall, the meadow and the trees (Jev's likeness 0.393); what it added is in "One take in 3D", "The camera,
-measured", "The set laid out for the camera", "The night, and judging faster", "Jev looks" and "The opening, the dive,
-the fall, the meadow" below. Read `reading-shots.md`
+camera and critter to where Jev's vision saw them in the reference (0.637), a sixth rebuilt the opening, the dive, the
+fall, the meadow and the trees (Jev's likeness 0.393), and a seventh read the film as its director first and laid the
+town out to that reading (0.645, Jev 0.406); what it added is in "One take in 3D", "The camera, measured", "The set
+laid out for the camera", "The night, and judging faster", "Jev looks", "The opening, the dive, the fall, the meadow"
+and "The director's reading" below, and in `directing.md`. Read `reading-shots.md`
 first for the tools that read a shot as code.
 
 ## The loop
 
+0. **Read it as its director and its motion designer first** (`directing.md`): what each shot is for, where the eye
+   goes, why the camera moves and how it eases; `moodreel direct` asks Jev those questions. Build to the reading.
 1. **Cut the reference into its scenes to the frame.** A mean-luma or mean-colour timeline at the video's own frame
    rate gives every cut, flash and phase change exactly (a montage slot of 5 frames, a one-frame inverted flash, a
    glitch in three phases of 5, 3 and 5 frames). Write them as the scene table; `moodreel compare --shots` scores the
@@ -286,6 +289,24 @@ Over p27 to p31: compare 0.637 to 0.635, Jev's likeness 0.383 to 0.393, its disa
 - Still off: the desk hop (0.63 to 0.53: the critter's size against the keyboard does not allow the reference's
   framing on both sides of it), the white flash (0.79 to 0.62), sunset and the night grass (the town and its
   crowd stand elsewhere).
+
+## The director's reading (the seventh round of the 3D film)
+
+The maker asked for the town and the crowd laid out as the reference's, the camera locked by Jev after, a shorter lawn
+on the landing slope, and a director's and a motion designer's way of reading the film: "pure visual copying without a
+layer of understanding can hardly flow like the original; what we want to distill later is the style, not a copy".
+`moodreel direct` asks Jev a director's questions per window; the reading, the method and what it found are in
+`directing.md`. Built to it: the town in rows along a longer river (packed four deep it read as "a field of repeated
+things"), the sun setting down the river (the reference's leading line to the sun), the camera keyed at the reading's
+beats (between anchors 4.5 s apart the measured tilt had turned it into the grass), the lock only over the aerial
+build. Compare 0.635 to 0.645, Jev's likeness 0.393 to 0.406.
+
+- **Read before you lay out.** The scores said "different picture"; the reading said "a leading line where yours is a
+  pattern", "high where yours is the ground", "slows into the view where yours is steady". Those are fixable.
+- **A lock follows the layout, never leads it.** With the town in rows the aerial build locked well (0.54 to 0.68, at
+  the reference's speed); the march next to it, whose line still runs elsewhere, got worse (Jev 0.40 to 0.15).
+- **Motion has a shape.** Most of Jev's remaining notes are about it: accelerations into reveals, decelerations into
+  holds. Anchors joined by one smooth curve glide at one pace.
 
 ## Rules that came out of it
 
