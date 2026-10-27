@@ -432,6 +432,32 @@ keyboard worse (0.57): what had broken it was the lens, not the path.
   windows that fell show what moved. Measure before believing an impression: the reference's critter "read orange" in
   a downscaled preview and measured (196, 31, 4), as ours already did.
 
+## The renderer's share, measured (an experiment after the eleventh round)
+
+The reference was made by the same model; its frames look like an offline renderer's (hair-particle grass, contact
+shadows, refraction in the glass, a filmic tone curve), the remake's are WebGL. To learn how much of the gap that is,
+the forest window (27.4 to 29.2 s) was exported as data (the film's `export.js`: instances with their transforms,
+colours and growth times, the lawn and the water as meshes, the hero's parts, the camera and the light per frame) and
+rebuilt in Blender (`blender/build_world.py`: geometry-node instances growing on the same clock, three.js's y-up
+turned to z-up, EEVEE with ray-traced light and AgX), the same layout, camera and critter. Two values were tuned (the
+grass tip's brightness, half a stop of exposure).
+
+| | WebGL | EEVEE |
+|---|---|---|
+| compare | 0.659 | 0.679 |
+| tone error | 21.2 | 8.2 |
+| detail (1 is the reference's) | 0.78 | 0.84 |
+| structure | 0.26 | 0.25 |
+| Jev's likeness | 0.54 | 0.49 |
+| a frame | 0.016 s | 3.0 s |
+
+- **The renderer owns the colour, not the picture.** The tone error fell by more than half and compare's "softer"
+  and "brighter or darker" went; the forest read green and the river deep where WebGL's read olive and cyan. The
+  structure did not move, nor the director's notes (composition, action, where the eye goes): those are the layout
+  and the camera, which no renderer changes.
+- **Iterate fast, finish slow.** At 3 s a frame the world alone (34 s) is about 1.7 hours; a pass in WebGL is
+  minutes. Lay out and move the camera in the fast renderer; render the world in the slow one for the colour.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
