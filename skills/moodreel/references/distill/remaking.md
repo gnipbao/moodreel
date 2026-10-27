@@ -416,6 +416,22 @@ Over the round (passes p42 to p44): the desk hop 0.48 to 0.68 (Jev 0.25 to 0.29)
 to 0.417, its notes 75 to 74. The keyboard after the hop went down (0.64 to 0.59), and the low flight, the march and
 the swoop are still the weakest.
 
+## A lens that carried on (the eleventh round of the 3D film)
+
+Re-keying the desk hop in the tenth round put a 30-degree lens on its last anchor; `follow`'s lens carries on to the
+next anchor that sets one, so the keyboard and the close-up after it (9.8 to 14.4 s) were filmed tighter than before
+and fell (0.64 to 0.59, 0.59 to 0.55) while the hop itself rose. Setting the lens back (36) on that anchor brought
+them back (the keyboard 0.62, the close-up 0.60, above the ninth round's 0.59) and kept the hop (0.68); compare 0.651,
+Jev's likeness 0.418, both the best yet. Putting the ninth round's camera back at that anchor as well made the
+keyboard worse (0.57): what had broken it was the lens, not the path.
+
+- **A re-keyed span ends where it found the camera.** Lens, roll and blur carry past the anchors you touched: close a
+  re-keyed span with the values the next span had.
+- **Diff a round against the last one, not only against the reference.** The film's own history (its local git) checks
+  out the last round beside this one (`git worktree add`; copy the untracked `kit/vendor`); stills of both at the
+  windows that fell show what moved. Measure before believing an impression: the reference's critter "read orange" in
+  a downscaled preview and measured (196, 31, 4), as ours already did.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it
