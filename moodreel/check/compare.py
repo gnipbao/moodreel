@@ -152,10 +152,24 @@ def score(r: dict) -> float:
     return round(float(np.mean(parts)), 3)
 
 
-def compare(ref, ours, shots=None, every=None, offset=0.0) -> dict:
+def _window(args):
+    ref, ours, t0, t1, offset = args
+    return window(ref, ours, t0, t1, offset)
+
+
+def compare(ref, ours, shots=None, every=None, offset=0.0, workers: int = 8) -> dict:
+    """Every window measured at once, a process each (36 windows of a 64 s film: 90 s one by one, about 15 s)."""
+    wins = windows(ref, shots, every)
+    jobs = [(str(ref), str(ours), t0, t1, offset) for t0, t1, _ in wins]
+    if workers > 1 and len(jobs) > 1:
+        from concurrent.futures import ProcessPoolExecutor
+        with ProcessPoolExecutor(min(workers, len(jobs))) as ex:
+            measured = list(ex.map(_window, jobs))
+    else:
+        measured = [_window(j) for j in jobs]
     rows = []
-    for t0, t1, name in windows(ref, shots, every):
-        r = {"window": name, **window(ref, ours, t0, t1, offset)}
+    for (t0, t1, name), m in zip(wins, measured):
+        r = {"window": name, **m}
         r["score"], r["problems"] = score(r), problems(r)
         rows.append(r)
     med = lambda k: round(float(np.median([r[k] for r in rows if r.get(k) is not None])), 2) if rows else None  # noqa: E731

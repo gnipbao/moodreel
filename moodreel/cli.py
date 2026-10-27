@@ -26,6 +26,8 @@
                    [--against last.json] [--sheet f.jpg]  each window's change since the last pass; a contact sheet
   moodreel probe <reference> --at t,t [--against remake]  a shot's numbers, the reference's beside the remake's
   moodreel camera <reference> [--against remake] [--js f] the camera, window by window: pan, push, roll; a track for kit/follow.js
+  moodreel triage <compare.json> [--camera f] [--allow-text-upload]  opt-in Jev: what to fix first, and how
+  moodreel pass <reference> <film> --shots f --name p [--jev]  render, score, camera (and triage) in one go
 """
 from __future__ import annotations
 
@@ -222,6 +224,25 @@ def cmd_compare(a):
 def cmd_camera(a):
     from .check import camera
     print(camera.report(camera.run(a.reference, a.shots, a.every, a.against, a.js, a.json, a.fov)))
+
+
+def cmd_pass(a):
+    from .check import remake_pass, triage
+    try:
+        r = remake_pass.run(a.reference, a.film, a.shots, a.name, a.out, a.music, a.against, not a.no_render,
+                            not a.no_sheet, a.jev, a.allow_text_upload, a.model, a.key_file)
+    except triage.TriageError as e:
+        raise SystemExit(f"pass: {e}")
+    print(remake_pass.report(r))
+
+
+def cmd_triage(a):
+    from .check import triage
+    try:
+        res = triage.run(a.compare, a.camera, a.allow_text_upload, a.json, a.cache, a.model, a.key_file, a.workers)
+    except triage.TriageError as e:
+        raise SystemExit(f"triage: {e}")
+    print(triage.report(res, a.top))
 
 
 def cmd_probe(a):
@@ -477,6 +498,35 @@ def main(argv=None):
     p.add_argument("--json", help="write the full result here")
     p.add_argument("--fov", type=float, default=36.0, help="the remake's field of view, for the turn and tilt (deg)")
     p.set_defaults(fn=cmd_camera)
+    p = sub.add_parser("pass", help="one pass of a remake: render, score every window in parallel, read the camera, and "
+                       "with --jev rank what to fix first; all in <out>/<name>/")
+    p.add_argument("reference")
+    p.add_argument("film", help="the remake's film folder")
+    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--name", required=True, help="this pass's name (its folder)")
+    p.add_argument("--out", help="where passes live (default: passes/ beside the film)")
+    p.add_argument("--music", help="the soundtrack for the render")
+    p.add_argument("--against", help="an earlier pass's folder: each window's change")
+    p.add_argument("--no-render", action="store_true", help="score the film's last render as it is")
+    p.add_argument("--no-sheet", action="store_true", help="skip the contact sheet")
+    p.add_argument("--jev", action="store_true", help="opt-in: rank what to fix with Jev (needs --allow-text-upload to send)")
+    p.add_argument("--allow-text-upload", action="store_true")
+    p.add_argument("--model")
+    p.add_argument("--key-file")
+    p.set_defaults(fn=cmd_pass)
+    p = sub.add_parser("triage", help="opt-in: Jev (TypeSafe) judges every window's measures at once and ranks what to "
+                       "fix first and how (camera, framing, light, motion, detail); numbers only, never frames")
+    p.add_argument("compare", help="a pass's `moodreel compare --json` result")
+    p.add_argument("--camera", help="the same pass's `moodreel camera --json` result")
+    p.add_argument("--allow-text-upload", action="store_true",
+                   help="send the windows' measures to TypeSafe/Jev; without it only the transfer preview is written")
+    p.add_argument("--json", help="write the ranked result here")
+    p.add_argument("--cache", help="where answers are cached (default: next to the compare json)")
+    p.add_argument("--model", default="jev-1.13.0")
+    p.add_argument("--key-file", help="a private file with the key, when TYPESAFE_API_KEY is not set")
+    p.add_argument("--workers", type=int, default=6)
+    p.add_argument("--top", type=int, default=12, help="how many windows to list")
+    p.set_defaults(fn=cmd_triage)
     p = sub.add_parser("probe", help="a shot's numbers off full-size frames (colour, lit share and box, detail, still "
                        "grain, cell grid, a bar's angle), the reference's beside a remake's")
     p.add_argument("reference")

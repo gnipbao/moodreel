@@ -27,6 +27,11 @@ and type projected through the camera. All of that can be read off the video bef
   read off the picture: its travel, push and roll, the turn and tilt they mean at a field of view, the remake's beside
   them with what is off, and the reference's track as a film module for `kit/follow.js`. Blind to a crane that keeps
   its subject in frame and to dark frames full of moving pieces: key those by hand.
+- `moodreel pass <reference> <film> --shots f --name pN [--against passes/pM] [--jev --allow-text-upload]`: one pass
+  in one command: render, every window scored in parallel, the camera, a contact sheet, and opt-in the Jev ranking.
+- `moodreel triage <compare.json> [--camera camera.json] [--allow-text-upload]`: opt-in. Jev (TypeSafe,
+  `TYPESAFE_API_KEY`) judges every window's measures against the rest of the film and ranks what to fix first, with
+  the kind of fix; numbers only, never frames; without the flag it writes the transfer preview and stops.
 - `moodreel probe <reference> --at t1,t2 [--against <remake>] [--region x0,y0,x1,y1] [--sheet out.jpg]`: a shot's
   numbers off full-size frames, the reference's beside the remake's: colour, lit share and box, detail, whether the
   grain holds still, the period and phase of a cell grid, a bar's angle, length and width, and with a region round a

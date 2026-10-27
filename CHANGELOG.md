@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased: judging faster, with Jev as an option
+
+- `moodreel pass <reference> <film> --shots f --name pN [--against passes/pM] [--jev --allow-text-upload]`: one pass of
+  a remake in one command: render, every window scored, the camera read, a contact sheet; about two minutes for a
+  64 s film.
+- `moodreel compare` scores its windows in parallel (36 windows: 90 s to 16 s, the same numbers).
+- `moodreel triage <compare.json> [--camera f] [--allow-text-upload]`: opt-in. Jev (TypeSafe's typed-judgment API,
+  `TYPESAFE_API_KEY`) judges every window's measures against the rest of the film and ranks what to fix first, with
+  the kind of fix (camera, framing, light, motion, detail), in about four seconds. Numbers only, never frames;
+  without the flag only the transfer preview is written; answers checked, cached, and never replaced by a guess.
+- `remaking.md`, "The night, and judging faster": the fourth round of the 3D remake (night grass 0.30 to 0.55,
+  lights on 0.39 to 0.51, mean 0.614).
+
 ## Unreleased: the set laid out for the camera
 
 - `kit/follow.js`: only the reference's measured growth moves the camera; two anchors that aim at different distances
