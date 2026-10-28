@@ -69,6 +69,32 @@ between anchors. That is ease curves per move, not positions. Check a reading's 
 speed (`follow(..., { pace: true })`), and give a `speed` per anchor (or `[in, out]`) only where the measurement is
 blind: a burst after a stomp, a stop at a tick.
 
+## What a typography film's reading found (the fourth film)
+
+The reference (Su Shi and 定风波, 83 s, Remotion) is words on paper and in the dark; the user named three shots that
+the remake had right in pixels and wrong in meaning:
+
+| Shot | What it is for | What the remake did | Built to the reading |
+|---|---|---|---|
+| 12 s, the poem seized | confinement, then the charge | a lit orange tableau of tiles | an iris onto the bound tile, dim; at 12.85 s it snaps open, 诗 slams in red at half the frame's height, the only colour, the camera lurching among grey fallen tiles; the rain wipes it |
+| 58 s, a life collapsing | the words are the life, and it falls | the line scattered and vanished | a pulse traced in that goes flat; each character topples in its turn, falls and lands in a heap of rubble that stays a beat; a frame flashes as it gives way |
+| 73 s, the goose | 人生到处知何似: a trace, then gone | one smooth diagonal across the page | 飞鸿 turns to grit and the grit is the goose; it lingers by its column facing back, then turns and leaves fast, up and away |
+
+Its motion grammar:
+
+- **A collapse is gravity.** Things that fall land, pile and stay a beat before they fade; a scatter that fades in
+  the air reads as a dissolve, not a fall.
+- **Confinement before release.** A small dim iris, held still, then a hard opening onto the full frame: the opening
+  is the event.
+- **One colour carries the meaning.** Where everything else is grey, the red word is the subject; keep its size (here
+  half the frame) and don't let anything else take colour.
+- **An exit lingers, then goes.** A creature that leaves holds near where it was born for a while, then accelerates
+  away; one even glide reads as a sprite.
+- **Particles are matter.** They come from something and become something (the scroll's grit gathers into the name,
+  the name keeps its grain; 飞鸿's grit is the goose); a cloud that comes from nowhere reads as an effect.
+
+Over the round: the 58 s window 0.49 to 0.60 (compare), the 12 s window's likeness 0.21 to 0.38 (Jev).
+
 ## Limits
 
 - Jev reads frames, not intentions: "the subject flies" can mean a camera flying low and fast. Read its answers as

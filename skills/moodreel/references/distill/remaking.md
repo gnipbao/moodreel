@@ -583,6 +583,43 @@ terminal's windows, drawn flat, score 0.92 and 0.96; the world's, 0.66.
 - **Left as it is:** the pour (the desk's lock couples it to the pull back and the assemble; it needs staging again),
   dusk (its composition is the reference's mirrored), and the layout of the town and the crowd.
 
+## Words as the picture (the fourth film: Su Shi, 定风波)
+
+An 83 s motion-typography film (Remotion; paper, ink and one orange), 37 windows, remade in three rounds on the user's
+notes: `compare` 0.529 to 0.598, Jev's likeness 0.506 to 0.536 (from the second round).
+
+| step | compare | what moved it |
+|---|---|---|
+| every scene built once | 0.529 | |
+| sizes from measured ink; the reference's camera per window | 0.55 | the mosaic 0.41 to 0.60, 也无风雨 0.36 to 0.55, Lushan's ridge 0.41 to 0.54 |
+| the particles as the reference's | 0.584 | the scroll's grit 0.32 to 0.71, the cards' cloud 0.46 to 0.72, the closing grit 0.43 to 0.63, the spray 0.80 to 0.90 |
+| the narrative lines in Kai, at measured sizes | 0.588 | 此心安处是吾乡 0.85 to 0.93, the timeline 0.64 to 0.79 |
+| a director's pass on the named shots; the reference's own faces | 0.598 | 58 s 0.49 to 0.60, 12 s (Jev) 0.21 to 0.38, the title, the four works, the timeline and the cards up |
+
+- **Read the type as families, and tell them by their marks.** Such films set two or three faces: here a heavy serif
+  for the emphasis, an upright Kai for the narrative lines, a monospace for numerals. Name each line's face from full
+  size crops beside renders of the candidates, by the glyphs that differ: 〇 a thin round ring (Noto Serif SC) or a
+  heavy one (Songti SC); Kai upright and thin (LXGW WenKai) or slanted (Kaiti SC); a dotted zero (JetBrains Mono). One
+  block set in Kai that the reference sets in a plain serif cost its window 0.92 to 0.79. The system's nearest faces
+  came close; the reference's own (open fonts, downloaded with the user's leave, fonts/ in the film) closed the rest.
+- **Size from the ink, not from contact sheets.** Sizes read off 240 px strips were wrong by 1.4 to 2.8 times. The
+  ink's box in a region of both films gives the factor (`moodreel probe --region` round a line reports its `type`:
+  the ink's box, its height and stroke width); Jev's boxes agree on the large ones ("text: 0.48x the size").
+- **Particles: set every particle moment side by side at full size and name what differs**: density, the spread of
+  sizes, the shape (a disc with 36 thick rays), the direction (sand falling straight down, not blown sideways), what
+  it comes from and becomes. Draw text in particles from points sampled off the type itself; clouds dense in the
+  middle from normal deviates; ink that is grit as speckles drawn `source-atop` over the type.
+- **A flat film still has a camera.** `moodreel camera` read the reference's pushes, pulls and pans per window (the
+  ink burst +69 %, the mosaic -46 %, the bamboo panning about 70 px a second, 也无风雨 -62 %); as 2D transforms they
+  took most of the windows that had read "too slow".
+- **Don't add texture the reference doesn't have.** Its later paper measured smooth (Laplacian 0.3, luma 243); fibres
+  darkened the tone and stood in for detail the reference gets from heavier type.
+- **Read the named shots for what they mean** (`directing.md`, "What a typography film's reading found"): the remake
+  had them right in pixels and wrong in meaning, and each was fixed by its reading.
+- **Edits that replace a whole function drop what sits between functions** (a table of counts, a comment), and an
+  inline comment after a comma ends a declaration list. Render a still in every scene after such an edit, not only a
+  syntax check: a page that throws renders nothing after it.
+
 ## Rules that came out of it
 
 - **Does the reference's grain move?** `probe` prints `still`: the least change between neighbouring frames. Here it

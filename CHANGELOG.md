@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased: words as the picture
+
+- `remaking.md`, "Words as the picture": the fourth manual test, an 83 s motion-typography film (Su Shi, 定风波), three
+  rounds: compare 0.529 to 0.598, Jev 0.506 to 0.536. Type read as families and told apart by their marks (〇, an
+  upright Kai, a dotted zero); sizes from measured ink, not contact sheets (wrong by 1.4-2.8 times); particles as
+  matter with a source and a destination; the reference's camera in a flat film; no texture it doesn't have.
+- `directing.md`, "What a typography film's reading found": the three named shots read for their meaning (confinement
+  then the charge, a collapse as gravity, an exit that lingers), and the motion grammar they gave.
+
 ## Unreleased: speed, window by window
 
 - `moodreel compare --motion <window>[,<window>]`: where those windows' pictures move, when and which way. It shows the
