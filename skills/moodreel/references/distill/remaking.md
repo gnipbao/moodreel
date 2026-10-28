@@ -585,8 +585,8 @@ terminal's windows, drawn flat, score 0.92 and 0.96; the world's, 0.66.
 
 ## Words as the picture (the fourth film: Su Shi, 定风波)
 
-An 83 s motion-typography film (Remotion; paper, ink and one orange), 37 windows, remade in three rounds on the user's
-notes: `compare` 0.529 to 0.598, Jev's likeness 0.506 to 0.536 (from the second round).
+An 83 s motion-typography film (Remotion; paper, ink and one orange), 37 windows, remade in four rounds on the user's
+notes: `compare` 0.529 to 0.638, Jev's likeness 0.506 to 0.556 (from the second round).
 
 | step | compare | what moved it |
 |---|---|---|
@@ -595,6 +595,7 @@ notes: `compare` 0.529 to 0.598, Jev's likeness 0.506 to 0.536 (from the second 
 | the particles as the reference's | 0.584 | the scroll's grit 0.32 to 0.71, the cards' cloud 0.46 to 0.72, the closing grit 0.43 to 0.63, the spray 0.80 to 0.90 |
 | the narrative lines in Kai, at measured sizes | 0.588 | 此心安处是吾乡 0.85 to 0.93, the timeline 0.64 to 0.79 |
 | a director's pass on the named shots; the reference's own faces | 0.598 | 58 s 0.49 to 0.60, 12 s (Jev) 0.21 to 0.38, the title, the four works, the timeline and the cards up |
+| the weakest windows read at 640 px, one by one | 0.638 | the moon 0.34 to 0.53, 大江东去 0.38 to 0.61, 谁怕? 0.33 to 0.49, the wall 0.44 to 0.58, the goose 0.44 to 0.89 |
 
 - **Read the type as families, and tell them by their marks.** Such films set two or three faces: here a heavy serif
   for the emphasis, an upright Kai for the narrative lines, a monospace for numerals. Name each line's face from full
@@ -616,6 +617,21 @@ notes: `compare` 0.529 to 0.598, Jev's likeness 0.506 to 0.536 (from the second 
   darkened the tone and stood in for detail the reference gets from heavier type.
 - **Read the named shots for what they mean** (`directing.md`, "What a typography film's reading found"): the remake
   had them right in pixels and wrong in meaning, and each was fixed by its reading.
+- **Read the weakest windows at 640 px, not in strips.** Strips of 192 px hid what was wrong; at 640 px each was plain:
+  the moon a third too small, its clouds blobs where the reference's are banks lit silver at the rims (fbm noise sampled
+  again toward the light), its path a line where it is a band; the place names a third of their size; a white flash the
+  reference never has (tone 46 levels off); 大江东去 rising from below where the camera flies over the sea and through
+  each character standing on the horizon, swelling as it nears.
+- **Read the flow cell by cell in a flat film too** (`compare --motion`). The text wall's edges spread outward and
+  everything moved down: a push-in the camera fit had read as 3 %; the sea's texture flowed away from the camera
+  (flow -0.43) where it comes on.
+- **Each scene has its own ground.** Most of the paper measured smooth, but under the goose it is grain, snow on mud
+  (Laplacian 15 to the rest's 0.3): one speckle layer took that window from 0.44 to 0.89. Measure the ground per scene.
+- **A pull-back is a field, not a scatter.** The mosaic is the camera pulling back off the name over a field of cells,
+  a few big ones first and more, smaller, as it widens; scattering loose characters read as another shot.
+- **Compose a 3D camera from the reference's layout.** The horizon's height gives the pitch (here near the top: 18
+  degrees at a 40 degree lens) and a row's height on screen gives the camera's height above it (13 degrees down to the
+  first row: 3.5 units at 7.6 away).
 - **Edits that replace a whole function drop what sits between functions** (a table of counts, a comment), and an
   inline comment after a comma ends a declaration list. Render a still in every scene after such an edit, not only a
   syntax check: a page that throws renders nothing after it.
