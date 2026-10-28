@@ -107,6 +107,19 @@ The fifth round's review read the rest of the film the same way (out/challenge4/
 - **Where the camera stands says where we are.** The seized poem is seen from the floor of a cell, low, a dark wall
   behind the one grey tile; seen from above it was a still life.
 
+The seventh round read the motion frame by frame (`moodreel review`'s motion half, out/challenge4/review-r7/faults.md):
+
+- **A name can be an image.** 乌台, the Crow Terrace, named for the crows in its cypresses: crows dart across the year
+  of the trial as it lands. A pun made into a picture for a moment, invisible in any still at 40 % or 80 % of the shot.
+- **An arrival is a blow.** Every line that matters lands in three frames from twice its size, the year with its colours
+  split; the frame 谁怕? lands on is its negative, cyan on white. Fades read as hesitation where the film means force.
+- **A shut world closes in a circle.** The floor of his fame goes dark in a circle closing on the red cords, the
+  handcuffs, and only 盛 stays lit in its beam.
+- **Weather is a beat.** Lightning lights the grove twice for a frame as the poem is said; the rows of 每天都很焦虑。
+  tremble sideways every frame: anxiety as motion, not as text.
+- **A walk is weight and water.** The monk walks in profile, the staff planted ahead at each step, a ring spreading
+  where each foot lands: 竹杖芒鞋轻胜马 is in his gait, not in his outline.
+
 ## Limits
 
 - Jev reads frames, not intentions: "the subject flies" can mean a camera flying low and fast. Read its answers as

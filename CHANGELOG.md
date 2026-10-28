@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased: the motion designer's review
+
+- `moodreel review` reviews a cut as its motion designer too (motion.md, motion-N.jpg): the reference's snaps (frames
+  where its picture changes at once: a cut, a slam, a shatter, a flash) and whether the remake meets each on time, late
+  or early, weaker, eased into a fade, or misses it; the remake's snaps the reference lacks; every 0.6 s the pictures'
+  speed (optical flow) and change in place, flagging spans still or slow where the reference moves and fast where it
+  holds; each flagged moment frame by frame, the reference over the remake. `--only stills|motion` runs one half. The
+  remake loop's fifth step is now both reviews.
+- `remaking.md`, "The motion designer's review" and "The typography film, in sum (seven rounds)": the fourth manual
+  test concluded at compare 0.689 and Jev 0.608 (from 0.529 and 0.506). A still review can't see how a thing arrives;
+  name the film's arrival grammar and build it once; a move's shape before its size; a figure walks with weight;
+  details kept in motion; a colour fixed from stills can break a motion; the layout was right from the first cut, and
+  detail and speed made the gain; when a review's fixes move the means by about 0.01, review another way.
+- `directing.md`: the seventh round's readings (a name as an image, crows over 乌台; an arrival as a blow; a shut world
+  closing in a circle; weather as a beat; a walk as weight and water).
+
 ## Unreleased: the producer's review
 
 - `moodreel review <reference> <remake> --shots f --out d`: every window at full size beside the reference (sheets)

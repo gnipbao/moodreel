@@ -101,8 +101,9 @@ for pixel-level placement box the reference's subjects with `moodreel track --js
 camera and subjects onto them with `kit/lock.js`; before building, read the film as its director and motion designer
 (`references/distill/directing.md`; `moodreel direct` asks Jev the director's questions, and `--against` a remake gives
 the notes); measure every pass with `moodreel compare <reference> <remake>`, and review a cut before it is shown with
-`moodreel review <reference> <remake> --shots f --out d` (every window at full size, its colours audited: write the fault
-list, read what each shot is for, then fix)
+`moodreel review <reference> <remake> --shots f --out d` (the producer's half: every window at full size, its colours
+audited; the motion designer's half: the reference's snaps met, eased or missed and its moves matched, frame by frame:
+write the fault list, read what each shot is for, then fix)
 and `moodreel sync <remake> --against <reference fingerprint>`, not only by stills. Reading by eye runs darker,
 more saturated, sparser and slower than the reference, and guesses the camera: `references/distill/reading-shots.md`.
 Before redrawing a shot, read its numbers with `moodreel probe <reference> --at t1,t2 --against <remake>` (lit share

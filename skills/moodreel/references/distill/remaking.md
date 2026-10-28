@@ -40,12 +40,16 @@ first for the tools that read a shot as code.
    mean's, and lays the reference beside the remake at each window's middle, worst first (read the sheet before
    probing: the scores say where, the sheet says what). Make a side-by-side video (reference above remake, the
    reference's audio) for the user's eyes.
-5. **Review the cut as its producer before it is shown** (`moodreel review <reference> <remake> --shots scenes.json
-   --out review-N`): every window at full size beside the reference, and each window's ground, ink and accent colours
-   audited (review.md flags those a viewer sees as off, dE above 6). Write the fault list window by window (what is
-   missing, what faces or moves the wrong way, what reads as another material) before fixing anything, then read what
-   each faulted shot is for (`directing.md`) and fix it from that, not from its pixels. A cut shown with faults the
-   user then has to name cost more rounds than the review would have.
+5. **Review the cut as its producer and its motion designer before it is shown** (`moodreel review <reference>
+   <remake> --shots scenes.json --out review-N`). The producer's half: every window at full size beside the
+   reference, and each window's ground, ink and accent colours audited (review.md flags those a viewer sees as off,
+   dE above 6). The motion designer's half: every moment the reference's picture changes at once (a cut, a slam, a
+   shatter, a flash) and whether the remake's meets it on time, eases it into a fade, or misses it, then every 0.6 s
+   whether the remake's picture moves and changes as much (motion.md), each flagged moment frame by frame in strips
+   (motion-N.jpg). Stills can't show how a thing arrives; strips can. Write the fault list window by window (what is
+   missing, what faces or moves the wrong way, what arrives another way, what reads as another material) before
+   fixing anything, then read what each faulted shot is for (`directing.md`) and fix it from that, not from its
+   pixels. A cut shown with faults the user then has to name cost more rounds than the review would have.
 
 ## What to measure, and what it fixed
 
@@ -647,7 +651,7 @@ notes: `compare` 0.529 to 0.638, Jev's likeness 0.506 to 0.556 (from the second 
 The user named seven faults in the fourth round's cut (the character turning into a bird, the bird, the paper, the
 rain, the monk, words missing behind a line, details) and asked for the review first: find the faults, understand
 each design, then fix from first principles. The review found twenty-seven (out/challenge4/review-r5/faults.md);
-fixing them took `compare` from 0.638 to 0.662 and Jev's likeness from 0.556 to 0.586, the largest gain of the film's
+fixing them took `compare` from 0.638 to 0.662 and Jev's likeness from 0.556 to 0.586, Jev's largest gain of the film's
 rounds, most of it in the shots the user named (the opening drop 0.17 to 0.57 by Jev, the grove 0.40 to 0.52, 大江东去
 0.45 to 0.50, the tiles 0.47 to 0.70 by compare).
 
@@ -677,6 +681,82 @@ rounds, most of it in the shots the user named (the opening drop 0.17 to 0.57 by
   dropped what sat between functions three times (a table of counts, a module's state); it now ends at the function's
   own closing brace. A canvas `filter` set while drawing thousands of leaves blurred each one and stalled the page:
   paint sharp, blur the finished layer once.
+
+## The motion designer's review (the fourth film's seventh round)
+
+The user's notes on the sixth round's cut named seven moments, all motion: the type case filling at 4 s, the floor of
+words vanishing in a circle at 10 s, the monk's walk and the water at his feet at 15 s, the push into the peak at 33 s,
+the pull-back at 39 s, the rows coming in one by one at 60 s, 废物 cracking apart at 63 s; and the step the loop
+lacked, a motion designer's review beside the producer's. The review's motion half (`moodreel review`, motion.md)
+found six of the seven unprompted (the monk's gait is drawn under rain that moves more than he does) and some thirty
+more. Fixing them took `compare` from 0.673 to 0.689 and Jev's likeness from 0.592 to 0.608, the reference's snaps the
+remake missed or eased from 34 of 59 to 21, and the score's speed part from 0.48 to 0.58 (six rounds had taken it
+from 0.23 to 0.48).
+
+- **A still review can't see how a thing arrives.** The producer's review compares two moments of each window; a line
+  that slams in and one that fades in look the same at 40 % and 80 % of it. Most of what was left after six rounds was
+  arrival and departure: the year landing as a blow with its colours split, the places landing at twice their size,
+  the year's digits flipping like cards, 废物 shattering, words leaving upward. The motion review finds the frames
+  where the reference's picture changes at once and asks whether the remake's changes at the same frames, and how.
+- **Name the film's arrival grammar and build it once.** Here every line that matters lands in three frames from
+  about twice its size (the year with an RGB split, 侧成峰 a character at a time, the place names, 废物); one `slam`
+  option on the text helper carried it to every line. A slam is there at full size on its first frame: an opacity
+  ramp over that frame halves the change the review measures.
+- **Measure a move's shape before keying it.** The pull-back at 39 s had the reference's size (-14 % against -16 %)
+  and the wrong shape: the reference holds the moon until 40.0 s, then pulls back gathering pace and easing into its
+  end (the moon 0.045 W to 0.036 W, rising a little); the remake pulled back evenly from the first frame. The push into
+  the peak grows its height 2.7 times in 0.6 s about a point below the apex, taller faster than wider.
+- **A figure walks with weight.** The monk faces left and walks, a step every 0.4 s: the staff planted ahead, the
+  straw cape in three tiers flaring behind, a ring of water at each footfall carried back with the floor at the
+  camera's tracking speed (a planted foot moves with the floor, or it slides). Seen from behind and standing, he read
+  as another film however close his tones were.
+- **Read the details the reference keeps in its motion.** Frame by frame the reference had crows darting across 乌台
+  (the Crow Terrace) in front of the year, two frames of lightning in the grove, one frame of 谁怕? in negative,
+  rows of anxiety trembling sideways every frame. None shows in a still at 40 % or 80 % of its window; each is a
+  reading of the shot (`directing.md`).
+- **A colour fixed from stills can break a motion.** Round five lit 大江东去's sides light grey to match a still;
+  flying through the characters then read grey where the reference flashes black and white. Dark sides cost the window
+  0.03 by `compare` and gave the pass-through its contrast back. Check a colour change in the strips as well as in the
+  palette.
+
+## The typography film, in sum (seven rounds)
+
+The test ended at `compare` 0.689 and Jev 0.608 after seven rounds, from 0.529 and 0.506 (Jev from the second round),
+better in 31 of the 37 windows. Each round was one round of the user's notes on the side-by-side.
+
+| round | the user's notes | compare | Jev | what moved it |
+|---|---|---|---|---|
+| 1 | remake it | 0.529 to 0.55 | | every scene built once; sizes from measured ink; the reference's camera per window |
+| 2 | the particles; the type's size and face | 0.588 | 0.506 to 0.527 | the particles as the reference's; the narrative lines in Kai |
+| 3 | 58 s, the birds, 12 s, as a director would | 0.598 | 0.536 | the named shots read for what they mean; the reference's own fonts |
+| 4 | still not aligned | 0.638 | 0.556 | the weakest windows read at 640 px |
+| 5 | seven faults; review the cut, then fix | 0.662 | 0.586 | the producer's review: 27 faults (`moodreel review`) |
+| 6 | one more round, then conclude | 0.673 | 0.592 | the same review again: 24 faults |
+| 7 | seven moments of motion; a motion designer's review | 0.689 | 0.608 | the motion review: 34 snaps off to 21; the film's arrival grammar |
+
+At the end the score's parts are structure 0.64, detail 0.82, flow 0.61 and speed 0.58; in the first cut they were
+0.64, 0.55, 0.55 and 0.23.
+
+- **The layout was right from the first cut; detail and speed made the gain.** Structure stayed between 0.62 and 0.64
+  in every round: where each line stands, and how large, can be read off a typography film and holds once measured.
+  Detail rose 0.55 to 0.82 (the type's face and size, the particles, the paper per scene) and speed 0.23 to 0.58 (the
+  camera per window, each line on its beat, then how each thing arrives). The 3D film was the other way round: its
+  camera made the gain and its layout was the ceiling.
+- **Each large step was a new way of looking, not a setting.** The type measured from its ink (round 1), the particles
+  at full size beside the reference's (round 2), the named shots read for their meaning (round 3), the weakest windows
+  at 640 px (round 4, compare's largest step, +0.040), every window at full size with its colours audited (round 5,
+  Jev's largest, +0.030), the reference's motion frame by frame (round 7: +0.016 and +0.016, the speed part +0.10).
+- **When a review's fixes move the means by about 0.01, review another way.** The same still review a second time
+  (round 6) found 24 smaller faults for +0.011 and +0.006, its fixes trading between the measures (the lychees' rough
+  skin: compare -0.06, Jev +0.02). The speed part had been the lowest for six rounds; measured window by window
+  (`compare --motion`), what was left was held stills where the reference's picture snaps, and a review of another kind
+  found the next thirty faults.
+- **The user's notes were about meaning, then motion; the scores were distances.** Most of the moments the user named
+  sat in windows that scored well, and in the last round every one was motion. Review both halves before the user has
+  to.
+- **Left as it is:** the lake (detail 0.35: too soft), 也无风雨 (its tone 27 levels off), 谁怕? and 问汝平生 by
+  `compare`; the mosaic by Jev (0.19: the type case reads as another picture to it); the text wall's page splits (0.13
+  to 0.23 s off) and the other snaps still off.
 
 ## Rules that came out of it
 

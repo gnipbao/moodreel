@@ -193,8 +193,10 @@ Match a remake to its reference shot by shot, not just in stills: `moodreel comp
 shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
 `--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle, and
 `--motion <window>` reads where a window's picture moves, when and which way (its speed every 0.2 s and each cell's
-mean flow, the reference's beside the remake's); `moodreel review` is the producer's review before a cut is shown:
-every window at full size beside the reference and its ground, ink and accent colours audited (review.md);
+mean flow, the reference's beside the remake's); `moodreel review` is the review before a cut is shown, the producer's
+and the motion designer's: every window at full size beside the reference and its ground, ink and accent colours
+audited (review.md), and the reference's snaps (cuts, slams, shatters, flashes) met, eased or missed and its moves
+matched every 0.6 s, each flagged moment frame by frame (motion.md);
 `moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) and its shape
 (speeding up, slowing down, one pace) off both pictures, names what is off, and writes the reference's track for
 `kit/follow.js` to move the remake's camera by (with `pace`, at the reference's speed between anchors);
