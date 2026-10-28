@@ -3,7 +3,8 @@
 ## Unreleased: words as the picture
 
 - `remaking.md`, "Words as the picture": the fourth manual test, an 83 s motion-typography film (Su Shi, 定风波), three
-  rounds: compare 0.529 to 0.598, Jev 0.506 to 0.536. Type read as families and told apart by their marks (〇, an
+  rounds: compare 0.529 to 0.638, Jev 0.506 to 0.556 (the fourth: the weakest windows read at 640 px; the flow by
+  cells in a flat film; a ground per scene; a pull-back as a field; a 3D camera composed from the layout). Type read as families and told apart by their marks (〇, an
   upright Kai, a dotted zero); sizes from measured ink, not contact sheets (wrong by 1.4-2.8 times); particles as
   matter with a source and a destination; the reference's camera in a flat film; no texture it doesn't have.
 - `directing.md`, "What a typography film's reading found": the three named shots read for their meaning (confinement
