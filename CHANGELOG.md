@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased: the set by night, the sea as water
+
+- `remaking.md`, "The set by night, and the sea as water": the typography remake's eighth round, on four more notes
+  (compare 0.689 to 0.695, Jev 0.608 to 0.616): a fall timed by its curve; a set by night is the set by day with the
+  lights changed (a camera fitted to the reference's layout, per-shot settings for what shots share); a darkening matched
+  by its curve; water as waves in perspective with a soft, twinkling path and no white-out the reference lacks; an
+  inline comment that switched a scene's lights off. "The typography film, in sum" now counts eight rounds.
+
 ## Unreleased: the motion designer's review
 
 - `moodreel review` reviews a cut as its motion designer too (motion.md, motion-N.jpg): the reference's snaps (frames

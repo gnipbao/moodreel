@@ -719,9 +719,32 @@ from 0.23 to 0.48).
   0.03 by `compare` and gave the pass-through its contrast back. Check a colour change in the strips as well as in the
   palette.
 
-## The typography film, in sum (seven rounds)
+## The set by night, and the sea as water (the fourth film's eighth round)
 
-The test ended at `compare` 0.689 and Jev 0.608 after seven rounds, from 0.529 and 0.506 (Jev from the second round),
+The user named four more: the drop's place at 0 s, the mosaic's colour at 4 s, the characters behind the year at 10 s
+and the sea at 43 s. `compare` 0.689 to 0.695, Jev 0.608 to 0.616; the drop 0.62 to 0.75 (Jev 0.57 to 0.68), the
+moon 0.62 to 0.69, 乌台诗案 0.56 to 0.61.
+
+- **Time a fall, not only its ends.** The reference's drop hangs at 0.135 H for a fifth of a second, then falls faster
+  and faster to the centre by 0.42 s (a cubic), stretching with its speed, and the impact is one white frame. The
+  remake had started it higher and let it fall evenly, so it met the burst a third of the way down.
+- **A set by night is the set by day with the lights changed.** The tiles at 10 s stand where they stood by day, in
+  their two rows; the remake had laid them fallen for a later shot. With the day layout, a camera fitted to the
+  reference's frame (nine tiles, rms 0.012 of the frame) put every tile in place. Per-shot settings for what a shot
+  shares (the floor words' size and brightness, the fog, the tiles' glow) keep one shot's fix from undoing another's.
+- **Match a darkening by its curve.** The mosaic darkens as it fills, its mean 232 to 88 over 1.4 s; matched at three
+  moments by the share of cells boxed in black, joining the boxes so the dark reads as fields, not as busier grain.
+- **Water reads as water when its waves are in perspective.** Rows of small waves crowded at the horizon and wider
+  toward the camera, crests catching light and drifting in, a moon path as a soft bright column whose glints twinkle;
+  and no white-out the reference doesn't have (measured: its frame brightens 94 to 220 as the moon swells, the sea
+  lit only in the last 0.15 s).
+- **An inline comment can switch a scene's lights off.** A comment added mid-line in a scripted edit hid the night's
+  light settings after it; the night rendered with the day's lights and the day's strip of light. After a scripted
+  edit, read the edited line back whole, and look at a still of every scene that uses it.
+
+## The typography film, in sum (eight rounds)
+
+The test ended at `compare` 0.695 and Jev 0.616 after eight rounds, from 0.529 and 0.506 (Jev from the second round),
 better in 31 of the 37 windows. Each round was one round of the user's notes on the side-by-side.
 
 | round | the user's notes | compare | Jev | what moved it |
@@ -733,13 +756,14 @@ better in 31 of the 37 windows. Each round was one round of the user's notes on 
 | 5 | seven faults; review the cut, then fix | 0.662 | 0.586 | the producer's review: 27 faults (`moodreel review`) |
 | 6 | one more round, then conclude | 0.673 | 0.592 | the same review again: 24 faults |
 | 7 | seven moments of motion; a motion designer's review | 0.689 | 0.608 | the motion review: 34 snaps off to 21; the film's arrival grammar |
+| 8 | the drop, the mosaic's colour, the characters at 10 s, the sea | 0.695 | 0.616 | the drop's fall timed; the night set as the day's; the sea as water |
 
-At the end the score's parts are structure 0.64, detail 0.82, flow 0.61 and speed 0.58; in the first cut they were
+At the end the score's parts are structure 0.64, detail 0.83, flow 0.61 and speed 0.59; in the first cut they were
 0.64, 0.55, 0.55 and 0.23.
 
 - **The layout was right from the first cut; detail and speed made the gain.** Structure stayed between 0.62 and 0.64
   in every round: where each line stands, and how large, can be read off a typography film and holds once measured.
-  Detail rose 0.55 to 0.82 (the type's face and size, the particles, the paper per scene) and speed 0.23 to 0.58 (the
+  Detail rose 0.55 to 0.83 (the type's face and size, the particles, the paper per scene) and speed 0.23 to 0.59 (the
   camera per window, each line on its beat, then how each thing arrives). The 3D film was the other way round: its
   camera made the gain and its layout was the ceiling.
 - **Each large step was a new way of looking, not a setting.** The type measured from its ink (round 1), the particles
