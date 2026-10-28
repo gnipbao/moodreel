@@ -25,6 +25,7 @@
   moodreel compare <reference> <remake> [--shots f]       a remake against its reference, window by window
                    [--against last.json] [--sheet f.jpg]  each window's change since the last pass; a contact sheet
                    [--motion window,window]               where those windows' pictures move, when and which way
+  moodreel review <reference> <remake> --shots f --out d  a producer's review: full-size sheets, colours audited
   moodreel probe <reference> --at t,t [--against remake]  a shot's numbers, the reference's beside the remake's
   moodreel camera <reference> [--against remake] [--js f] the camera, window by window: pan, push, roll; a track for kit/follow.js
   moodreel triage <compare.json> [--camera f] [--allow-text-upload]  opt-in Jev: what to fix first, and how
@@ -229,6 +230,15 @@ def cmd_compare(a):
             raise SystemExit(f"compare: no window {name.strip()!r} (windows: {', '.join(rows)})")
         r = rows[name.strip()]
         print("\n" + compare.motion_report(r["window"], compare.motion(a.reference, a.remake, r["t0"], r["t1"], a.offset)))
+
+
+def cmd_review(a):
+    from .check import review
+    res = review.run(a.reference, a.remake, a.shots, a.out, a.per)
+    print(f"review in {res['out']}: {len(res['flagged'])} of {len(res['windows'])} windows with a colour off; sheets "
+          + ", ".join(Path(p).name for p in res["sheets"]))
+    for f in res["flagged"][:8]:
+        print(f"  {f['window']:>16} " + "; ".join(f"{k} {v['reference']} -> {v['remake']} (dE {v['dE']})" for k, v in f["off"].items()))
 
 
 def cmd_camera(a):
@@ -546,6 +556,14 @@ def main(argv=None):
     p.add_argument("--motion", help="windows by name, comma-separated: where their pictures move, when and which way "
                    "(speed every 0.2 s and each cell's mean flow, the reference's beside the remake's)")
     p.set_defaults(fn=cmd_compare)
+    p = sub.add_parser("review", help="a producer's review before a cut is shown: every window at full size beside the "
+                       "reference (sheets) and its ground, ink and accent colours audited (review.md)")
+    p.add_argument("reference")
+    p.add_argument("remake")
+    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--out", required=True, help="a folder for the sheets, review.json and review.md")
+    p.add_argument("--per", type=int, default=8, help="windows per sheet")
+    p.set_defaults(fn=cmd_review)
     p = sub.add_parser("camera", help="a film's camera read off its picture, window by window (pan, push, roll and the "
                        "turn they mean), a remake's beside it, and the track as camera-data.js for kit/follow.js")
     p.add_argument("reference")
