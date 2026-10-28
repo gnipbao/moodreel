@@ -95,6 +95,18 @@ Its motion grammar:
 
 Over the round: the 58 s window 0.49 to 0.60 (compare), the 12 s window's likeness 0.21 to 0.38 (Jev).
 
+The fifth round's review read the rest of the film the same way (out/challenge4/review-r5/faults.md):
+
+- **A transition can be the next shot seen from elsewhere.** The wall of text is the floor of words seen from above:
+  the camera rises (one page, then a grid of pages) and tilts into the tiles' shot. Built as a push-in on a wall, it
+  handed over to nothing.
+- **A flight has a destination.** 大江东去 flies low over a sea of sand toward 赤壁, the cliff the poem is about, and
+  surges through each character standing on the sea: slow as it nears, a blur as it passes. Without the cliff the
+  flight was a screensaver.
+- **Colour leaving is an event.** 盛, the tile of fame, hangs orange over 一〇七九 and drains to grey as 乌台诗案 is read.
+- **Where the camera stands says where we are.** The seized poem is seen from the floor of a cell, low, a dark wall
+  behind the one grey tile; seen from above it was a still life.
+
 ## Limits
 
 - Jev reads frames, not intentions: "the subject flies" can mean a camera flying low and fast. Read its answers as

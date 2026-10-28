@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased: the producer's review
+
+- `moodreel review <reference> <remake> --shots f --out d`: every window at full size beside the reference (sheets)
+  and its ground, ink and accent colours audited, reference against remake (CIE76 dE; review.md flags those a viewer
+  sees as off). The remake loop's fifth step: review a cut before it is shown, list the faults, read each shot's purpose,
+  then fix.
+- `remaking.md`, "The producer's review": the typography remake's fifth round (27 faults found, compare 0.638 to
+  0.662, Jev 0.556 to 0.586): review every window, not the weakest; colour per part of the palette; build what a shot
+  is for; draw the subject as its makers would (ink bamboo, a monk); fit a 3D camera to the layout; read the pixels'
+  parts when the eye's score and theirs part; tools that edit code need their own boundaries.
+- `directing.md`: the fifth round's readings (a transition as the next shot seen from elsewhere, a flight with a
+  destination, colour leaving as an event, where the camera stands).
+
 ## Unreleased: words as the picture
 
 - `remaking.md`, "Words as the picture": the fourth manual test, an 83 s motion-typography film (Su Shi, 定风波), four

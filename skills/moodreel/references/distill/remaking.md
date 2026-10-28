@@ -40,6 +40,12 @@ first for the tools that read a shot as code.
    mean's, and lays the reference beside the remake at each window's middle, worst first (read the sheet before
    probing: the scores say where, the sheet says what). Make a side-by-side video (reference above remake, the
    reference's audio) for the user's eyes.
+5. **Review the cut as its producer before it is shown** (`moodreel review <reference> <remake> --shots scenes.json
+   --out review-N`): every window at full size beside the reference, and each window's ground, ink and accent colours
+   audited (review.md flags those a viewer sees as off, dE above 6). Write the fault list window by window (what is
+   missing, what faces or moves the wrong way, what reads as another material) before fixing anything, then read what
+   each faulted shot is for (`directing.md`) and fix it from that, not from its pixels. A cut shown with faults the
+   user then has to name cost more rounds than the review would have.
 
 ## What to measure, and what it fixed
 
@@ -635,6 +641,42 @@ notes: `compare` 0.529 to 0.638, Jev's likeness 0.506 to 0.556 (from the second 
 - **Edits that replace a whole function drop what sits between functions** (a table of counts, a comment), and an
   inline comment after a comma ends a declaration list. Render a still in every scene after such an edit, not only a
   syntax check: a page that throws renders nothing after it.
+
+## The producer's review (the fourth film's fifth round)
+
+The user named seven faults in the fourth round's cut (the character turning into a bird, the bird, the paper, the
+rain, the monk, words missing behind a line, details) and asked for the review first: find the faults, understand
+each design, then fix from first principles. The review found twenty-seven (out/challenge4/review-r5/faults.md);
+fixing them took `compare` from 0.638 to 0.662 and Jev's likeness from 0.556 to 0.586, the largest gain of the film's
+rounds, most of it in the shots the user named (the opening drop 0.17 to 0.57 by Jev, the grove 0.40 to 0.52, 大江东去
+0.45 to 0.50, the tiles 0.47 to 0.70 by compare).
+
+- **Review every window at full size, not the weakest.** The scores ranked the weakest windows; the faults the user
+  named were in windows that scored well (the grove 0.59-0.70, the goose 0.89). A score is a distance, not a list of
+  what is wrong.
+- **Audit colour per window: ground, ink, accent.** The paper was 20 levels too dark at the title's corners with twice
+  the reference's texture; the text wall and the tiles were neutral grey where the reference is warm white; 谁怕?'s
+  orange #b44a2c where it is #eb5925. None of this showed in the mean score; dE per part of the palette showed all of it.
+- **Read what a shot is for, then build that.** The text wall is the floor of words seen from above, a pull-back that
+  hands over to the tiles' shot (one page, then two, three, six); 大江东去 is a flight over the sea toward 赤壁, the cliff
+  the poem names, surging through each character; 盛 drains from orange to grey as 乌台诗案 is read; the seized poem is
+  seen from the floor of a cell; 飞鸿 becomes the goose that leaves its prints in the snow and flies. Each had been
+  built to its pixels as something else.
+- **Draw the subject as its makers would.** Ink bamboo is stalks that taper, with nodes, twigs and clusters of narrow
+  drooping leaves, the leaves in the canopy, layered into the fog by depth (painted once into layers that pan at their
+  own speeds: `grove.js` in the film); a monk is a 斗笠 hat, a straw 蓑衣 hanging in strands, a robe and a staff. Plain
+  bars and a cone read as another film however the colours are matched.
+- **Fit a 3D camera to the reference's layout.** Four points on screen (the rows of tiles, the rising tile) and the
+  horizon fix the camera: a small search over position, target and roll matched the reference within 0.02 of the
+  frame at two moments, where camera moves keyed by eye had the rows a twelfth of the frame too low.
+- **When the eye's score rises and the pixels' falls, read the pixels' parts.** After the rebuild Jev rose and
+  `compare` fell in the grove; its parts named three real faults: the fog 12-18 levels too bright, the rain making the
+  picture busier (detail 1.26), and the pan running the wrong way (flow: the reference's cells move right, ours left;
+  written the right way in the first round and reversed in the new module). Each fixed, the window rose 0.52 to 0.66.
+- **Tools that edit code need their own boundaries.** A whole-function replacement that ran to the next declaration
+  dropped what sat between functions three times (a table of counts, a module's state); it now ends at the function's
+  own closing brace. A canvas `filter` set while drawing thousands of leaves blurred each one and stalled the page:
+  paint sharp, blur the finished layer once.
 
 ## Rules that came out of it
 
