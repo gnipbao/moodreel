@@ -7,10 +7,11 @@ ships its reference's scenes makes every new film a remix of the reference, howe
 
 ## The inventory (in ANALYSIS.md)
 
-List the reference's set pieces by name, as content: the opening image, each recurring layout, each figure or object
-drawn, each staged moment ("an ink drop on black bursting into writing", "a floor of words with tiles standing in
-rows", "a moon over the sea with its path", "a monk walking in bamboo"). For each, say which trait of the signature it
-carried ("type as matter", "a camera in a world of type"). The trait goes into STYLE.md; the set piece stays here.
+List the reference's set pieces by name, as content: the opening and closing images, each recurring layout, each
+figure or object drawn, each staged moment ("an ink drop on black bursting into writing", "a floor of words with tiles
+standing in rows", "a moon over the sea with its path", "a monk walking in bamboo"). For each, say which trait of the
+signature it carried ("type as matter", "a camera in a world of type"). The trait goes into STYLE.md; the set piece
+stays here.
 
 ## What goes in the kit: primitives
 
@@ -33,7 +34,7 @@ keep them in the project's `studies/` (not packed), as evidence of how a trait w
 general technique (water in perspective, a stippled mountain), lift the technique into a primitive (`waves(region)`,
 `stipple(shape)`) and leave the scene behind.
 
-## Writing STYLE.md §6, §8, §10
+## Writing STYLE.md §6, §8, §10, §11
 
 - **§6, camera**: the camera's attitude and the kinds of move it makes, each with what it expresses ("pushes are
   sudden and land like the type does", "the camera travels through the medium, not past it"), and as examples only, how
@@ -42,6 +43,9 @@ general technique (water in perspective, a stippled mountain), lift the techniqu
   arrival is a blow"), each with one example from the reference and an invitation to invent; never a menu of the
   reference's moments to pick from.
 - **§10, engine**: the primitives, with a minimal example that draws a scene the reference doesn't have.
+- **§11, variation**: its example openings and endings are scenes too, invented like the demo's: none from the
+  inventory. Ink Chronicle's first draft offered "an ink drop bursting into writing" and "a page filling with type",
+  the reference's own opening and its second scene, and "a word in grit left on the paper", close to its ending.
 
 ## Checking
 

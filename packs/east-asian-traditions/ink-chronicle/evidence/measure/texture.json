@@ -1,0 +1,160 @@
+{
+ "grain": 1.83,
+ "grain_range": [
+  0.15,
+  3.16
+ ],
+ "vignette": 0.517,
+ "vignette_range": [
+  0.517,
+  0.517
+ ],
+ "mottle": 3.44,
+ "mottle_range": [
+  3.44,
+  3.44
+ ],
+ "edge_sharpness": 0.39,
+ "edge_sharpness_range": [
+  0.342,
+  0.445
+ ],
+ "edge_density": 0.019,
+ "edge_density_range": [
+  0.006,
+  0.071
+ ],
+ "flat_share": 0.861,
+ "flat_share_range": [
+  0.468,
+  0.892
+ ],
+ "halftone": null,
+ "scanlines": null,
+ "pixel": null,
+ "brush": {
+  "share": 0.25,
+  "edge_spacing_px": 14.1,
+  "coherence": 0.79,
+  "direction_deg": 173.8,
+  "agreement": 0.53,
+  "coverage": 0.64
+ },
+ "summary": {
+  "grain": "fine",
+  "vignette": "strong",
+  "mottle": "blotchy",
+  "edges": "crisp",
+  "halftone": false,
+  "scanlines": false,
+  "pixel": false,
+  "brush": true
+ },
+ "per_picture": [
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.468,
+   "grain": 1.37,
+   "vignette": 0.517,
+   "vignette_levels": 10.4,
+   "mottle": 3.44,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.38,
+   "edge_density": 0.0711,
+   "brush": {
+    "coverage": 0.64,
+    "edge_spacing_px": 14.1,
+    "coherence": 0.79,
+    "direction_deg": 173.8,
+    "agreement": 0.53,
+    "edge_pieces": 1142
+   },
+   "summary": {
+    "grain": "fine",
+    "vignette": "strong",
+    "mottle": "blotchy",
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": true
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.868,
+   "grain": 2.29,
+   "vignette": null,
+   "mottle": null,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.4,
+   "edge_density": 0.006,
+   "summary": {
+    "grain": "fine",
+    "vignette": null,
+    "mottle": null,
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.892,
+   "grain": 0.15,
+   "vignette": null,
+   "mottle": null,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.445,
+   "edge_density": 0.0114,
+   "summary": {
+    "grain": "none",
+    "vignette": null,
+    "mottle": null,
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  },
+  {
+   "work_size": [
+    1280,
+    720
+   ],
+   "flat_share": 0.855,
+   "grain": 3.16,
+   "vignette": null,
+   "mottle": null,
+   "halftone": null,
+   "scanlines": null,
+   "edge_sharpness": 0.342,
+   "edge_density": 0.0268,
+   "summary": {
+    "grain": "visible",
+    "vignette": null,
+    "mottle": null,
+    "edges": "crisp",
+    "halftone": false,
+    "scanlines": false,
+    "pixel": false,
+    "brush": false
+   }
+  }
+ ]
+}

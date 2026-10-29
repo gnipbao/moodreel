@@ -1,0 +1,21 @@
+{
+ "bpm": 72,
+ "meter": 4,
+ "offset": 0.0,
+ "seed": 9,
+ "key": "Dm",
+ "sections": [
+  {"name": "source", "bars": 1, "chords": ["Dm"], "groove": "none", "parts": ["piano"]},
+  {"name": "case", "bars": 1, "chords": ["Bb"], "groove": "none", "parts": ["pizz", "piano"]},
+  {"name": "floor", "bars": 2, "chords": ["F", "C"], "groove": "none", "parts": ["strings", "piano"]},
+  {"name": "flood", "bars": 1, "chords": ["Dm"], "groove": "none", "parts": ["strings"]},
+  {"name": "sea", "bars": 2, "chords": ["Bb", "F"], "groove": "none", "parts": ["strings", "harp"]},
+  {"name": "end", "bars": 1, "chords": ["Dm"], "groove": "none", "parts": ["piano"]}
+ ],
+ "cues": [
+  {"name": "blow", "bar": 3, "beat": 3, "sound": "timpani"},
+  {"name": "breach", "bar": 5, "beat": 3, "sound": "roll", "beats": 2},
+  {"name": "sea", "bar": 6, "beat": 1, "sound": "harp"},
+  {"name": "last", "bar": 8, "beat": 1, "sound": "timpani"}
+ ]
+}

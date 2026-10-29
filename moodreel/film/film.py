@@ -176,9 +176,11 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
     (d / "TREATMENT.md").write_text(TREATMENT.format(name=name, style=f"{s.get('name')} ({s['slug']}, {_shown(sdir)})"))
     (d / "CREDITS").write_text(f"{name}\n\nThird-party assets (fonts, images, music, samples) and their licences:\n\n")
     (d / "build.sh").write_text(BUILD.format(music=""))
-    if (d / "kit" / "fonts" / "OFL.txt").exists():   # a style that ships its typefaces: their licence goes in the credits
+    licences = sorted(p.name for p in (d / "kit" / "fonts").glob("OFL*.txt"))   # one OFL.txt, or one per family
+    if licences:                                      # a style that ships its typefaces: their licence goes in the credits
         with open(d / "CREDITS", "a") as cr:
-            cr.write("- Fonts in kit/fonts: SIL Open Font License 1.1; copyright lines and licence in kit/fonts/OFL.txt\n")
+            cr.write("- Fonts in kit/fonts: SIL Open Font License 1.1; copyright lines and licence in "
+                     + ", ".join(f"kit/fonts/{n}" for n in licences) + "\n")
     if "3d" in (st.get("needs") or []):               # three.js for kit/three.js, with its licence and a credit
         from ..pack.kit import vendor_three
         with open(d / "CREDITS", "a") as cr:

@@ -1,0 +1,180 @@
+{
+ "video": "out/projects/dingfengbo/demo.mp4",
+ "claims": [
+  {
+   "id": "entrance.duration",
+   "rule": "median within \u00b125% (at least a frame)",
+   "reference": 0.35,
+   "film": 1.283,
+   "result": "fail"
+  },
+  {
+   "id": "entrance.ease_class",
+   "rule": "share of 'in' within \u00b120%",
+   "reference": 0.67,
+   "film": 1.0,
+   "result": "fail"
+  },
+  {
+   "id": "entrance.overshoot_share",
+   "rule": "within \u00b125%",
+   "reference": 1.0,
+   "film": 0.0,
+   "result": "fail"
+  },
+  {
+   "id": "entrance.overshoot",
+   "rule": "median within reference p25/1.5 .. p75*1.5",
+   "reference": [
+    0.019,
+    0.226
+   ],
+   "film": null,
+   "result": "unknown"
+  },
+  {
+   "id": "exit.duration",
+   "rule": "median within \u00b125% (at least a frame)",
+   "reference": 0.267,
+   "film": 0.65,
+   "result": "fail"
+  },
+  {
+   "id": "exit.ease_class",
+   "rule": "share of 'out+oscillate' within \u00b120%",
+   "reference": 0.6,
+   "film": 1.0,
+   "result": "fail"
+  },
+  {
+   "id": "exit.overshoot_share",
+   "rule": "within \u00b125%",
+   "reference": 0.0,
+   "film": 1.0,
+   "result": "fail"
+  },
+  {
+   "id": "move.duration",
+   "rule": "median within \u00b125% (at least a frame)",
+   "reference": 0.217,
+   "film": 0.933,
+   "result": "fail"
+  },
+  {
+   "id": "move.ease_class",
+   "rule": "share of 'in' within \u00b120%",
+   "reference": 0.36,
+   "film": 0.88,
+   "result": "fail"
+  },
+  {
+   "id": "move.overshoot_share",
+   "rule": "within \u00b125%",
+   "reference": 0.45,
+   "film": 0.38,
+   "result": "pass"
+  },
+  {
+   "id": "move.overshoot",
+   "rule": "median within reference p25/1.5 .. p75*1.5",
+   "reference": [
+    0.052,
+    0.206
+   ],
+   "film": 0.054,
+   "result": "pass"
+  },
+  {
+   "id": "counters.duration",
+   "rule": "median within \u00b125% (at least a frame)",
+   "reference": 0.433,
+   "film": 0.417,
+   "result": "pass"
+  },
+  {
+   "id": "counters.ease_class",
+   "rule": "share of 'linear' within \u00b120%",
+   "reference": 1.0,
+   "film": 0.5,
+   "result": "fail"
+  },
+  {
+   "id": "counters.overshoot_share",
+   "rule": "within \u00b125%",
+   "reference": 0.0,
+   "film": 0.0,
+   "result": "pass"
+  },
+  {
+   "id": "exit_shorter",
+   "rule": "exits shorter than entrances",
+   "reference": [
+    0.267,
+    0.35
+   ],
+   "film": [
+    0.65,
+    1.283
+   ],
+   "result": "pass"
+  },
+  {
+   "id": "stagger",
+   "rule": "a stagger within \u00b130% of one of the intervals",
+   "reference": [
+    0.0333,
+    0.0667,
+    0.0681,
+    0.1523
+   ],
+   "film": null,
+   "result": "unknown"
+  },
+  {
+   "id": "hold",
+   "rule": "median hold at least 80% of the reference's",
+   "reference": 0.25,
+   "film": 0.533,
+   "result": "pass"
+  },
+  {
+   "id": "shot_length",
+   "rule": "median within \u00b135%",
+   "reference": 2.933,
+   "film": 3.333,
+   "result": "pass"
+  },
+  {
+   "id": "transition_types",
+   "rule": "no transition the references don't use",
+   "reference": [
+    "cut",
+    "dissolve"
+   ],
+   "film": [
+    "cut",
+    "dissolve"
+   ],
+   "result": "pass"
+  },
+  {
+   "id": "density",
+   "rule": "within \u00b10.15",
+   "reference": 0.589,
+   "film": 0.377,
+   "result": "advice"
+  },
+  {
+   "id": "stepping",
+   "rule": "drawings held on the same number of frames",
+   "reference": 1,
+   "film": 1,
+   "result": "pass"
+  }
+ ],
+ "pass": 9,
+ "fail": 9,
+ "unknown": 2,
+ "advice": 1,
+ "ok": false
+}

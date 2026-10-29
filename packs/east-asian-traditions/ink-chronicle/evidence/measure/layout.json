@@ -1,0 +1,108 @@
+{
+ "density": 1.0,
+ "margins": {
+  "left": 0.0,
+  "right": 0.0,
+  "top": 0.0,
+  "bottom": 0.0
+ },
+ "min_margin": 0.0,
+ "centroid": [
+  0.498,
+  0.497
+ ],
+ "symmetry": 1.0,
+ "blocks": 1.0,
+ "dominant_alignment": "centre",
+ "columns": 0.0,
+ "per_picture": [
+  {
+   "density": 0.139,
+   "margins": {
+    "left": 0.066,
+    "right": 0.027,
+    "top": 0.0,
+    "bottom": 0.0
+   },
+   "centroid": [
+    0.554,
+    0.541
+   ],
+   "symmetry": 0.218,
+   "blocks": 11,
+   "alignment": {
+    "left": 0,
+    "centre": 4,
+    "right": 2
+   },
+   "dominant_alignment": "centre",
+   "columns": 0
+  },
+  {
+   "density": 1.0,
+   "margins": {
+    "left": 0.0,
+    "right": 0.0,
+    "top": 0.0,
+    "bottom": 0.0
+   },
+   "centroid": [
+    0.498,
+    0.497
+   ],
+   "symmetry": 1.0,
+   "blocks": 1,
+   "alignment": {
+    "left": 0,
+    "centre": 0,
+    "right": 0
+   },
+   "dominant_alignment": null,
+   "columns": 0
+  },
+  {
+   "density": 1.0,
+   "margins": {
+    "left": 0.0,
+    "right": 0.0,
+    "top": 0.0,
+    "bottom": 0.0
+   },
+   "centroid": [
+    0.498,
+    0.497
+   ],
+   "symmetry": 1.0,
+   "blocks": 1,
+   "alignment": {
+    "left": 0,
+    "centre": 0,
+    "right": 0
+   },
+   "dominant_alignment": null,
+   "columns": 0
+  },
+  {
+   "density": 1.0,
+   "margins": {
+    "left": 0.0,
+    "right": 0.0,
+    "top": 0.0,
+    "bottom": 0.0
+   },
+   "centroid": [
+    0.498,
+    0.497
+   ],
+   "symmetry": 1.0,
+   "blocks": 1,
+   "alignment": {
+    "left": 0,
+    "centre": 0,
+    "right": 0
+   },
+   "dominant_alignment": null,
+   "columns": 0
+  }
+ ]
+}

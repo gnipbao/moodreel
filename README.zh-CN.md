@@ -52,8 +52,9 @@
 段落和提示点，用确定性的合成乐器或采样乐器（立式钢琴、弦乐、拨弦、小号、圆号、大号、单簧管、马林巴、钟琴、竖琴、定音鼓）画成音乐，并把提示点时间交给画面去对齐），综艺节奏扁平、微游戏快闪、1930s 橡皮管卡通三套风格因此可以出片。像素画也有了（`kit/pixel.js`：索引帧加调色板、整像素放大、Bayer 抖动和调色板查找表；测量能从参考里读出像素倍数、原生尺寸、色数和抖动），16-bit 像素 RPG 因此可以出片。绘画笔触也有了（`kit/brush.js`：带鬃毛的笔触、边缘积色的水彩、受光的刮刀块、纸纹打断的蜡笔、带晕的墨，以及把平涂画面重画成笔触的 repaint；测量能读出可见笔触的覆盖、尺度和方向），油画厚涂、水彩、水墨、80 年代赛璐珞等七套风格因此可以出片。3D 也有了（`kit/three.js`：three.js 场景按 t 设置，渲染到自己的 WebGL 画布再合到 2D 舞台上，字可以钉在世界坐标上；`film new` 会把 three.js 复制进片子），低多边形岛屿、玻璃产品、移轴微缩、HD-2D 等十套风格因此可以出片。真实素材也有了（`moodreel media add`：素材按影片帧率一帧一张图存好，静图和数据原样进来，每一份都在 manifest 和 CREDITS 里记下来源、许可和哈希；`kit/media.js` 按影片时间取帧；`film check` 会让没有来源或许可的素材不通过），最后 15 套风格也可以出片了：风格库里的每一套现在都能做。片子也可以有旁白（`narration.json` → `moodreel voice`：台词按时间或配乐提示点放好、合成语音、用 `voice.js` 出字幕，交付时音乐在人声下压低）和不带音乐的音效（只有提示点的 score.json），还能用同一份画面代码出多个变体（film.json 里的 variants，用 `pick()` 读，`film deliver --all-variants`），或导出成 HyperFrames composition（`moodreel export hyperframes`：一条暂停的时间轴，每次 seek 都画出片子自己的那一帧）或 Remotion 工程（`moodreel export remotion`：一个 composition，每一帧都是片子自己的那一帧）。
 
 [`packs/`](packs/README.md) 存放在本仓库蒸馏出的完整风格包（STYLE.md、DECISIONS.md、来源账本和测量、带本风格自有模块的
-kit、演示片源码），按同样的分类存放：信号图版（图形与排版）和字符故障发布片（信息与发布）。`python scripts/packs.py install`
-装进你的风格库，`export` 把风格库里的包导回来（并刷新总索引）；演示片由源码重建（`sh demo/build.sh`）。
+kit、演示片源码），按同样的分类存放：信号图版（图形与排版）、字符故障发布片（信息与发布）和墨字列传（东方传统）。
+`python scripts/packs.py install` 装进你的风格库，`export` 把风格库里的包导回来（并刷新总索引）；演示片由源码重建
+（`sh demo/build.sh`），太大、放不进仓库的字体由包里的 `kit/fonts/fetch.sh` 下载，并和风格审定时用的文件逐一核对。
 [`styles/README.md`](styles/README.md) 是全部风格的总索引：导入的和蒸馏的按分类列在一起，并注明来源。
 
 ## 试用

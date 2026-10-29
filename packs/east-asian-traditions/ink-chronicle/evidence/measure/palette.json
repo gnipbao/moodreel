@@ -1,0 +1,293 @@
+{
+ "colors": [
+  {
+   "hex": "#f4f1e9",
+   "lab": [
+    95.2,
+    -0.5,
+    4.2
+   ],
+   "area": 0.6291,
+   "chroma": 4.2,
+   "lightness": 95.2,
+   "hue": 96.8,
+   "border": 0.5892,
+   "presence": 1
+  },
+  {
+   "hex": "#16130f",
+   "lab": [
+    6.0,
+    0.4,
+    2.4
+   ],
+   "area": 0.2023,
+   "chroma": 2.4,
+   "lightness": 6.0,
+   "hue": 80.5,
+   "border": 0.2928,
+   "presence": 1
+  },
+  {
+   "hex": "#c9c5be",
+   "lab": [
+    79.5,
+    0.3,
+    4.0
+   ],
+   "area": 0.1259,
+   "chroma": 4.0,
+   "lightness": 79.5,
+   "hue": 86.4,
+   "border": 0.0886,
+   "presence": 1
+  },
+  {
+   "hex": "#3c3832",
+   "lab": [
+    23.7,
+    0.5,
+    4.2
+   ],
+   "area": 0.0227,
+   "chroma": 4.2,
+   "lightness": 23.7,
+   "hue": 83.2,
+   "border": 0.0294,
+   "presence": 1
+  },
+  {
+   "hex": "#76736e",
+   "lab": [
+    48.7,
+    0.2,
+    3.2
+   ],
+   "area": 0.0094,
+   "chroma": 3.2,
+   "lightness": 48.7,
+   "hue": 86.4,
+   "border": 0.0,
+   "presence": 0
+  },
+  {
+   "hex": "#f06d3d",
+   "lab": [
+    61.5,
+    47.5,
+    49.9
+   ],
+   "area": 0.0052,
+   "chroma": 68.9,
+   "lightness": 61.5,
+   "hue": 46.4,
+   "border": 0.0,
+   "presence": 0
+  },
+  {
+   "hex": "#f3a384",
+   "lab": [
+    74.0,
+    26.2,
+    28.2
+   ],
+   "area": 0.003,
+   "chroma": 38.5,
+   "lightness": 74.0,
+   "hue": 47.1,
+   "border": 0.0,
+   "presence": 0
+  },
+  {
+   "hex": "#662b20",
+   "lab": [
+    25.8,
+    25.8,
+    19.7
+   ],
+   "area": 0.0024,
+   "chroma": 32.5,
+   "lightness": 25.8,
+   "hue": 37.4,
+   "border": 0.0,
+   "presence": 0
+  }
+ ],
+ "roles": {
+  "ground": "#16130f",
+  "ink": "#f4f1e9",
+  "ink_contrast": 16.4,
+  "accent": "#f06d3d",
+  "accent_contrast": 6.14,
+  "secondary": [
+   "#c9c5be",
+   "#3c3832"
+  ]
+ },
+ "luminance_hist": [
+  0.1693,
+  0.0397,
+  0.015,
+  0.0045,
+  0.0046,
+  0.0044,
+  0.01,
+  0.064,
+  0.062,
+  0.6265
+ ],
+ "structure": {
+  "hue_families": 1,
+  "chromatic_colours": 1,
+  "ground": "dark",
+  "ground_lightness": 6.0,
+  "mean_chroma": 4.3,
+  "saturated_area": 0.011,
+  "neutral_area": 0.989
+ },
+ "per_ref": {
+  "vid01": {
+   "colors": [
+    {
+     "hex": "#f4f1e9",
+     "lab": [
+      95.2,
+      -0.5,
+      4.2
+     ],
+     "area": 0.6291,
+     "chroma": 4.2,
+     "lightness": 95.2,
+     "hue": 96.2,
+     "border": 0.5892
+    },
+    {
+     "hex": "#15130f",
+     "lab": [
+      6.0,
+      0.4,
+      2.4
+     ],
+     "area": 0.2023,
+     "chroma": 2.5,
+     "lightness": 6.0,
+     "hue": 81.2,
+     "border": 0.2928
+    },
+    {
+     "hex": "#d6d1c9",
+     "lab": [
+      83.9,
+      0.5,
+      4.2
+     ],
+     "area": 0.0635,
+     "chroma": 4.2,
+     "lightness": 83.9,
+     "hue": 83.6,
+     "border": 0.0467
+    },
+    {
+     "hex": "#bcb9b2",
+     "lab": [
+      75.1,
+      -0.0,
+      3.8
+     ],
+     "area": 0.0624,
+     "chroma": 3.8,
+     "lightness": 75.1,
+     "hue": 90.1,
+     "border": 0.0419
+    },
+    {
+     "hex": "#3c3832",
+     "lab": [
+      23.7,
+      0.5,
+      4.2
+     ],
+     "area": 0.0227,
+     "chroma": 4.2,
+     "lightness": 23.7,
+     "hue": 83.3,
+     "border": 0.0294
+    },
+    {
+     "hex": "#76736e",
+     "lab": [
+      48.7,
+      0.2,
+      3.2
+     ],
+     "area": 0.0094,
+     "chroma": 3.2,
+     "lightness": 48.7,
+     "hue": 86.5,
+     "border": 0.0
+    },
+    {
+     "hex": "#f06d3d",
+     "lab": [
+      61.5,
+      47.5,
+      49.9
+     ],
+     "area": 0.0052,
+     "chroma": 68.9,
+     "lightness": 61.5,
+     "hue": 46.4,
+     "border": 0.0
+    },
+    {
+     "hex": "#f3a384",
+     "lab": [
+      74.0,
+      26.2,
+      28.2
+     ],
+     "area": 0.003,
+     "chroma": 38.5,
+     "lightness": 74.0,
+     "hue": 47.2,
+     "border": 0.0
+    },
+    {
+     "hex": "#662b21",
+     "lab": [
+      25.8,
+      25.8,
+      19.7
+     ],
+     "area": 0.0024,
+     "chroma": 32.4,
+     "lightness": 25.8,
+     "hue": 37.4,
+     "border": 0.0
+    }
+   ],
+   "luminance_hist": [
+    0.1693,
+    0.0397,
+    0.015,
+    0.0045,
+    0.0046,
+    0.0044,
+    0.01,
+    0.064,
+    0.062,
+    0.6265
+   ]
+  }
+ },
+ "unity": {
+  "groups": [
+   [
+    "vid01"
+   ]
+  ],
+  "unified": true,
+  "distances": []
+ },
+ "ground_from": "opening frame of vid01"
+}

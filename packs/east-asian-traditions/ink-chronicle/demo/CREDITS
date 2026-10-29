@@ -1,0 +1,15 @@
+黄河 (the Yellow River) — the Ink Chronicle demo
+
+Every picture is drawn in code. The words are public-domain Tang verse about the river: 王之涣《登鹳雀楼》《凉州词》,
+李白《将进酒》 (its opening lines), 刘禹锡《浪淘沙》. The river's places are named in order from its source; its length,
+5,464 km, and its reaches (3,472 km upper, 1,206 km middle, 786 km lower) are the commonly cited figures.
+
+Third-party assets and their licences:
+
+- Fonts in kit/fonts (unmodified), SIL Open Font License 1.1: Noto Serif SC (Copyright 2012 Google Inc.,
+  kit/fonts/OFL-NotoSerifSC.txt), LXGW WenKai (Copyright 2021-2026 LXGW; 2020 The Klee Project Authors,
+  kit/fonts/OFL-LXGWWenKai.txt), IBM Plex Mono (Copyright 2017 IBM Corp., kit/fonts/OFL-IBMPlexMono.txt)
+- three.js (MIT, Copyright 2010-2026 three.js authors): kit/vendor/three/
+- The music is original, played by `moodreel score` with samples from Versilian Studios Chamber Orchestra 2 Community
+  Edition (CC0); the sound effects are synthesised by `moodreel sfx` (no samples)
+- Instrument samples: Versilian Studios Chamber Orchestra 2, Community Edition (CC0 1.0), https://github.com/sgossner/VSCO-2-CE at 4403009; Versilian Studios; upright piano by Simon Dalzell (Ivy Audio)

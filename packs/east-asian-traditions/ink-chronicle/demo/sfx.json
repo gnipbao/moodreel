@@ -1,0 +1,178 @@
+{
+ "seed": 7,
+ "gain_db": -9,
+ "cues": [
+  {
+   "t": 1.0417,
+   "sound": "slam",
+   "level": 0.75
+  },
+  {
+   "t": 1.0417,
+   "sound": "ding",
+   "level": 0.2
+  },
+  {
+   "t": 2,
+   "sound": "crackle",
+   "level": 0.3,
+   "dur": 1.2
+  },
+  {
+   "t": 3.3333,
+   "sound": "whoosh",
+   "level": 0.3,
+   "dur": 0.9
+  },
+  {
+   "t": 4.3333,
+   "sound": "tick",
+   "level": 0.3
+  },
+  {
+   "t": 5.1667,
+   "sound": "tick",
+   "level": 0.3
+  },
+  {
+   "t": 6,
+   "sound": "tick",
+   "level": 0.3
+  },
+  {
+   "t": 6.6667,
+   "sound": "whoosh",
+   "level": 0.4,
+   "dur": 1.4
+  },
+  {
+   "t": 8.3333,
+   "sound": "slam",
+   "level": 0.85
+  },
+  {
+   "t": 8.3333,
+   "sound": "whoosh",
+   "level": 0.45,
+   "dur": 0.4
+  },
+  {
+   "t": 10,
+   "sound": "crackle",
+   "level": 0.35,
+   "dur": 3.2
+  },
+  {
+   "t": 12.1667,
+   "sound": "riser",
+   "level": 0.4,
+   "dur": 1.1666661999999999
+  },
+  {
+   "t": 15,
+   "sound": "slam",
+   "level": 0.9
+  },
+  {
+   "t": 15,
+   "sound": "boom",
+   "level": 0.6
+  },
+  {
+   "t": 15.08,
+   "sound": "crackle",
+   "level": 0.4,
+   "dur": 0.6
+  },
+  {
+   "t": 15.35,
+   "sound": "thud",
+   "level": 0.25,
+   "pan": -0.4
+  },
+  {
+   "t": 15.44,
+   "sound": "thud",
+   "level": 0.3,
+   "pan": 0
+  },
+  {
+   "t": 15.53,
+   "sound": "thud",
+   "level": 0.25,
+   "pan": 0.4
+  },
+  {
+   "t": 15.62,
+   "sound": "thud",
+   "level": 0.3,
+   "pan": -0.4
+  },
+  {
+   "t": 15.71,
+   "sound": "thud",
+   "level": 0.25,
+   "pan": 0
+  },
+  {
+   "t": 15.8,
+   "sound": "thud",
+   "level": 0.3,
+   "pan": 0.4
+  },
+  {
+   "t": 16.9167,
+   "sound": "whoosh",
+   "level": 0.12,
+   "dur": 1.2,
+   "pan": -0.4
+  },
+  {
+   "t": 17,
+   "sound": "tick",
+   "level": 0.25
+  },
+  {
+   "t": 18.4167,
+   "sound": "whoosh",
+   "level": 0.12,
+   "dur": 1.2,
+   "pan": 0.4
+  },
+  {
+   "t": 19.5,
+   "sound": "tick",
+   "level": 0.25
+  },
+  {
+   "t": 19.9167,
+   "sound": "whoosh",
+   "level": 0.12,
+   "dur": 1.2,
+   "pan": -0.4
+  },
+  {
+   "t": 21.4167,
+   "sound": "whoosh",
+   "level": 0.12,
+   "dur": 1.2,
+   "pan": 0.4
+  },
+  {
+   "t": 21.6667,
+   "sound": "ding",
+   "level": 0.4
+  },
+  {
+   "t": 23.3333,
+   "sound": "stamp",
+   "level": 0.85
+  },
+  {
+   "t": 24.7667,
+   "sound": "whoosh",
+   "level": 0.3,
+   "dur": 1.4
+  }
+ ]
+}
