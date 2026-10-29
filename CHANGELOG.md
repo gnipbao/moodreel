@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased: free scenes in distilled styles
+
+- A distilled style carries its signature, not its reference's scenes. ANALYSIS.md inventories the reference's set
+  pieces (what it staged to say its own things) as content; the kit holds primitives (materials, marks, type
+  behaviours, the signature move, a staging space) and the set pieces go to `studies/`, which isn't packed; STYLE.md
+  §6 and §8 are principles with the reference's uses as examples, and §10 lists the primitives. The demo and every film
+  in the style invent their scenes. `references/distill/kit-and-scenes.md`; SKILL.md's distil and produce steps; the
+  §6, §8 and §10 rows of `writing-style-md.md`.
+- `moodreel scene-check <project> <film or stills>`: each frame's composition (its luma at 96×54, band-passed between
+  blurs of 1.5 and 8 px) against every reference frame every 0.5 s; copies (0.70 and over) fail, close ones (0.55 to
+  0.70) are leads to look at, near-blank frames aren't judged. Calibrated on the typography remake (42 % of frames
+  copies) against its first demo (4 %), the voxel film and the ASCII glitch demo (none). It sees compositions, not
+  ideas: the inventory is still read against the film.
+- `moodreel motion-check`: a film's pace (holds, shot lengths, density) is its own, reported as advice and not failed;
+  the style's character (durations, eases, overshoot, stagger, stepping, transitions) is still checked.
+
 ## Unreleased: the set by night, the sea as water
 
 - `remaking.md`, "The set by night, and the sea as water": the typography remake's eighth round, on four more notes

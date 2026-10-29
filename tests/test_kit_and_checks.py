@@ -106,3 +106,13 @@ def test_a_stagger_matching_any_of_the_references_staggers_passes():
     for g, ok in ((0.234, True), (1.9, True), (0.6, False)):
         c = {x["id"]: x for x in claims(ref, _grammar(stagger=g))}["stagger"]
         assert c["result"] == ("pass" if ok else "fail") and c["reference"] == [0.231, 1.842]
+
+
+def test_a_films_own_pace_is_advice_not_a_failure():
+    ref = _grammar()
+    calm = _grammar()
+    calm["motion_density"], calm["hold_s"] = 0.1, {"median": 0.1}
+    calm["shots"] = {**calm["shots"], "length_s": {"median": 6.0}}
+    res = {c["id"]: c["result"] for c in claims(ref, calm)}
+    assert res["density"] == res["hold"] == res["shot_length"] == "advice"
+    assert all(v in ("pass", "advice") for v in res.values())

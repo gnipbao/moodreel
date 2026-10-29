@@ -3,6 +3,10 @@
 The film is measured with the same code as the references (as REM checks a rebuild), and the two grammars are
 compared claim by claim, MoVer-style: each claim passes, fails, or is unknown when either side has no data
 (unknown never passes). The failures, with the numbers on both sides, are what the director fixes.
+
+The claims on a film's pace (its holds, shot lengths and how much of it moves) are advice, not rules: they follow the
+film's content and are the film's to choose, so they are reported but never fail it. The motion's character (how
+long things take to arrive and leave, their curves and overshoot, staggers, stepping, the transitions) is the style's.
 """
 from __future__ import annotations
 
@@ -15,6 +19,7 @@ FRAME = 0.05             # s: about a frame at 24 fps, the least a duration can 
 SHORT = 0.17             # s: about four frames at 24 fps, the shortest tween whose length can be compared
 TOL = {"duration": 0.25, "class_share": 0.20, "overshoot_share": 0.25, "stagger": 0.30, "hold": 0.8,
        "shot": 0.35, "density": 0.15}
+PACE = {"hold", "shot_length", "density"}        # the film's pace: reported as advice, not counted
 
 
 def _med(x, k="duration_s"):
@@ -30,8 +35,10 @@ def claims(ref: dict, got: dict) -> list[dict]:
     out = []
 
     def add(cid, rule, rv, gv, ok):
-        out.append({"id": cid, "rule": rule, "reference": rv, "film": gv,
-                    "result": "unknown" if ok is None else "pass" if ok else "fail"})
+        res = "unknown" if ok is None else "pass" if ok else "fail"
+        if cid in PACE and res != "pass":                  # the film's own pace: advice, never a failure
+            res = "advice"
+        out.append({"id": cid, "rule": rule, "reference": rv, "film": gv, "result": res})
 
     for role in ("entrance", "exit", "move", "counters"):
         R, G = ref.get(role), got.get(role)
@@ -94,8 +101,10 @@ def check(project: Path, video: Path, reference: str | None = None, out: Path | 
     film = measure(str(video), (Path(out) if out else project / "evidence") / f"motion-check-{Path(video).stem}")
     cs = claims(ref, film["grammar"])
     res = {"video": str(video), "claims": cs, "pass": sum(c["result"] == "pass" for c in cs),
-           "fail": sum(c["result"] == "fail" for c in cs), "unknown": sum(c["result"] == "unknown" for c in cs)}
-    res["ok"] = res["fail"] == 0 and res["unknown"] <= len(cs) // 4
+           "fail": sum(c["result"] == "fail" for c in cs), "unknown": sum(c["result"] == "unknown" for c in cs),
+           "advice": sum(c["result"] == "advice" for c in cs)}
+    counted = len(cs) - res["advice"]
+    res["ok"] = res["fail"] == 0 and res["unknown"] <= counted // 4
     (Path(out) if out else mdir).mkdir(parents=True, exist_ok=True)
     ((Path(out) if out else mdir) / f"motion-check-{Path(video).stem}.json").write_text(json.dumps(res, indent=1, default=float))
     return res

@@ -37,29 +37,41 @@ director, any language), with the style's name in both languages.
 
 ```
 intake ─► measure ─► read ─► write STYLE.md · LEDGER.md · DECISIONS.md ─◆ gate 1
-       ─► kit + scaffold ─► style frame ─► frame-check ─◆ gate 2
-       ─► demo film (15–30 s) ─► motion-check ─◆ gate 3 ─► pack
+       ─► kit (primitives) + scaffold ─► style frame (a new scene) ─► frame-check · scene-check ─◆ gate 2
+       ─► demo film (15–30 s, its own scenes) ─► motion-check · scene-check ─◆ gate 3 ─► pack
 ```
+
+A style is its signature, not its reference's scenes: the look, the materials, how type, light and things move. The
+reference's set pieces (its layouts, figures, specific images and moments) are content: they are listed, kept out of
+the kit, and no film made in the style re-stages them. Leave the scenes to each film.
 
 1. **Intake** (`references/distill/intake.md`): `moodreel intake <project> <refs…> --source own|web`. If the references
    split into palettes, ask which group is the style, or whether to mix them. Ask what films the style is for.
 2. **Measure**: `moodreel measure <project>`. Read `MEASURE.md`, then the evidence it points to
    (`references/distill/reading-evidence.md`).
 3. **Write** (`references/distill/writing-style-md.md`): `ANALYSIS.md` (3–5 traits that make the style recognisable,
-   each tied to evidence; what it is not), then `STYLE.md` (11 sections), `LEDGER.md` (`references/distill/ledger.md`)
+   each tied to evidence; what it is not; and the reference's **inventory of set pieces**: its scenes, layouts,
+   figures and images, named as content, not style), then `STYLE.md` (11 sections: the signature plainly, everything
+   else as tendencies and principles, `references/distill/kit-and-scenes.md`), `LEDGER.md` (`references/distill/ledger.md`)
    and `DECISIONS.md` (choices the measurement can't make: typefaces, how materials are built, sound direction).
    What the references don't show is unseen, not forbidden: write "never" only where the evidence or the medium
    says so, and leave the rest open in §11 (the guide's "Few references" section).
 4. **Gate 1**: show the decisions in one message (each: choice, alternatives, evidence, cost) and wait for an OK.
-5. **Look**: `moodreel kit <project>`, `moodreel scaffold <project>`; rewrite `look/main.js` into the style's own
-   picture with the kit (`references/primitives.md`); render a still; `moodreel frame-check` it
-   (`references/distill/checks.md`). Fix once, twice at most; then **gate 2**: show the frame beside the references.
-   Save the approved frame as `<project>/styleframe.jpg`.
+5. **Look**: `moodreel kit <project>`, `moodreel scaffold <project>`; write the style's own modules as **primitives**
+   of its signature (materials, marks, how type behaves, the signature move, a space to stage in), never the reference's
+   set pieces packaged as functions (`references/distill/kit-and-scenes.md`). Rewrite `look/main.js` into a frame of
+   the style on a scene of your own (`references/primitives.md`); render a still; `moodreel frame-check` it and
+   `moodreel scene-check` it (`references/distill/checks.md`): the look close, the composition not the reference's.
+   Fix once, twice at most; then **gate 2**: show the frame beside the references. Save the approved frame as
+   `<project>/styleframe.jpg`.
 6. **Demo film**: first, `moodreel sketch <project>` replays the kit's motion with neutral shapes; render it and
    `motion-check` it: if the sketch fails, fix the kit (or mark the curve `inferred`) before drawing the demo.
-   Then 15–30 s in `<project>/demo/` (index.html, main.js, kit/, build.sh, CREDITS), every rule of STYLE.md
-   on screen at least once, the signature move once. Render to `<project>/demo.mp4`; `moodreel motion-check` it; fix
-   what fails (two rounds at most). **Gate 3**: show the film and the claims.
+   Then 15–30 s in `<project>/demo/` (index.html, main.js, kit/, build.sh, CREDITS): the signature (STYLE §1) on
+   screen, the signature move once, every scene invented for the demo's subject from the primitives, none of the
+   inventory's set pieces re-staged. Render to `<project>/demo.mp4`; `moodreel motion-check` it (the motion's
+   character; the pace is the film's and comes back as advice) and `moodreel scene-check` it (no composition copied);
+   review it against the inventory by eye (the check sees compositions, not ideas); fix what fails (two rounds at
+   most). **Gate 3**: show the film and the claims.
 7. **Pack**: `moodreel pack <project> --slug … --name … --name-zh … --build`. Tell the user the style's name and how
    to use it ("make a film in my <name> style about …").
 
@@ -73,7 +85,9 @@ find the style ─► brief (one round) ─► TREATMENT.md ─► film new ─�
    marked `later` needs capabilities Moodreel doesn't have yet (painterly, 3d, pixel, music-led, real-material): say
    which, what you can still do, and let the user choose.
 2. **Brief and treatment** (`references/produce/brief-and-treatment.md`): one round of questions, then
-   TREATMENT.md with three candidate structures and your choice, shots and beats, before any drawing.
+   TREATMENT.md with three candidate structures and your choice, shots and beats, before any drawing. Invent the
+   scenes for the film's subject: the style gives the look, the marks and the motion (its STYLE §1 and kit); its §6 and
+   §8 are principles and examples, not a list of scenes to re-stage.
 3. `moodreel film new <name> --style <style> --duration <s>`; write `main.js` with the style's kit
    (`references/produce/drawing.md`). Review with stills (`moodreel render still <film> t1 t2 …`) and a contact
    sheet before rendering the whole film.
