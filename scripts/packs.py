@@ -5,7 +5,8 @@
 
 A pack keeps the layout the tools read (STYLE.md, DECISIONS.md, style.json, styleframe.jpg, evidence/, kit/, demo/),
 so a copy installs as it is. Left out of the repository: demo.mp4 (rebuilt by `sh demo/build.sh`; GitHub refuses files
-over 100 MB) and kit/vendor/ (three.js, from `npm install`). Each pack gets a README.md that sorts its contents by
+over 100 MB), kit/vendor/ (three.js, from `npm install`) and the fonts a pack fetches itself (named in its
+kit/fonts/fetch.sh and ignored by its kit/fonts/.gitignore). Each pack gets a README.md that sorts its contents by
 kind; packs/README.md lists the packs by category (the eleven of styles/index.json), and styles/README.md, the
 one index of every style, lists them beside the imported ones.
 """
@@ -14,6 +15,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -30,7 +32,8 @@ PACKS = Path(os.environ.get("MOODREEL_PACKS", REPO / "packs"))           # the r
 # the library's categories (styles/index.json), by folder name: "graphic-type" -> "Graphic & Type · 图形与排版"
 CATEGORIES = dict(sorted({lemo.slugify(s["category"]): f"{s['category']} · {s['category_zh']}"
                           for s in json.loads((REPO / "styles" / "index.json").read_text())["styles"] if "category" in s}.items()))
-DEFAULT = {"signal-plates": "graphic-type", "ascii-glitch-launch": "information-keynote"}   # until style.json says
+DEFAULT = {"signal-plates": "graphic-type", "ascii-glitch-launch": "information-keynote",   # until style.json says
+           "ink-chronicle": "east-asian-traditions"}
 SKIP = {"demo.mp4", "vendor", ".DS_Store", "out", "stills"}
 SHARED = {p.name for p in (REPO / "kit").glob("*.js")}                      # the kit every film gets
 
@@ -54,11 +57,21 @@ def _first_line(f: Path, style: str = "") -> str:
     return text if len(text) <= 90 else text[:90].rsplit(", ", 1)[0]
 
 
+def fetched(fonts: Path) -> list[str]:
+    """The fonts a pack fetches rather than keeps (too large for the repository): one `get <file> <url> <sha256>` line
+    each in its kit/fonts/fetch.sh."""
+    script = fonts / "fetch.sh"
+    return re.findall(r"^get (\S+) ", script.read_text(), re.M) if script.exists() else []
+
+
 def readme(pack: Path, meta: dict) -> str:
     kit = sorted(pack.glob("kit/*.js"))
     own = [f for f in kit if f.name not in SHARED and f.name not in ("tokens.js", "motion.js")]
     shared = [f.name for f in kit if f.name in SHARED]
     fonts = sorted(p.name for p in (pack / "kit" / "fonts").glob("*") if p.suffix in (".ttf", ".otf", ".woff2", ".woff"))
+    licences = sorted(p.name for p in (pack / "kit" / "fonts").glob("OFL*.txt")) or ["OFL.txt"]
+    away = fetched(pack / "kit" / "fonts")
+    fetch = f"; {', '.join(f'`{n}`' for n in away)}: not in the repository, `sh kit/fonts/fetch.sh` downloads them" if away else ""
     demo = sorted(p.name for p in (pack / "demo").iterdir() if p.is_file()) if (pack / "demo").exists() else []
     measures = sorted(p.name for p in (pack / "evidence" / "measure").glob("*.json"))
     rows = [
@@ -75,7 +88,7 @@ def readme(pack: Path, meta: dict) -> str:
     rows += [
         ("Kit · 代码: measured", "`kit/tokens.js`, `kit/motion.js`", "palette, type tiers, layout, texture; durations, eases, stagger, beat"),
         ("Kit · 代码: shared", ", ".join(f"`{n}`" for n in shared), "the kit every film gets (stage, core, eases, text, texture, ...)"),
-        ("Kit · 代码: fonts", ", ".join(f"`kit/fonts/{n}`" for n in fonts), "with `kit/fonts/OFL.txt`"),
+        ("Kit · 代码: fonts", ", ".join(f"`kit/fonts/{n}`" for n in fonts), "with " + ", ".join(f"`kit/fonts/{n}`" for n in licences) + fetch),
         ("Demo · 演示片", "`demo/`", "the demo film's source: " + ", ".join(f"`{n}`" for n in demo)),
         ("", "`demo.mp4`", "not in the repository: rebuild with `sh demo/build.sh` (it writes `demo.mp4` beside `demo/`)"),
         ("", "`styleframe.jpg`", "the style frame approved at gate 2 (frame-check compares films with it)"),
@@ -134,7 +147,9 @@ def install(slugs: list[str]) -> None:
         (dst / "README.md").unlink(missing_ok=True)
         library.register({k: meta[k] for k in ("slug", "name", "name_zh", "phase", "needs", "source") if k in meta}
                          | {"size": [int(v) for v in meta["size"].split("x")]})
-        print(f"{meta['slug']} -> {dst}" + ("" if (dst / "demo.mp4").exists() else "  (no demo.mp4: sh demo/build.sh)"))
+        missing = [n for n in fetched(dst / "kit" / "fonts") if not (dst / "kit" / "fonts" / n).exists()]
+        print(f"{meta['slug']} -> {dst}" + ("" if (dst / "demo.mp4").exists() else "  (no demo.mp4: sh demo/build.sh)")
+              + (f"  (no {', '.join(missing)}: sh kit/fonts/fetch.sh)" if missing else ""))
 
 
 if __name__ == "__main__":

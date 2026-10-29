@@ -121,3 +121,14 @@ def test_a_film_lists_the_fonts_its_style_ships(tmp_path, monkeypatch):
     assert pack.pack(proj, "typed-style", "Typed Style")["ok"]
     d = film.new("c", "typed-style", tmp_path / "films")
     assert (d / "kit" / "fonts" / "OFL.txt").exists() and "kit/fonts/OFL.txt" in (d / "CREDITS").read_text()
+
+
+def test_a_film_credits_each_familys_licence_when_its_style_ships_one_per_family(tmp_path, monkeypatch):
+    monkeypatch.setenv("MOODREEL_HOME", str(tmp_path / "home"))
+    proj = _project(tmp_path)
+    (proj / "kit" / "fonts").mkdir()
+    for fam in ("NotoSerifSC", "LXGWWenKai"):
+        (proj / "kit" / "fonts" / f"OFL-{fam}.txt").write_text(f"Copyright the {fam} authors\n")
+    assert pack.pack(proj, "ink-style", "Ink Style")["ok"]
+    credits = (film.new("d", "ink-style", tmp_path / "films") / "CREDITS").read_text()
+    assert "licence in kit/fonts/OFL-LXGWWenKai.txt, kit/fonts/OFL-NotoSerifSC.txt\n" in credits

@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased: Ink Chronicle, the third distilled pack
+
+- `packs/east-asian-traditions/ink-chronicle`: Ink Chronicle · 墨字列传, distilled from the typography remake (Su Shi,
+  定风波) through the three gates, the first style packed under the free-scenes rule: a kit of primitives only (type
+  as matter, marks for any shape, a space to stage type in), a style frame of a gorge made of Tang verse, and a 26.7 s
+  demo, 黄河, every scene invented for the river (scene-check: 25 of 26 frames new compositions, none copied).
+- Fonts too large for the repository stay out of it: a pack names them in `kit/fonts/fetch.sh` (file, publisher's
+  URL, sha256) and ignores them in `kit/fonts/.gitignore`; `demo/build.sh` fetches what is missing and refuses a file
+  that isn't the approved one. The pack README names them, and `scripts/packs.py install` says when they are missing.
+  Ink Chronicle's three CJK faces (74 MB) are fetched this way.
+- `moodreel film new`: a style's fonts are credited from every `OFL*.txt` in its `kit/fonts` (one per family, or one
+  OFL.txt), so a film in a style whose families each carry their own licence lists them all.
+- `kit-and-scenes.md`, `writing-style-md.md`: the inventory includes the reference's closing image, and STYLE.md §11's
+  example openings and endings are scenes too: none from the inventory.
+
 ## Unreleased: free scenes in distilled styles
 
 - A distilled style carries its signature, not its reference's scenes. ANALYSIS.md inventories the reference's set

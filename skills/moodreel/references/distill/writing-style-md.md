@@ -37,7 +37,7 @@ Start from `styles/_template/STYLE.md` for the section headings (their numbers a
 | 8 | The principles behind what only this style does ("the text becomes what it names"), each with one example from the reference and an invitation to invent, and three kinds of content it fits; not a menu of the reference's moments. The measured signature (e.g. "a left-to-right stagger of 0.12 s with a 10 % overshoot") becomes one | the motion that recurs across references, kit-and-scenes.md |
 | 9 | Mistakes the medium invites, each with its fix (an accent below 15 % opacity disappears in H.264; a 1 px rule vanishes at 1080p) | measurement + experience |
 | 10 | The kit's primitives (kit/tokens.js, kit/motion.js, the style's own modules: materials, marks, how the medium behaves, the signature move, a space to stage in; no set pieces), and a minimal example that draws a scene the reference doesn't have | the kit you wrote, kit-and-scenes.md |
-| 11 | What each film decides, including what the references happen not to show (another hue, a busier or emptier frame, a camera move, a transition type); three structures, three openings and three endings, all far from the demo | your judgement |
+| 11 | What each film decides, including what the references happen not to show (another hue, a busier or emptier frame, a camera move, a transition type); three structures, three openings and three endings, all far from the demo and none from the inventory (the reference's own opening and ending are on it) | your judgement |
 
 ## Few references: unseen is not forbidden
 

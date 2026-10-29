@@ -68,6 +68,24 @@ def test_install_registers_and_never_deletes_a_rendered_demo(monkeypatch, tmp_pa
     assert entry["slug"] == "ascii-glitch-launch" and entry["size"] == [1920, 1080]
 
 
+def test_fonts_a_pack_fetches_itself_are_named_in_its_readme_and_when_installed_without_them(monkeypatch, tmp_path, capsys):
+    mod = _load(monkeypatch, tmp_path)
+    lib = tmp_path / "home" / "styles"
+    d = _pack(lib)
+    (d / "kit" / "fonts" / "fetch.sh").write_text("get() { :; }\nget Big.ttf https://example.org/Big.ttf 0123\n")
+    (d / "kit" / "fonts" / "Big.ttf").write_text("font")
+    mod.export([])
+    dst = tmp_path / "packs" / "information-keynote" / "ascii-glitch-launch"
+    row = next(r for r in (dst / "README.md").read_text().splitlines() if r.startswith("| Kit · 代码: fonts"))
+    assert "`kit/fonts/Big.ttf`" in row and "`Big.ttf`: not in the repository, `sh kit/fonts/fetch.sh` downloads them" in row
+    mod.install(["ascii-glitch-launch"])
+    assert "fetch.sh" not in capsys.readouterr().out                            # the library has it
+    (lib / "ascii-glitch-launch" / "kit" / "fonts" / "Big.ttf").unlink()        # as from a fresh clone: no Big.ttf
+    (dst / "kit" / "fonts" / "Big.ttf").unlink()
+    mod.install(["ascii-glitch-launch"])
+    assert "(no Big.ttf: sh kit/fonts/fetch.sh)" in capsys.readouterr().out
+
+
 def test_the_style_index_lists_distilled_packs_in_their_categories(monkeypatch, tmp_path):
     mod = _load(monkeypatch, tmp_path)
     rows = [{"slug": "ascii-crt", "name": "ASCII / CRT Terminal", "name_zh": "ASCII / CRT 终端", "category": "Graphic & Type",

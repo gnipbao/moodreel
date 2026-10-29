@@ -1,0 +1,30 @@
+{
+ "slug": "ink-chronicle",
+ "name": "Ink Chronicle",
+ "name_zh": "墨字列传",
+ "version": 1,
+ "size": "1920x1080",
+ "fps": 30,
+ "created": "2026-10-29",
+ "moodreel_version": "0.1.0",
+ "phase": "mvp",
+ "needs": [
+  "3d",
+  "music-led"
+ ],
+ "refs": [
+  {
+   "id": "vid01",
+   "kind": "video",
+   "sha256": "abbd4755e39781484dcbf09dd54e81b4b493ba098b8335ee1cacd1a0652dfe4c",
+   "source": "web",
+   "w": 1280,
+   "h": 720
+  }
+ ],
+ "source": {
+  "project": "moodreel",
+  "distilled_from": 1
+ },
+ "category": "east-asian-traditions"
+}
