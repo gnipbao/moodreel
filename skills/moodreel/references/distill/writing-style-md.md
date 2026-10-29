@@ -2,6 +2,13 @@
 
 STYLE.md holds what stays true in **every** film of the style, as rules a director can follow. No story, no shot
 list, no durations of one film: those go in the demo's notes. Write it after ANALYSIS.md and before any drawing.
+
+**Distil the signature, leave the rest free.** A style is a few traits that make a frame read as itself (§1), not a
+specification of the reference. Say those plainly; write everything else as tendencies, menus and open choices, so the
+director has room to invent. Measured specifics (sizes, timings, colours, the reference's modules and imagery) belong
+in the ledger and the kit as defaults and examples, not as requirements; §6 and §8 are menus a film extends; §11 opens
+everything outside §1. A style written as the reference's spec makes films that look like the reference and nothing
+else (the user's rule, from the fourth manual test's distillation).
 Start from `styles/_template/STYLE.md` for the section headings (their numbers are fixed; tools check them).
 
 ```
