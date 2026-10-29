@@ -65,7 +65,8 @@ kit、演示片源码），按同样的分类存放：信号图版（图形与�
 - `uv run moodreel frame-check <项目> <风格帧>`：按参考给风格帧打分（调色板、色外面积、明度、材质；装了风格嵌入后还比较风格本身：CSD 相似度对照参考彼此之间的一致程度）；
 - `uv run moodreel kit <项目>`：由测量结果生成风格的 kit（`tokens.js`、`motion.js` 和共用原语，见 [kit/README.md](kit/README.md)）；
 - `uv run moodreel scaffold <项目>`：只用测出的数值画出第一版风格帧，作为导演修改的起点；
-- `uv run moodreel motion-check <项目> <影片>`：用同一套测量逐条比对影片的运动语法和参考是否一致；
+- `uv run moodreel motion-check <项目> <影片>`：用同一套测量逐条比对影片的运动语法和参考是否一致（时长、缓动、回弹、错位是风格的性格，要对上；停留、镜头长度、密度是片子自己的节奏，只作建议）；
+- `uv run moodreel scene-check <项目> <影片或画面…>`：蒸馏出的风格只带签名，不带参考的场景，kit 里是原语，场景由每部片子自己发明。逐帧把构图和参考的每一帧比对：照搬参考构图的记为 copies（不通过），接近的记为 close，作为线索去看；
 - `uv run moodreel pack <项目> --slug <名> --name <名>`：校验蒸馏出的风格（11 节齐全、数值可追溯、名称不冲突）并存入 `~/.moodreel/styles`；
 - `uv run moodreel styles`：列出你的风格和内置风格；
 - `uv run moodreel music <歌> --lyrics <逐词歌词> --out <片子>/music-data.js`：把歌变成数据（节拍网格、小节、底鼓/军鼓/镲、包络、逐词演唱时间），片子里用 `kit/music.js` 读，让切点、砸字、推拉都踩在歌上；渲染加 `--samples 8 --shutter 0.2` 出运动模糊。做法见 docs/MUSIC-SYNC.md；

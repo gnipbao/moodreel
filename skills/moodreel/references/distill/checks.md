@@ -25,13 +25,28 @@ The sheet (`evidence/frame-check-NN-*.jpg`) puts the frame beside three referenc
 the style's essence; it can fail on a number and still be right (say why at gate 2). After two rounds that don't
 converge, revisit the materials decision instead of nudging numbers.
 
+## scene-check (the style's look, but its own scenes)
+
+```bash
+moodreel scene-check <project> <project>/look/stills/t_2.5.jpg
+moodreel scene-check <project> <project>/demo.mp4
+```
+
+Each frame's composition (its masses of light and dark at the size of objects) against every reference frame: 0.70 and
+up copies the reference's scene at that time and fails; 0.55-0.70 is close, a lead to look at (unrelated films reach
+it too); under 0.55 is new; a page too even to have a composition isn't judged. The sheet (`evidence/scene-check.jpg`)
+puts each copied or close frame beside its reference frame. It sees layouts, not ideas: a set piece of the inventory
+redrawn in a new layout passes, so review the film against ANALYSIS.md's inventory by eye (`kit-and-scenes.md`).
+
 ## motion-check (a film against the references' motion)
 
 ```bash
 moodreel motion-check <project> <project>/demo.mp4
 ```
 
-Each claim passes, fails or is unknown (unknown never passes; the film or the references lack the events):
+Each claim passes, fails or is unknown (unknown never passes; the film or the references lack the events). The claims
+on the film's pace (`hold`, `shot_length`, `density`) follow its content: when they differ they come back as advice,
+not failures. The motion's character (durations, curves, overshoot, staggers, stepping, transitions) is the style's:
 
 | Claim | Tolerance | When it fails |
 |---|---|---|

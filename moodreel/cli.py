@@ -7,6 +7,7 @@
   moodreel kit <project>                                  the style's tokens.js and motion.js, with the shared kit
   moodreel scaffold <project>                             a first style frame drawn from the tokens (look/)
   moodreel motion-check <project> <video>                 does a rendered film move the way the references do?
+  moodreel scene-check <project> <film or stills>...     the style's look, but scenes of its own (not the references')?
   moodreel pack <project> --slug S --name N               check a distilled style and add it to your library
   moodreel styles [query]                                 your styles and the built-in ones
   moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f] [--variant V | --all-variants] [--engine E]
@@ -95,6 +96,23 @@ def cmd_frame_check(a):
                  else f"; style ? ({s['style']['note']})") + f"; sheet {s['sheet']}")
 
 
+def cmd_scene_check(a):
+    from .check.scene import check
+    r = check(Path(a.project), [Path(x) for x in a.inputs], a.step)
+    if r["ok"] is None:
+        print(r["note"])
+        return 0
+    for f in r["frames"]:
+        if f["verdict"] in ("copies", "close"):
+            where = f"{f['t']:6.1f} s" if f["t"] is not None else Path(f["input"]).name
+            print(f"  {f['verdict']:6s} {where}: {f['similarity']} like the reference at {f['at']} s")
+    n = len(r["frames"])
+    n -= r["blank"]
+    print(f"{'OK' if r['ok'] else 'NOT YET'}: {r['new']} of {n} frames new, {r['close']} close to a reference's composition, "
+          f"{r['copies']} copying one ({r['blank']} too even to judge)" + (f"; sheet {r['sheet']}" if r.get("sheet") else ""))
+    return 0 if r["ok"] else 1
+
+
 def cmd_csd(a):
     from .measure import csd
     if a.action == "setup":
@@ -154,7 +172,8 @@ def cmd_motion_check(a):
     r = check(Path(a.project), Path(a.video), a.reference)
     for c in r["claims"]:
         print(f"  {c['result']:7s} {c['id']:24s} {c['rule']:52s} reference {c['reference']} film {c['film']}")
-    print(f"{'OK' if r['ok'] else 'NOT YET'}: {r['pass']} pass, {r['fail']} fail, {r['unknown']} unknown")
+    print(f"{'OK' if r['ok'] else 'NOT YET'}: {r['pass']} pass, {r['fail']} fail, {r['unknown']} unknown"
+          + (f"; {r['advice']} on the film's own pace, as advice" if r.get("advice") else ""))
 
 
 def cmd_pack(a):
@@ -512,6 +531,11 @@ def main(argv=None):
     p.add_argument("video")
     p.add_argument("--reference", help="with several reference videos, the one to compare with (vid01...)")
     p.set_defaults(fn=cmd_motion_check)
+    p = sub.add_parser("scene-check", help="does a film or a still copy a reference's scene (its composition), or is it its own?")
+    p.add_argument("project")
+    p.add_argument("inputs", nargs="+", help="a rendered film, or stills")
+    p.add_argument("--step", type=float, default=1.0, help="seconds between a film's sampled frames")
+    p.set_defaults(fn=cmd_scene_check)
     p = sub.add_parser("pack", help="check a distilled style and add it to your library")
     p.add_argument("project")
     p.add_argument("--slug", required=True)

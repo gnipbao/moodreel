@@ -127,7 +127,8 @@ uv run moodreel frame-check out/projects/my-style frame.png
 ```
 
 Write the style's kit (the shared primitives plus `tokens.js` and `motion.js` from the measurements), draw a first
-style frame from it, and check a rendered film's motion against the references, claim by claim:
+style frame from it, and check a rendered film's motion against the references, claim by claim (its character:
+durations, eases, overshoot, stagger; its pace, holds and shot lengths, is the film's own and reported as advice):
 
 ```bash
 uv run moodreel kit out/projects/my-style && uv run moodreel scaffold out/projects/my-style
@@ -135,6 +136,14 @@ uv run moodreel kit out/projects/my-style && uv run moodreel scaffold out/projec
 
 ```bash
 uv run moodreel motion-check out/projects/my-style film.mp4
+```
+
+A distilled style carries its signature, not its reference's scenes: the kit holds primitives, and each film invents
+what it stages. Check that a film (or a still) composes scenes of its own: each frame against every reference frame,
+copies flagged, close ones as leads to look at:
+
+```bash
+uv run moodreel scene-check out/projects/my-style film.mp4
 ```
 
 Pack a finished style into your library (`~/.moodreel/styles`), list styles, and make a film in one:
