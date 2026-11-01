@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased: ready to open
+## Unreleased: open source
 
+- The repository is public on GitHub ([gnipbao/moodreel](https://github.com/gnipbao/moodreel), MIT), with its full
+  history.
 - `CONTRIBUTING.md`: the setup, the ground rules (a film is a function of time, every number has a source, grammar
   not content, openly licensed assets, generated folders, no keys), and what a pull request carries. The READMEs link
   to it and start "Try it" from a clone.
