@@ -3,16 +3,19 @@
   moodreel wall search <product> [--out out/walls/<slug>] [--platforms youtube,bilibili] [--max 24]
       finds the posts that name the product on platforms that need no login (render/wall.mjs) and numbers them for the
       user to pick from: candidates.json, a contact sheet (candidates.jpg) and CANDIDATES.md, with who posted, the
-      views and date, and two flags: the product's own account (官方, not word of mouth) and an uploader's "no reprint"
-  moodreel wall record <dir> --pick 3,5,8 [--seconds 6.5]
-      records each picked post as its platform shows it, muted, in a window sized for a 4K card (clips/, clips.json)
+      views and date, and flags: the product's own account (官方, not word of mouth), an uploader's "no reprint"
+      (禁止转载) and a post that says it is paid for (推广)
+  moodreel wall record <dir> --pick 3,5,8 [--seconds 6.5] [--at s]
+      records each picked post as its platform shows it, muted, in a window sized for a 4K card (clips/, clips.json);
+      recording a card again replaces it where it stands; --at starts the video that far in (past an intro)
   moodreel wall make <dir> [--lead 创作者都在聊] [--name <product>] [--duration 5.5]
       the film: the template (kit/wall.js) with the recordings as its cards, in the order picked, each in media/ with its
       source and in CREDITS; rendered at 3840 x 2160 to <dir>/film/<name>.mp4
 
 The posts are other people's work. Nothing is recorded until the user has picked it, every card is credited with its
 author and link, and whether a post may be shown is the user's to settle with its author: the tool flags what it can
-see (an uploader's no-reprint notice) and records nothing behind a login or a bot check.
+see (an uploader's no-reprint notice, a post's own paid-promotion label) and records nothing behind a login or a bot
+check.
 """
 from __future__ import annotations
 
@@ -77,7 +80,8 @@ def search(product: str, out: Path | None = None, platforms: str = "youtube,bili
 
 
 def _flags(p: dict) -> str:
-    return " ".join(f for f in ("官方" if p.get("official") else "", "禁止转载" if p.get("notice") else "") if f)
+    return " ".join(f for f in ("官方" if p.get("official") else "", "禁止转载" if p.get("notice") else "",
+                               "推广" if p.get("paid") else "") if f)
 
 
 def sheet(out: Path, columns: int = 6, tile: tuple[int, int] = (360, 202)) -> Path:
@@ -123,11 +127,13 @@ def sheet(out: Path, columns: int = 6, tile: tuple[int, int] = (360, 202)) -> Pa
     return out / "candidates.jpg"
 
 
-def record(out: Path, picks: list[int], seconds: float = 6.5, lang: str = "en-US") -> dict:
+def record(out: Path, picks: list[int], seconds: float = 6.5, lang: str = "en-US", at: float = 0.0) -> dict:
     out = Path(out)
-    _node("record", str(out), "--pick", ",".join(map(str, picks)), "--seconds", str(seconds), "--lang", lang)
+    _node("record", str(out), "--pick", ",".join(map(str, picks)), "--seconds", str(seconds), "--lang", lang, "--at", str(at))
     clips = json.loads((out / "clips.json").read_text())
-    return {"recorded": len(clips), "picked": len(picks), "missing": sorted(set(picks) - {c["n"] for c in clips})}
+    run = json.loads((out / "record.json").read_text())             # this run: what was recorded, what failed and why
+    return {"cards": len(clips), "recorded": run["recorded"], "failed": run["failed"],
+            "flagged": {c["n"]: _flags(c) for c in clips if _flags(c)}}
 
 
 def make(out: Path, name: str | None = None, lead: str = "创作者都在聊", duration: float = 5.5, render: bool = True,
@@ -162,7 +168,8 @@ def make(out: Path, name: str | None = None, lead: str = "创作者都在聊", d
     for c in clips:
         card = f"card{c['n']:02d}"
         terms = (f"© {c.get('author') or 'its author'}, as posted on {c['platform']}; recorded {c['recorded'][:10]} and "
-                 "shown at the user's pick" + (f"; the uploader marks it {c['notice']}" if c.get("notice") else ""))
+                 "shown at the user's pick" + (f"; the uploader marks it {c['notice']}" if c.get("notice") else "")
+                 + ("; the post says it is paid promotion" if c.get("paid") else ""))
         media.add(d, out / c["file"], card, c["url"], terms)
         w, h = c["size"]
         cards.append({"name": card, "aspect": round(w / h, 4), "platform": c["platform"], "url": c["url"],

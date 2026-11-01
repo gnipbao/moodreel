@@ -16,7 +16,8 @@ export const WALL = {
   centre: [64, 49], drift: -8.7,          // the wall's centre from the frame's (px) at t = 0, and its drift (px/s)
   yaw: 10.3, turn: -0.727,                // degrees at t = 0, and per second
   scale: 0.983, grow: 0.0066,             // at t = 0, and per second
-  box: [2910, 1389], rowHeight: 679, gap: 31, radius: 0.036,   // the cards' box, a row's height at most, the gap
+  box: [3000, 1389], rowHeight: 679, gap: 31, radius: 0.036,   // the cards' box, a row's height at most, the gap
+  // (the reference's portrait cards fill rows of 679 px within 2902 px; wider cards spread to 3000, keeping the margins)
   stagger: 0.035, fade: 0.467,            // a card every 35 ms, each fading in this long
   title: { x: 1915, y: 210, size: 141, weight: 500, condense: 0.75, slant: 0.17, gap: 42, colour: '#fdfdfd', accent: '#7498f7',
     family: '"PingFang SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif',

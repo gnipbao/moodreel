@@ -234,7 +234,7 @@ def cmd_wall(a):
     elif a.action == "record":
         if not a.pick:
             raise SystemExit("wall record <dir> --pick 3,5,8 (numbers from CANDIDATES.md)")
-        r = wall.record(Path(a.target), [int(n) for n in a.pick.split(",")], a.seconds, a.lang)
+        r = wall.record(Path(a.target), [int(n) for n in a.pick.split(",")], a.seconds, a.lang, a.at)
     else:
         r = wall.make(Path(a.target), a.name, a.lead, a.duration, not a.no_render, a.replace)
     print(json.dumps(r, indent=1, ensure_ascii=False))
@@ -592,6 +592,7 @@ def main(argv=None):
     p.add_argument("--max", type=int, default=24, help="search: posts per platform")
     p.add_argument("--pick", help="record: candidate numbers, in the order the wall shows them")
     p.add_argument("--seconds", type=float, default=6.5, help="record: how long each post is recorded")
+    p.add_argument("--at", type=float, default=0.0, help="record: start each video this many seconds in (past an intro)")
     p.add_argument("--lang", default="en-US", help="search, record: the platforms' interface language")
     p.add_argument("--name", help="make: the product's name in the title (default: the search's)")
     p.add_argument("--lead", default="创作者都在聊", help="make: the title's words before the name")

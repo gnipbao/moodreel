@@ -6,9 +6,13 @@
   real posts as cards on a 4K wall in perspective, made from one sentence.
   - **Search.** YouTube and Bilibili, which need no login. Only posts that name the product in their title, description
     or tags are kept. The search writes a numbered contact sheet and `CANDIDATES.md`, and flags the product's own
-    account (官方) and an uploader's no-reprint mark (禁止转载). It gets a Short's author through oEmbed.
+    account (官方), an uploader's no-reprint mark (禁止转载) and a post that says it is paid for (推广). It gets a Short's
+    author through oEmbed.
   - **Pick and record.** Only the posts the user picks are recorded, each as its platform shows it, in a window sized
-    for a 4K card.
+    for a 4K card (a video's page at a phone's width).
+    - A failed page gets a second try, and each run's result is logged in `record.json`.
+    - Recording a card again replaces it where it stands.
+    - `--at` starts the video past an intro.
   - **Make.** Every card goes into `media/` and CREDITS with its author and link.
   - **Manners.** The browser loads one page at a time, never signs in, and stops at a bot check or a sign-in.
 - `kit/wall.js`: the template, measured off a 5.5 s 4K template film.
@@ -18,7 +22,8 @@
   - **Entrance.** A card every 35 ms, each fading in over 0.467 s (ease-out quart).
   - **Fit.** Checked against grey stand-ins of the reference's cards: every card within a few pixels through the clip,
     the title within 5 px, the grid exact, every fade frame for frame.
-  - **Layout.** It picks the number of rows that makes the cards largest.
+  - **Layout.** It picks the number of rows that makes the cards largest within a 3000 × 1389 box, which keeps the
+    reference's margins.
 - `references/produce/social-wall.md`: the flow, the rules, the template's values and how they were checked. SKILL.md
   now triggers on 口碑墙.
 
