@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Moodboard in, reel out: distill a visual and motion style from references, then render new code-drawn films in it."
 readme = "README.md"
 license = "MIT"
+authors = [{ name = "gnipbao" }]
 requires-python = ">=3.11"
 dependencies = [
     "numpy>=2.0",
@@ -11,6 +12,10 @@ dependencies = [
     "opencv-python-headless>=4.10",
     "pillow>=10.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/gnipbao/moodreel"
+Issues = "https://github.com/gnipbao/moodreel/issues"
 
 [project.scripts]
 moodreel = "moodreel.cli:main"

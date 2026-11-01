@@ -59,7 +59,7 @@ kit、演示片源码），按同样的分类存放：信号图版（图形与�
 
 ## 试用
 
-需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上；[tesseract](https://github.com/tesseract-ocr/tesseract) 可选，用来读跳动的数字（`brew install tesseract` 或 `apt install tesseract-ocr`）。`uv sync && npm install` 之后：
+需要 [uv](https://docs.astral.sh/uv/)、ffmpeg 和 Node 20 以上；[tesseract](https://github.com/tesseract-ocr/tesseract) 可选，用来读跳动的数字（`brew install tesseract` 或 `apt install tesseract-ocr`）。先克隆仓库（`git clone https://github.com/gnipbao/moodreel`），再在目录里运行 `uv sync && npm install`，之后可以用这些命令：
 
 - `uv run moodreel intake <项目> <参考图和视频…>`：导入参考、归一化、检查是否属于同一风格；
 - `uv run moodreel measure <项目>`：测调色板和颜色角色、材质、版式、字号和字重、运动语法、节奏，写出给导演看的 `MEASURE.md`；
@@ -97,6 +97,11 @@ ln -s "$PWD/skills/moodreel" ~/.claude/skills/moodreel
 
 然后直接说："把这些参考蒸馏成一个风格包"、"用我的〈风格〉做一个 20 秒的发布片，讲 X"、"有哪些风格？"。
 导演的流程、确认节点和规则见 [skills/moodreel/SKILL.md](skills/moodreel/SKILL.md)。
+
+## 参与贡献
+
+欢迎提 issue 和 pull request。[CONTRIBUTING.md](CONTRIBUTING.md)（英文）写了怎么搭环境、几条基本规则和改动要怎么检查。
+基本规则是：影片是时间的函数；每个数值都有出处；只取语法，不取内容；素材必须是开放许可。
 
 ## 致谢
 

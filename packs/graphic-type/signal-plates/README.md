@@ -10,7 +10,6 @@ Graphic & Type · 图形与排版. Distilled with Moodreel on 2026-10-25; instal
 | Evidence · 证据 | `evidence/LEDGER.md` | every number in STYLE.md with its basis (observed, derived, inferred) and source |
 |  | `evidence/intake.json` | the references: kind, size, licence source, checksum (the files stay with their owner) |
 |  | `evidence/measure/` (13) | frame-check, layout, motion-check-demo, motion-check-proxy1, motion-check-proxy2, motion-check-sketch, motion, palette, rhythm, shots, style, texture, type |
-|  | `evidence/refs-sheet.jpg` | the references, one sheet (own work, so it may travel) |
 | Kit · 代码: the style's own | `kit/engraved.js` | the engraved body |
 | Kit · 代码: the style's own | `kit/form.js` | the paper form |
 | Kit · 代码: the style's own | `kit/linefield.js` | the line field |
