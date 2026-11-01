@@ -4,6 +4,10 @@
   "private": true,
   "description": "Moodboard in, reel out: distill a visual and motion style from references, then render new code-drawn films in it.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnipbao/moodreel.git"
+  },
   "type": "module",
   "engines": {
     "node": ">=20"

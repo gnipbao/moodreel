@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased: ready to open
+
+- `CONTRIBUTING.md`: the setup, the ground rules (a film is a function of time, every number has a source, grammar
+  not content, openly licensed assets, generated folders, no keys), and what a pull request carries. The READMEs link
+  to it and start "Try it" from a clone.
+- `pyproject.toml` and `package.json` name the repository; pyproject names the author.
+- Signal Plates: its reference was another project's film (mexicat/pdoom-video, MIT), not the user's own work.
+  - The intake and style.json now record it as `web`.
+  - Its contact sheet leaves the pack, which keeps a reference sheet only for the user's own work.
+  - Two evidence files no longer carry a local scratch path.
+
 ## Unreleased: Ink Chronicle, the third distilled pack
 
 - `packs/east-asian-traditions/ink-chronicle`: Ink Chronicle · 墨字列传, distilled from the typography remake (Su Shi,

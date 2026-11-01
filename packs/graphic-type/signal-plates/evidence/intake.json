@@ -4,7 +4,7 @@
    "id": "vid01",
    "kind": "video",
    "sha256": "493879ec92d018d5e59c0c33ed9e42187bb4a45e6028eb53d2b63753b011d19b",
-   "source": "own",
+   "source": "web",
    "w": 1280,
    "h": 720
   }

@@ -93,6 +93,7 @@ Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+ (`npm install` bring
 is optional and reads numbers that count (`brew install tesseract`, `apt install tesseract-ocr`).
 
 ```bash
+git clone https://github.com/gnipbao/moodreel && cd moodreel
 uv sync && npm install
 ```
 
@@ -309,6 +310,12 @@ repository are fetched by the pack's `kit/fonts/fetch.sh` and checked against th
 | `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |
 | `scripts/import_lemo_styles.py` | Re-imports the style documents from a lemo-opuscar checkout |
 | `docs/` | Design and research notes |
+
+## Contributing
+
+Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers the setup, the ground rules (a film is a
+function of time, every number has a source, grammar not content, openly licensed assets only) and how a change is
+checked.
 
 ## Acknowledgements
 
