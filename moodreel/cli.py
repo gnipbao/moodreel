@@ -17,6 +17,7 @@
   moodreel export hyperframes|remotion <film> [--out d] [--variant v]  the film as a HyperFrames composition or Remotion project
   moodreel media add <film> <file> --name N --source S --license L [--start --end --crop --width --grade]
   moodreel media list|check <film>                        real footage, stills and data, with source and licence
+  moodreel wall search <product> | record <dir> --pick 3,5 | make <dir>   a word-of-mouth wall of the product's real posts
   moodreel render video|still|texts <dir> [...]           the renderer (render/render.mjs), from anywhere
   moodreel motion <video> --out <dir>                     measure one video's motion grammar
   moodreel bench make|render|motion [...]                 build, render and score the motion test films
@@ -224,6 +225,19 @@ def cmd_media(a):
         r = media.check(Path(a.film))
     print(json.dumps(r, indent=1, ensure_ascii=False))
     return 0 if r.get("ok", True) else 1
+
+
+def cmd_wall(a):
+    from . import wall
+    if a.action == "search":
+        r = wall.search(a.target, Path(a.out) if a.out else None, a.platforms, a.max, a.lang)
+    elif a.action == "record":
+        if not a.pick:
+            raise SystemExit("wall record <dir> --pick 3,5,8 (numbers from CANDIDATES.md)")
+        r = wall.record(Path(a.target), [int(n) for n in a.pick.split(",")], a.seconds, a.lang)
+    else:
+        r = wall.make(Path(a.target), a.name, a.lead, a.duration, not a.no_render, a.replace)
+    print(json.dumps(r, indent=1, ensure_ascii=False))
 
 
 def cmd_music(a):
@@ -569,6 +583,22 @@ def main(argv=None):
     p.add_argument("--width", type=int)
     p.add_argument("--grade", choices=["none", "mono"])
     p.set_defaults(fn=cmd_media)
+    p = sub.add_parser("wall", help="a word-of-mouth wall (社媒口碑墙): search a product's real posts, record the ones "
+                                    "picked, make the 4K film")
+    p.add_argument("action", choices=["search", "record", "make"])
+    p.add_argument("target", help="search: the product; record, make: the wall's folder")
+    p.add_argument("--out", help="search: the wall's folder (default out/walls/<product>)")
+    p.add_argument("--platforms", default="youtube,bilibili", help="search: platforms that need no login")
+    p.add_argument("--max", type=int, default=24, help="search: posts per platform")
+    p.add_argument("--pick", help="record: candidate numbers, in the order the wall shows them")
+    p.add_argument("--seconds", type=float, default=6.5, help="record: how long each post is recorded")
+    p.add_argument("--lang", default="en-US", help="search, record: the platforms' interface language")
+    p.add_argument("--name", help="make: the product's name in the title (default: the search's)")
+    p.add_argument("--lead", default="创作者都在聊", help="make: the title's words before the name")
+    p.add_argument("--duration", type=float, default=5.5)
+    p.add_argument("--no-render", action="store_true", help="make: build the film folder only")
+    p.add_argument("--replace", action="store_true", help="make: keep an existing film as film.prev")
+    p.set_defaults(fn=cmd_wall)
     p = sub.add_parser("music", help="a song as data for a film to follow (beats, bars, drum hits, envelopes, the "
                        "lyric's words as sung): music-data.js for kit/music.js")
     p.add_argument("source", help="the song (audio or video), or an analysis made elsewhere (pdoom-video's audio.json)")

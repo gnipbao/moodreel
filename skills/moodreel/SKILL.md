@@ -1,6 +1,6 @@
 ---
 name: moodreel
-description: Distill a visual and motion style from a few reference images and videos into a style pack (STYLE.md, a measured code kit, a demo film), and make new films in any style of the library, drawn entirely in code and rendered frame by frame. Use when the user gives design images, screenshots or code-made videos and wants "this style" captured, reproduced, reverse-engineered or reused (风格蒸馏, 反推风格, 复刻这种风格, 做成风格包); when they ask for a video, promo, explainer or title sequence in a named style or one of their own (用某风格做一个片子); or when they ask which styles exist. Not for editing footage or generating video with diffusion models.
+description: Distill a visual and motion style from a few reference images and videos into a style pack (STYLE.md, a measured code kit, a demo film), and make new films in any style of the library, drawn entirely in code and rendered frame by frame. Use when the user gives design images, screenshots or code-made videos and wants "this style" captured, reproduced, reverse-engineered or reused (风格蒸馏, 反推风格, 复刻这种风格, 做成风格包); when they ask for a video, promo, explainer or title sequence in a named style or one of their own (用某风格做一个片子); when they want a word-of-mouth wall of a product's real posts as a 4K video (社媒口碑墙, 口碑墙); or when they ask which styles exist. Not for editing footage or generating video with diffusion models.
 ---
 
 # Moodreel
@@ -94,6 +94,14 @@ find the style ─► brief (one round) ─► TREATMENT.md ─► film new ─�
 4. `moodreel film check <film>` until it passes, then `moodreel film deliver <film> [--music track]`
    (`references/produce/delivery.md`).
 
+**A word-of-mouth wall** (社媒口碑墙: "做一面 YouMind 的口碑墙", "make a wall of what people say about X"):
+1. `moodreel wall search <product>`.
+2. Show the user `candidates.jpg` and `CANDIDATES.md`, and record only what they pick (`moodreel wall record <dir> --pick …`).
+3. `moodreel wall make <dir>` makes the 4K film. Review stills before handing it over.
+
+Search only platforms that need no login: never sign in or get round a check. The posts are their authors', so pass on
+what the search flags (官方, 禁止转载) and credit every card (`references/produce/social-wall.md`).
+
 **A film that follows a song** (a music or lyric video, a cut on the beat, a remake of one): before drawing, turn the
 song into data with `moodreel music <song> [--lyrics words.json] --out <film>/music-data.js` and drive the picture from
 it through `kit/music.js`: words appear when they are sung (`sung`, `letters`), never at times read off a contact
@@ -142,4 +150,5 @@ through a compatibility layer: `docs/GPU.md`.
 | Brief, treatment, shots, beats, not repeating the demo | `references/produce/brief-and-treatment.md` |
 | The page contract, determinism, type, texts for the reading check | `references/produce/drawing.md` |
 | Checks before delivery, music and loudness, CREDITS, what to tell the user | `references/produce/delivery.md` |
+| A word-of-mouth wall of a product's real posts: search, pick, record, the 4K template and its rules | `references/produce/social-wall.md` |
 | Commands and flags | `moodreel --help`, `moodreel <command> --help` |
