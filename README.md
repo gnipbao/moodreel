@@ -168,6 +168,27 @@ uv run moodreel film deliver films/launch --music track.wav
 `film check` holds every line of text on screen long enough to read, finds black frames, and, for a distilled
 style, scores frames and motion against it; `film deliver` renders, normalises the music to −14 LUFS and muxes.
 
+Make a word-of-mouth wall (社媒口碑墙) for a product: its real posts as cards on a 4K wall in perspective. The steps:
+1. Search YouTube and Bilibili, which need no login.
+2. Pick the posts by number from the numbered sheet.
+3. Record each one as its platform shows it.
+4. Render the film.
+
+The posts are their authors' work: each card is credited, and an uploader's "no reprint" mark is flagged
+([social-wall.md](skills/moodreel/references/produce/social-wall.md)).
+
+```bash
+uv run moodreel wall search YouMind
+```
+
+```bash
+uv run moodreel wall record out/walls/youmind --pick 3,5,8,11
+```
+
+```bash
+uv run moodreel wall make out/walls/youmind
+```
+
 Measure the motion grammar of a single video:
 
 ```bash

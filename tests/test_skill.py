@@ -26,6 +26,6 @@ def test_every_command_the_skill_uses_exists():
     parser_cmds = {"intake", "measure", "frame-check", "kit", "scaffold", "motion-check", "pack", "styles", "film", "render",
                    "motion", "bench", "sketch", "score", "media", "voice", "export", "csd", "samples", "music", "compare",
                    "dossier", "pose", "sync", "probe", "camera", "triage", "pass", "look", "track", "direct", "review",
-                   "scene-check"}
+                   "scene-check", "wall"}
     assert used <= parser_cmds | {"film"}, used - parser_cmds
     assert cli.main(["styles", "swiss"]) is None
