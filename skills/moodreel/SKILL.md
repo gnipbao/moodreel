@@ -111,13 +111,16 @@ at the seconds the picture's events happen, read from the same data (a slam on e
 deliver mixes them under the song. Measure the result against the song (and the reference) for motion and sync, not
 just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 
-**A remake** (a film matched to a reference shot by shot): read each shot before drawing it with `moodreel dossier`
+**A remake** (a film matched to a reference shot by shot): first ask how it was made with `moodreel origin <reference>`
+(each shot drawn, a 3D render, 3D animation on twos, or footage, and the renderer to rebuild it with: canvas, three.js,
+3D assets rendered in three.js, or not code at all); read each shot before drawing it with `moodreel dossier`
 (motion, linework, finish, colour, and which technique it needs), read the reference's beat-sync fingerprint with
 `moodreel sync` (what the picture does on each kind of musical event, to the millisecond), and, for a 3D shot, track the
 camera through it with `moodreel pose <video> --track`, and read every window's camera move (pan, push, roll, and its
 shape: speeding up, slowing down, one pace) with `moodreel camera <reference> --against <remake>`, which writes the
 reference's track for `kit/follow.js` to move (and, with `pace`, to pace) the remake's camera by; run each pass in one command with `moodreel pass <reference> <film> --shots scenes.json --name pN`
-(render, parallel scoring, camera, contact sheet; `--jev --allow-text-upload` adds the opt-in Jev ranking of what to
+(render, parallel scoring, camera, contact sheet, and `moodreel diff`'s frame-by-frame list: cuts late, early, missed or
+extra, the sound's offset, gaps; check at the end, fix what it names, diff once more, then stop; `--jev --allow-text-upload` adds the opt-in Jev ranking of what to
 fix first, `--vision --spec look.json --allow-image-upload` has Jev look at frames of both films, `moodreel look`);
 for pixel-level placement box the reference's subjects with `moodreel track --js track-data.js` and solve the remake's
 camera and subjects onto them with `kit/lock.js`; before building, read the film as its director and motion designer
@@ -145,7 +148,7 @@ through a compatibility layer: `docs/GPU.md`.
 | STYLE.md section by section: sources and wording | `references/distill/writing-style-md.md` |
 | The ledger's format and the observed / derived / inferred rule | `references/distill/ledger.md` |
 | Reading frame-check and motion-check, and what to change for each failure | `references/distill/checks.md` |
-| Remaking a film shot by shot: cut to the frame, score, probe, fix the lowest window | `references/distill/remaking.md` |
+| Remaking a film shot by shot: how it was made, cut to the frame, score, probe, fix the lowest window, the frame-exact rules | `references/distill/remaking.md` |
 | The kit's modules and recipes for common materials and moves | `references/primitives.md` |
 | Brief, treatment, shots, beats, not repeating the demo | `references/produce/brief-and-treatment.md` |
 | The page contract, determinism, type, texts for the reading check | `references/produce/drawing.md` |

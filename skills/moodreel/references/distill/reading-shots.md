@@ -22,6 +22,15 @@ and type projected through the camera. All of that can be read off the video bef
   what the picture does after each kind of musical event (beat, downbeat, kick, snare, hat, sung word, line), how big,
   how late, how fast it decays and how far above chance; where cuts, surges, punches and flashes land; and, against
   another fingerprint, what a remake misses or adds.
+- `moodreel origin <video> [--shots f] --out dir`: how each shot was made, before anything is rebuilt. Its cuts to the
+  frame (a frame its predecessor can't predict through optical flow, against its neighbours; flashes and dissolves
+  kept apart), then per shot: how much holds still, the camera's move and what moves on top of it, each on ones, twos
+  or threes; texture after a median (flat fills, colours, texture density, straight edges, noise, smooth shading); how
+  smoothly the camera travels. From these a kind (graphics, render_3d, footage, still_pan, hold) and a route (canvas,
+  three, three+assets, footage). Filmed and generated footage look alike to numbers: its strips tell them apart.
+- `moodreel diff <reference> <remake> [--shots f] --out dir`: the remake frame by frame, as a list to fix: cuts on
+  time, late, early, missed or extra; both lengths; how late the sound runs; black, flat or frozen stretches; the six
+  worst moments beside the reference (worst.jpg). Every `moodreel pass` writes it too.
 - `moodreel compare <reference> <remake>`: the score after every pass, window by window, with what is wrong with each.
   `--motion <window>` shows where a window's picture moves, when and which way: the speed every 0.2 s and each cell's
   mean flow, the reference's beside the remake's. Read it when a window's speed or flow is off: an orbit runs its far
