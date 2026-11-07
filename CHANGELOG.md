@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased: how it was made, and the remake frame by frame
+
+- `moodreel origin <video>`: how each shot was made, before anything is rebuilt.
+  - **Cuts to the frame** (`moodreel.check.cutlist`). A cut is a frame its predecessor can't predict through optical
+    flow, standing out against its neighbours and against the steps two and three frames away (animation on twos
+    changes as much there). A still that changes once, and a cut between two shots of one set under other light, count
+    too; a change that comes back within two frames is a flash; fades and dissolves are kept apart.
+    - Measured: 11 of 11 hard cuts in the motion bench's clean films, none extra; 10 of 11 in its degraded copies; 11
+      of 12 in a 77 s painted 3D film (whose 21 scene windows held only 12 cuts), none extra; 3.6 s for that film.
+  - **Each shot**: how much holds still; the camera's move and what moves on top of it, each on ones, twos or threes;
+    texture read after a median; how smoothly the camera travels. From these a kind (graphics, render_3d, footage,
+    still_pan, hold) and a route (canvas, three, three+assets, footage, still-pan, hold), in origin.json and ORIGIN.md
+    with a strip per shot.
+    - Measured on labelled films (code films, 3D renders, generated and filmed video): 92.6 % of the time right on the
+      set the rules were read from, 86.3 % on a held-out set; it read 4 of 5 shots of the painted 3D film as a
+      subject on twos, and none of our three.js remake's.
+    - Filmed and generated footage look alike to numbers; the strips are there for the eye.
+- `moodreel diff <reference> <remake>`: the remake frame by frame, as a list to fix.
+  - Every cut matched on its frame (late, early, missed with what the remake does instead, or extra), both lengths,
+    how late the sound runs (onset envelopes cross-correlated), black, flat or frozen stretches, and the six worst
+    moments with the failing cell beside the reference's (DIFF.md, worst.jpg).
+  - On a remake with five planted faults it named all five on their frames (a cut 12 frames late, a cut turned into a
+    dissolve, ten black frames, the sound 120 ms late, half a second short) and nothing else.
+  - `moodreel pass` writes it every pass.
+- remaking.md: a first step (how was it made, and which renderer), the frame-exact rules (times as frames, graphics set
+  on their frame, consecutive frames at every change, type sized from its ink, captions switched where their band is,
+  motion blur, grain matched by look, one check at the end), and windows are not cuts. Ideas from rea-video and
+  HyperFrames' reverse-any-video skill, credited in the README; none of their code.
+
 ## Unreleased: the social wall (社媒口碑墙)
 
 - `moodreel wall search <product>`, `wall record <dir> --pick …`, `wall make <dir>`: a word-of-mouth wall, a product's

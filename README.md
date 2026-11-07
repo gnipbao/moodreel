@@ -220,6 +220,14 @@ uv run moodreel music song.wav --lyrics words.json --out films/my-film/music-dat
 node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
 ```
 
+Before remaking a film, ask how it was made: `moodreel origin <video>` cuts it to the frame and gives each shot a kind
+(drawn graphics, a 3D render, footage that was filmed or generated, one picture moved, a hold), its cadence (camera and
+subject on ones, twos or threes: a subject on twos under a camera on ones is 3D animation made to look drawn) and the
+renderer to rebuild it with (canvas, three.js, 3D assets rendered in three.js, or not code at all), with a strip of
+every shot in ORIGIN.md. After each pass, `moodreel diff <reference> <remake>` lists what a viewer notices frame by
+frame: every cut on time, late, early, missed or extra, both lengths, how late the sound runs, black, flat or frozen
+stretches, and the worst moments beside the reference (`moodreel pass` writes it too).
+
 Match a remake to its reference shot by shot, not just in stills: `moodreel compare` measures each of the reference's
 shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
 `--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle, and
@@ -242,6 +250,8 @@ bodies, lensing, dense line fields, engraving that follows a surface) goes throu
 [docs/GPU.md](docs/GPU.md):
 
 ```bash
+uv run moodreel origin reference.mp4 --out origin
+uv run moodreel diff reference.mp4 remake.mp4 --shots scenes.json --out diff
 uv run moodreel compare reference.mp4 remake.mp4 --shots scenes.json --json pass2.json --against pass1.json --sheet pairs.jpg
 uv run moodreel pass reference.mp4 films/my-remake --shots scenes.json --name p2 --against passes/p1 --jev --allow-text-upload
 uv run moodreel track reference.mp4 --spec look.json --subjects critter,keyboard --checks face --every 0.125 --js films/my-remake/track-data.js --allow-image-upload
@@ -351,7 +361,8 @@ of pdoom-video adapted under its MIT license (see `NOTICE`), it uses none of the
 - [motiscope](https://github.com/KumarSashank/motiscope) — localized motion energy, percentile thresholds, numbers for *when* and frames for *what*.
 - [MoVer](https://arxiv.org/abs/2502.13372) — motion properties as verifiable predicates fed back to the generator.
 - [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) — a style written as invariants (essence, materials, colour, type, motion, camera, sound, native moves, pitfalls) kept apart from any one film; its 59 style documents are the start of our library.
-- [HyperFrames](https://github.com/heygen-com/hyperframes) — video as a deterministic function of time, rendered in a browser.
+- [HyperFrames](https://github.com/heygen-com/hyperframes) — video as a deterministic function of time, rendered in a browser. Its reverse-any-video skill gave the frame-exact rules in remaking.md (times as frames, graphics set on their frame, consecutive frames at every change, type sized from its ink, one check at the end) and the idea of a frame-by-frame list against the original (`moodreel diff`); ideas only, none of its code.
+- [rea-video](https://github.com/JuneYaooo/rea-video) — ask how each shot was made (filmed, generated, rendered, coded) before remaking it, on measured evidence such as frame cadence and whether the picture moves as one plane; the idea behind `moodreel origin`. Ideas only, none of its code.
 
 ## License
 

@@ -16,21 +16,31 @@ first for the tools that read a shot as code.
 
 ## The loop
 
-0. **Read it as its director and its motion designer first** (`directing.md`): what each shot is for, where the eye
+0. **First, how was it made?** `moodreel origin <reference> --out origin` gives every shot a kind and a route before
+   anything is drawn. Drawn frames (flat fills, a small palette, straight edges) are canvas work. A 3D render goes to
+   three.js. 3D animation dressed as drawing (a subject held on twos while the camera keeps moving on ones, painted
+   materials) wants its characters and sets built as 3D assets, rendered in three.js with the subject stepped. Filmed
+   or generated footage can't be drawn in code at all: keep it for timing only. Pick the renderer from this table: a
+   painterly 3D film rebuilt from primitives in a real-time renderer keeps its layout and loses its look, however many
+   rounds follow (a 77 s painted brand film went 0.526 to 0.533 in three passes before its making was read).
+1. **Read it as its director and its motion designer first** (`directing.md`): what each shot is for, where the eye
    goes, why the camera moves and how it eases; `moodreel direct` asks Jev those questions. Build to the reading.
-1. **Cut the reference into its scenes to the frame.** A mean-luma or mean-colour timeline at the video's own frame
+2. **Cut the reference into its scenes to the frame.** A mean-luma or mean-colour timeline at the video's own frame
    rate gives every cut, flash and phase change exactly (a montage slot of 5 frames, a one-frame inverted flash, a
    glitch in three phases of 5, 3 and 5 frames). Write them as the scene table; `moodreel compare --shots` scores the
    same windows.
-2. **Build every scene once**, then score: `moodreel compare <reference> <remake> --shots scenes.json --json pass.json`.
+3. **Build every scene once**, then score: `moodreel compare <reference> <remake> --shots scenes.json --json pass.json`.
    Work on the lowest windows and on what the user names, not on what looks worst to you.
-3. **Measure the reference's shot before redrawing it**: `moodreel probe <reference> --at t1,t2,... --against <remake>`
+4. **Measure the reference's shot before redrawing it**: `moodreel probe <reference> --at t1,t2,... --against <remake>`
    for each window you fix (a film folder renders its stills, a video is read directly). Change the drawing so the
    numbers move toward the reference's, probe again, and render the film only when they agree. Two or three probes
    settle a shot; renders and contact sheets alone don't.
-4. **Render, score, compare with the last pass** in one command: `moodreel pass <reference> <film> --shots scenes.json
+5. **Render, score, compare with the last pass** in one command: `moodreel pass <reference> <film> --shots scenes.json
    --name p21 --against passes/p20` renders, scores every window in parallel, reads the camera and writes a contact
-   sheet (under two minutes for a 64 s film). With `--jev --allow-text-upload` (opt-in, `TYPESAFE_API_KEY`), Jev
+   sheet (under two minutes for a 64 s film), and writes DIFF.md and worst.jpg (`moodreel diff`): each of the reference's
+   cuts the remake meets on its frame, reaches late or early by a number of frames, or misses (and whether it dissolves
+   there instead), the cuts it adds, both lengths, how late its sound runs, black, flat or frozen stretches, and the
+   six worst moments with the failing cell outlined beside the reference's. With `--jev --allow-text-upload` (opt-in, `TYPESAFE_API_KEY`), Jev
    ranks the windows and names the kind of fix each needs (camera, framing, light, motion, detail) in about four
    seconds: it reads numbers only, so look at the top windows' pictures before changing them. With `--vision
    --spec look.json --allow-image-upload` Jev also looks at frames of both films (`moodreel look`): where each named
@@ -40,7 +50,7 @@ first for the tools that read a shot as code.
    mean's, and lays the reference beside the remake at each window's middle, worst first (read the sheet before
    probing: the scores say where, the sheet says what). Make a side-by-side video (reference above remake, the
    reference's audio) for the user's eyes.
-5. **Review the cut as its producer and its motion designer before it is shown** (`moodreel review <reference>
+6. **Review the cut as its producer and its motion designer before it is shown** (`moodreel review <reference>
    <remake> --shots scenes.json --out review-N`). The producer's half: every window at full size beside the
    reference, and each window's ground, ink and accent colours audited (review.md flags those a viewer sees as off,
    dE above 6). The motion designer's half: every moment the reference's picture changes at once (a cut, a slam, a
@@ -781,6 +791,36 @@ At the end the score's parts are structure 0.64, detail 0.83, flow 0.61 and spee
 - **Left as it is:** the lake (detail 0.35: too soft), 也无风雨 (its tone 27 levels off), 谁怕? and 问汝平生 by
   `compare`; the mosaic by Jev (0.19: the type case reads as another picture to it); the text wall's page splits (0.13
   to 0.23 s off) and the other snaps still off.
+
+## Frame-exact rules
+
+Borrowed as ideas from HyperFrames' reverse-any-video skill and from rea-video (both credited in the README); the
+wording and the tools here are moodreel's.
+
+- **A time is a frame.** Write every time as its frame divided by the rate, rounded down to the frame: at 30 fps frame
+  83 starts at 2.766 s, and 2.767 already falls on frame 84. `moodreel diff` counts in the reference's frames.
+- **Graphics land on an exact frame.** A card, word or flash that is whole on the frame it first shows is set on that
+  frame, never faded up to it; ease only what you watched travel over several frames, and a camera that jumps in one
+  frame is set, not tweened.
+- **Read consecutive frames wherever something changes.** At each cut, entrance, exit and transition look at the few
+  frames on both sides (`probe`, `review`'s strips). Sheets a quarter of a second apart hide timing of one to three
+  frames, the direction things come and go, the blur or blend at a cut and a flash one frame long.
+- **Type is sized from its ink.** Crop one line in the reference and the same line in the remake, compare the boxes the
+  letters' ink fills, and change the size first, then the tracking, until both agree within a few pixels. Try two or
+  three faces with the same build (contrast, x-height, terminals) at that size before choosing a stand-in, and name
+  the stand-ins.
+- **Captions switch where their band does.** The words may come from a transcript; when each group comes and goes is
+  read off the caption band's own pixels, frame by frame, because captions run ahead of the voice or behind it.
+- **Fast moves are smeared.** A tile that crosses the frame fast is motion blur in the reference; a sharp one reads as
+  wrong. Blur along the move while it is fast (directional, not round).
+- **Grain: the look, not the pixels.** Moving grain costs structure scores whatever you do; match its size, its
+  strength and whether it holds or boils, and stop there.
+- **Check at the end, once, then stop.** Build every shot, render, run `moodreel diff`, fix what it names that you can
+  see (a cut off its frame, a missing element, a wrong time, size or colour), render and diff once more, then stop and
+  show it. Further rounds go on what the person names.
+- **A window is not a cut.** Windows mark where a reading changes; cuts are where the picture does. In the painted 3D
+  film above, 9 of the 21 window edges were the camera flowing on or light changing, not cuts; `moodreel origin`
+  lists the real ones (and keeps a flash or a dissolve apart from them).
 
 ## Rules that came out of it
 
