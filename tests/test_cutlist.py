@@ -12,6 +12,8 @@ import pytest
 
 from moodreel.check import cutlist
 
+# clips go into ffmpeg's own container (.nut); x264's B-frames start the stream two frames late, which must not shift
+# the frame count
 needs_ffmpeg = pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="needs ffmpeg")
 W, H, FPS = 480, 270, 24
 
@@ -68,12 +70,10 @@ def _write(frames, path):
 
 @needs_ffmpeg
 def test_cuts_to_the_frame_and_nothing_else(tmp_path):
-    path = tmp_path / "events.mkv"
+    path = tmp_path / "events.nut"
     _write(_clip(), path)
     r = cutlist.find(str(path))
     assert r["fps"] == FPS and r["n"] == 132
-    near = lambda xs, f, tol=1: any(abs(x - f) <= tol for x in xs)  # noqa: E731
-    assert near(r["cuts"], 36) and near(r["cuts"], 72) and near(r["cuts"], 90)      # two hard cuts and the faint one
-    assert len(r["cuts"]) == 3, r                                                      # not the light, the flash, the title
-    assert near(r["flashes"], 60), r
+    assert r["cuts"] == [36, 72, 90], r            # two hard cuts and the faint one, each on its first frame; not the
+    assert r["flashes"] == [60], r                 # light coming up, the flash or the title
     assert any(a <= 113 <= b for a, b in r["dissolves"]), r

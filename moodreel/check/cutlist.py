@@ -33,7 +33,8 @@ MIN_DISSOLVE = 0.25     # s
 def _stream(path: str, fps: float, w: int = W):
     p = probe(path)
     h = int(round(p["h"] * w / p["w"] / 2) * 2)
-    proc = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(path), "-vf", f"fps={fps},scale={w}:{h}:flags=area",
+    # frame 0 is the first frame decoded: a stream that starts late (an encoder's B-frame delay) is not padded at the front
+    proc = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(path), "-vf", f"setpts=PTS-STARTPTS,fps={fps},scale={w}:{h}:flags=area",
                              "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
     size = w * h * 3
     try:
