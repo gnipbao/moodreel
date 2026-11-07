@@ -265,6 +265,32 @@ def cmd_compare(a):
         print("\n" + compare.motion_report(r["window"], compare.motion(a.reference, a.remake, r["t0"], r["t1"], a.offset)))
 
 
+def cmd_origin(a):
+    from .check import origin
+    out = a.out or str(Path(a.video).with_suffix("")) + "-origin"
+    r = origin.run(a.video, a.shots, out)
+    print(f"{len(r['shots'])} shots, {r['duration']} s: "
+          + ", ".join(f"{k.replace('_', ' ')} {v:.0%}" for k, v in r["summary"].items() if v))
+    for s in r["shots"]:
+        c = s["cadence"]
+        on = "" if c["subject_on"] != 2 else ", subject on twos" + (" under a camera on ones" if c["camera_on"] == 1 else "")
+        print(f"  {s['t0']:7.2f}-{s['t1']:7.2f} {s['name'] or '':>14} {s['kind']:>9} -> {s['route']}{on}")
+    print(f"report: {out}/ORIGIN.md (strips of every shot in {out}/strips)")
+
+
+def cmd_diff(a):
+    from .check import diff
+    out = a.out or str(Path(a.remake).with_suffix("")) + "-diff"
+    r = diff.run(a.reference, a.remake, a.shots, out)
+    c = r["cuts"]
+    late = sum(1 for m in c["matched"] if m["off"])
+    off = r["audio"]["offset_ms"]
+    print(f"cuts: {len(c['matched']) - late} on time, {late} late or early, {len(c['missed'])} missed, {len(c['extra'])} extra; "
+          f"length {r['duration']['difference']:+.3f} s; sound {'-' if off is None else f'{off:+.0f} ms'}; "
+          f"{len(r['blanks'])} black, flat or frozen stretches")
+    print(f"the list: {out}/DIFF.md (the worst moments beside the reference: {out}/worst.jpg)")
+
+
 def cmd_review(a):
     from .check import review
     if a.only != "motion":
@@ -622,6 +648,21 @@ def main(argv=None):
     p.add_argument("--motion", help="windows by name, comma-separated: where their pictures move, when and which way "
                    "(speed every 0.2 s and each cell's mean flow, the reference's beside the remake's)")
     p.set_defaults(fn=cmd_compare)
+    p = sub.add_parser("origin", help="how each shot was made, before anything is rebuilt: drawn (graphics), a 3D render, "
+                       "footage (filmed or generated), one picture moved, or a hold; its cadence (camera and subject on ones, "
+                       "twos or threes) and the route to rebuild it (canvas, three, 3D assets + three, footage)")
+    p.add_argument("video")
+    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the video's own cuts, to the frame)")
+    p.add_argument("--out", help="a folder for origin.json, ORIGIN.md and strips/ (default: <video>-origin)")
+    p.set_defaults(fn=cmd_origin)
+    p = sub.add_parser("diff", help="a remake against its reference, frame by frame, as a list of what to fix: every cut "
+                       "on time, late, early, missed or extra; the length; the sound's offset; black, flat or frozen "
+                       "stretches; the worst moments beside the reference")
+    p.add_argument("reference")
+    p.add_argument("remake")
+    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...]: names each cut by its window")
+    p.add_argument("--out", help="a folder for diff.json, DIFF.md and worst.jpg (default: <remake>-diff)")
+    p.set_defaults(fn=cmd_diff)
     p = sub.add_parser("review", help="the review before a cut is shown: the producer's (every window at full size beside "
                        "the reference, its ground, ink and accent colours audited: review.md) and the motion designer's (the "
                        "reference's snaps met or missed, spans moving or changing unlike it, strips: motion.md)")
