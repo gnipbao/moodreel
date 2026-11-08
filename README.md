@@ -371,8 +371,9 @@ checked.
 
 ## Acknowledgements
 
-Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/` and the parts
-of pdoom-video adapted under its MIT license (see `NOTICE`), it uses none of their code.
+Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/`, the parts of
+pdoom-video adapted under its MIT license and the 3DCodeVerse showcase code ported into `kit/3dcv/` (`NOTICE` covers
+both), it uses none of their code.
 
 - [pdoom-video](https://github.com/mexicat/pdoom-video) — a music video computed from its song's data: word-aligned lyrics, drum hits and a beat grid drive every cut, slam and camera move, and sub-frame motion blur. The model for `moodreel music`, `kit/music.js` and docs/MUSIC-SYNC.md; `kit/gl.js` and `kit/anim.js` are adapted from its engine (MIT).
 
@@ -384,9 +385,17 @@ of pdoom-video adapted under its MIT license (see `NOTICE`), it uses none of the
 - [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) — a style written as invariants (essence, materials, colour, type, motion, camera, sound, native moves, pitfalls) kept apart from any one film; its 59 style documents are the start of our library.
 - [HyperFrames](https://github.com/heygen-com/hyperframes) — video as a deterministic function of time, rendered in a browser. Its reverse-any-video skill gave the frame-exact rules in remaking.md (times as frames, graphics set on their frame, consecutive frames at every change, type sized from its ink, one check at the end) and the idea of a frame-by-frame list against the original (`moodreel diff`); ideas only, none of its code.
 - [rea-video](https://github.com/JuneYaooo/rea-video) — ask how each shot was made (filmed, generated, rendered, coded) before remaking it, on measured evidence such as frame cadence and whether the picture moves as one plane; the idea behind `moodreel origin`. Ideas only, none of its code.
-- [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse) — its showcase, a short illustrated 3D film remade entirely in code, gave the ideas behind `kit/look3d.js`, `kit/post3d.js` and `moodreel.model3d`: a colour-ramp material in place of lighting, a stipple fixed to the surface and held on twos, a painterly post chain, skinned characters carved from signed distance fields (SDF), and proportions measured in units of one feature of the reference. Its framework (Apache-2.0) gave the spatial checks behind `moodreel model check` and `moodreel model sheet`: floating parts found as the connected groups of the parts' contact graph, penetration swept across the poses, a contact sheet of several views, and a shader preflight (`look3d.guard`). Ideas only, none of its code (the showcase is CC BY-NC-SA 4.0).
+- [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse) — its [awesome showcase](https://huggingface.co/datasets/3dcodeverse/3dcodeverse-awesome-showcase) includes a short illustrated 3D film remade entirely in code, and moodreel uses it in two ways. `kit/3dcv/` ports that film's generic look engine and shot runtime from round r02 of the showcase: the colour-ramp material and its stipple, the post chain, painted textures, stroke lettering and deterministic helpers, with the page boot replaced by `film()`, an adapter for moodreel's stage. That folder keeps the showcase's licence, CC BY-NC-SA 4.0, so it is for non-commercial use only (see `NOTICE` and [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE)). `kit/look3d.js`, `kit/post3d.js` and `moodreel.model3d`, by contrast, are moodreel's own MIT code written from the showcase's ideas: a colour-ramp material in place of lighting, a stipple fixed to the surface and held on twos, a painterly post chain, skinned characters carved from signed distance fields (SDF), and proportions measured in units of one feature of the reference. The 3DCodeVerse framework (Apache-2.0) gave the ideas, though not the code, behind the spatial checks of `moodreel model check` and `moodreel model sheet`: floating parts found as the connected groups of the parts' contact graph, penetration swept across the poses, a contact sheet of several views, and a shader preflight (`look3d.guard`).
 
 ## License
 
-Moodreel is [MIT](LICENSE). The style documents in `styles/` that come from lemo-opuscar are MIT, Copyright (c)
-2026 LemoLab ([`styles/LICENSE-lemo-opuscar`](styles/LICENSE-lemo-opuscar)); each one names its source commit.
+Moodreel is [MIT](LICENSE), except for `kit/3dcv/`. The style documents in `styles/` that come from lemo-opuscar are
+MIT, Copyright (c) 2026 LemoLab ([`styles/LICENSE-lemo-opuscar`](styles/LICENSE-lemo-opuscar)); each one names its
+source commit.
+
+`kit/3dcv/` holds code ported from the 3DCodeVerse showcase and keeps the showcase's licence,
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/): attribution, non-commercial use only, and
+adaptations shared under the same licence. [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE) names the source and every change,
+and the header of each file credits the source as well; keep both. No file outside `kit/3dcv/` contains that code.
+`moodreel film new` copies the whole kit into a new film, so `kit/3dcv/` and its LICENSE come along: a film meant for
+commercial use must neither keep nor use that folder.

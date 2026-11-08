@@ -187,3 +187,98 @@ measure every proportion you build to in that unit (eye spacing, face width at t
 height), each on two frames or more. Keep a ratio only when its spread (largest minus smallest, over the mean) is
 within 15 %. Put LANDMARKS on the same points of the model and compute the same ratios from them, so the figure is
 checked against numbers rather than by eye.
+
+### The showcase's own engine: kit/3dcv
+
+`kit/3dcv/` is the engine of 3DCodeVerse's showcase itself, ported from round r02 of its film's code (look3d and
+post3d are moodreel's own reading of it). It has `look.js` (the ramp material with its stipple, tuned presets, a
+graded sky), `post.js` (the post chain), `paint.js` (seeded painted textures), `text.js` (stroke lettering without
+fonts), `util.js` (seeded random numbers, eases, keyframe tracks, splines, camera rigs) and `stage.js`, where the
+runtime the showcase's shots ran in became `film()`, an adapter for the stage. kit/3dcv/README.md (in Chinese) lists
+the API and every field of ctx. Unlike the rest of the kit it is CC BY-NC-SA 4.0, not MIT (the last point below).
+
+**Which to reach for.** look3d and post3d by default: they are MIT, `ramp()` reads no lights (the light's direction
+sits on the material), the chain's options are flat numbers, and figure.js characters take ramps as above. kit/3dcv
+when a non-commercial film should have the showcase's own picture, built the way the showcase built it: its tuned
+presets (`look.preset(name, overrides)`; skin, hair, cloth, clay, floor, paper, glass, silver and glow among them),
+its graded `skyDome()`, and stages the MIT chain doesn't have (a motion smear, barrel and fisheye lenses up to a wide
+render on cube faces, an anisotropic Kuwahara pass, `renderToTexture` for one scene composited into another). Its
+materials follow the scene's first directional light (shadow casters sort first), so every shot needs a near-white
+key (`ctx.keyLight`). Both engines can sit in one film; they share kit/three.js.
+
+A film lists its shot modules in `cv.film()` and gives the stage two calls:
+
+```js
+import { stage } from './kit/stage.js';
+import { THREE } from './kit/three.js';
+import * as cv from './kit/3dcv/stage.js';
+import * as look from './kit/3dcv/look.js';
+
+const W = 1920, H = 1080;
+
+const lantern = {                                     // global frames 1-120: 5 s at 24 fps
+  id: 'lantern', frames: [1, 120], hold: 2,
+  init(ctx) {                                         // once, before any frame; keep handles on `this`
+    ctx.keyLight(ctx.scene, { dir: [0.4, 1, 0.7], shadow: { size: 1024, extent: 3 } });
+    const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 64), look.preset('floor'));
+    ground.rotation.x = -Math.PI / 2;
+    this.lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.36, 0.8, 48), look.preset('paper'));
+    ctx.scene.add(ground, this.lamp);
+    look.shadows(ctx.scene);                          // every mesh so far casts and receives
+    ctx.scene.add(look.skyDome());                    // the sky after, so it casts nothing
+    this.rise = ctx.track([[1, 0.4], [120, 1.6]]);
+    this.cam = ctx.cameraRig({ pos: [[1, [0, 1.2, 4.5]], [120, [1.2, 1.8, 3.6]]], target: [0, 0.9, 0] });
+  },
+  render(ctx, n) {                                    // n: the drawing on screen (held on twos)
+    this.lamp.position.y = this.rise(n);              // the lantern on twos
+    this.cam.apply(ctx.camera, ctx.outFrame);         // the camera on ones
+    return { bloom: { strength: 0.5 }, grain: { amount: 0.03 } };   // post params; the adapter draws ctx.scene
+  },
+};
+
+const film = cv.film({ width: W, height: H, shots: [lantern] });
+stage({ width: W, height: H, duration: 5, prepare: () => film.init(), draw: (g, t) => film.draw(g, t, W, H) });
+```
+
+`film.init()` goes in `prepare`: it is async and builds one WebGL renderer on a canvas kept off the page and a ctx per
+shot, then runs each shot's `init` in the order listed. `film.draw(g, t, w, h)` renders the frame t falls in and draws
+it onto the stage, whose 2D canvas stays the only one on the page. No import map is needed: kit/3dcv takes three.js
+from kit/three.js. Import from `kit/three.js` in main.js (or in a file under `shots/` or `lib/`) even when the shots
+only use `ctx.THREE`: `film check` and `film deliver` put a missing three.js back in kit/vendor/ only for a film that
+names it.
+
+- **A shot module** is a plain object. `frames: [first, last]` (global frames at 24 fps, frame 1 at t = 0) and
+  `render(ctx, n)` are required; `id` (its `ctx.shotId`), `hold`, `ss` (supersampling, 1 to 3; the film's default is
+  2) and `init(ctx)` are optional. Both methods are called on the shot, so `this` holds its handles. `init` runs once
+  and may be async: load and build there. `render` must be synchronous, as the stage's `render(t)` is (a returned
+  Promise throws), and a pure function of n: set everything that moves on every frame, with `ctx.rng(seed)` in place
+  of `Math.random` and no `Date`. It either draws with `ctx.draw(scene, camera, params)`, or returns post params,
+  deep-merged over `defaultPostParams()` for that draw only, and the adapter draws `ctx.scene` through `ctx.camera` (a
+  35° perspective camera); returning nothing draws with `ctx.postParams`. `extras` in `cv.film()` adds the film's own
+  modules to every ctx.
+- **One frame clock.** The shots count frames at 24 fps whatever the film's own rate (`film.frameOf(t)` is
+  `Math.floor(t * 24 + 1e-4) + 1`), so make the film at 24 fps (`moodreel film new <name> --style <style> --fps 24`,
+  or `"fps": 24` in film.json); at 30 fps some frames of the shots would show twice. Where shot ranges overlap, the
+  shot listed first wins; on a frame no shot covers, `film.draw` draws nothing.
+- **On twos.** With `hold: 2`, frame n shows drawing d = max(first, n − n % 2): `render` is called with d, so frames
+  2k and 2k + 1 show the same drawing, and the stipple's boil and the grain are seeded from d (once every
+  `grain.hold` frames, 2 by default, so once a drawing). Two things still move on every output frame: whatever is
+  set from `ctx.outFrame` (the camera above, on ones under a lantern on twos), and the `grain.flicker` share of the
+  grain (0.1 by default). With `flicker: 0` a held pair is the same pixel for pixel; at 0.3 the pair differs by
+  between 0.02 and 2 levels on average while nothing in it moves (tests/test_3dcv.py). The film's `query` overrides
+  every shot: `hold=1` puts them all on ones, `ss=1` drafts faster, `nopost=1` shows the materials without the post,
+  `post=<json>` merges over every draw's params.
+- **Each frame stands alone.** Shots change shared state: the look env that every material and the sky read, and the
+  renderer's tone mapping, exposure, shadow map, clear colour and the rest. The adapter starts every shot's `init` from
+  the renderer's first state, keeps the state that init leaves, and puts it back before each of that shot's frames.
+  So a frame comes out the same pixel for pixel rendered twice, after another shot, or in a film without that other
+  shot (tests/test_3dcv.py). What the shot owns, its scene, camera and the objects on `this`, is still set from n in
+  `render`.
+- **The licence goes with the code.** kit/3dcv is CC BY-NC-SA 4.0, not MIT. A film that uses it carries that code
+  under that licence: the film is for non-commercial use only, the files keep their headers and `kit/3dcv/LICENSE`,
+  changes to them are shared under the same licence, and the film's CREDITS should name it (3DCodeVerse's showcase,
+  CC BY-NC-SA 4.0, with its links). `moodreel film new` copies the whole kit into every new film (`moodreel wall make`
+  does too), so a new film's `kit/3dcv/` arrives with its LICENSE whether the film imports it or not: a film meant
+  for commercial use must neither keep nor use that folder. Code from kit/3dcv goes into no MIT file (another kit
+  module, the Python package, a test, a film template); where MIT code needs the same effect, write it from the
+  idea, as look3d and post3d were.

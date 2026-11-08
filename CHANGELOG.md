@@ -1,5 +1,39 @@
 # Changelog
 
+## Unreleased: 3DCodeVerse's showcase engine in kit/3dcv, non-commercial
+
+- `kit/3dcv/`: the look engine and shot runtime of 3DCodeVerse's awesome showcase, ported from round r02 of its
+  film's code and kept under the showcase's licence, CC BY-NC-SA 4.0.
+  - **The modules.** `look.js`: a ramp material that follows the scene's first directional light, its stipple
+    anchored to the surface, tuned presets, a graded sky dome and the env every material shares. `post.js`: `Post`,
+    a supersampled HDR chain (tinted SSAO, depth of field, motion smear, bloom, lens, an optional Kuwahara pass,
+    grain weighted by tone). `paint.js`: seeded painted textures. `text.js`: stroke lettering without fonts.
+    `util.js`: seeded random numbers, eases, keyframe tracks, splines and camera rigs. Below a new header and the
+    three.js import, `look.js`, `post.js`, `paint.js` and `util.js` are the source line for line; `text.js` also
+    has neutral default words where a film's on-screen words were.
+  - **The adapter**, `film({ width, height, ss, shots, extras, query })` in `stage.js`, in place of the showcase's
+    page boot: shot modules (`{ id, frames, hold, ss, init(ctx), render(ctx, n) }`, global frames at 24 fps) mounted
+    in `stage()` through `prepare` and `draw`, each with its own ctx, scene and camera, sharing one renderer on a
+    canvas kept off the page and one `Post` per supersampling factor. The state a shot's init leaves in the look env
+    and the renderer is kept and put back before each of its frames, and every init starts from the same first
+    state. `hold: 2` draws on twos while the grain's `flicker` share moves on every output frame; a `render` that
+    returns a Promise throws, since the stage renders synchronously; the page needs no import map.
+    - Tested (tests/test_3dcv.py, on a throwaway film): a frame the same pixel for pixel rendered twice in a row,
+      after a shot that changes the env and the renderer, and in a film without that shot; a shot's tone mapping,
+      exposure, shadows, haze and tint not left to the next; on twos, frames 26 and 27 identical with `flicker: 0`,
+      a held pair at `flicker: 0.3` between 0.02 and 2 levels apart on average with the subject in place, and the
+      next drawing more than 8 px on; the grain's fine spread on mid-grey above 2 levels and over three times that
+      on near-white; a painted texture the same for the same seed and different for another; one renderer, one
+      `Post` per supersampling factor, and the stage's canvas still the only one on the page.
+  - **The licence.** CC BY-NC-SA 4.0, as the showcase: non-commercial, credited, adaptations under the same terms.
+    Each file's header names its source file, round, git blob and changes; `kit/3dcv/LICENSE` lists them all, and
+    `kit/3dcv/README.md` (in Chinese) documents the API. The rest of the repository stays MIT and takes no code from
+    kit/3dcv. `moodreel film new` copies the whole kit, so every new film gets `kit/3dcv/` with its LICENSE; a film
+    meant for commercial use must neither keep nor use it.
+- Docs: the licence boundary and the acknowledgement in both READMEs, a 3DCodeVerse section in `NOTICE`, a `3dcv/`
+  row in kit/README.md, and "The showcase's own engine: kit/3dcv" in drawing.md (when to use it rather than look3d
+  and post3d, shots inside `stage()`, the shot module, one frame clock at 24 fps, on twos, the licence).
+
 ## Unreleased: an illustrated look for three.js, and characters carved from distance fields
 
 - `kit/look3d.js`: a colour-ramp material for three.js, and the clock of the drawings.
