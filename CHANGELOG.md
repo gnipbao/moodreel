@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased: compare reads the same frames from the same pictures
+
+- `moodreel compare` (and `moodreel measure`'s shot reading) now take frame k of a window as the picture on screen at
+  t0 + k / 30 (`moodreel.video.window`). They used ffmpeg's own seek and resampling (-ss before -i, -t, the fps
+  filter's defaults), and where that resampling started depended on the file: the same pictures with and without an
+  audio track came out one 30 fps step apart at 23 of 38 window starts tried, which moved a window's score (one window
+  of a 77 s remake read 0.640 with its soundtrack and 0.587 without).
+- Motion is measured on every pair of neighbouring frames, not every other one. At 30 fps a 24 fps film repeats a
+  frame every fifth step and a drawing on twos changes every 2.5 steps, so every other pair caught a change or missed
+  it whole by where the window began: a single jump read 0.12 or 0.00 from starts a frame apart. On eight windows of
+  the same remake, starting a window a third of a frame later moved its score by up to 0.244 before and 0.045 now.
+- Scores computed before this change are not comparable with new ones: recompute a previous pass before reading the
+  difference (`--against`).
+
 ## Unreleased: 3DCodeVerse's showcase engine in kit/3dcv, non-commercial
 
 - `kit/3dcv/`: the look engine and shot runtime of 3DCodeVerse's awesome showcase, ported from round r02 of its
