@@ -28,8 +28,15 @@
   - **The licence.** CC BY-NC-SA 4.0, as the showcase: non-commercial, credited, adaptations under the same terms.
     Each file's header names its source file, round, git blob and changes; `kit/3dcv/LICENSE` lists them all, and
     `kit/3dcv/README.md` (in Chinese) documents the API. The rest of the repository stays MIT and takes no code from
-    kit/3dcv. `moodreel film new` copies the whole kit, so every new film gets `kit/3dcv/` with its LICENSE; a film
-    meant for commercial use must neither keep nor use it.
+    kit/3dcv.
+- `moodreel film new ... --with 3dcv`: kit/3dcv is now left out of new films unless asked for. With the option, the film
+  gets the folder with its LICENSE (not its README), three.js beside it when the style has none, and a CREDITS line
+  naming the source and CC BY-NC-SA 4.0 and saying the film is for non-commercial use only. `moodreel wall make`
+  never includes it. An unknown part (`--with` takes `3dcv` only) stops before anything is written.
+- `moodreel film check` and `film deliver` put a missing three.js back for a film that imports kit/3dcv, which
+  reaches three.js through kit/three.js without naming it in the film's own files.
+- The help of every `--shots` option (compare, origin, diff, review, camera, look, direct and the rest) now says it
+  takes a JSON file of windows; it read "windows as JSON", and a JSON string passed there fails to open.
 - Docs: the licence boundary and the acknowledgement in both READMEs, a 3DCodeVerse section in `NOTICE`, a `3dcv/`
   row in kit/README.md, and "The showcase's own engine: kit/3dcv" in drawing.md (when to use it rather than look3d
   and post3d, shots inside `stage()`, the shot module, one frame clock at 24 fps, on twos, the licence).

@@ -149,5 +149,6 @@ Moodreel 采用 [MIT](LICENSE)，`kit/3dcv/` 除外。`styles/` 中来自 lemo-o
 `kit/3dcv/` 里是从 3DCodeVerse 展示片移植来的代码，沿用展示片的许可
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)（署名—非商业性使用—相同方式共享）：只能非商用，
 使用时要署名，改编后的版本也按同一许可共享。来源和每一处改动写在 [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE) 里，每个文件的文件头
-也写明了出处，两者都要保留。`kit/3dcv/` 以外的文件都不含这些代码。`moodreel film new` 会把整个 kit 复制进新影片，`kit/3dcv/`
-和它的 LICENSE 也跟着过去：准备商用的影片既不能保留、也不能使用这个目录。
+也写明了出处，两者都要保留。`kit/3dcv/` 以外的文件都不含这些代码。新影片默认不带 `kit/3dcv/`：`moodreel film new <片名> --style <风格> --with 3dcv`
+才会把它连同 LICENSE 复制进去，同时放好 three.js，并在影片的 CREDITS 里写明出处和许可，这部影片从此只能非商用。
+`moodreel wall make` 一律不带它。

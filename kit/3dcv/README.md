@@ -142,5 +142,6 @@ look3d 和 post3d。
   文件头和 `LICENSE`），**不得商用**，改编后的这些文件仍按 CC BY-NC-SA 4.0 发布。
 - 仓库其余部分是 MIT，不包含这些代码。**不要把 kit/3dcv 的代码复制或改写进 MIT 文件**（kit 的其他模块、`moodreel/`、
   `tests/`、影片模板……）。MIT 那边需要同样的效果时，只按思路自己写，像 look3d 和 post3d 那样。
-- `moodreel film new` 会把整个 kit 复制进影片，kit/3dcv 连同它的 `LICENSE` 一起过去（README 不复制）。在影片里它们仍是
-  CC BY-NC-SA 4.0：用到 kit/3dcv 的影片只能非商用。
+- 新影片默认不带 kit/3dcv。`moodreel film new <片名> --style <风格> --with 3dcv` 才把它连同 `LICENSE` 复制进影片（README
+  不复制），同时放好 three.js，并在影片的 CREDITS 里写明出处和许可。在影片里它们仍是 CC BY-NC-SA 4.0：带着 kit/3dcv 的
+  影片只能非商用。`moodreel wall make` 一律不带它。

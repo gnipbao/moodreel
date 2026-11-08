@@ -243,9 +243,8 @@ stage({ width: W, height: H, duration: 5, prepare: () => film.init(), draw: (g, 
 `film.init()` goes in `prepare`: it is async and builds one WebGL renderer on a canvas kept off the page and a ctx per
 shot, then runs each shot's `init` in the order listed. `film.draw(g, t, w, h)` renders the frame t falls in and draws
 it onto the stage, whose 2D canvas stays the only one on the page. No import map is needed: kit/3dcv takes three.js
-from kit/three.js. Import from `kit/three.js` in main.js (or in a file under `shots/` or `lib/`) even when the shots
-only use `ctx.THREE`: `film check` and `film deliver` put a missing three.js back in kit/vendor/ only for a film that
-names it.
+from kit/three.js, and `film check` and `film deliver` put a missing three.js back in kit/vendor/ for a film whose
+main.js (or a file under `shots/` or `lib/`) imports from kit/3dcv.
 
 - **A shot module** is a plain object. `frames: [first, last]` (global frames at 24 fps, frame 1 at t = 0) and
   `render(ctx, n)` are required; `id` (its `ctx.shotId`), `hold`, `ss` (supersampling, 1 to 3; the film's default is
@@ -276,9 +275,10 @@ names it.
   `render`.
 - **The licence goes with the code.** kit/3dcv is CC BY-NC-SA 4.0, not MIT. A film that uses it carries that code
   under that licence: the film is for non-commercial use only, the files keep their headers and `kit/3dcv/LICENSE`,
-  changes to them are shared under the same licence, and the film's CREDITS should name it (3DCodeVerse's showcase,
-  CC BY-NC-SA 4.0, with its links). `moodreel film new` copies the whole kit into every new film (`moodreel wall make`
-  does too), so a new film's `kit/3dcv/` arrives with its LICENSE whether the film imports it or not: a film meant
-  for commercial use must neither keep nor use that folder. Code from kit/3dcv goes into no MIT file (another kit
+  changes to them are shared under the same licence, and the film's CREDITS names it. A new film leaves `kit/3dcv/`
+  out unless asked: `moodreel film new <name> --style <style> --with 3dcv` copies it with its LICENSE, puts
+  three.js beside it and writes the credit (3DCodeVerse's showcase, CC BY-NC-SA 4.0, with its links);
+  `moodreel wall make` never includes it. `moodreel film check` and `film deliver` put three.js back for a film
+  that imports kit/3dcv, as for one that imports kit/three.js. Code from kit/3dcv goes into no MIT file (another kit
   module, the Python package, a test, a film template); where MIT code needs the same effect, write it from the
   idea, as look3d and post3d were.
