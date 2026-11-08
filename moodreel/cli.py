@@ -35,6 +35,7 @@
   moodreel look <reference> <remake> --shots f [--spec f] [--allow-image-upload]  opt-in Jev vision: frames compared
   moodreel track <video> --spec f [--every s] [--js f] [--allow-image-upload]  opt-in Jev vision: subjects on screen
   moodreel direct <reference> --shots f [--against remake] [--md f] [--allow-image-upload]  opt-in Jev: a director's reading
+  moodreel model build|check|sheet <spec.py | mannequin | model.json>  an SDF character: built, checked, on a contact sheet
 """
 from __future__ import annotations
 
@@ -512,6 +513,24 @@ def cmd_sketch(a):
     print(f"sketch -> {out}  (render: moodreel render video {out} --fps {a.fps})")
 
 
+def cmd_model(a):
+    from .model3d import build, check, sheet
+    if a.step == "build":
+        spec = Path(a.spec)
+        out = Path(a.out) if a.out else (spec.parent / "build" if spec.suffix == ".py" else Path("out") / "model" / a.spec)
+        path = build.build_to(a.spec, out, log=print)
+        print(f"model -> {path} and {path.with_suffix('.bin').name}")
+    elif a.step == "check":
+        text = json.dumps(check.run(a.spec, a.built), indent=1)
+        if a.json:
+            Path(a.json).parent.mkdir(parents=True, exist_ok=True)
+            Path(a.json).write_text(text)
+        print(text)
+    else:
+        info = sheet.run(a.spec, a.out, a.poses.split(",") if a.poses else None, a.views.split(",") if a.views else None)
+        print(f"sheet -> {a.out} and {Path(a.out).parent / 'sheet.json'}: {len(info['cells'])} cells")
+
+
 def cmd_bench_blind(a):
     from .bench import blind
     out = Path(a.out)
@@ -837,6 +856,24 @@ def main(argv=None):
     p.add_argument("--out", required=True)
     p.add_argument("--width", type=int, default=640)
     p.set_defaults(fn=cmd_motion)
+    m = sub.add_parser("model", help="a character modelled as signed distance fields: build it (json + bin for "
+                       "kit/figure.js), check it (closed parts, floating parts, penetration per pose), see it (a contact "
+                       "sheet)").add_subparsers(dest="step", required=True)
+    q = m.add_parser("build", help="mesh and rig a spec: <NAME>.json and <NAME>.bin")
+    q.add_argument("spec", help="a spec .py (NAME, BONES, PARTS, POSES, COLLIDE, ...) or a built-in: mannequin")
+    q.add_argument("--out", help="the folder to write to (default: build/ beside the spec; out/model/<name> for a built-in)")
+    q.set_defaults(fn=cmd_model)
+    q = m.add_parser("check", help="print JSON: closed parts, floating parts (2 mm contact), penetration in every pose")
+    q.add_argument("spec", help="a spec .py or a built-in: mannequin")
+    q.add_argument("--model", dest="built", help="the spec's model already built (its .json): skip building it again")
+    q.add_argument("--json", help="also write the report here")
+    q.set_defaults(fn=cmd_model)
+    q = m.add_parser("sheet", help="a contact sheet in headless Chrome: views across, poses down, labelled; sheet.json beside it")
+    q.add_argument("spec", help="a built model's .json, a spec .py or a built-in: mannequin")
+    q.add_argument("--out", required=True, help="the sheet (.png); sheet.json is written beside it")
+    q.add_argument("--poses", help="comma-separated pose names (default: all of them; 'rest' is the unposed figure)")
+    q.add_argument("--views", help="comma-separated: front,three-quarter,side,back (the default)")
+    q.set_defaults(fn=cmd_model)
     b = sub.add_parser("bench", help="motion test films and the round trip").add_subparsers(dest="bench", required=True)
     for name, fn, hlp in (("make", cmd_bench_make, "write the test pages and their truth"),
                           ("render", cmd_bench_render, "render clean and stress videos"),
