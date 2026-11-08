@@ -134,6 +134,28 @@ BANDS = {
 }
 
 
+# Parts of the kit a new film gets only when asked (`moodreel film new ... --with <part>`), each with the credit its
+# film's CREDITS takes. kit/3dcv is code ported from 3DCodeVerse's showcase under CC BY-NC-SA 4.0, so it stays out of
+# films by default: a film that carries it is for non-commercial use only.
+OPTIONAL = {
+    "3dcv": ("kit/3dcv: 3DCodeVerse's showcase engine (https://github.com/gaoypeng/3dcodeverse, "
+             "https://huggingface.co/datasets/3dcodeverse/3dcodeverse-awesome-showcase), CC BY-NC-SA 4.0 "
+             "(https://creativecommons.org/licenses/by-nc-sa/4.0/): this film is for non-commercial use only; the source "
+             "and every change are in kit/3dcv/LICENSE"),
+}
+
+
+def _add_part(d: Path, part: str) -> None:
+    """Copy an optional kit part into film `d` (its README stays in the repository), three.js too when the part needs it
+    and the film has none yet, and add their credits."""
+    shutil.copytree(REPO / "kit" / part, d / "kit" / part, ignore=shutil.ignore_patterns("README.md"))
+    with open(d / "CREDITS", "a") as cr:
+        if not (d / "kit" / "vendor" / "three" / "three.module.js").exists():     # kit/3dcv is built on three.js
+            from ..pack.kit import vendor_three
+            cr.write(f"- {vendor_three(d / 'kit')}\n")
+        cr.write(f"- {OPTIONAL[part]}\n")
+
+
 def _style(name: str) -> dict:
     s = library.find(name)
     if not s:
@@ -142,14 +164,18 @@ def _style(name: str) -> dict:
 
 
 def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.0, size: str | None = None,
-        fps: int | None = None) -> Path:
+        fps: int | None = None, add: tuple[str, ...] = ()) -> Path:
+    """A film folder in a style. `add` names optional parts of the kit, left out unless asked: "3dcv"."""
     s = _style(style)
+    unknown = sorted(set(add) - set(OPTIONAL))
+    if unknown:
+        raise SystemExit(f"no optional kit part {', '.join(unknown)} (there is: {', '.join(OPTIONAL)})")
     d = Path(root) / name
     if d.exists():
         raise SystemExit(f"{d} exists")
     d.mkdir(parents=True)
     sdir = Path(s["path"])
-    shutil.copytree(REPO / "kit", d / "kit", ignore=shutil.ignore_patterns("README.md"))
+    shutil.copytree(REPO / "kit", d / "kit", ignore=shutil.ignore_patterns("README.md", *OPTIONAL))
     if (sdir / "kit").exists():                       # a distilled style: its measured tokens and motion
         shutil.copytree(sdir / "kit", d / "kit", dirs_exist_ok=True)
     else:                                             # a library style without a kit yet: the director fills these in
@@ -185,6 +211,8 @@ def new(name: str, style: str, root: Path = Path("films"), duration: float = 15.
         from ..pack.kit import vendor_three
         with open(d / "CREDITS", "a") as cr:
             cr.write(f"- {vendor_three(d / 'kit')}\n")
+    for part in add:                                  # an optional part asked for: the folder, three.js, the credit
+        _add_part(d, part)
     if "music-led" in (st.get("needs") or []):        # the music comes first: a grid and cues for the picture
         from ..score import samples
         band = BANDS.get(s["slug"])
@@ -237,10 +265,10 @@ def readtime(samples: list[dict], width: int, height: int, step: float) -> list[
 
 
 def _vendored(d: Path) -> None:
-    """A film that uses kit/three.js or kit/gl.js (built on it) gets three.js back in kit/vendor/ if it's missing
-    (vendored copies aren't kept in git: `npm install` in the repository brings them)."""
+    """A film that uses kit/three.js, or kit/gl.js or kit/3dcv (both built on it), gets three.js back in kit/vendor/ if
+    it's missing (vendored copies aren't kept in git: `npm install` in the repository brings them)."""
     uses = any(k in p.read_text() for p in [d / "main.js", *d.glob("lib/**/*.js"), *d.glob("shots/**/*.js")] if p.exists()
-               for k in ("kit/three.js", "kit/gl.js", "./three.js", "./gl.js"))
+               for k in ("kit/three.js", "kit/gl.js", "kit/3dcv/", "./three.js", "./gl.js"))
     if (d / "kit" / "three.js").exists() and not (d / "kit" / "vendor" / "three" / "three.module.js").exists() and uses:
         from ..pack.kit import vendor_three
         vendor_three(d / "kit")

@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
+
+import pytest
 
 from moodreel import library
 from moodreel.film import film
@@ -132,3 +135,37 @@ def test_a_film_credits_each_familys_licence_when_its_style_ships_one_per_family
     assert pack.pack(proj, "ink-style", "Ink Style")["ok"]
     credits = (film.new("d", "ink-style", tmp_path / "films") / "CREDITS").read_text()
     assert "licence in kit/fonts/OFL-LXGWWenKai.txt, kit/fonts/OFL-NotoSerifSC.txt\n" in credits
+
+
+REPO = Path(__file__).resolve().parents[1]
+needs_three = pytest.mark.skipif(not (REPO / "node_modules" / "three" / "build" / "three.module.js").exists(),
+                                 reason="needs npm install")
+
+
+def test_a_new_film_leaves_kit_3dcv_out_unless_asked(tmp_path):
+    d = film.new("plain", "swiss-motion", tmp_path / "films", duration=2, size="320x180")
+    assert not (d / "kit" / "3dcv").exists() and (d / "kit" / "three.js").exists()   # the rest of the kit as before
+    assert "kit/3dcv" not in (d / "CREDITS").read_text()
+    with pytest.raises(SystemExit):
+        film.new("odd", "swiss-motion", tmp_path / "films", add=("nothing",))
+
+
+@needs_three
+def test_with_3dcv_a_film_gets_the_folder_three_js_and_the_credit(tmp_path):
+    d = film.new("cv", "swiss-motion", tmp_path / "films", duration=2, size="320x180", add=("3dcv",))
+    for f in (REPO / "kit" / "3dcv").iterdir():
+        kept = d / "kit" / "3dcv" / f.name
+        assert not kept.exists() if f.name == "README.md" else kept.read_bytes() == f.read_bytes()
+    assert (d / "kit" / "vendor" / "three" / "three.module.js").exists()
+    credits = (d / "CREDITS").read_text()
+    line = next(ln for ln in credits.splitlines() if "kit/3dcv" in ln)
+    assert "CC BY-NC-SA 4.0" in line and "non-commercial" in line and "three.js" in credits
+
+
+@needs_three
+def test_a_film_that_uses_only_kit_3dcv_gets_three_js_back(tmp_path):
+    d = film.new("cv", "swiss-motion", tmp_path / "films", duration=2, size="320x180", add=("3dcv",))
+    (d / "main.js").write_text("import * as cv from './kit/3dcv/stage.js';\n")      # kit/three.js named nowhere
+    shutil.rmtree(d / "kit" / "vendor")
+    film._vendored(d)
+    assert (d / "kit" / "vendor" / "three" / "three.module.js").exists()

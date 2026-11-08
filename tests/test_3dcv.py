@@ -181,7 +181,7 @@ def report(d, name, variant):
 
 @pytest.fixture(scope="module")
 def page(tmp_path_factory):
-    d = film.new("cv", "lowpoly-island", root=tmp_path_factory.mktemp("3dcv"), duration=3, size=f"{W}x{H}")
+    d = film.new("cv", "lowpoly-island", root=tmp_path_factory.mktemp("3dcv"), duration=3, size=f"{W}x{H}", add=("3dcv",))
     (d / "main.js").write_text(PAGE)
     return d
 

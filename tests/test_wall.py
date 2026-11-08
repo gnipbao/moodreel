@@ -93,3 +93,10 @@ def test_the_templates_layout_puts_the_references_cards_where_it_did(tmp_path):
     wide = json.loads(subprocess.run(["node", "--input-type=module", "-e", js.replace(json.dumps([w / 679 for w in widths]),
                                      json.dumps([1.5] * 12))], cwd=d / "film", capture_output=True, text=True, check=True).stdout)
     assert max(c["row"] for c in wide) >= 2                          # wide cards take more rows rather than shrink to slivers
+
+
+@needs_three
+def test_a_wall_film_carries_no_kit_3dcv(tmp_path):
+    d = _wall(tmp_path)
+    wall.make(d, render=False)
+    assert (d / "film" / "kit" / "wall.js").exists() and not (d / "film" / "kit" / "3dcv").exists()

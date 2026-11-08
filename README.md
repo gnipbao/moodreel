@@ -397,5 +397,6 @@ source commit.
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/): attribution, non-commercial use only, and
 adaptations shared under the same licence. [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE) names the source and every change,
 and the header of each file credits the source as well; keep both. No file outside `kit/3dcv/` contains that code.
-`moodreel film new` copies the whole kit into a new film, so `kit/3dcv/` and its LICENSE come along: a film meant for
-commercial use must neither keep nor use that folder.
+A new film leaves `kit/3dcv/` out unless asked: `moodreel film new <name> --style <style> --with 3dcv` copies the folder
+with its LICENSE, puts three.js beside it and names it in the film's CREDITS, and that film is then for
+non-commercial use only. `moodreel wall make` never includes it.

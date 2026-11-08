@@ -10,7 +10,7 @@
   moodreel scene-check <project> <film or stills>...     the style's look, but scenes of its own (not the references')?
   moodreel pack <project> --slug S --name N               check a distilled style and add it to your library
   moodreel styles [query]                                 your styles and the built-in ones
-  moodreel film new <name> --style S | check <dir> | deliver <dir> [--music f] [--variant V | --all-variants] [--engine E]
+  moodreel film new <name> --style S [--with 3dcv] | check <dir> | deliver <dir> [--music f] [--variant V | --all-variants] [--engine E]
   moodreel score <film>                                   the film's score.json as out/score.wav and score.js (cue times)
   moodreel samples fetch|list                             the sampled instruments (CC0): download once; what is there
   moodreel voice <film>                                   narration.json voiced: out/voice.wav and voice.js (line times)
@@ -447,7 +447,7 @@ def cmd_score(a):
 def cmd_film(a):
     from .film import film
     if a.action == "new":
-        print(f"film -> {film.new(a.target, a.style, Path(a.root), a.duration, a.size, a.fps)}")
+        print(f"film -> {film.new(a.target, a.style, Path(a.root), a.duration, a.size, a.fps, add=tuple(a.add))}")
     elif a.action == "variants":
         print(json.dumps(film.variants(Path(a.target)), indent=1, ensure_ascii=False))
     elif a.action == "check":
@@ -658,7 +658,7 @@ def main(argv=None):
                        "motion direction and speed, worst first")
     p.add_argument("reference")
     p.add_argument("remake")
-    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the reference's own shots)")
+    p.add_argument("--shots", help="a JSON file of windows [[t0, t1, name], ...] (default: the reference's own shots)")
     p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
     p.add_argument("--offset", type=float, default=0.0, help="remake time = reference time + offset")
     p.add_argument("--json", help="write the full result here")
@@ -671,7 +671,7 @@ def main(argv=None):
                        "footage (filmed or generated), one picture moved, or a hold; its cadence (camera and subject on ones, "
                        "twos or threes) and the route to rebuild it (canvas, three, 3D assets + three, footage)")
     p.add_argument("video")
-    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the video's own cuts, to the frame)")
+    p.add_argument("--shots", help="a JSON file of windows [[t0, t1, name], ...] (default: the video's own cuts, to the frame)")
     p.add_argument("--out", help="a folder for origin.json, ORIGIN.md and strips/ (default: <video>-origin)")
     p.set_defaults(fn=cmd_origin)
     p = sub.add_parser("diff", help="a remake against its reference, frame by frame, as a list of what to fix: every cut "
@@ -679,7 +679,7 @@ def main(argv=None):
                        "stretches; the worst moments beside the reference")
     p.add_argument("reference")
     p.add_argument("remake")
-    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...]: names each cut by its window")
+    p.add_argument("--shots", help="a JSON file of windows [[t0, t1, name], ...]: names each cut by its window")
     p.add_argument("--out", help="a folder for diff.json, DIFF.md and worst.jpg (default: <remake>-diff)")
     p.set_defaults(fn=cmd_diff)
     p = sub.add_parser("review", help="the review before a cut is shown: the producer's (every window at full size beside "
@@ -687,7 +687,7 @@ def main(argv=None):
                        "reference's snaps met or missed, spans moving or changing unlike it, strips: motion.md)")
     p.add_argument("reference")
     p.add_argument("remake")
-    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--shots", required=True, help="a JSON file of windows [[t0, t1, name], ...]")
     p.add_argument("--out", required=True, help="a folder for the sheets, review.json and review.md")
     p.add_argument("--per", type=int, default=8, help="windows per sheet")
     p.add_argument("--only", choices=("stills", "motion"), help="one half of the review: the producer's (stills: sheets "
@@ -698,7 +698,7 @@ def main(argv=None):
                        "turn they mean), a remake's beside it, and the track as camera-data.js for kit/follow.js")
     p.add_argument("reference")
     p.add_argument("--against", help="a remake: its camera beside the reference's, and what is off")
-    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the reference's own shots)")
+    p.add_argument("--shots", help="a JSON file of windows [[t0, t1, name], ...] (default: the reference's own shots)")
     p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
     p.add_argument("--js", help="write the reference's track here (camera-data.js)")
     p.add_argument("--json", help="write the full result here")
@@ -708,7 +708,7 @@ def main(argv=None):
                        "with --jev rank what to fix first; all in <out>/<name>/")
     p.add_argument("reference")
     p.add_argument("film", help="the remake's film folder")
-    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--shots", required=True, help="a JSON file of windows [[t0, t1, name], ...]")
     p.add_argument("--name", required=True, help="this pass's name (its folder)")
     p.add_argument("--out", help="where passes live (default: passes/ beside the film)")
     p.add_argument("--music", help="the soundtrack for the render")
@@ -729,7 +729,7 @@ def main(argv=None):
                        "window: where each subject sits, checks that disagree, how alike; worst first")
     p.add_argument("reference")
     p.add_argument("remake")
-    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--shots", required=True, help="a JSON file of windows [[t0, t1, name], ...]")
     p.add_argument("--spec", help="subjects, checks and which windows ask what (JSON; default: the main subject)")
     p.add_argument("--samples", type=int, default=3, help="moments per window")
     p.add_argument("--allow-image-upload", action="store_true",
@@ -745,7 +745,7 @@ def main(argv=None):
                        "angle, composition, light, where the eye goes, how the camera moves and eases, what the subject "
                        "does; --against a remake: where it reads differently")
     p.add_argument("reference")
-    p.add_argument("--shots", required=True, help="windows as JSON [[t0, t1, name], ...]")
+    p.add_argument("--shots", required=True, help="a JSON file of windows [[t0, t1, name], ...]")
     p.add_argument("--against", help="a remake: the same questions, and the notes where it differs")
     p.add_argument("--allow-image-upload", action="store_true")
     p.add_argument("--json", help="write the reading here")
@@ -798,7 +798,7 @@ def main(argv=None):
     p = sub.add_parser("dossier", help="read each shot of a video as its code would be written: motion (pan, zoom, roll, "
                        "spin, parallax), linework, finish, colour, and what to build")
     p.add_argument("video")
-    p.add_argument("--shots", help="windows as JSON [[t0, t1, name], ...] (default: the video's own cuts)")
+    p.add_argument("--shots", help="a JSON file of windows [[t0, t1, name], ...] (default: the video's own cuts)")
     p.add_argument("--every", type=float, help="fixed windows of this many seconds instead")
     p.add_argument("--out", help="a folder for DOSSIER.md, dossier.json and each shot's keyframes and flow arrows")
     p.set_defaults(fn=cmd_dossier)
@@ -838,6 +838,9 @@ def main(argv=None):
     p.add_argument("--duration", type=float, default=15.0)
     p.add_argument("--size")
     p.add_argument("--fps", type=int, help="new: frames a second (default: the style's, else 30)")
+    p.add_argument("--with", dest="add", action="append", default=[], choices=["3dcv"],
+                   help="new: an optional part of the kit, left out unless asked: 3dcv (3DCodeVerse's showcase engine, "
+                        "CC BY-NC-SA 4.0: the film is then for non-commercial use only)")
     p.add_argument("--music", help="deliver: a music track, normalised to -14 LUFS")
     p.add_argument("--out", help="deliver: where the finished film and poster go")
     p.add_argument("--variant", help="check, deliver: one of film.json's variants (window.VARIANT for the page)")
