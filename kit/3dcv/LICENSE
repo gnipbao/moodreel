@@ -1,0 +1,86 @@
+kit/3dcv: licence and credits
+=============================
+
+What this directory is
+----------------------
+kit/3dcv holds code ported into moodreel from the 3DCodeVerse awesome showcase: the generic look engine of the
+showcase's 30-second film (a ramp material with surface-anchored stipple, a painterly post chain with tone-weighted
+grain, canvas-painted textures, stroke lettering and deterministic helpers) and the runtime its shots ran in, adapted
+into a shot adapter for moodreel's stage (kit/stage.js). Nothing film-specific was ported: no shots, sets, characters,
+props or assets.
+
+Creator and source
+------------------
+Creator: 3DCodeVerse, https://github.com/gaoypeng/3dcodeverse
+Source:  the 3DCodeVerse awesome showcase dataset,
+         https://huggingface.co/datasets/3dcodeverse/3dcodeverse-awesome-showcase
+         the 30-second film's code, src/core/, round r02. The files, with their git blob ids:
+
+  src/core/look.js    353f5696c49e0076ad2502b4aa87590af36d2c7c   -> kit/3dcv/look.js
+  src/core/post.js    8eff026f46adcac9581ff9a1776236df800c45f8   -> kit/3dcv/post.js
+  src/core/paint.js   7e55945c9231e069ce8dbe6ae024585e2fe473e6   -> kit/3dcv/paint.js
+  src/core/text.js    706a7faa118058ba4af0b5f168a6c37a41aa7154   -> kit/3dcv/text.js
+  src/core/util.js    7b29cec7e017860a19245cd45cd8822b3001e082   -> kit/3dcv/util.js
+  src/core/stage.js   4edad7b791d3b8093a2725a86458f3b1618f6c9a   -> kit/3dcv/stage.js
+
+Licence
+-------
+The files in this directory are licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike
+4.0 International), the licence the showcase is published under:
+
+  Deed:       https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Legal code: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+The legal code is the licence; it is linked here, not copied. In short (the legal code governs):
+  - Attribution: credit the creator, link the licence and the source, and say what was changed. The header at the top
+    of each file and this file do that; keep them.
+  - NonCommercial: not for commercial purposes.
+  - ShareAlike: adaptations of these files are shared under CC BY-NC-SA 4.0 in turn, so they stay non-commercial.
+
+Changes
+-------
+Changes made by moodreel (2026-11-08):
+
+  look.js, post.js, paint.js, util.js
+    - three.js is taken from moodreel's kit/three.js (import { THREE } from '../three.js') instead of the bare 'three'
+      import, so a film needs no import map and shares one three.js with the rest of the kit;
+    - a header at the top naming the source, the licence and the changes.
+    Nothing else: below the header the code is the source's, line for line.
+
+  text.js
+    - the same import change and header;
+    - the default title lines of titleTexture (now ['TITLE']) and the default phrase of createWriter (now 'HELLO'),
+      which quoted a film's on-screen words, made neutral, and the comments that quoted them reworded.
+
+  stage.js
+    - film(), an adapter for moodreel's stage, replaces the page boot and its query-string shot loader: several shots
+      on one page, each with its own ctx, scene and camera, sharing one renderer and one Post per supersampling
+      factor; moodreel's render(t) is synchronous, so a shot's render that returns a Promise is an error;
+    - the renderer draws on an offscreen canvas that is never added to the page (the stage's 2D canvas stays the
+      page's only canvas);
+    - the global state a shot's init leaves (the look env's uniform values; the renderer's tone mapping and exposure,
+      shadow map, clear colour and alpha, output colour space, clipping, viewport and scissor) is kept and put back
+      before each of its frames, and every shot's init starts from the state before the first one, so no frame
+      depends on what was rendered or initialised before it;
+    - loadGLTF (it needs three.js's add-ons through an import map) and the imports of the showcase's film-specific
+      modules (props, heroine, kit) removed; a film hands its own modules to every ctx as extras;
+    - window.__ctx and the gl.finish() after each frame dropped; the import change; the original header reworded;
+      a header at the top naming the source, the licence and the changes.
+    Kept from the source: setupShadows, keyLight, loadTexture, the ctx with its helpers (draw through Post,
+    renderToTexture, time / local / progress, rng, track, spline, cameraRig and the rest of util), the hold rule and
+    the page's query flags (hold, ss, nopost, post).
+
+  README.md
+    - written by moodreel to describe this directory; shared under the same licence.
+
+The rest of moodreel
+--------------------
+Everything outside kit/3dcv is moodreel's own work under the MIT licence (LICENSE at the repository root) and does not
+include this code. kit/look3d.js and kit/post3d.js, for instance, are moodreel's own MIT modules, written from ideas
+only. Code from kit/3dcv is not to be copied into MIT files. A film that uses kit/3dcv carries these files, with this
+licence, in its own kit/3dcv folder; the licence goes on applying to them there.
+
+No warranties
+-------------
+As the licence says, the work is offered as-is and as-available, without representations or warranties of any kind;
+the same holds for moodreel's changes.
