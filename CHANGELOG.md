@@ -1,5 +1,60 @@
 # Changelog
 
+## Unreleased: an illustrated look for three.js, and characters carved from distance fields
+
+- `kit/look3d.js`: a colour-ramp material for three.js, and the clock of the drawings.
+  - **`ramp()`** reads no lights. A surface takes `shade`, `mid` or `lit` by how far it turns to a light direction,
+    through wrapped diffuse: exactly `shade` at d = 0 and `lit` at d = 1, the steps `softness` wide, blended in
+    gamma 2. On top: a terminator accent, a form shade on the side turned away, and a stipple on a lattice fixed in
+    the object's rest-pose space, one output pixel across, each dot about one step along the ramp. A `boil` share of
+    the dots is redrawn on each new drawing; `side` shades a sheet from both sides. Skinned and instanced meshes take
+    it.
+    - Measured: the lit pole and the shadow side within ΔE2000 0.33 and 0.00 of their colours; the shade-to-mid step
+      18, 56 and 104 px wide at softness 0.1, 0.3 and 0.6 on the test sphere; under a pan of 12 px a frame the dots
+      follow the surface (NCC 1.000 aligned with the motion, 0.001 aligned with the screen).
+  - **`setFrame`, `frameOf`, `held`**: one frame number for every ramp material; `held(t, fps, hold)` is the time of
+    the drawing on screen, for characters on twos under a camera on ones.
+  - **`guard(renderer)`**: a shader that fails to compile throws, with its log and the lines it names, where three.js
+    only logs it and draws black. A broken line of GLSL now fails `render.mjs still` with the compile log.
+- `kit/post3d.js`: `chain(renderer, opts)`, the painterly finish in one call a frame.
+  - Tinted occlusion from depth in two rings (`ao`, `aoTint`, `aoRadius`), thin-lens depth of field (`dof`), bloom in
+    six levels that keeps its colour (`bloom`, `bloomThreshold`), a shoulder that keeps hue, a vignette, grain weighted
+    by tone (`grain`, `grainSize`, `flicker`) and an airbrush mottle. With every pass off it is the plain render, pixel
+    for pixel. It steps the ramps' stipple and its own grain on its `hold`; `draw.opts` regrades between frames (a
+    shot's own grade), `draw.dispose()` frees its targets, and `POST3D` holds the defaults.
+    - Measured: 1080p with every pass on, 7.7 ms a frame (median over 24 frames, 6.9 to 13.2, headless Chrome); with
+      `hold: 2`, frames 2k and 2k + 1 of a still scene identical and the next drawing 4.46 levels off on average; the
+      grain's spread 8.41 levels in the mid tones, 6.08 in the shadows, 1.37 in the highlights; the same frame rendered
+      in two browsers identical.
+- `moodreel.model3d` and `moodreel model build|check|sheet`: characters carved from signed distance fields (SDF).
+  - **A spec** is a Python module: NAME, BONES, PARTS (each part a field from `sdf`: spheres, capsules, tapered limbs,
+    ellipsoids, rounded boxes, cylinders, tori, placed and smooth-blended), POSES, COLLIDE, and optionally LANDMARKS,
+    MATERIALS and EXPRESSIONS. The built-in `mannequin` (1.72 m, 33 parts; stand, walk and write) is the one to copy.
+  - **`moodreel model build`**: surface nets with one vertex per piece of surface in each cell, so every mesh closes;
+    the vertices pulled onto the surface by Newton steps and the normals taken from the field's gradient; skin weights
+    per part, or handed across a joint (`along`); `<NAME>.json` beside `<NAME>.bin`.
+    - Measured: a sphere's vertices within 1.03e-12 m of its surface and its normals exact; a sphere, a capsule and a
+      smooth union each closed with an Euler characteristic of 2; the mannequin's 33 parts (146,540 vertices) in 0.48 s.
+  - **`moodreel model check`**: JSON with each part closed or not, the floating parts (parts within 2 mm touch,
+    measured in each other's fields; every part outside the biggest touching group floats) and, for each pose, the
+    deepest penetration of each COLLIDE pair, read in the second part's field in its bone's rest frame.
+    - Measured: the mannequin closed with nothing floating; its left hand moved 5 cm along the forearm names the hand
+      and its five fingers; an arm turned 30 mm into the torso reads 30.0 mm; stand, walk and write read 0.0 mm.
+  - **`moodreel model sheet`**: views across, poses down, labelled, rendered in headless Chrome in plain clay at one
+    scale with a ground line, and `sheet.json` with each cell's box. 4 views by 3 poses in 1.11 s, the same pixel for
+    pixel on two runs.
+- `kit/figure.js`: a built model in three.js, read with plain fetch and typed arrays, one skinned mesh per part on one
+  skeleton; `setPose`, `setExpression`, `reach` (two-bone IK), `aimHead`, `attach`, and `setMaterial` or
+  `load(url, { material })` for any material per part or material name, with `fig.materials` holding the spec's
+  MATERIALS.
+  - Measured: the same 146,540 vertices and bounding box as the json (to 1.4e-17 m); posed in the browser it matches
+    `moodreel.model3d.skin` to 4.4e-16 m over 5,879 vertices; `reach` lands the wrist on a point at 85 % of the arm's
+    length to 0.00 mm.
+- `drawing.md`, "An illustrated 3D film": the ramp, the finish, a grade per shot, on twos, SDF specs, the three model
+  commands, proportions in units of one feature. `remaking.md`: a painted 3D film in order (the look engine, the
+  characters, the shots). kit/README.md, SKILL.md and both READMEs. The look, the SDF figures and the spatial checks
+  are ideas from 3DCodeVerse, credited in the README; none of its code.
+
 ## Unreleased: how it was made, and the remake frame by frame
 
 - `moodreel origin <video>`: how each shot was made, before anything is rebuilt.

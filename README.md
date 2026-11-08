@@ -271,6 +271,27 @@ uv run moodreel sync reference.mp4 --music films/my-film/music-data.js --json re
 uv run moodreel pose reference.mp4 --track 12.0,13.5 --at 12.4 --points 272,378,978,180,948,462,340,672 --fov 35 --up wall --module cam.js
 ```
 
+Draw 3D that reads as illustration, and remake films made that way. `kit/look3d.js` gives three.js a colour-ramp
+material in place of lights: three colours by how far a surface turns to the light, wrapped, with an accent along the
+terminator, a form shade on the side turned away and a stipple fixed to the surface. `kit/post3d.js` is the painterly
+finish: tinted occlusion, depth of field, bloom that keeps its colour, a shoulder that keeps hue, a vignette, grain
+weighted by tone and an airbrush mottle. Characters move on twos (`look3d.held(t, fps, 2)`) under a camera on ones,
+and the stipple and the grain change with the drawings. Characters are carved from signed distance fields (SDF) in a
+Python spec (bones, parts, poses, the pairs to test for collision, landmarks, materials, expressions):
+`moodreel model build` meshes and rigs one for `kit/figure.js` (poses, expressions, a two-bone reach, a head that
+aims), `moodreel model check` reports whether every part is closed, which parts are left floating and how deep parts
+sink into each other in every pose, and `moodreel model sheet` renders a labelled contact sheet, views by poses.
+Measured: 7.7 ms a frame at 1080p with every pass on; under a pan the stipple moves with the surface (NCC 1.000,
+against 0.001 aligned with the screen); the built-in 33-part mannequin builds in 0.48 s and sinks nowhere in its three
+poses; figure.js and the Python skinning agree to 4.4e-16 m. How to draw with it:
+[drawing.md](skills/moodreel/references/produce/drawing.md):
+
+```bash
+uv run moodreel model build mannequin
+uv run moodreel model check mannequin --model out/model/mannequin/mannequin.json
+uv run moodreel model sheet out/model/mannequin/mannequin.json --out out/model/mannequin/sheet.png
+```
+
 ## Use it with an agent
 
 Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
@@ -330,9 +351,9 @@ repository are fetched by the pack's `kit/fonts/fetch.sh` and checked against th
 | Path | What it is |
 |---|---|
 | `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video. Video has two engines: [FrameVelo](https://github.com/gnipbao/framevelo) (the default when installed, on macOS), which keeps each frame on the GPU and encodes it with the hardware H.264 encoder, 1.8-4.3x faster than the Chrome engine on the example films with 8-36x less CPU; and Chrome (headless Chrome on puppeteer-core, one per worker, frame pacing off, x264), whose renders are the same bit for bit, which the benches use ([docs/research/render-speed.md](docs/research/render-speed.md)) |
-| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, sketch, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `cli.py` |
+| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, sketch, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `model3d/` (characters carved from distance fields: meshed, rigged, checked, on a contact sheet), `cli.py` |
 | `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
-| `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type ([kit/README.md](kit/README.md)) |
+| `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type, the illustrated 3D look (`look3d.js`, `post3d.js`) and rigged figures (`figure.js`) ([kit/README.md](kit/README.md)) |
 | `styles/` | The style library |
 | `packs/` | The styles distilled here, as complete packs by category ([packs/README.md](packs/README.md)); `scripts/packs.py` moves them between the repository and your library |
 | `examples/` | Example films made in library styles: five with the values their code uses, for the round trip, and six showing score, pixel, brush, 3D, footage and a sampled band ([examples/README.md](examples/README.md)) |
@@ -363,6 +384,7 @@ of pdoom-video adapted under its MIT license (see `NOTICE`), it uses none of the
 - [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) — a style written as invariants (essence, materials, colour, type, motion, camera, sound, native moves, pitfalls) kept apart from any one film; its 59 style documents are the start of our library.
 - [HyperFrames](https://github.com/heygen-com/hyperframes) — video as a deterministic function of time, rendered in a browser. Its reverse-any-video skill gave the frame-exact rules in remaking.md (times as frames, graphics set on their frame, consecutive frames at every change, type sized from its ink, one check at the end) and the idea of a frame-by-frame list against the original (`moodreel diff`); ideas only, none of its code.
 - [rea-video](https://github.com/JuneYaooo/rea-video) — ask how each shot was made (filmed, generated, rendered, coded) before remaking it, on measured evidence such as frame cadence and whether the picture moves as one plane; the idea behind `moodreel origin`. Ideas only, none of its code.
+- [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse) — its showcase, a short illustrated 3D film remade entirely in code, gave the ideas behind `kit/look3d.js`, `kit/post3d.js` and `moodreel.model3d`: a colour-ramp material in place of lighting, a stipple fixed to the surface and held on twos, a painterly post chain, skinned characters carved from signed distance fields (SDF), and proportions measured in units of one feature of the reference. Its framework (Apache-2.0) gave the spatial checks behind `moodreel model check` and `moodreel model sheet`: floating parts found as the connected groups of the parts' contact graph, penetration swept across the poses, a contact sheet of several views, and a shader preflight (`look3d.guard`). Ideas only, none of its code (the showcase is CC BY-NC-SA 4.0).
 
 ## License
 
