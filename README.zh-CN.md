@@ -51,6 +51,8 @@
 配乐驱动、真实素材。只导入了文档，技法由 Moodreel 自己重新实现。配乐驱动现在已经有了（`moodreel score`：片子自己的节拍网格、
 段落和提示点，用确定性的合成乐器或采样乐器（立式钢琴、弦乐、拨弦、小号、圆号、大号、单簧管、马林巴、钟琴、竖琴、定音鼓）画成音乐，并把提示点时间交给画面去对齐），综艺节奏扁平、微游戏快闪、1930s 橡皮管卡通三套风格因此可以出片。像素画也有了（`kit/pixel.js`：索引帧加调色板、整像素放大、Bayer 抖动和调色板查找表；测量能从参考里读出像素倍数、原生尺寸、色数和抖动），16-bit 像素 RPG 因此可以出片。绘画笔触也有了（`kit/brush.js`：带鬃毛的笔触、边缘积色的水彩、受光的刮刀块、纸纹打断的蜡笔、带晕的墨，以及把平涂画面重画成笔触的 repaint；测量能读出可见笔触的覆盖、尺度和方向），油画厚涂、水彩、水墨、80 年代赛璐珞等七套风格因此可以出片。3D 也有了（`kit/three.js`：three.js 场景按 t 设置，渲染到自己的 WebGL 画布再合到 2D 舞台上，字可以钉在世界坐标上；`film new` 会把 three.js 复制进片子），低多边形岛屿、玻璃产品、移轴微缩、HD-2D 等十套风格因此可以出片。真实素材也有了（`moodreel media add`：素材按影片帧率一帧一张图存好，静图和数据原样进来，每一份都在 manifest 和 CREDITS 里记下来源、许可和哈希；`kit/media.js` 按影片时间取帧；`film check` 会让没有来源或许可的素材不通过），最后 15 套风格也可以出片了：风格库里的每一套现在都能做。片子也可以有旁白（`narration.json` → `moodreel voice`：台词按时间或配乐提示点放好、合成语音、用 `voice.js` 出字幕，交付时音乐在人声下压低）和不带音乐的音效（只有提示点的 score.json），还能用同一份画面代码出多个变体（film.json 里的 variants，用 `pick()` 读，`film deliver --all-variants`），或导出成 HyperFrames composition（`moodreel export hyperframes`：一条暂停的时间轴，每次 seek 都画出片子自己的那一帧）或 Remotion 工程（`moodreel export remotion`：一个 composition，每一帧都是片子自己的那一帧）。
 
+插画感 3D 的底层也有了，用来画看起来像手绘、其实是三维的片子，也用来复刻这样做的片子。`kit/look3d.js` 给 three.js 一种不读灯光的色彩渐变材质：表面按朝向光源的程度取三档颜色，带包裹光、交界线上的强调色、背光一侧的形体阴影，以及附着在表面上的点彩。`kit/post3d.js` 是绘画感的后期链：带颜色的环境光遮蔽、景深、保持颜色的泛光、保持色相的高光肩部、暗角、按色调加权的颗粒和气笔斑驳。人物两帧一换（`look3d.held(t, fps, 2)`），镜头逐帧动，点彩和颗粒的种子跟着原画换。角色在 Python 规格里用有符号距离场（SDF）雕出来（骨骼、部件、姿势、要查穿插的部件对、标记点、材质、表情）：`moodreel model build` 建模并绑定骨骼，交给 `kit/figure.js`（摆姿势、叠表情、双骨骼 IK、转头）；`moodreel model check` 检查每个部件是否封闭、有没有悬空的部件、每个姿势里部件互相穿插多深；`moodreel model sheet` 出带标签的多视角 × 多姿势联系表。实测：1080p 开全部后期 7.7 ms/帧；镜头平移时点彩跟着表面走（按运动对齐 NCC 1.000，按屏幕对齐 0.001）；内置的 33 个部件的人偶 0.48 s 建完，三个姿势都没有穿插；figure.js 与 Python 蒙皮逐顶点一致，最大差 4.4e-16 m。做法见 [drawing.md](skills/moodreel/references/produce/drawing.md)。
+
 [`packs/`](packs/README.md) 存放在本仓库蒸馏出的完整风格包（STYLE.md、DECISIONS.md、来源账本和测量、带本风格自有模块的
 kit、演示片源码），按同样的分类存放：信号图版（图形与排版）、字符故障发布片（信息与发布）和墨字列传（东方传统）。
 `python scripts/packs.py install` 装进你的风格库，`export` 把风格库里的包导回来（并刷新总索引）；演示片由源码重建
@@ -73,6 +75,7 @@ kit、演示片源码），按同样的分类存放：信号图版（图形与�
 - `uv run moodreel music <歌> --lyrics <逐词歌词> --out <片子>/music-data.js`：把歌变成数据（节拍网格、小节、底鼓/军鼓/镲、包络、逐词演唱时间），片子里用 `kit/music.js` 读，让切点、砸字、推拉都踩在歌上；渲染加 `--samples 8 --shutter 0.2` 出运动模糊。做法见 docs/MUSIC-SYNC.md；
 - `uv run moodreel origin <视频>`：复刻前先看它是怎么做的。逐帧切出镜头，给每个镜头一个类别（代码画的图形、三维渲染、实拍或生成的视频素材、一张图在移动、定格），标出节奏（镜头和主体是一拍一、一拍二还是一拍三；主体一拍二而镜头一拍一，就是做成手绘感的三维动画），并给出该用什么重建（canvas、three.js、先在三维软件里做资产再用 three.js 渲染，或者根本不是代码能画的），每个镜头附首中尾条带，写进 ORIGIN.md；`uv run moodreel diff <参考片> <复刻>`：逐帧列出观众会注意到的问题：每个切点是准时、迟到、早到、漏掉还是多出，两边时长，声音晚了多少毫秒，黑场、纯色或冻结的段落，以及最差的几个时刻与参考并排（`moodreel pass` 每轮也会写出它）；
 - `uv run moodreel compare <参考片> <复刻>`：逐镜比对复刻和参考：画面结构、细节、明暗、动作方向（光流）和速度，最差的排前面并写明问题；`--against <上一轮的 --json>` 给出每个窗口和均分的变化，`--sheet <图>` 把参考和复刻在每个窗口中点并排成一张联系表（最差的在前），`--motion <窗口>` 读出一个窗口的画面在什么时候、往哪个方向动（每 0.2 秒的速度和 4×4 格各自的平均光流，参考和复刻并排）；`uv run moodreel review` 是出片前的审查，监制和动效设计师各一半：每个窗口全尺寸与原片并排，并审计底色、墨色、强调色的色差（写 review.md）；原片每一处瞬间动作（切、砸入、碎裂、闪）重做是否同时出现、是否被做成了淡入淡出、是否缺失，以及每 0.6 秒画面的运动和变化是否一致，问题处逐帧条带对照（写 motion.md）。先列问题、读懂每个镜头的用意再改；`uv run moodreel camera <参考片> --against <复刻>` 逐窗口读出两边的镜头运动（摇、推拉、滚转）和运动的形状（按三段速度看：加速、减速、先快后稳、匀速），指出哪里不对，并把参考片的镜头轨迹写成 `camera-data.js`，让 `kit/follow.js` 按它移动复刻的镜头（`pace` 让锚点之间按参考片的速度走）；`uv run moodreel pass <参考片> <影片目录> --shots <窗口> --name <轮次>` 一条命令跑完一轮（渲染、并行打分、镜头、联系表），加 `--jev --allow-text-upload` 可选开启 Jev（TypeSafe 的类型化判断 API，读 `TYPESAFE_API_KEY`，只发送数字、不发画面）给出先改哪些窗口、改哪一类；`uv run moodreel look`（或 `pass --vision --allow-image-upload`）让 Jev 视觉看两部片的画面：每个主体在复刻里偏了多少像素、哪些检查不一致（键帽字符、表情、标题名）、像不像；`uv run moodreel track` 逐帧框出参考片里的主体，`kit/lock.js` 把复刻的镜头和主体解算到这些框上（像素级对位）；`uv run moodreel direct` 让 Jev 以导演和动效设计师的眼光读每个窗口（景别、机位、构图、视线落点、运镜方式和缓动），对照复刻给出导演意见；2D 画布画不出的东西（光线步进的生物、引力透镜、密集流线、随表面走的版画排线）用 GPU 层 `kit/gl.js`。见 docs/GPU.md；
+- `uv run moodreel model build|check|sheet <规格.py | mannequin | 模型.json>`：用有符号距离场（SDF）雕出的角色。`model build` 把规格建成网格并绑定骨骼，写出 `<名>.json` 和 `<名>.bin` 给 `kit/figure.js` 读；`model check` 打印 JSON：每个部件是否封闭、悬空的部件（相距 2 mm 以内算接触，按接触求连通块，最大块之外的都算悬空）、每个姿势里 COLLIDE 部件对的最大穿插深度（mm）；`model sheet` 在无头 Chrome 里出联系表，视角横排、姿势竖排，带标签，旁边写 `sheet.json`。内置的 `mannequin` 是可以照抄的规格，例如 `uv run moodreel model build mannequin`；
 - `uv run moodreel film new <片名> --style <风格>`、`film check <目录>`、`film deliver <目录> --music <音乐>`：按风格新建影片、检查（文字停留时长、黑帧，蒸馏风格还会按参考给画面和运动打分）、交付（渲染、配乐响度归一到 −14 LUFS、合成）；
 - `uv run moodreel wall search <产品>`、`wall record <目录> --pick 3,5,8`、`wall make <目录>`：社媒口碑墙。把一个产品的真实帖子做成 4K 透视墙面视频，分四步：
   1. 在 YouTube 和 B站搜索，只用不需要登录的平台；
@@ -121,6 +124,12 @@ Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)
 复刻前先问"它是怎么做的"（`moodreel origin`）的思路来自 [rea-video](https://github.com/JuneYaooo/rea-video)；
 remaking.md 里的帧级规则（时间按帧、图形落在确切的帧上、每处变化读连续帧、按墨迹框量字号、最后只检查一轮）和逐帧比对清单（`moodreel diff`）的思路来自
 [HyperFrames](https://github.com/heygen-com/hyperframes) 的 reverse-any-video skill。两者都只借思路，没有使用它们的代码。
+
+插画感 3D 的做法借鉴了 [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse)。它的展示片是一部用代码重做的插画风 3D 短片，
+`kit/look3d.js`、`kit/post3d.js` 和 `moodreel.model3d` 借了其中的思路：色彩渐变材质、附着在表面并两帧一换的点彩、绘画感后期、
+用 SDF 雕出的蒙皮角色，以及以参考片里某个特征为单位来量比例。它的框架（Apache-2.0）给了 `moodreel model check` 和
+`moodreel model sheet` 的空间检查思路：悬空零件（部件接触图的连通块）、姿势扫描时的穿插、多视角联系表，以及着色器预检（`look3d.guard`）。
+只借思路，没有使用它的代码（展示片的许可是 CC BY-NC-SA 4.0）。
 
 卡点的做法学自 [pdoom-video](https://github.com/mexicat/pdoom-video)（MIT）：一支每个切点、砸字和运镜都由歌曲数据（逐词对齐的歌词、
 鼓点、节拍网格）算出、带子帧运动模糊的音乐录像。`moodreel music`、`kit/music.js` 和 docs/MUSIC-SYNC.md 以它为蓝本，`kit/gl.js` 和 `kit/anim.js` 改编自它的引擎，

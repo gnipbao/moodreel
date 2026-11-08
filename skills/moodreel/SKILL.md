@@ -111,6 +111,14 @@ at the seconds the picture's events happen, read from the same data (a slam on e
 deliver mixes them under the song. Measure the result against the song (and the reference) for motion and sync, not
 just stills. The rules and their numbers: `docs/MUSIC-SYNC.md`.
 
+**An illustrated 3D film** (3D that reads as painting, characters on twos): build on `kit/three.js` with
+`kit/look3d.js` (a colour-ramp material in place of lights: three colours, a terminator accent, a form shade, a
+stipple fixed to the surface), `kit/post3d.js` (tinted occlusion, depth of field, bloom, a shoulder that keeps hue,
+grain by tone) and `kit/figure.js`. Characters are SDF specs, their proportions measured in units of one feature:
+`moodreel model build` meshes and rigs one, `moodreel model check` reports closed parts, floating parts and
+penetration in every pose, and `moodreel model sheet` shows it from four sides in every pose. Pose characters at
+`look3d.held(t, fps, 2)` and move the camera with `t` (`references/produce/drawing.md`).
+
 **A remake** (a film matched to a reference shot by shot): first ask how it was made with `moodreel origin <reference>`
 (each shot drawn, a 3D render, 3D animation on twos, or footage, and the renderer to rebuild it with: canvas, three.js,
 3D assets rendered in three.js, or not code at all); read each shot before drawing it with `moodreel dossier`
@@ -135,6 +143,8 @@ Before redrawing a shot, read its numbers with `moodreel probe <reference> --at 
 and box, colour, detail, still grain, cell grid, a bar's angle, stroke weight, light map, scan lines, a turn's centre)
 and move yours toward them; look for pictures behind glyph screens where a transition seems empty. The loop and what
 it fixed: `references/distill/remaking.md`.
+3D animation made to look drawn is rebuilt in three layers, each checked before the next: the look engine
+(`kit/look3d.js`, `kit/post3d.js`) matched on a test scene, then the characters (`moodreel model`), then the shots.
 What a 2D canvas can't draw (ray-marched bodies, lensing, dense line fields, engraving that follows a surface) goes
 through `kit/gl.js`. When the reference's source is public under a permissive licence, its own scenes can run here
 through a compatibility layer: `docs/GPU.md`.
@@ -148,10 +158,11 @@ through a compatibility layer: `docs/GPU.md`.
 | STYLE.md section by section: sources and wording | `references/distill/writing-style-md.md` |
 | The ledger's format and the observed / derived / inferred rule | `references/distill/ledger.md` |
 | Reading frame-check and motion-check, and what to change for each failure | `references/distill/checks.md` |
-| Remaking a film shot by shot: how it was made, cut to the frame, score, probe, fix the lowest window, the frame-exact rules | `references/distill/remaking.md` |
+| Remaking a film shot by shot: how it was made, cut to the frame, score, probe, fix the lowest window, the frame-exact rules; a painted 3D film in order (look, characters, shots) | `references/distill/remaking.md` |
 | The kit's modules and recipes for common materials and moves | `references/primitives.md` |
 | Brief, treatment, shots, beats, not repeating the demo | `references/produce/brief-and-treatment.md` |
 | The page contract, determinism, type, texts for the reading check | `references/produce/drawing.md` |
+| An illustrated 3D film: the ramp material, the post chain, a grade per shot, characters on twos, SDF specs and `moodreel model` build, check and sheet | `references/produce/drawing.md` |
 | Checks before delivery, music and loudness, CREDITS, what to tell the user | `references/produce/delivery.md` |
 | A word-of-mouth wall of a product's real posts: search, pick, record, the 4K template and its rules | `references/produce/social-wall.md` |
 | Commands and flags | `moodreel --help`, `moodreel <command> --help` |
