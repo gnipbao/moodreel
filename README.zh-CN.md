@@ -125,11 +125,14 @@ Moodreel 借鉴了以下项目的思路：[REM](https://github.com/sidart10/rem)
 remaking.md 里的帧级规则（时间按帧、图形落在确切的帧上、每处变化读连续帧、按墨迹框量字号、最后只检查一轮）和逐帧比对清单（`moodreel diff`）的思路来自
 [HyperFrames](https://github.com/heygen-com/hyperframes) 的 reverse-any-video skill。两者都只借思路，没有使用它们的代码。
 
-插画感 3D 的做法借鉴了 [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse)。它的展示片是一部用代码重做的插画风 3D 短片，
-`kit/look3d.js`、`kit/post3d.js` 和 `moodreel.model3d` 借了其中的思路：色彩渐变材质、附着在表面并两帧一换的点彩、绘画感后期、
-用 SDF 雕出的蒙皮角色，以及以参考片里某个特征为单位来量比例。它的框架（Apache-2.0）给了 `moodreel model check` 和
-`moodreel model sheet` 的空间检查思路：悬空零件（部件接触图的连通块）、姿势扫描时的穿插、多视角联系表，以及着色器预检（`look3d.guard`）。
-只借思路，没有使用它的代码（展示片的许可是 CC BY-NC-SA 4.0）。
+插画感 3D 的做法借鉴了 [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse)。它的
+[awesome showcase](https://huggingface.co/datasets/3dcodeverse/3dcodeverse-awesome-showcase) 里有一部完全用代码重做的插画风 3D 短片，
+moodreel 从两方面用到它。`kit/3dcv/` 移植了这部短片的通用画面引擎和镜头运行时（展示片 r02 轮的代码）：色彩渐变材质和它的点彩、后期链、
+绘制纹理、笔画字、确定性工具，页面启动部分换成了给 moodreel 舞台用的适配器 `film()`。这个目录沿用展示片的许可 CC BY-NC-SA 4.0，
+只能非商用（见 `NOTICE` 和 [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE)）。`kit/look3d.js`、`kit/post3d.js` 和 `moodreel.model3d` 则是
+moodreel 按展示片的思路自己写的 MIT 代码：色彩渐变材质、附着在表面并两帧一换的点彩、绘画感后期、用 SDF 雕出的蒙皮角色，
+以及以参考片里某个特征为单位来量比例。3DCodeVerse 的框架（Apache-2.0）给了 `moodreel model check` 和 `moodreel model sheet`
+的空间检查思路（代码同样是自己写的）：悬空零件（部件接触图的连通块）、姿势扫描时的穿插、多视角联系表，以及着色器预检（`look3d.guard`）。
 
 卡点的做法学自 [pdoom-video](https://github.com/mexicat/pdoom-video)（MIT）：一支每个切点、砸字和运镜都由歌曲数据（逐词对齐的歌词、
 鼓点、节拍网格）算出、带子帧运动模糊的音乐录像。`moodreel music`、`kit/music.js` 和 docs/MUSIC-SYNC.md 以它为蓝本，`kit/gl.js` 和 `kit/anim.js` 改编自它的引擎，
@@ -140,5 +143,11 @@ remaking.md 里的帧级规则（时间按帧、图形落在确切的帧上、�
 
 ## 许可证
 
-Moodreel 采用 [MIT](LICENSE)。`styles/` 中来自 lemo-opuscar 的风格文档同为 MIT，版权归 LemoLab（见
+Moodreel 采用 [MIT](LICENSE)，`kit/3dcv/` 除外。`styles/` 中来自 lemo-opuscar 的风格文档同为 MIT，版权归 LemoLab（见
 [`styles/LICENSE-lemo-opuscar`](styles/LICENSE-lemo-opuscar)），每份文档都注明了来源版本。
+
+`kit/3dcv/` 里是从 3DCodeVerse 展示片移植来的代码，沿用展示片的许可
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)（署名—非商业性使用—相同方式共享）：只能非商用，
+使用时要署名，改编后的版本也按同一许可共享。来源和每一处改动写在 [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE) 里，每个文件的文件头
+也写明了出处，两者都要保留。`kit/3dcv/` 以外的文件都不含这些代码。`moodreel film new` 会把整个 kit 复制进新影片，`kit/3dcv/`
+和它的 LICENSE 也跟着过去：准备商用的影片既不能保留、也不能使用这个目录。
