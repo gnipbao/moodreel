@@ -31,3 +31,15 @@ mexicat/pdoom-video (https://github.com/mexicat/pdoom-video)
 
 Simplex noise in kit/gl.js (Ashima Arts and Stefan Gustavson, https://github.com/ashima/webgl-noise)
   Used under the MIT License: Copyright (C) 2011 Ashima Arts, Copyright (C) 2011-2016 Stefan Gustavson.
+
+3DCodeVerse awesome showcase (3DCodeVerse, https://github.com/gaoypeng/3dcodeverse)
+  Ported in kit/3dcv/ from the showcase's dataset,
+  https://huggingface.co/datasets/3dcodeverse/3dcodeverse-awesome-showcase: six modules of the src/core/ folder in
+  its film's code, round r02, which became kit/3dcv/look.js, post.js, paint.js, text.js and util.js (the colour-ramp
+  material and its stipple, the post chain, painted textures, stroke lettering, deterministic helpers) and
+  kit/3dcv/stage.js (the runtime the shots ran in). Used under CC BY-NC-SA 4.0
+  (https://creativecommons.org/licenses/by-nc-sa/4.0/): credit the creator, no commercial use, adaptations shared
+  under the same licence. The files were modified: each has a new header and takes three.js from kit/three.js,
+  text.js has neutral default words, and stage.js has film(), a shot adapter for moodreel's stage, in place of the
+  page boot. kit/3dcv/LICENSE gives the source of every file and lists the changes file by file. The rest of
+  moodreel stays MIT and contains none of this code.

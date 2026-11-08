@@ -63,7 +63,7 @@ def _node(*args: str) -> None:
 
 def _official(post: dict, product: str) -> bool:
     """The product's own account: its posts are announcements, not word of mouth."""
-    norm = lambda s: re.sub(r"[\s\-_·.]+", "", (s or "").lower())
+    norm = lambda s: re.sub(r"[\s\-_·.]+", "", (s or "").lower())  # noqa: E731
     return bool(post.get("author")) and norm(post["author"]).startswith(norm(product))
 
 
@@ -91,7 +91,7 @@ def sheet(out: Path, columns: int = 6, tile: tuple[int, int] = (360, 202)) -> Pa
     data = json.loads((out / "candidates.json").read_text())
     posts = data["posts"]
     font = next((f for f in FONTS if Path(f).exists()), None)
-    face = lambda size: ImageFont.truetype(font, size) if font else ImageFont.load_default()
+    face = lambda size: ImageFont.truetype(font, size) if font else ImageFont.load_default()  # noqa: E731
     tw, th, text_h, pad = tile[0], tile[1], 74, 10
     rows = (len(posts) + columns - 1) // columns
     img = Image.new("RGB", (columns * (tw + pad) + pad, rows * (th + text_h + pad) + pad), "#111")
@@ -119,7 +119,7 @@ def sheet(out: Path, columns: int = 6, tile: tuple[int, int] = (360, 202)) -> Pa
              f"Searched {data['searched'][:16].replace('T', ' ')} on {', '.join(data['platforms'])}. Pick by number "
              "(`moodreel wall record <dir> --pick 3,5,8`); the wall shows them in the order picked.", "",
              "| # | platform | title | author | views | date | length | flags | link |", "|---|---|---|---|---|---|---|---|---|"]
-    cell = lambda s: str(s or "").replace("|", "/").replace("\n", " ")
+    cell = lambda s: str(s or "").replace("|", "/").replace("\n", " ")  # noqa: E731
     lines += [f"| {p['n']} | {p['platform']}{' short' if p['kind'] == 'short' else ''} | {cell(p.get('title'))[:70]} | "
               f"{cell(p.get('author'))} | {cell(p.get('views'))} | {cell(p.get('date'))} | {cell(p.get('duration'))} | "
               f"{_flags(p)} | {p['url']} |" for p in posts]
@@ -153,7 +153,8 @@ def make(out: Path, name: str | None = None, lead: str = "创作者都在聊", d
             raise SystemExit(f"{prev} exists too: move it away first")
         d.rename(prev)
     d.mkdir(parents=True)
-    shutil.copytree(REPO / "kit", d / "kit", ignore=shutil.ignore_patterns("README.md", "vendor"))
+    # kit/3dcv (CC BY-NC-SA 4.0, non-commercial) is not part of a wall: it stays out, like the READMEs
+    shutil.copytree(REPO / "kit", d / "kit", ignore=shutil.ignore_patterns("README.md", "vendor", "3dcv"))
     from .pack.kit import vendor_three
     three = vendor_three(d / "kit")
     film_name = f"{slug(name)}-wall"

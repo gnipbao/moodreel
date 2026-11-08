@@ -19,10 +19,11 @@ first for the tools that read a shot as code.
 0. **First, how was it made?** `moodreel origin <reference> --out origin` gives every shot a kind and a route before
    anything is drawn. Drawn frames (flat fills, a small palette, straight edges) are canvas work. A 3D render goes to
    three.js. 3D animation dressed as drawing (a subject held on twos while the camera keeps moving on ones, painted
-   materials) wants its characters and sets built as 3D assets, rendered in three.js with the subject stepped. Filmed
-   or generated footage can't be drawn in code at all: keep it for timing only. Pick the renderer from this table: a
-   painterly 3D film rebuilt from primitives in a real-time renderer keeps its layout and loses its look, however many
-   rounds follow (a 77 s painted brand film went 0.526 to 0.533 in three passes before its making was read).
+   materials) wants its characters and sets built as 3D assets, rendered in three.js with the subject stepped, in
+   three layers ("A painted 3D film, in order" below). Filmed or generated footage can't be drawn in code at all: keep
+   it for timing only. Pick the renderer from this table: a painterly 3D film rebuilt from primitives in a real-time
+   renderer keeps its layout and loses its look, however many rounds follow (a 77 s painted brand film went 0.526 to
+   0.533 in three passes before its making was read).
 1. **Read it as its director and its motion designer first** (`directing.md`): what each shot is for, where the eye
    goes, why the camera moves and how it eases; `moodreel direct` asks Jev those questions. Build to the reading.
 2. **Cut the reference into its scenes to the frame.** A mean-luma or mean-colour timeline at the video's own frame
@@ -791,6 +792,33 @@ At the end the score's parts are structure 0.64, detail 0.83, flow 0.61 and spee
 - **Left as it is:** the lake (detail 0.35: too soft), 也无风雨 (its tone 27 levels off), 谁怕? and 问汝平生 by
   `compare`; the mosaic by Jev (0.19: the type case reads as another picture to it); the text wall's page splits (0.13
   to 0.23 s off) and the other snaps still off.
+
+## A painted 3D film, in order: the look, the characters, the shots
+
+When `moodreel origin` reads a film as 3D animation dressed as drawing (a subject on twos under a camera on ones,
+painted materials), rebuild it in three layers, each finished and measured before the next starts, with the modules
+in `references/produce/drawing.md` ("An illustrated 3D film"). Each layer has its own measure, so a fault is found in
+the layer that made it rather than in every shot at once.
+
+1. **The look engine first, on a test scene.** A sphere, a ground and a figure at rest (the built-in mannequin will do
+   before the characters exist), under `look3d.ramp` materials and a `post3d.chain`, matched to frames of the
+   reference: each material's `lit`, `mid` and `shade` sampled on two frames or more, the terminator accent and the
+   form shade read where the light turns, the occlusion's tint, the grain's size and strength in the mid tones, and
+   whether it holds with the drawings or moves under them (`probe`'s `still`). Every shot inherits the look, so it is
+   set once: tuned shot by shot it drifts from shot to shot, and primitives under real-time lights keep the layout
+   and lose the look (the 77 s painted brand film in step 0 of the loop: 0.526 to 0.533 in three passes). A shot's
+   own grade comes later, in the chain's `opts`, never in the materials.
+2. **Then the characters.** Each one an SDF spec with its proportions in units of one feature of the reference (its
+   ratios within 15 % across frames), built with `moodreel model build`, checked with `moodreel model check` until
+   every part is closed, nothing floats and no pose sinks one part into another by more than a few millimetres, and
+   seen with `moodreel model sheet` in every pose the shots use, beside the reference's frames of the character. A
+   character changed after the shots are built moves every shot's framing with it.
+3. **Then the shots**, through the loop above: each shot's camera on ones from the reference's measured track
+   (`moodreel camera`, `kit/follow.js`), the characters posed on twos (`look3d.held(t, 24, 2)`) with the chain's
+   `hold` set to the same 2, and `moodreel compare` and `moodreel diff` on every pass.
+
+The measures, layer by layer: colour difference against the sampled colours and the stipple riding the surface for
+the look; `moodreel model check` and the sheet for each character; `compare` and `diff` for the shots.
 
 ## Frame-exact rules
 
