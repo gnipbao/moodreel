@@ -100,7 +100,59 @@ def test_motion_reads_when_and_which_way_each_picture_moves(tmp_path):
     assert len(m["reference"]["speed"]) == 5                           # every 0.2 s over 0.9 s
     r, o = (np.nanmean([v for v in m[k]["speed"] if v is not None]) for k in ("reference", "remake"))
     assert 1.6 < o / r < 2.4                                           # the remake twice as fast
-    R, O = np.array(m["reference"]["cells"]), np.array(m["remake"]["cells"])
+    R, O = np.array(m["reference"]["cells"]), np.array(m["remake"]["cells"])  # noqa: E741
     assert (R[..., 0] > 0).all() and (O[..., 0] < 0).all()             # every cell: right in one, left in the other
     text = compare.motion_report("pan", m)
     assert "reference" in text and "remake" in text and text.count("  |  ") == 4   # a row of cells each
+
+
+def _counter(path, audio, n=48, step=5):
+    """24 fps, frame m a flat grey of level 10 + 5 m (lossless), with or without an AAC soundtrack of the same length."""
+    cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "gray", "-s", "64x36", "-r", "24", "-i", "-"]
+    if audio:
+        cmd += ["-f", "lavfi", "-i", f"sine=frequency=440:sample_rate=48000:duration={n / 24}", "-c:a", "aac"]
+    p = subprocess.Popen(cmd + ["-c:v", "libx264", "-qp", "0", "-pix_fmt", "yuv420p", str(path)], stdin=subprocess.PIPE)
+    for m in range(n):
+        p.stdin.write(np.full((36, 64), 10 + step * m, np.uint8).tobytes())
+    p.stdin.close()
+    p.wait()
+
+
+@needs_ffmpeg
+def test_a_window_reads_the_picture_on_screen_at_each_time_with_or_without_a_soundtrack(tmp_path):
+    # ffmpeg's own -ss/-t/fps resampling started one 30 fps frame apart on the same pictures with and without audio,
+    # at more than half the window starts tried; frame k is now the picture on screen at t0 + k/30 in both
+    with_audio, without = tmp_path / "with.mp4", tmp_path / "without.mp4"
+    _counter(with_audio, audio=True)
+    _counter(without, audio=False)
+    for t0 in (0.05, 0.38, 0.71, 1.04):
+        want = [int(np.floor((t0 + k / 30) * 24 + 1e-9)) for k in range(24)]
+        got = [[int(round((f.mean() - 10) / 5)) for f in compare._frames(p, t0, t0 + 0.8, 64, 36, 30, gray=True)]
+               for p in (with_audio, without)]
+        assert got[0] == got[1] == want, t0
+
+
+def _jump(path, at=12, dx=20, n=48):
+    """24 fps, a textured ground that stands still except one jump of dx px at frame `at`, 160 x 90."""
+    rng = np.random.default_rng(5)
+    tex = np.asarray(Image.fromarray((rng.random((90, 120)) * 255).astype(np.uint8)).resize((240, 90), Image.NEAREST))
+    p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "gray", "-s", "160x90", "-r", "24",
+                          "-i", "-", "-c:v", "libx264", "-crf", "12", "-pix_fmt", "yuv420p", str(path)], stdin=subprocess.PIPE)
+    for m in range(n):
+        x0 = 40 - (dx if m >= at else 0)
+        p.stdin.write(np.ascontiguousarray(tex[:, x0:x0 + 160]).tobytes())
+    p.stdin.close()
+    p.wait()
+
+
+@needs_ffmpeg
+def test_motion_is_seen_wherever_the_window_begins(tmp_path):
+    # flow measured on every other pair of 30 fps frames saw a single jump or missed it whole, by the parity of the
+    # window's start (mean flow 0.12 or 0.00 a frame apart); on every pair it reads the same from every start
+    v = tmp_path / "jump.mp4"
+    _jump(v)
+    means = []
+    for k in range(4):
+        g = list(compare._frames(v, 0.1 + k / 30, 1.1 + k / 30, 160, 90, 30, gray=True))
+        means.append(float(np.mean([np.linalg.norm(f, axis=1).mean() for _, f in compare._flow_cells(g)])))
+    assert min(means) > 0.8 * max(means) > 0.03, means

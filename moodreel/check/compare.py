@@ -34,16 +34,17 @@ from pathlib import Path
 
 import numpy as np
 
+from .. import video
+
 W, H, FPS = 320, 180, 30
 MOVING = 0.3          # px per frame at 320 x 180: a cell below this is still
 
 
 def _frames(path, t0: float, t1: float, w=W, h=H, fps=FPS, gray=False) -> np.ndarray:
-    raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{max(0.0, t0):.3f}", "-i", str(path), "-t", f"{t1 - t0:.3f}",
-                          "-vf", f"fps={fps},scale={w}:{h}:flags=area", "-pix_fmt", "gray" if gray else "bgr24",
-                          "-f", "rawvideo", "-"], capture_output=True, check=True).stdout
-    n = len(raw) // (w * h * (1 if gray else 3))
-    return np.frombuffer(raw[:n * w * h * (1 if gray else 3)], np.uint8).reshape((n, h, w) if gray else (n, h, w, 3))
+    """[t0, t1) at fps: frame k is the picture on screen at t0 + k / fps, the same for a file with or without an audio
+    track (video.window). A window that starts before 0 is read from 0, for as long."""
+    a = max(0.0, t0)
+    return video.window(str(path), a, a + (t1 - t0), fps, w, h, "gray" if gray else "bgr24")
 
 
 def duration(path) -> float:
@@ -96,9 +97,12 @@ def _cells(flow, n=4):
 
 
 def _flow_cells(g) -> list:
-    """Every other pair of grey frames: (the pair's first frame, its 4 x 4 cells' mean flow, [16, 2])."""
+    """Every pair of neighbouring grey frames: (the pair's first frame, its 4 x 4 cells' mean flow, [16, 2]).
+    Every pair, not every other: at 30 fps a 24 fps film repeats a frame every fifth step and a drawing on twos changes
+    every 2.5 steps, so every other pair caught most of the changes or almost none, by where the window began (the
+    logo's mean flow read 0.01 or 0.13 for starts a third of a frame apart, and its score 0.99 or 0.75)."""
     import cv2
-    return [(i, _cells(cv2.calcOpticalFlowFarneback(g[i], g[i + 1], None, 0.5, 3, 15, 3, 5, 1.2, 0))) for i in range(0, len(g) - 1, 2)]
+    return [(i, _cells(cv2.calcOpticalFlowFarneback(g[i], g[i + 1], None, 0.5, 3, 15, 3, 5, 1.2, 0))) for i in range(len(g) - 1)]
 
 
 def window(ref, ours, t0: float, t1: float, offset: float = 0.0) -> dict:
@@ -156,7 +160,7 @@ def motion_report(name: str, m: dict) -> str:
     for key in ("reference", "remake"):
         lines.append(f"  {key:<10} " + " ".join(f(v) for v in m[key]["speed"]))
     lines.append("  each cell's mean flow (x right, y down), top row first: reference | remake")
-    R, O = m["reference"]["cells"], m["remake"]["cells"]
+    R, O = m["reference"]["cells"], m["remake"]["cells"]  # noqa: E741
     if R and O:
         cell = lambda c: f"{c[0]:+4.1f},{c[1]:+4.1f}"  # noqa: E731
         for j in range(4):

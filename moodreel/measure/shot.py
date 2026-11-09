@@ -25,6 +25,8 @@ from pathlib import Path
 
 import numpy as np
 
+from .. import video
+
 W, H = 640, 360            # analysis size; px figures are reported at 1920 wide
 TO1920 = 1920 / W
 FPS = 15
@@ -37,11 +39,9 @@ def _probe(path) -> float:
 
 
 def _frames(path, t0, t1, fps=FPS, w=W, h=H) -> np.ndarray:
-    raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{max(0.0, t0):.3f}", "-i", str(path), "-t", f"{t1 - t0:.3f}",
-                          "-vf", f"fps={fps},scale={w}:{h}:flags=area", "-pix_fmt", "bgr24", "-f", "rawvideo", "-"],
-                         capture_output=True, check=True).stdout
-    n = len(raw) // (w * h * 3)
-    return np.frombuffer(raw[:n * w * h * 3], np.uint8).reshape(n, h, w, 3)
+    """[t0, t1) at fps, frame k the picture on screen at t0 + k / fps (video.window); a start before 0 reads from 0."""
+    a = max(0.0, t0)
+    return video.window(str(path), a, a + (t1 - t0), fps, w, h)
 
 
 def _structure(g):
