@@ -66,6 +66,36 @@ def traits(project: Path) -> tuple[int, list[str]]:
     return fps, needs
 
 
+RENDERS = {"out", "stills", "review", "node_modules", "poster.jpg"}      # what a build leaves in demo/, not its source
+
+
+def _demo_ignore(folder: str, names: list[str]) -> set[str]:
+    """The demo's renders stay out: out/, stills, review sheets, logs, videos and audio. A `vendor` folder stays out
+    too, except inside a kit, where it holds three.js and the demo cannot draw without it."""
+    skip = {n for n in names if n in RENDERS or n.endswith((".mp4", ".wav", ".log"))}
+    if Path(folder).name != "kit" and "vendor" in names:
+        skip.add("vendor")
+    return skip
+
+
+def copy_demo(src: Path, dst: Path, root: Path) -> None:
+    """demo/ into the pack, the source and not its renders (demo.mp4 is the film). A link the demo keeps (say kit ->
+    ../kit, the style's own kit) stays a link when it lands inside the pack, so the kit isn't packed twice; a link
+    that would point outside the pack is copied in as a folder or file."""
+    shutil.copytree(src, dst, symlinks=True, ignore=_demo_ignore)
+    for link in sorted(p for p in dst.rglob("*") if p.is_symlink()):
+        target = (link.parent / os.readlink(link)).resolve()
+        inside = target.exists() and target.is_relative_to(root.resolve())
+        if inside:
+            continue
+        real = (src / link.relative_to(dst)).resolve()
+        link.unlink()
+        if real.is_dir():
+            shutil.copytree(real, link, ignore=_demo_ignore)
+        elif real.exists():
+            shutil.copyfile(real, link)
+
+
 def check(project: Path, slug: str, name: str, name_zh: str | None = None, strict: bool = False,
           build: bool = False) -> dict:
     project = Path(project)
@@ -117,8 +147,7 @@ def pack(project: Path, slug: str, name: str, name_zh: str | None = None, strict
     if (project / "poster.jpg").exists():
         shutil.copyfile(project / "poster.jpg", dst / "poster.jpg")
     shutil.copytree(project / "kit", dst / "kit")
-    shutil.copytree(project / "demo", dst / "demo",                 # the source, not its renders (demo.mp4 is the film)
-                    ignore=shutil.ignore_patterns("out", "stills", "node_modules", "vendor", "*.mp4", "*.wav"))
+    copy_demo(project / "demo", dst / "demo", dst)
     shutil.copyfile(project / "LEDGER.md", dst / "evidence" / "LEDGER.md")
     shutil.copytree(project / "measure", dst / "evidence" / "measure")
     own = all(r.get("source") == "own" for r in intake["refs"])

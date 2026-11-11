@@ -169,3 +169,37 @@ def test_a_film_that_uses_only_kit_3dcv_gets_three_js_back(tmp_path):
     shutil.rmtree(d / "kit" / "vendor")
     film._vendored(d)
     assert (d / "kit" / "vendor" / "three" / "three.module.js").exists()
+
+
+def test_pack_keeps_the_demos_kit_link_and_its_three_js(tmp_path, monkeypatch):
+    monkeypatch.setenv("MOODREEL_HOME", str(tmp_path / "home"))
+    proj = _project(tmp_path)
+    (proj / "kit" / "vendor" / "three").mkdir(parents=True)
+    (proj / "kit" / "vendor" / "three" / "three.module.js").write_text("export {};\n")
+    (proj / "demo" / "kit").symlink_to("../kit")                                     # the demo draws with the style's kit
+    (proj / "demo" / "review").mkdir()                                               # a build's leftovers
+    (proj / "demo" / "deliver.log").write_text("log")
+    (proj / "demo" / "poster.jpg").write_bytes(b"x")
+    shared = tmp_path / "shared"                                                     # a link out of the project
+    shared.mkdir()
+    (shared / "notes.txt").write_text("notes")
+    (proj / "demo" / "shared").symlink_to(shared)
+    r = pack.pack(proj, "linked-style", "Linked Style")
+    assert r["ok"], r
+    demo = Path(r["path"]) / "demo"
+    assert (demo / "kit").is_symlink() and (demo / "kit" / "vendor" / "three" / "three.module.js").exists()
+    assert not (demo / "shared").is_symlink() and (demo / "shared" / "notes.txt").read_text() == "notes"
+    assert not any((demo / n).exists() for n in ("review", "deliver.log", "poster.jpg"))
+
+
+def test_pack_keeps_three_js_in_a_demos_own_kit(tmp_path, monkeypatch):
+    monkeypatch.setenv("MOODREEL_HOME", str(tmp_path / "home"))
+    proj = _project(tmp_path)
+    (proj / "demo" / "kit" / "vendor" / "three").mkdir(parents=True)                # a demo with its own copy of the kit
+    (proj / "demo" / "kit" / "vendor" / "three" / "three.module.js").write_text("export {};\n")
+    (proj / "demo" / "vendor").mkdir()                                               # a vendor folder outside a kit
+    (proj / "demo" / "vendor" / "big.js").write_text("x")
+    r = pack.pack(proj, "own-kit-style", "Own Kit Style")
+    assert r["ok"], r
+    demo = Path(r["path"]) / "demo"
+    assert (demo / "kit" / "vendor" / "three" / "three.module.js").exists() and not (demo / "vendor").exists()
