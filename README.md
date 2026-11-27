@@ -1,402 +1,102 @@
-# Moodreel
+<h1 align="center">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/moodreel-cover.webp">
+    <img src="docs/assets/moodreel-motion.webp" width="100%" alt="Moodreel — Moodboard in, reel out. Twenty-four violet-to-amber film frames fan open around a moving crescent.">
+  </picture>
+</h1>
 
-**Moodboard in, reel out.** Give Moodreel a few design images and a clip or two in one visual style. It measures
-what makes that style recognisable — palette, materials, type, layout and, above all, *how things move* — and
-writes it down as a **style pack**: rules a director can follow plus a code kit a film can import. An AI agent
-then directs new films in that style, drawn entirely in code and rendered frame by frame.
+<p align="center"><strong>Measure a motion style from references and draw new films with it in code.</strong></p>
+<p align="center">
+  <a href="CHANGELOG.md"><img src="docs/assets/badge-version.svg" alt="Version 0.1.0, pre-alpha"></a>
+  <a href="pyproject.toml"><img src="docs/assets/badge-python.svg" alt="Python 3.11 or newer"></a>
+  <a href="package-lock.json"><img src="docs/assets/badge-node.svg" alt="Node.js 22.18 or newer"></a>
+  <a href="#license-and-credits"><img src="docs/assets/badge-license.svg" alt="Core license MIT"></a>
+</p>
 
-[中文说明](README.zh-CN.md)
+<p align="center"><b>English</b> · <a href="README.zh-CN.md">简体中文</a></p>
+<p align="center"><a href="#quickstart">Quickstart</a> · <a href="#showcase">Showcase</a> · <a href="#make-a-film">Use with an agent</a> · <a href="#how-it-works">How it works</a> · <a href="#contributing">Contribute</a></p>
 
-> **Status: v0.1.0, the MVP (pre-alpha).** The whole path works end to end: references in, measurements, a kit, a
-> packed style, a film made in it, checked and delivered. Motion measurement passes its acceptance bench, and five
-> example films survive the round trip and a blind distillation (below). Not yet done: calibration on real
-> references and the human-judged evaluations; see [CHANGELOG.md](CHANGELOG.md).
+Moodreel is a local CLI and director skill for motion designers and creative coders. Give it a clip and it measures details you can carry into a different film, from the colours on screen to the spacing between successive entrances. Or pick a style from the library and start drawing. [Browse the style library](styles/README.md)
 
-## Why measure motion?
+## Quickstart
 
-Vision models can copy how a frame looks but not how it moves. On the Animation2Code benchmark (2026), the best
-models reach 0.82–0.84 appearance similarity while temporal similarity stays at or below 0.31 for all of them.
-So Moodreel measures timing, easing, overshoot, stagger and rhythm with deterministic code, and leaves the
-model to understand and use those numbers.
+Render *First Light*, a 12-second risograph sunrise, then use the MP4 as input to the measurement tools. The example includes its artwork and runs locally without an API key.
 
-`moodreel motion` finds every element a motion run changes, tracks its position, scale and opacity in one template
-match, fits each change against the GSAP ease families, and only names an ease when the evidence is clear. Where the
-template can't follow, it measures how much of the element shows: a bar growing from its base, a word collapsing
-to a line, type rising out of a slot, a shape wiped on. When the curve has no GSAP name, one cubic-bezier is fitted
-through all the tweens whose class was read, so a style's own curve comes back as itself. It also
-finds cuts, dissolves and fades through a colour, camera pushes and pans (and measures the elements in the world,
-not on the moving screen), drawings held on twos, and staggers.
+**Requirements** — Python 3.11+, uv, Node.js 22.18+ with npm, and FFmpeg with both `ffmpeg` and `ffprobe` on your path. The first install downloads dependencies and Puppeteer's Chrome. [Install uv](https://docs.astral.sh/uv/getting-started/installation/) · [Get FFmpeg](https://ffmpeg.org/download.html)
 
-Scored on 12 code-rendered test films with known motion ([bench/motion](bench/motion/README.md)), each also as a
-degraded copy (3/4 size, 25 fps, moving grain, crf 30):
-
-| | found | t50 within 1 frame | ease direction right | eases named / named wrong | transitions |
-|---|---|---|---|---|---|
-| clean | 96% | 85% | 96% | 30 / 0 | 13/14 |
-| degraded | 92% | 87% | 82% | 10 / 0 | 13/14 |
-
-Of the 15 moves the bench marks as beyond those readers, 13 are now found on the clean films: bars growing, an
-underline and an axis drawn on, a card turning as it grows (its `power3.out` named exactly), a line of type
-arriving letter by letter (11 letters, 0.04 s apart, each `power3.out`), and numbers counting (0 to 4,200 in
-`power3.out`, $0.0M to $12.5M in `sine.inOut`, timed to the frame; read by OCR when tesseract is installed).
-Ambient motion is read over whole shots: loops (a pulse, a bob, a spin, a breathing fade, each with its period and
-swing) and particle fields (count, size, speed, direction), all five right on both versions.
-Details: [docs/research/motion-extraction.md](docs/research/motion-extraction.md) (Chinese).
-
-### The round trip
-
-Five example films ([examples/](examples/README.md)), each made in code from a library style, distilled back as if
-they were a user's references and compared with the values in their own code
-([bench/roundtrip](bench/roundtrip/REPORT.md)). Then the kit's motion is replayed with neutral shapes
-(`moodreel sketch`) and checked against the references, claim by claim:
-
-| film (style) | static values | moves found | eases named / wrong | sketch motion claims | sections held |
-|---|---|---|---|---|---|
-| swiss-programme (Swiss motion) | 12/13, nothing fails | 24 / 40 | 0 / 0 | 10 / 10 | 5 / 5 |
-| first-light (risograph) | 11/14, nothing fails | 2 / 11 | 1 / 0 | 5 / 6 | 5 / 5 |
-| shipped (dark keynote) | 10/13, nothing fails | 6 / 11 | 0 / 0 | 5 / 5 | 5 / 5 |
-| boot (ASCII CRT) | 10/14, the clear-screen cut missed | 3 / 11 | 1 / 0 | 5 / 6 | 4 / 5 |
-| morning (pictogram motion) | 9/13, the black capitals read as bold | 12 / 24 | 0 / 0 | 4 / 4 | 4 / 5 |
-
-Values that aren't "nothing fails" are left to the director (a curve the kit didn't read), never named wrong.
-Every render of a film is now the same bit for bit, so these numbers repeat from run to run; first-light's rising
-sun and swimmer start hidden (behind the horizon, off the edge), and whether their extrapolated start lands within
-a quarter second of the truth turns on a grey level, so they are counted as missed.
-Colours, surfaces, type and rhythm come back; so does the Swiss film's house curve, which has no GSAP name
-(`bezier(0.73,−0.03,0.18,1.04)` against `0.7,0,0.2,1`), and its page turn on a plain ground, read as a camera pan.
-"Sections held" counts the five STYLE.md sections the measurements speak for (materials, colour, type, motion,
-camera); the other six are the director's judgement, tested blind: `moodreel bench blind` packs each film's
-references and measurements for a director who hasn't read the style, and scores the judges' verdicts
-([BLIND.md](bench/roundtrip/BLIND.md)). On the first blind run one style of five reached 8 of 11 sections judged the
-same: the director turned what one film didn't do into "never". After the skill learned that unseen is not forbidden,
-and Moodreel learned to read a beat grid from silent motion, a second blind run (new director, new judge) passes all
-five: 10, 10, 8, 8 and 8 of 11.
-
-## How it will work
-
-```
-references ─► measure ─► interpret ─► style frame ─► demo film ─► style pack ─► new films
-             (code)      (director)    (check)        (motion check)              (director + renderer)
+```sh
+git clone https://github.com/gnipbao/moodreel.git
+cd moodreel
+uv sync --locked
+npm ci
 ```
 
-1. **Measure** — palette, texture, layout and motion grammar, each number tagged observed, derived or inferred.
-2. **Interpret** — the director names the 3–5 traits that make the style, what it is not, and writes `STYLE.md`.
-3. **Prove the look** — a style frame drawn with the kit, scored against the references.
-4. **Demo film** — rendered, then measured again with the same code and checked rule by rule against the references.
-5. **Produce** — any topic, same style: the director writes a treatment and draws the film with the kit.
+**1. Render the film.** Two spot inks print a sunrise. Where they overlap, a third colour appears. Open `out/first-light.mp4` to watch the result.
 
-See [docs/MVP-DESIGN.md](docs/MVP-DESIGN.md) (Chinese) for the full design. The manual test plan for v0.1.0 is [docs/MANUAL-TEST.md](docs/MANUAL-TEST.md) (Chinese).
-
-## Try it
-
-Needs [uv](https://docs.astral.sh/uv/), ffmpeg and Node 20+ (`npm install` brings Chrome and three.js); [tesseract](https://github.com/tesseract-ocr/tesseract)
-is optional and reads numbers that count (`brew install tesseract`, `apt install tesseract-ocr`).
-
-```bash
-git clone https://github.com/gnipbao/moodreel && cd moodreel
-uv sync && npm install
+```sh
+uv run moodreel render video examples/first-light --size 1280x720 --fps 24 --engine chrome --out out/first-light.mp4
 ```
 
-Two downloads are optional and asked for by name, once: style embeddings for `frame-check` (the CSD model's weights,
-CC BY 4.0, 2.4 GB fetched and kept as 0.6 GB) and the sampled instruments for scores (272 MB of CC0 recordings from
-Versilian Studios Chamber Orchestra 2):
+**2. Measure the same film.** The report in `out/print-study/MEASURE.md` describes the colour roles, surface and motion it found. Compare it with the drawing code to see which choices the measurements recover. [First Light source](examples/first-light/main.js)
 
-```bash
-uv run moodreel csd setup
+```sh
+uv run moodreel intake out/print-study out/first-light.mp4
+uv run moodreel measure out/print-study
 ```
 
-```bash
-uv run moodreel samples fetch
+## Showcase
+
+| Swiss Programme · Swiss Motion Graphics | First Save · 16-bit Pixel RPG |
+| :--- | :--- |
+| <picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/swiss-programme.jpg"><img src="docs/assets/swiss-programme.gif" width="480" alt="Swiss typography and bars snap into register on a measured grid."></picture> | <picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/first-save.jpg"><img src="docs/assets/first-save.gif" width="480" alt="A pixel-art character walks across a landscape with scrolling mountain layers."></picture> |
+| A grid, two rules and one red exception in a 15-second title sequence. [Treatment](examples/swiss-programme/TREATMENT.md) · [Drawing code](examples/swiss-programme/main.js) | A 320 × 180 pixel world with parallax ridges, a walking character and a save prompt. [Treatment](examples/first-save/TREATMENT.md) · [Drawing code](examples/first-save/main.js) |
+
+[Browse all example films](examples/README.md) · [Preview sources and credits](docs/assets/README.md)
+
+### Style library
+
+Browse 59 imported style guides and three packs distilled with Moodreel. Each of the three packs below includes a style guide, a ledger tracing its values to evidence, a drawing kit and the source for its demo film. [All styles](styles/README.md) · [Install a pack](packs/README.md)
+
+| [Ink Chronicle](packs/east-asian-traditions/ink-chronicle/README.md) | [Signal Plates](packs/graphic-type/signal-plates/README.md) | [ASCII Glitch Launch](packs/information-keynote/ascii-glitch-launch/README.md) |
+| :---: | :---: | :---: |
+| ![Rows of ink characters recede toward a vanishing point](packs/east-asian-traditions/ink-chronicle/styleframe.jpg) | ![Orange contours wrap a cylinder on a dark field](packs/graphic-type/signal-plates/styleframe.jpg) | ![The word Tidepool dissolves into pixel lettering](packs/information-keynote/ascii-glitch-launch/styleframe.jpg) |
+
+## Make a film
+
+To start with a built-in style, create a film folder, write its treatment in `films/launch/TREATMENT.md` and draw the scenes in `films/launch/main.js`. The template points to the chosen style's rules. The examples show how to translate them into a finished film. [Example films and source](examples/README.md)
+
+```sh
+uv run moodreel styles swiss
+uv run moodreel film new launch --style swiss-motion
 ```
 
-Bring a few references into a project, check they share one style, and measure them (palette and colour roles,
-surface, layout, type sizes and weights, motion grammar, rhythm). `MEASURE.md` is the summary a director reads first:
+Once the scenes are ready, run `uv run moodreel film deliver films/launch` to render the MP4 and poster, then `uv run moodreel film check films/launch` to check the rendered video for black frames and the text for reading time.
 
-```bash
-uv run moodreel intake out/projects/my-style refs/*.png refs/teaser.mp4 --source own
-```
+**With a coding agent**, open this checkout and give the agent a brief like the one below. The director skill covers the treatment, drawing, review and delivery. [Director skill](skills/moodreel/SKILL.md)
 
-```bash
-uv run moodreel measure out/projects/my-style
-```
+> Read `skills/moodreel/SKILL.md` and use `uv run moodreel`. Make a 15-second title sequence for a night train in the Swiss Motion Graphics style. Show me a style frame before rendering the film.
 
-Score a style frame against the references (palette coverage, off-palette area, lightness, surface, and with style
-embeddings the style itself: its CSD similarity to the references, against how well they agree with each other):
+## How it works
 
-```bash
-uv run moodreel frame-check out/projects/my-style frame.png
-```
+1. **Measure the references.** The CLI reads palette, surface, type and layout from images. A clip also gives it timing, easing and stagger. The results go into `MEASURE.md`.
+2. **Build the style pack.** The director describes the reusable rules in `STYLE.md` and records the evidence behind each value in `LEDGER.md`. A style frame and demo film put the drawing kit to the test. [Distillation workflow](docs/workflows.md#distill-a-style-pack)
+3. **Draw new scenes.** A film's JavaScript function `window.render(t)` draws the frame at time `t`. The renderer can seek directly to a still or encode the frames to an MP4. [Drawing guide](skills/moodreel/references/produce/drawing.md) · [Renderer](render/render.mjs)
 
-Write the style's kit (the shared primitives plus `tokens.js` and `motion.js` from the measurements), draw a first
-style frame from it, and check a rendered film's motion against the references, claim by claim (its character:
-durations, eases, overshoot, stagger; its pace, holds and shot lengths, is the film's own and reported as advice):
+## Documentation
 
-```bash
-uv run moodreel kit out/projects/my-style && uv run moodreel scaffold out/projects/my-style
-```
+| I want to… | Start here |
+| --- | --- |
+| Distill my own references into a pack | [Distillation workflow](docs/workflows.md#distill-a-style-pack) |
+| Add a score, footage or narration, or export to HyperFrames or Remotion | [Production and delivery](docs/workflows.md#produce-and-deliver-a-film) |
+| Compare a remake with a reference, shot by shot | [Shot analysis](docs/workflows.md#compare-a-remake-with-its-reference) |
+| Write a scene or a reusable drawing primitive | [JavaScript kit](kit/README.md) · [Drawing guide](skills/moodreel/references/produce/drawing.md) |
 
-```bash
-uv run moodreel motion-check out/projects/my-style film.mp4
-```
-
-A distilled style carries its signature, not its reference's scenes: the kit holds primitives, and each film invents
-what it stages. Check that a film (or a still) composes scenes of its own: each frame against every reference frame,
-copies flagged, close ones as leads to look at:
-
-```bash
-uv run moodreel scene-check out/projects/my-style film.mp4
-```
-
-Pack a finished style into your library (`~/.moodreel/styles`), list styles, and make a film in one:
-
-```bash
-uv run moodreel pack out/projects/my-style --slug my-style --name "My Style"
-```
-
-```bash
-uv run moodreel styles
-```
-
-```bash
-uv run moodreel film new launch --style swiss-motion && uv run moodreel film check films/launch
-```
-
-```bash
-uv run moodreel film deliver films/launch --music track.wav
-```
-
-`film check` holds every line of text on screen long enough to read, finds black frames, and, for a distilled
-style, scores frames and motion against it; `film deliver` renders, normalises the music to −14 LUFS and muxes.
-
-Make a word-of-mouth wall (社媒口碑墙) for a product: its real posts as cards on a 4K wall in perspective. The steps:
-1. Search YouTube and Bilibili, which need no login.
-2. Pick the posts by number from the numbered sheet.
-3. Record each one as its platform shows it.
-4. Render the film.
-
-The posts are their authors' work: each card is credited, and an uploader's "no reprint" mark is flagged
-([social-wall.md](skills/moodreel/references/produce/social-wall.md)).
-
-```bash
-uv run moodreel wall search YouMind
-```
-
-```bash
-uv run moodreel wall record out/walls/youmind --pick 3,5,8,11
-```
-
-```bash
-uv run moodreel wall make out/walls/youmind
-```
-
-Measure the motion grammar of a single video:
-
-```bash
-uv run moodreel motion path/to/video.mp4 --out out/my-video
-```
-
-Build, render and score the test films, and distil the example films back:
-
-```bash
-uv run moodreel bench make && uv run moodreel bench render && uv run moodreel bench motion
-```
-
-```bash
-uv run moodreel bench roundtrip
-```
-
-Replay a style's measured motion with neutral shapes, to check the kit before drawing a demo film:
-
-```bash
-uv run moodreel sketch out/projects/my-style
-```
-
-Make a film follow its song: the song as data (its beat grid, bars, kick, snare and hat hits, envelopes, and the
-lyric's words as sung, from any aligner), read in the film through `kit/music.js`; render with motion blur. The rules,
-learned from pdoom-video's source, are in [docs/MUSIC-SYNC.md](docs/MUSIC-SYNC.md):
-
-```bash
-uv run moodreel music song.wav --lyrics words.json --out films/my-film/music-data.js
-node render/render.mjs video films/my-film --fps 60 --samples 8 --shutter 0.2
-```
-
-Before remaking a film, ask how it was made: `moodreel origin <video>` cuts it to the frame and gives each shot a kind
-(drawn graphics, a 3D render, footage that was filmed or generated, one picture moved, a hold), its cadence (camera and
-subject on ones, twos or threes: a subject on twos under a camera on ones is 3D animation made to look drawn) and the
-renderer to rebuild it with (canvas, three.js, 3D assets rendered in three.js, or not code at all), with a strip of
-every shot in ORIGIN.md. After each pass, `moodreel diff <reference> <remake>` lists what a viewer notices frame by
-frame: every cut on time, late, early, missed or extra, both lengths, how late the sound runs, black, flat or frozen
-stretches, and the worst moments beside the reference (`moodreel pass` writes it too).
-
-Match a remake to its reference shot by shot, not just in stills: `moodreel compare` measures each of the reference's
-shots for picture, detail, tone, motion direction and speed, worst first; between passes, `--against` the last pass's
-`--json` gives each window's change and `--sheet` lays the reference beside the remake at each window's middle, and
-`--motion <window>` reads where a window's picture moves, when and which way (its speed every 0.2 s and each cell's
-mean flow, the reference's beside the remake's); `moodreel review` is the review before a cut is shown, the producer's
-and the motion designer's: every window at full size beside the reference and its ground, ink and accent colours
-audited (review.md), and the reference's snaps (cuts, slams, shatters, flashes) met, eased or missed and its moves
-matched every 0.6 s, each flagged moment frame by frame (motion.md);
-`moodreel camera <reference> --against <remake>` reads each window's camera move (pan, push, roll) and its shape
-(speeding up, slowing down, one pace) off both pictures, names what is off, and writes the reference's track for
-`kit/follow.js` to move the remake's camera by (with `pace`, at the reference's speed between anchors);
-`moodreel pass` runs a whole pass (render, parallel scoring, camera, contact sheet) in one command, and with
-`--jev --allow-text-upload` asks Jev (TypeSafe's typed-judgment API, `TYPESAFE_API_KEY`; opt-in, numbers only) to
-rank which windows to fix first and how; `moodreel look` (and `pass --vision --allow-image-upload`) has Jev look at
-frames of both films: where each named subject sits, the checks that disagree, how alike; `moodreel track` boxes the
-reference's subjects through time, and `kit/lock.js` solves the remake's camera and subjects onto those boxes;
-`moodreel direct` reads each window as a director and a motion designer would (shot size, angle, composition, where the
-eye goes, how the camera moves and eases) and, against a remake, gives the director's notes. What a 2D canvas can't draw (ray-marched
-bodies, lensing, dense line fields, engraving that follows a surface) goes through `kit/gl.js`, the GPU layer. See
-[docs/GPU.md](docs/GPU.md):
-
-```bash
-uv run moodreel origin reference.mp4 --out origin
-uv run moodreel diff reference.mp4 remake.mp4 --shots scenes.json --out diff
-uv run moodreel compare reference.mp4 remake.mp4 --shots scenes.json --json pass2.json --against pass1.json --sheet pairs.jpg
-uv run moodreel pass reference.mp4 films/my-remake --shots scenes.json --name p2 --against passes/p1 --jev --allow-text-upload
-uv run moodreel track reference.mp4 --spec look.json --subjects critter,keyboard --checks face --every 0.125 --js films/my-remake/track-data.js --allow-image-upload
-uv run moodreel pass reference.mp4 films/my-remake --shots scenes.json --name p3 --against passes/p2 --vision --spec look.json --allow-image-upload
-```
-
-Read what the reference does on each beat, kick and sung word, and the camera through a 3D shot, before building
-them: `moodreel sync` gives the beat-sync fingerprint (how big each response is, how late and how fast it decays, and
-with `--against`, what a remake misses); `moodreel pose --track` follows a rectangle through the shot and writes the
-camera as `cameraAt(t)`. Both were checked against pdoom-video's source: [docs/research/VISION-TO-CODE.md](docs/research/VISION-TO-CODE.md):
-
-```bash
-uv run moodreel sync reference.mp4 --music films/my-film/music-data.js --json ref-sync.json
-```
-
-```bash
-uv run moodreel pose reference.mp4 --track 12.0,13.5 --at 12.4 --points 272,378,978,180,948,462,340,672 --fov 35 --up wall --module cam.js
-```
-
-Draw 3D that reads as illustration, and remake films made that way. `kit/look3d.js` gives three.js a colour-ramp
-material in place of lights: three colours by how far a surface turns to the light, wrapped, with an accent along the
-terminator, a form shade on the side turned away and a stipple fixed to the surface. `kit/post3d.js` is the painterly
-finish: tinted occlusion, depth of field, bloom that keeps its colour, a shoulder that keeps hue, a vignette, grain
-weighted by tone and an airbrush mottle. Characters move on twos (`look3d.held(t, fps, 2)`) under a camera on ones,
-and the stipple and the grain change with the drawings. Characters are carved from signed distance fields (SDF) in a
-Python spec (bones, parts, poses, the pairs to test for collision, landmarks, materials, expressions):
-`moodreel model build` meshes and rigs one for `kit/figure.js` (poses, expressions, a two-bone reach, a head that
-aims), `moodreel model check` reports whether every part is closed, which parts are left floating and how deep parts
-sink into each other in every pose, and `moodreel model sheet` renders a labelled contact sheet, views by poses.
-Measured: 7.7 ms a frame at 1080p with every pass on; under a pan the stipple moves with the surface (NCC 1.000,
-against 0.001 aligned with the screen); the built-in 33-part mannequin builds in 0.48 s and sinks nowhere in its three
-poses; figure.js and the Python skinning agree to 4.4e-16 m. How to draw with it:
-[drawing.md](skills/moodreel/references/produce/drawing.md):
-
-```bash
-uv run moodreel model build mannequin
-uv run moodreel model check mannequin --model out/model/mannequin/mannequin.json
-uv run moodreel model sheet out/model/mannequin/mannequin.json --out out/model/mannequin/sheet.png
-```
-
-## Use it with an agent
-
-Moodreel is meant to be driven by an agent acting as director (Claude Code, Codex or any agent that reads
-`SKILL.md`). Install the command line in editable mode, so it keeps finding the renderer, kit and styles in this
-checkout, and link the skill:
-
-```bash
-uv tool install --editable .
-```
-
-```bash
-ln -s "$PWD/skills/moodreel" ~/.claude/skills/moodreel
-```
-
-Then ask in plain words: "distill the style of these references into a style pack", "make a 20-second launch film
-about X in my <style> style", "which styles are there?". [skills/moodreel/SKILL.md](skills/moodreel/SKILL.md) holds
-the director's flows, gates and rules.
-
-## Style library
-
-[`styles/`](styles/README.md) holds 59 styles imported from [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar):
-each style's `STYLE.md` (the invariants a director follows), `DEMO.md` (how its demo film was made) and a
-`style.json`. 23 of them are flat 2D styles the MVP draws (Swiss motion graphics, risograph, ukiyo-e, blueprint,
-spy titles…); 36 need capabilities that come later: painterly brush engines, 3D, pixel art, a score that drives
-the picture, or real footage and data. The score is now here (`moodreel score`: a film's tempo grid, sections and
-cues, drawn as music by deterministic synthesised instruments or by sampled ones, upright piano, strings, pizzicato,
-trumpets, horn, tuba, clarinet, marimba, glockenspiel, harp and timpani, with the cue times for the picture to land on), which
-makes three more styles ready: game show, microgame and 1930s rubber hose. So is pixel art (`kit/pixel.js`: an
-indexed framebuffer shown through a palette, scaled by whole pixels, with Bayer dither and palette tables; the
-measurement reads a reference's pixel scale, native size, palette and dither), which makes the 16-bit pixel RPG ready. And painted marks (`kit/brush.js`: brush strokes with bristles, watercolour
-washes that pool at the edge, palette-knife dabs with relief, crayon broken by paper tooth, ink that bleeds, and a
-repaint that turns a flat illustration into strokes; the measurement reads visible marks' coverage, scale and
-direction), which makes seven more styles ready, from impasto and watercolour to ink wash and 80s cel anime. And
-3D (`kit/three.js`: a three.js scene set from t, rendered into its own WebGL canvas and laid on the 2D stage, type
-pinned to points in the world; `film new` copies three.js into the film), which makes ten more ready, from low-poly
-islands and glass product renders to tilt-shift and HD-2D. And real material (`moodreel media add`: footage stored
-as one frame per film frame, stills and data, each with its source, licence and hash in a manifest and in CREDITS;
-`kit/media.js` gives the picture the frame of its own time; `film check` fails material with no source or licence),
-which makes the last 15 ready: every style in the library can now be made. Films can also be narrated
-(`narration.json` → `moodreel voice`: lines placed at times or on cues, voiced, subtitled from `voice.js`, the music
-ducked under them at delivery) and carry sound effects without music (a score of cues alone), and be delivered
-as several variants of one picture code (`film.json` variants, read with `pick()`, `film deliver --all-variants`), or
-exported as a HyperFrames composition (`moodreel export hyperframes`: a paused timeline whose every seek draws the
-film's own frame) or a Remotion project (`moodreel export remotion`: one composition whose every frame is the film's
-own). Only the documents are imported; Moodreel re-implements the techniques.
-
-[`packs/`](packs/README.md) keeps the styles distilled here as complete packs (STYLE.md, DECISIONS.md, the ledger and
-measurements, the kit with the style's own modules, the demo's source), sorted by the same categories: Signal Plates
-(graphic and type), ASCII Glitch Launch (information and keynote) and Ink Chronicle (East Asian traditions).
-[`styles/README.md`](styles/README.md) is the one index of every style: it lists them beside the imported ones, each
-with its source. `python scripts/packs.py install` puts them in your library; `export` brings the library's packs back
-(and refreshes that index). Demo films are rebuilt from their source (`sh demo/build.sh`); fonts too large for the
-repository are fetched by the pack's `kit/fonts/fetch.sh` and checked against the files the style was approved with.
-
-## Repository
-
-| Path | What it is |
-|---|---|
-| `render/render.mjs` | Renders any page that exposes `window.DUR`, `window.render(t)` and `window.READY` to stills or video. Video has two engines: [FrameVelo](https://github.com/gnipbao/framevelo) (the default when installed, on macOS), which keeps each frame on the GPU and encodes it with the hardware H.264 encoder, 1.8-4.3x faster than the Chrome engine on the example films with 8-36x less CPU; and Chrome (headless Chrome on puppeteer-core, one per worker, frame pacing off, x264), whose renders are the same bit for bit, which the benches use ([docs/research/render-speed.md](docs/research/render-speed.md)) |
-| `moodreel/` | The Python package: `intake.py`, `measure/` (palette, surface, layout, type, rhythm), `motion/` (shots, camera, tracking, ease fitting, grammar), `check/` (frame-check, motion-check), `pack/` (kit, scaffold, sketch, pack), `film/`, `library.py`, `bench/` (test films, scorer, round trip), `model3d/` (characters carved from distance fields: meshed, rigged, checked, on a contact sheet), `cli.py` |
-| `skills/moodreel/` | The director's skill: distill and produce flows, how to read the evidence, write STYLE.md, the ledger, the checks |
-| `kit/` | The primitives a film's code imports: page contract, eases, tweens, seeded noise, surfaces, type, the illustrated 3D look (`look3d.js`, `post3d.js`) and rigged figures (`figure.js`) ([kit/README.md](kit/README.md)) |
-| `styles/` | The style library |
-| `packs/` | The styles distilled here, as complete packs by category ([packs/README.md](packs/README.md)); `scripts/packs.py` moves them between the repository and your library |
-| `examples/` | Example films made in library styles: five with the values their code uses, for the round trip, and six showing score, pixel, brush, 3D, footage and a sampled band ([examples/README.md](examples/README.md)) |
-| `bench/motion/` | The motion test films (pages and truth) and the latest report |
-| `bench/roundtrip/` | The round trip's latest report ([bench/roundtrip/README.md](bench/roundtrip/README.md)) |
-| `tests/` | Unit tests on synthetic data (`uv run --group dev pytest`) |
-| `scripts/import_lemo_styles.py` | Re-imports the style documents from a lemo-opuscar checkout |
-| `docs/` | Design and research notes |
+**Measurement accuracy.** On 12 code-rendered test films with known motion, the clean run found 95 of 99 target properties and reported 25 spurious detections. Calibration on real-world references and human evaluation are still open. [Benchmark results](bench/motion/REPORT.md) · [Evaluation and limits](docs/workflows.md#evaluate-the-measurements) · [Changelog](CHANGELOG.md)
 
 ## Contributing
 
-Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers the setup, the ground rules (a film is a
-function of time, every number has a source, grammar not content, openly licensed assets only) and how a change is
-checked.
+Bug reports, documentation fixes and contributions are welcome. For a rendering issue, include the command, your OS and a small example others can run. [Open an issue](https://github.com/gnipbao/moodreel/issues) · [Contributor setup and pull requests](CONTRIBUTING.md)
 
-## Acknowledgements
+## License and credits
 
-Moodreel stands on ideas from these projects. Apart from the lemo-opuscar style documents in `styles/`, the parts of
-pdoom-video adapted under its MIT license and the 3DCodeVerse showcase code ported into `kit/3dcv/` (`NOTICE` covers
-both), it uses none of their code.
-
-- [pdoom-video](https://github.com/mexicat/pdoom-video) — a music video computed from its song's data: word-aligned lyrics, drum hits and a beat grid drive every cut, slam and camera move, and sub-frame motion blur. The model for `moodreel music`, `kit/music.js` and docs/MUSIC-SYNC.md; `kit/gl.js` and `kit/anim.js` are adapted from its engine (MIT).
-
-- [FrameVelo](https://github.com/gnipbao/framevelo) — the video engine: frames kept on the GPU and encoded in hardware (a dependency, Apache-2.0).
-
-- [REM](https://github.com/sidart10/rem) — fit eases by BIC and claim only clear winners; check a rebuild with the same measurement.
-- [motiscope](https://github.com/KumarSashank/motiscope) — localized motion energy, percentile thresholds, numbers for *when* and frames for *what*.
-- [MoVer](https://arxiv.org/abs/2502.13372) — motion properties as verifiable predicates fed back to the generator.
-- [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) — a style written as invariants (essence, materials, colour, type, motion, camera, sound, native moves, pitfalls) kept apart from any one film; its 59 style documents are the start of our library.
-- [HyperFrames](https://github.com/heygen-com/hyperframes) — video as a deterministic function of time, rendered in a browser. Its reverse-any-video skill gave the frame-exact rules in remaking.md (times as frames, graphics set on their frame, consecutive frames at every change, type sized from its ink, one check at the end) and the idea of a frame-by-frame list against the original (`moodreel diff`); ideas only, none of its code.
-- [rea-video](https://github.com/JuneYaooo/rea-video) — ask how each shot was made (filmed, generated, rendered, coded) before remaking it, on measured evidence such as frame cadence and whether the picture moves as one plane; the idea behind `moodreel origin`. Ideas only, none of its code.
-- [3DCodeVerse](https://github.com/gaoypeng/3dcodeverse) — its [awesome showcase](https://huggingface.co/datasets/3dcodeverse/3dcodeverse-awesome-showcase) includes a short illustrated 3D film remade entirely in code, and moodreel uses it in two ways. `kit/3dcv/` ports that film's generic look engine and shot runtime from round r02 of the showcase: the colour-ramp material and its stipple, the post chain, painted textures, stroke lettering and deterministic helpers, with the page boot replaced by `film()`, an adapter for moodreel's stage. That folder keeps the showcase's licence, CC BY-NC-SA 4.0, so it is for non-commercial use only (see `NOTICE` and [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE)). `kit/look3d.js`, `kit/post3d.js` and `moodreel.model3d`, by contrast, are moodreel's own MIT code written from the showcase's ideas: a colour-ramp material in place of lighting, a stipple fixed to the surface and held on twos, a painterly post chain, skinned characters carved from signed distance fields (SDF), and proportions measured in units of one feature of the reference. The 3DCodeVerse framework (Apache-2.0) gave the ideas, though not the code, behind the spatial checks of `moodreel model check` and `moodreel model sheet`: floating parts found as the connected groups of the parts' contact graph, penetration swept across the poses, a contact sheet of several views, and a shader preflight (`look3d.guard`).
-
-## License
-
-Moodreel is [MIT](LICENSE), except for `kit/3dcv/`. The style documents in `styles/` that come from lemo-opuscar are
-MIT, Copyright (c) 2026 LemoLab ([`styles/LICENSE-lemo-opuscar`](styles/LICENSE-lemo-opuscar)); each one names its
-source commit.
-
-`kit/3dcv/` holds code ported from the 3DCodeVerse showcase and keeps the showcase's licence,
-[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/): attribution, non-commercial use only, and
-adaptations shared under the same licence. [`kit/3dcv/LICENSE`](kit/3dcv/LICENSE) names the source and every change,
-and the header of each file credits the source as well; keep both. No file outside `kit/3dcv/` contains that code.
-A new film leaves `kit/3dcv/` out unless asked: `moodreel film new <name> --style <style> --with 3dcv` copies the folder
-with its LICENSE, puts three.js beside it and names it in the film's CREDITS, and that film is then for
-non-commercial use only. `moodreel wall make` never includes it.
+Moodreel's core uses the MIT license. The imported style guides retain LemoLab's MIT notice. The optional `kit/3dcv/` port from 3DCodeVerse uses **CC BY-NC-SA 4.0**. Including it with `--with 3dcv` makes the resulting film non-commercial under the port's license. Credit the source and share adaptations of the port under the same terms. [Core license](LICENSE) · [Style credits](styles/LICENSE-lemo-opuscar) · [3DCodeVerse terms](kit/3dcv/LICENSE) · [Third-party notices](NOTICE) · [Acknowledgements](docs/workflows.md#acknowledgements)

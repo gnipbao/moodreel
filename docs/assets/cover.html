@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moodreel · 24 exposures</title>
+<style>
+  html, body { margin: 0; background: #10121a; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+<canvas width="1800" height="672" aria-label="Moodreel. A crescent moves through a fan of translucent film frames."></canvas>
+<script>
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
+const width = 1800, height = 672, frames = 24;
+const inks = [
+  [86, 91, 194], [122, 116, 228], [181, 145, 230],
+  [232, 148, 171], [252, 118, 68], [255, 128, 40],
+];
+const radians = degrees => degrees * Math.PI / 180;
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+const rgb = channels => 'rgb(' + channels.map(Math.round).join(',') + ')';
+
+function inkAt(t) {
+  const index = t * (inks.length - 1);
+  const left = Math.min(inks.length - 2, Math.floor(index));
+  return mix(inks[left], inks[left + 1], index - left);
+}
+
+function roundedRect(w, h, r) {
+  const points = [];
+  const corners = [
+    [w / 2 - r, -h / 2 + r, -90], [w / 2 - r, h / 2 - r, 0],
+    [-w / 2 + r, h / 2 - r, 90], [-w / 2 + r, -h / 2 + r, 180],
+  ];
+  for (const [cx, cy, start] of corners) {
+    for (let i = 0; i <= 10; i++) {
+      const angle = radians(start + 9 * i);
+      points.push([cx + r * Math.cos(angle), cy + r * Math.sin(angle)]);
+    }
+  }
+  return points;
+}
+
+const outside = roundedRect(356, 270, 20);
+const inside = roundedRect(294, 202, 11);
+const perforation = roundedRect(12, 7, 1.6);
+
+function trace(points) {
+  ctx.moveTo(...points[0]);
+  for (let i = 1; i < points.length; i++) ctx.lineTo(...points[i]);
+  ctx.closePath();
+}
+
+function camera(t, fold) {
+  const yaw = radians(62 - 88 * t + 9 * fold * Math.cos(t * Math.PI));
+  const pitch = radians(-27 + 50 * Math.sin(t * Math.PI - 0.7));
+  const roll = radians(-73 + 126 * t + (20 - 31 * t) * fold);
+  const cx = 935 + 600 * t + (34 - 86 * t) * fold;
+  const cy = 393 - (162 - 59 * fold) * Math.sin(t * Math.PI) + 16 * t - 9 * fold;
+  return (x, y, z = 0) => {
+    const rx = x * Math.cos(yaw) + z * Math.sin(yaw);
+    const rz = -x * Math.sin(yaw) + z * Math.cos(yaw);
+    const ry = y * Math.cos(pitch) - rz * Math.sin(pitch);
+    const depth = y * Math.sin(pitch) + rz * Math.cos(pitch);
+    const s = 1250 / (1250 - depth);
+    return [cx + s * (rx * Math.cos(roll) - ry * Math.sin(roll)),
+            cy + s * (rx * Math.sin(roll) + ry * Math.cos(roll))];
+  };
+}
+
+// The dark circle crosses a ruled disc. Each exposure samples a different position.
+function drawEclipse(project, t, fold) {
+  const ink = inkAt(0.16 + 0.70 * t);
+  const cx = -64 + 117 * t * t * (3 - 2 * t) - 16 * fold;
+  for (let k = -34; k <= 34; k++) {
+    const y = k * 1.86;
+    const half = Math.sqrt(64 * 64 - y * y);
+    const cut = Math.sqrt(Math.max(0, 46 * 46 - y * y));
+    const intervals = cut ? [[-half, Math.min(half, cx - cut)], [Math.max(-half, cx + cut), half]] : [[-half, half]];
+    const tint = 0.15 + 0.36 * (1 + Math.cos(y / 74 + 1.8));
+    ctx.strokeStyle = rgb(mix(ink, [253, 244, 203], tint));
+    ctx.lineWidth = 1.38;
+    for (const [x1, x2] of intervals) {
+      if (x2 <= x1) continue;
+      ctx.beginPath();
+      ctx.moveTo(...project(x1, y, -1));
+      ctx.lineTo(...project(x2, y, -1));
+      ctx.stroke();
+    }
+  }
+}
+
+function drawExposure(t, fold) {
+  const project = camera(t, fold);
+  const ink = inkAt(t);
+  const corner1 = project(-167, -123), corner2 = project(178, 135);
+  function rim(depth) {
+    ctx.beginPath();
+    trace(outside.map(([x, y]) => project(x, y, depth)));
+    trace(inside.map(([x, y]) => project(x, y, depth)));
+  }
+
+  ctx.fillStyle = rgb(mix(ink, [15, 11, 27], 0.62));
+  for (let z = -7; z < 0; z += 2) {
+    rim(z);
+    ctx.fill('evenodd');
+  }
+
+  const emulsion = ctx.createLinearGradient(...corner1, ...corner2);
+  emulsion.addColorStop(0, 'rgba(22,15,41,0.42)');
+  emulsion.addColorStop(0.5, 'rgba(39,21,48,0.22)');
+  emulsion.addColorStop(1, 'rgba(252,176,160,0.21)');
+  ctx.beginPath();
+  trace(inside.map(([x, y]) => project(x, y, -1)));
+  ctx.fillStyle = emulsion;
+  ctx.fill();
+  drawEclipse(project, t, fold);
+
+  const foil = ctx.createLinearGradient(...corner1, ...corner2);
+  foil.addColorStop(0, rgb(mix(ink, [255,237,242], 0.43)));
+  foil.addColorStop(0.22 + 0.065 * fold, rgb(mix(ink, [255,248,235], 0.76)));
+  foil.addColorStop(0.36 + 0.065 * fold, rgb(mix(ink, [255,233,204], 0.24)));
+  foil.addColorStop(0.55, rgb(ink));
+  foil.addColorStop(0.87, rgb(mix(ink, [49,25,55], 0.35)));
+  foil.addColorStop(1, rgb(mix(ink, [246,208,191], 0.34)));
+  rim(0);
+  ctx.fillStyle = foil;
+  ctx.fill('evenodd');
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(255,232,210,0.48)';
+  ctx.stroke();
+
+  ctx.fillStyle = rgb(mix(ink, [28,17,39], 0.73));
+  for (const y of [-119, 119]) {
+    for (let j = 0; j < 8; j++) {
+      const x = (j - 3.5) * 36;
+      ctx.beginPath();
+      trace(perforation.map(([dx, dy]) => project(x + dx, y + dy)));
+      ctx.fill();
+    }
+  }
+}
+
+window.DUR = 4;
+window.render = seconds => {
+  const fold = (1 - Math.cos(2 * Math.PI * seconds / window.DUR)) / 2;
+  const ground = ctx.createLinearGradient(120, 40, 1750, 680);
+  ground.addColorStop(0, '#10121a');
+  ground.addColorStop(0.55, '#151522');
+  ground.addColorStop(1, '#221421');
+  ctx.fillStyle = ground;
+  ctx.fillRect(0, 0, width, height);
+  const glow = ctx.createRadialGradient(1320, 310, 20, 1320, 310, 690);
+  glow.addColorStop(0, 'rgba(90,49,72,0.42)');
+  glow.addColorStop(0.7, 'rgba(52,32,58,0.15)');
+  glow.addColorStop(1, 'rgba(20,16,28,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, width, height);
+
+  for (let i = 0; i < frames; i++) drawExposure(i / (frames - 1), fold);
+
+  ctx.fillStyle = '#f8f4ec';
+  ctx.letterSpacing = '-9.5px';
+  ctx.font = '600 169px Archivo';
+  ctx.fillText('Mood', 77, 342);
+  const join = 79 + ctx.measureText('Mood').width;
+  ctx.letterSpacing = '-7px';
+  ctx.font = 'italic 500 197px Cormorant';
+  ctx.fillText('reel', join, 343);
+  ctx.fillStyle = '#c9c5d0';
+  ctx.letterSpacing = '-0.55px';
+  ctx.font = '400 38px Archivo';
+  ctx.fillText('Moodboard in, reel out.', 82, 426);
+};
+
+// The repository page uses the pack's fonts. A staged renderer page keeps them beside index.html.
+const fonts = location.pathname.endsWith('/cover.html') ? '../../packs/graphic-type/signal-plates/kit/fonts' : '.';
+const faces = [
+  new FontFace('Archivo', 'url(' + fonts + '/Archivo-var.ttf)', {weight:'100 900'}),
+  new FontFace('Cormorant', 'url(' + fonts + '/CormorantGaramond-Italic-var.ttf)', {style:'italic', weight:'300 700'}),
+];
+Promise.all(faces.map(face => face.load())).then(loaded => {
+  for (const face of loaded) document.fonts.add(face);
+  window.render(0);
+  window.READY = true;
+});
+</script>
+</html>
