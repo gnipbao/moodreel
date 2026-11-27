@@ -5,7 +5,7 @@
   </picture>
 </h1>
 
-<p align="center"><strong>从参考素材中测出动态视觉风格，用代码绘制同风格的新片。</strong></p>
+<p align="center"><strong>把参考片的剪辑节奏和镜头动作写成可复用的代码，给自己的产品拍一支新片。</strong></p>
 <p align="center">
   <a href="CHANGELOG.md"><img src="docs/assets/badge-version.svg" alt="版本 0.1.0，pre-alpha 阶段"></a>
   <a href="pyproject.toml"><img src="docs/assets/badge-python.svg" alt="Python 3.11 或更高版本"></a>
@@ -16,11 +16,13 @@
 <p align="center"><a href="README.md">English</a> · <b>简体中文</b></p>
 <p align="center"><a href="#复刻对照">复刻对照</a> · <a href="#快速开始">快速开始</a> · <a href="#作品展示">示例源码</a> · <a href="#制作自己的短片">智能体创作</a> · <a href="#工作原理">工作原理</a> · <a href="#参与贡献">参与贡献</a></p>
 
-Moodreel 为动态设计师和创意开发者提供本地命令行工具和导演技能。给它一段参考短片，就能测出画面里用了哪些颜色、元素入场相隔多久，再把这些设计选择用在另一部片上。你也可以直接从风格库选一种风格开拍。[浏览风格库](styles/README.md)
+Skillry 的发布片里，图标每 **5～6 帧**换一个，输入框每秒打出约 **36 个字符**。Moodreel 把这些节奏量出来，你和编程智能体可以据此写绘制代码。后来拍潮汐预报产品 *Tidepool* 时，输入框里换成了「明天的潮位」，打字速度直接沿用每秒 36 个字符。[查看这些数怎么量的](packs/information-keynote/ascii-glitch-launch/evidence/LEDGER.md) · [看新片怎样写这行字](packs/information-keynote/ascii-glitch-launch/demo/timeline.js)
+
+在本地用 `measure` 读参考片，把可复用的规则和 JavaScript 收进风格包。出初稿后，`compare` 会把差异最大的片段排在前面，`diff` 能查到切点早晚了几帧。你可以只改那个镜头，再和上一版对照。[风格包](packs/README.md) · [逐镜修改流程](docs/workflows.zh-CN.md#逐镜比较复刻和参考)
 
 ## 复刻对照
 
-上半屏是参考片，下半屏是复刻。可以盯住一侧蝶翼，看轮廓在哪一拍散开，也可以盯住卡片墙切成大字的瞬间。点击任一动图，即可打开完整有声 MP4。
+上屏是参考，下屏是复刻。点击预览可打开完整有声 MP4，下方时间点均对应各自的完整视频。
 
 <p align="center">
   <a href="docs/assets/remakes/case2.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case2.jpg"><img src="docs/assets/remakes/case2.webp" width="250" alt="粒子蝶翼对照，上下两只银白蝴蝶先后染成琥珀色。"></picture></a>
@@ -28,9 +30,9 @@ Moodreel 为动态设计师和创意开发者提供本地命令行工具和导�
   <a href="docs/assets/remakes/case3.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case3.jpg"><img src="docs/assets/remakes/case3.webp" width="240" alt="上屏 Scarlet Sheath、下屏《烬隙》，两组旋转的火线勾出发亮的眼睛。"></picture></a>
 </p>
 
-- **粒子蝶翼 · 53 秒。** 看银白转成琥珀色的那一段。上屏的蝶翼在粒子飞散时逐渐失去轮廓，对着下屏看，就能看出复刻把蝶形多留了多久。[完整 MP4](docs/assets/remakes/case2.mp4?raw=true) · [Bee 的原作](https://x.com/thtbee_/status/2123259795172212871)
-- **Skillry → Knackly · 16 秒。** 产品卡片向纵深铺开，几个快切之后，同一个「slop」用点阵大字占满上下屏。两段何时落字，一眼就能对上。[完整 MP4](docs/assets/remakes/case1.mp4?raw=true)
-- **绯鞘 → 烬隙 · 15 秒。** 红色弧线收成一只眼睛，紧接着画面切入黑白墨迹，最后落到一方红印。沿着这几次转场，能一路对照到片尾。[完整 MP4](docs/assets/remakes/case3.mp4?raw=true)
+- **粒子蝶翼 · 找出哪两秒动慢了。** 把第 6～12 秒分成三段交给 `compare`，它把 6～8 秒排在最前。这两秒里，复刻的平均画面运动速度是参考的 **0.60 倍**。停在第 7 秒，上屏下翼已散成粒子云，下屏还留着两瓣圆弧。[53 秒完整片](docs/assets/remakes/case2.mp4?raw=true) · [复跑测量](docs/assets/remakes/README.md#reproduce-the-measurements) · [Bee 的原作](https://x.com/thtbee_/status/2123259795172212871)
+- **Skillry → Knackly · 从平面画面反推运镜。** 卡片墙该怎样转？在 3.7 秒和 4.4 秒量了 14 张卡片的位置和宽度，据此推算出镜头在圆柱形卡片墙里的走法。下屏是第五轮复刻。这次用到的快切和打字规则，后来也用在了 *Tidepool* 上。[16 秒完整片](docs/assets/remakes/case1.mp4?raw=true) · [运镜记录](packs/information-keynote/ascii-glitch-launch/evidence/LEDGER.md)
+- **绯鞘 → 烬隙 · 查到具体哪一帧切镜。** 第 559 帧（9.317 秒），两版同时从白底闪回红色的眼睛。`diff` 给出两边的帧号，切点相差 **0 帧**。这一拍已经对齐，审片时可以把注意力放到眼睛周围的火线形状上。[15 秒完整片](docs/assets/remakes/case3.mp4?raw=true) · [复跑切点检查](docs/assets/remakes/README.md#reproduce-the-measurements)
 
 [26 秒精华剪辑 · 静音 MP4](docs/assets/remakes/highlights.mp4?raw=true) · [案例原帖与署名](docs/assets/remakes/README.md) · [如何逐镜对照自己的片子](docs/workflows.zh-CN.md#逐镜比较复刻和参考)
 

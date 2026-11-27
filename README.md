@@ -5,7 +5,7 @@
   </picture>
 </h1>
 
-<p align="center"><strong>Measure a motion style from references and draw new films with it in code.</strong></p>
+<p align="center"><strong>Turn a reference film’s timing and camera moves into code you can reuse for your own film.</strong></p>
 <p align="center">
   <a href="CHANGELOG.md"><img src="docs/assets/badge-version.svg" alt="Version 0.1.0, pre-alpha"></a>
   <a href="pyproject.toml"><img src="docs/assets/badge-python.svg" alt="Python 3.11 or newer"></a>
@@ -16,11 +16,13 @@
 <p align="center"><b>English</b> · <a href="README.zh-CN.md">简体中文</a></p>
 <p align="center"><a href="#remake-comparisons">Remake comparisons</a> · <a href="#quickstart">Quickstart</a> · <a href="#showcase">Example source</a> · <a href="#make-a-film">Use with an agent</a> · <a href="#how-it-works">How it works</a> · <a href="#contributing">Contribute</a></p>
 
-Moodreel is a local CLI and director skill for motion designers and creative coders. Give it a clip and it measures details you can carry into a different film, from the colours on screen to the spacing between successive entrances. Or pick a style from the library and start drawing. [Browse the style library](styles/README.md)
+In Skillry’s launch film, each icon lasts **5–6 frames** and a prompt types at about **36 characters a second**. With Moodreel, you and a coding agent can measure those decisions and write them into drawing code. When we made *Tidepool*, a launch film for a fictional tide forecast API, the prompt asked for tomorrow’s tides and kept the same 36-character cadence. [See how the timing was measured](packs/information-keynote/ascii-glitch-launch/evidence/LEDGER.md) · [Read Tidepool’s typing timeline](packs/information-keynote/ascii-glitch-launch/demo/timeline.js)
+
+Run `measure` locally on a reference, then keep the rules and JavaScript in a style pack. Once you have a draft, `compare` ranks the passages that differ most and `diff` tells you how many frames early or late a cut lands. Revise that shot and check it against the previous pass. [Style packs](packs/README.md) · [Shot-by-shot workflow](docs/workflows.md#compare-a-remake-with-its-reference)
 
 ## Remake comparisons
 
-The reference plays on top and the remake below. Follow the edge of a butterfly wing, a cut between two title cards, or the moment an eye opens. Select a preview for the full comparison with sound.
+The reference plays on top and the remake below. Select a preview for the full comparison with sound. The timestamps below refer to those full films.
 
 <p align="center">
   <a href="docs/assets/remakes/case2.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case2.jpg"><img src="docs/assets/remakes/case2.webp" width="250" alt="Artistic Butterflies. Silver wings turn amber in both halves of the frame."></picture></a>
@@ -28,9 +30,9 @@ The reference plays on top and the remake below. Follow the edge of a butterfly 
   <a href="docs/assets/remakes/case3.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case3.jpg"><img src="docs/assets/remakes/case3.webp" width="240" alt="Scarlet Sheath above, Ember Rift below. Curved trails of fire reveal a glowing eye."></picture></a>
 </p>
 
-- **Artistic Butterflies · 53 s.** Watch the change from silver to amber. The reference wing sheds its outline as the particles scatter. You can see how long the remake holds its shape. [Full MP4](docs/assets/remakes/case2.mp4?raw=true) · [Bee’s original](https://x.com/thtbee_/status/2123259795172212871)
-- **Skillry → Knackly · 16 s.** A wall of product cards curves into depth. A few cuts later, the word “slop” fills both screens in dot-matrix type. Watch when the letters land. [Full MP4](docs/assets/remakes/case1.mp4?raw=true)
-- **Scarlet Sheath → Ember Rift · 15 s.** Red arcs tighten into the outline of an eye. Follow both versions through the cut to black ink and the final red seal. [Full MP4](docs/assets/remakes/case3.mp4?raw=true)
+- **Artistic Butterflies · Find the two seconds that run slow.** Split seconds 6–12 into three windows. `compare` ranks 6–8 s as the largest mismatch. Mean motion across the frame is **0.60×** the reference in that window. Pause at 7 s. The reference’s lower wings have scattered into a cloud while the remake still has two rounded lobes. [Full film · 53 s](docs/assets/remakes/case2.mp4?raw=true) · [Run the measurement](docs/assets/remakes/README.md#reproduce-the-measurements) · [Bee’s original](https://x.com/thtbee_/status/2123259795172212871)
+- **Skillry → Knackly · Reconstruct a camera move.** Positions and widths of 14 cards at 3.7 s and 4.4 s gave the remake’s camera a path through a cylindrical wall of cards. The lower panel shows the fifth pass. The same pack’s montage and typing rules later carried over to *Tidepool*. [Full film · 16 s](docs/assets/remakes/case1.mp4?raw=true) · [Camera measurements](packs/information-keynote/ascii-glitch-launch/evidence/LEDGER.md)
+- **Scarlet Sheath → Ember Rift · Check a cut to the frame.** At frame 559 (9.317 s), both films cut from a white flash back to a red eye. `diff` reports a **zero-frame offset** for that cut. With the timing accounted for, you can concentrate on the shape of the fiery lines around the eye. [Full film · 15 s](docs/assets/remakes/case3.mp4?raw=true) · [Run the cut check](docs/assets/remakes/README.md#reproduce-the-measurements)
 
 [26-second highlights · silent MP4](docs/assets/remakes/highlights.mp4?raw=true) · [Original posts and credits](docs/assets/remakes/README.md) · [How to compare your own footage](docs/workflows.md#compare-a-remake-with-its-reference)
 

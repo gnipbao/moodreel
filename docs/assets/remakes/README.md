@@ -20,6 +20,37 @@ In each film, the reference plays on top and GeekCatX’s remake plays below. Th
 | 0:07.50–0:14.50 | *Skillry → Knackly*, 0:03.25–0:10.25. A wall of cards gives way to dot-matrix type. 产品卡片墙切入点阵排版。 |
 | 0:14.50–0:26.25 | *Scarlet Sheath → Ember Rift*, 0:02.75–0:14.50. A spiral of light resolves into an eye, then gives way to ink and a seal. 光轨合成眼睛，画面转入墨迹与红印。 |
 
+### Reproduce the measurements
+
+Run from the repository root after the [quickstart](../../../README.md#quickstart). Each FFmpeg command takes matching crops from the upper and lower panels of the public MP4 and removes the corner labels. The two streams retain their timing.
+
+**Butterfly speed · 蝶翼的运动速度。** Compare seconds 6–12 in two-second windows. In the first window the remake’s mean motion across the frame is 0.60× the reference. The next windows read 1.11× and 0.94×. 这是三个时间段各自的全画面平均光流速度比。报告的时间从所截片段的开头算起，第一个窗口对应完整视频的 6～8 秒。
+
+```sh
+work=out/showcase-check
+mkdir -p "$work"
+ffmpeg -v error -y -ss 6 -i docs/assets/remakes/case2.mp4 \
+  -filter_complex '[0:v]split[a][b];[a]crop=704:396:48:26[top];[b]crop=704:396:48:476[bottom]' \
+  -map '[top]' -t 6 -an -c:v ffv1 "$work/butterfly-ref.mkv" \
+  -map '[bottom]' -t 6 -an -c:v ffv1 "$work/butterfly-remake.mkv"
+uv run moodreel compare "$work/butterfly-ref.mkv" "$work/butterfly-remake.mkv" \
+  --every 2 --json "$work/butterfly.json" --sheet "$work/butterfly.jpg"
+```
+
+**Eye cut · 火眼的切点。** Run the cut detector on the full comparison. Open `DIFF.md` and find frame 559. Both panels leave the white flash at 9.317 s, with an offset of zero frames. 第 559 帧是两段画面从白底闪回红色眼睛的一刻，在 `DIFF.md` 同一行可以查到两边的帧号。
+
+```sh
+work=out/showcase-check
+mkdir -p "$work"
+ffmpeg -v error -y -i docs/assets/remakes/case3.mp4 \
+  -filter_complex '[0:v]split[a][b];[a]crop=704:396:48:38[top];[b]crop=704:396:48:508[bottom]' \
+  -map '[top]' -an -c:v ffv1 "$work/eye-ref.mkv" \
+  -map '[bottom]' -an -c:v ffv1 "$work/eye-remake.mkv"
+uv run moodreel diff "$work/eye-ref.mkv" "$work/eye-remake.mkv" --out "$work/eye-diff"
+```
+
+The Skillry camera fit and the 5–6-frame montage timing are documented in the [ASCII Glitch Launch ledger](../../../packs/information-keynote/ascii-glitch-launch/evidence/LEDGER.md). See the [Tidepool timeline](../../../packs/information-keynote/ascii-glitch-launch/demo/timeline.js) for how the typing cadence was used in a new film.
+
 The repository’s MIT license covers the Moodreel core. The reference footage and audio retain their original rights and credits. 项目的 MIT 许可证适用于 Moodreel 核心代码，展示中的参考影像与音频保留原有权利和署名。
 
 [English README](../../../README.md#remake-comparisons) · [中文首页](../../../README.zh-CN.md#复刻对照)
