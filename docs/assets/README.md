@@ -1,6 +1,6 @@
 # README artwork
 
-The English and Chinese homepages share an original cover and two excerpts from the example films. Each animation has a still for readers who prefer reduced motion.
+The English and Chinese homepages share an original cover, three reference/remake comparisons and two excerpts from the editable example films. Each animation has a still for readers who prefer reduced motion. [Full comparison films, sources and credits](remakes/README.md)
 
 | Asset | Where the picture comes from |
 | --- | --- |

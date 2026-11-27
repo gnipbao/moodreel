@@ -2,6 +2,8 @@
 
 ## Unreleased · Documentation
 
+- Both homepages now open with [three reference/remake comparisons](docs/assets/remakes/README.md), with animated previews, full films with sound and a 26-second highlights reel.
+
 - The [English](README.md) and [Chinese](README.zh-CN.md) READMEs feature an original looping cover and excerpts from two example films. The quickstart walks through rendering and measuring *First Light*. The [workflow guide](docs/workflows.md) keeps the detailed production and evaluation instructions.
 
 ## Unreleased: compare reads the same frames from the same pictures

@@ -14,9 +14,25 @@
 </p>
 
 <p align="center"><b>English</b> · <a href="README.zh-CN.md">简体中文</a></p>
-<p align="center"><a href="#quickstart">Quickstart</a> · <a href="#showcase">Showcase</a> · <a href="#make-a-film">Use with an agent</a> · <a href="#how-it-works">How it works</a> · <a href="#contributing">Contribute</a></p>
+<p align="center"><a href="#remake-comparisons">Remake comparisons</a> · <a href="#quickstart">Quickstart</a> · <a href="#showcase">Example source</a> · <a href="#make-a-film">Use with an agent</a> · <a href="#how-it-works">How it works</a> · <a href="#contributing">Contribute</a></p>
 
 Moodreel is a local CLI and director skill for motion designers and creative coders. Give it a clip and it measures details you can carry into a different film, from the colours on screen to the spacing between successive entrances. Or pick a style from the library and start drawing. [Browse the style library](styles/README.md)
+
+## Remake comparisons
+
+The reference plays on top and the remake below. Follow the edge of a butterfly wing, a cut between two title cards, or the moment an eye opens. Select a preview for the full comparison with sound.
+
+<p align="center">
+  <a href="docs/assets/remakes/case2.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case2.jpg"><img src="docs/assets/remakes/case2.webp" width="250" alt="Artistic Butterflies. Silver wings turn amber in both halves of the frame."></picture></a>
+  <a href="docs/assets/remakes/case1.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case1.jpg"><img src="docs/assets/remakes/case1.webp" width="250" alt="Skillry above, Knackly below. A wall of product cards gives way to type."></picture></a>
+  <a href="docs/assets/remakes/case3.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case3.jpg"><img src="docs/assets/remakes/case3.webp" width="240" alt="Scarlet Sheath above, Ember Rift below. Curved trails of fire reveal a glowing eye."></picture></a>
+</p>
+
+- **Artistic Butterflies · 53 s.** Watch the change from silver to amber. The reference wing sheds its outline as the particles scatter. You can see how long the remake holds its shape. [Full MP4](docs/assets/remakes/case2.mp4?raw=true) · [Bee’s original](https://x.com/thtbee_/status/2123259795172212871)
+- **Skillry → Knackly · 16 s.** A wall of product cards curves into depth. A few cuts later, the word “slop” fills both screens in dot-matrix type. Watch when the letters land. [Full MP4](docs/assets/remakes/case1.mp4?raw=true)
+- **Scarlet Sheath → Ember Rift · 15 s.** Red arcs tighten into the outline of an eye. Follow both versions through the cut to black ink and the final red seal. [Full MP4](docs/assets/remakes/case3.mp4?raw=true)
+
+[26-second highlights · silent MP4](docs/assets/remakes/highlights.mp4?raw=true) · [Original posts and credits](docs/assets/remakes/README.md) · [How to compare your own footage](docs/workflows.md#compare-a-remake-with-its-reference)
 
 ## Quickstart
 
@@ -45,6 +61,8 @@ uv run moodreel measure out/print-study
 ```
 
 ## Showcase
+
+Both films below include their treatment and JavaScript drawing source. Open a scene to change the timing or draw a new shot.
 
 | Swiss Programme · Swiss Motion Graphics | First Save · 16-bit Pixel RPG |
 | :--- | :--- |

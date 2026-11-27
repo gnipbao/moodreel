@@ -14,9 +14,25 @@
 </p>
 
 <p align="center"><a href="README.md">English</a> · <b>简体中文</b></p>
-<p align="center"><a href="#快速开始">快速开始</a> · <a href="#作品展示">作品展示</a> · <a href="#制作自己的短片">智能体创作</a> · <a href="#工作原理">工作原理</a> · <a href="#参与贡献">参与贡献</a></p>
+<p align="center"><a href="#复刻对照">复刻对照</a> · <a href="#快速开始">快速开始</a> · <a href="#作品展示">示例源码</a> · <a href="#制作自己的短片">智能体创作</a> · <a href="#工作原理">工作原理</a> · <a href="#参与贡献">参与贡献</a></p>
 
 Moodreel 为动态设计师和创意开发者提供本地命令行工具和导演技能。给它一段参考短片，就能测出画面里用了哪些颜色、元素入场相隔多久，再把这些设计选择用在另一部片上。你也可以直接从风格库选一种风格开拍。[浏览风格库](styles/README.md)
+
+## 复刻对照
+
+上半屏是参考片，下半屏是复刻。可以盯住一侧蝶翼，看轮廓在哪一拍散开，也可以盯住卡片墙切成大字的瞬间。点击任一动图，即可打开完整有声 MP4。
+
+<p align="center">
+  <a href="docs/assets/remakes/case2.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case2.jpg"><img src="docs/assets/remakes/case2.webp" width="250" alt="粒子蝶翼对照，上下两只银白蝴蝶先后染成琥珀色。"></picture></a>
+  <a href="docs/assets/remakes/case1.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case1.jpg"><img src="docs/assets/remakes/case1.webp" width="250" alt="上屏 Skillry、下屏 Knackly，两组产品卡片随镜头后退，切入大字。"></picture></a>
+  <a href="docs/assets/remakes/case3.mp4?raw=true"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/remakes/case3.jpg"><img src="docs/assets/remakes/case3.webp" width="240" alt="上屏 Scarlet Sheath、下屏《烬隙》，两组旋转的火线勾出发亮的眼睛。"></picture></a>
+</p>
+
+- **粒子蝶翼 · 53 秒。** 看银白转成琥珀色的那一段。上屏的蝶翼在粒子飞散时逐渐失去轮廓，对着下屏看，就能看出复刻把蝶形多留了多久。[完整 MP4](docs/assets/remakes/case2.mp4?raw=true) · [Bee 的原作](https://x.com/thtbee_/status/2123259795172212871)
+- **Skillry → Knackly · 16 秒。** 产品卡片向纵深铺开，几个快切之后，同一个「slop」用点阵大字占满上下屏。两段何时落字，一眼就能对上。[完整 MP4](docs/assets/remakes/case1.mp4?raw=true)
+- **绯鞘 → 烬隙 · 15 秒。** 红色弧线收成一只眼睛，紧接着画面切入黑白墨迹，最后落到一方红印。沿着这几次转场，能一路对照到片尾。[完整 MP4](docs/assets/remakes/case3.mp4?raw=true)
+
+[26 秒精华剪辑 · 静音 MP4](docs/assets/remakes/highlights.mp4?raw=true) · [案例原帖与署名](docs/assets/remakes/README.md) · [如何逐镜对照自己的片子](docs/workflows.zh-CN.md#逐镜比较复刻和参考)
 
 ## 快速开始
 
@@ -45,6 +61,8 @@ uv run moodreel measure out/print-study
 ```
 
 ## 作品展示
+
+下面两部示例都附有分镜方案和 JavaScript 绘制源码。打开对应的场景，就能调整动作节奏或续画一个镜头。
 
 | Swiss Programme · 瑞士动态排版 | First Save · 16 位像素 RPG |
 | :--- | :--- |
